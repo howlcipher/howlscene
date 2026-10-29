@@ -211,3 +211,27 @@ loopback Vite, without network or CPU emulation. Editor ready was 407 ms; sample
 frame p50/p95 was 16.7 ms; text-only export 73.2 ms; runtime 68,879 bytes /
 21,330 gzip. These are single-run lab observations, not production or comparative
 claims.
+
+## Creator color-controls integrated snapshot
+
+The [executed Node 24.22.2 gate](../evidence/editor_colors_final_gate.txt)
+passes formatting, lint, strict type-check/build/prerender, **145 unit tests
+across 34 files, 39 browser tests, clean package consumers, and the 267-package
+license/provenance audit**. Branch coverage is 89.54% overall, 90.02% core,
+94.59% configuration, and 97.72% exporter. The separate
+[dependency audit](../evidence/editor_colors_audit.txt) reports zero
+vulnerabilities.
+
+The [performance sample](../evidence/editor_colors_performance.json) is one
+Node 24.22.2 / Chromium 156 headless run on a Ryzen 5 1600 at 1440×1000, using
+loopback Vite and no network or CPU emulation: editor ready 444.5 ms; observed
+navigation 294.1 ms; session-observed LCP 444 ms and CLS 0.000087; sampled frame
+interval p50/p95 16.7 ms; ten-section text-only ZIP 72 ms; runtime 68,879 bytes
+(21,330 gzip). Production site build reports its site runtime at 125.66 kB
+(38.48 kB gzip); this is separate from the compact static-export runtime and
+does not include the editor or shared JSX runtime. The test fixture excludes
+images. These are controlled local observations, not field Core Web Vitals or
+animation guarantees. Build time in this run was 466 ms for the production client
+bundle, not a full clean CI build timing. npm audit used host npm 12 under Node
+22.22.1 and returned zero vulnerabilities; the application gate itself used
+Node 24.22.2.

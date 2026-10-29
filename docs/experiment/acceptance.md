@@ -95,3 +95,16 @@ mutating saved theme data, and carries the same fallback into exported HTML.
 THM-A11Y-001 passes in the complete local gate: 143 unit tests and 38 browser
 tests. It checks a low-contrast custom theme, warning and immutability, resolved
 contrast of at least 4.5:1, and the same foreground in preview and ZIP HTML.
+
+EDT-010 covers background, text and accent color inputs. It verifies a low-contrast
+selection produces readable displayed tokens and a warning without losing the
+selected values, preserves colors through theme switching and reload, and exports
+the same resolved CSS values in the website ZIP.
+
+EDT-010 passed in the integrated Node 24.22.2 gate: 145 unit tests, 39 browser
+tests, 89.54% overall branch coverage, clean independent SDK/export consumers,
+and the 267-package license audit. The new end-to-end test performs actual
+browser edits, theme switching, autosave/reload, and checks exported HTML values.
+See [`editor_colors_final_gate.txt`](../evidence/editor_colors_final_gate.txt).
+Contrast fallback only checks flat color pairs; scenery and uploaded media need
+human assessment and no WCAG conformance is inferred.

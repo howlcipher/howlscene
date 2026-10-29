@@ -1,0 +1,36 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/theme_presentation.test.tsx (9 tests | 1 failed) 132ms
+   ❯ validated theme presentation (9)
+     × EDT-010 validates editable background and text colors with accent contrast against the selected background 13ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/theme_presentation.test.tsx > validated theme presentation > EDT-010 validates editable background and text colors with accent contrast against the selected background
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "background",
+      "foreground"
+    ],
+    "path": [],
+    "message": "Unrecognized keys: \"background\", \"foreground\""
+  }
+]
+ ❯ tests/theme_presentation.test.tsx:49:28
+     47|   it("EDT-010 validates editable background and text colors with accen…
+     48|     expect(
+     49|       themeOverridesSchema.parse({ background: "#ededed", foreground: …
+       |                            ^
+     50|     ).toEqual({ background: "#ededed", foreground: "#101010" });
+     51|     for (const invalid of [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  15:42:09
+   Duration  1.12s (import 60%, transform 21%, tests 17%, worker 1%)

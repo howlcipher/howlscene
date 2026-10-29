@@ -278,3 +278,29 @@ coverage is 89.47%, and dependency audit reports zero vulnerabilities. Executed
 logs are in `docs/evidence/theme_contrast_*`. Hosted verification is pending. This
 checks flat color pairs only; artwork-overlay contrast and human WCAG review remain
 open.
+
+## Creator color controls
+
+Current branch: `feat/editor-theme-colors`, based on main at `f792902`. The editor
+now exposes background, text, and accent color inputs. Optional theme overrides
+remain in the project across theme switching and draft reload. Resolver checks
+foreground/background and accent against the chosen background, preserving saved
+values while showing a readable fallback and warning. The TDD failure is retained
+at `docs/evidence/editor_colors_red.txt`. Focused schema, preview/export, and real
+browser tests pass. The complete Node 24.22.2 gate now passes: formatting, lint,
+type checking, production builds/prerender, **145 unit tests across 34 files,
+39 browser tests, independent SDK/export consumer checks,** and the 267-package
+license/provenance audit. Branch coverage is 89.54% overall, 90.02% core,
+94.59% configuration, and 97.72% exporter. `npm audit --audit-level=moderate`
+reports zero vulnerabilities. Executed evidence is in
+[`editor_colors_final_gate.txt`](docs/evidence/editor_colors_final_gate.txt),
+[`editor_colors_audit.txt`](docs/evidence/editor_colors_audit.txt), and
+[`editor_colors_performance.json`](docs/evidence/editor_colors_performance.json).
+The local Chromium/Node sample reports a 68,879-byte runtime (21,330 gzip),
+444.5 ms editor-ready time, 16.7 ms sampled frame p50/p95, and 72 ms for a
+ten-section text-only export; it is one controlled local observation, not field
+performance evidence. npm noted that the host npm 12 is unsupported by host
+Node 22.22.1; the complete application gate ran with Node 24.22.2. Text over
+artwork and human accessibility/usability review remain open. Hosted verification
+is the next gate. Isolation remains intact and comparison evidence is maintained;
+no comparison result or release readiness is claimed.

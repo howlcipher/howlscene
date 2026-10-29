@@ -155,6 +155,8 @@ export function createThemeRegistry(
 
 /** Safe user-facing theme controls, shared by validation and rendering. */
 export const themeOverridesSchema = z.strictObject({
+  background: color.optional(),
+  foreground: color.optional(),
   accent: color.optional(),
   font: z.enum(["system", "serif", "mono"]).optional(),
 });
@@ -193,6 +195,8 @@ export function resolveTheme(
   const selected = themeOverridesSchema.parse(overrides);
   const tokens = {
     ...base,
+    background: selected.background ?? base.background,
+    foreground: selected.foreground ?? base.foreground,
     font: selected.font ? fontStacks[selected.font] : base.font,
     accent: selected.accent ?? base.accent,
   };
@@ -209,11 +213,11 @@ export function resolveTheme(
       "The theme text color is difficult to read against its background. A higher-contrast color is shown; the theme's saved colors are unchanged.",
     );
   }
-  if (contrastRatio(tokens.accent, base.background) < 4.5) {
+  if (contrastRatio(tokens.accent, tokens.background) < 4.5) {
     tokens.accent =
-      contrastRatio(base.accent, base.background) >= 4.5
+      contrastRatio(base.accent, tokens.background) >= 4.5
         ? base.accent
-        : base.foreground;
+        : tokens.foreground;
     warnings.push(
       "The selected accent is difficult to read against this background. A theme color is shown instead; your selected color is still saved.",
     );

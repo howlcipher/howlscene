@@ -57,13 +57,25 @@ it("safe user accent and supported font selections resolve without mutating defa
   }
   expect(themes.modern.font).toBe("system-ui, sans-serif");
 });
+it("safe foreground and background colors compose with theme overrides", () => {
+  const result = resolveTheme(themes.modern, {
+    background: "#eeeeee",
+    foreground: "#222222",
+    accent: "#184ca0",
+  });
+  expect(result.tokens.background).toBe("#eeeeee");
+  expect(result.tokens.foreground).toBe("#222222");
+  expect(result.warnings).toEqual([]);
+  expect(themes.modern.background).toBe("#f4f5f7");
+});
 it("invalid CSS and unknown override keys fail at the shared boundary", () => {
   expect(themeOverridesSchema.parse({})).toEqual({});
   for (const overrides of [
     { accent: "red" },
     { accent: "#000000;display:none" },
     { font: "Arial" },
-    { background: "#ffffff" },
+    { background: "url(javascript:bad)" },
+    { foreground: "#fff" },
     null,
   ]) {
     expect(() => themeOverridesSchema.parse(overrides)).toThrow();
