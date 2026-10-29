@@ -2,7 +2,7 @@
 
 ## Status
 
-Selected for the `work/theme-presentation` increment. The complete local Node 24 gate passes 134 unit and 35 browser tests, including computed styles and nested no-script export. Hosted verification remains pending; see [executed evidence](../evidence/theme_presentation_final_gate.txt). This is not a declaration that the full v1 theme contract is complete.
+Selected for the `work/theme-presentation` increment. The complete local Node 24 gate passes 134 unit and 35 browser tests, including computed styles and nested no-script export. Hosted run `40887036736` also passed after the pull request was retargeted to `main`; see [executed evidence](../evidence/theme_presentation_final_gate.txt). This is not a declaration that the full v1 theme contract is complete.
 
 ## Context
 

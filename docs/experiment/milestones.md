@@ -26,3 +26,11 @@ The next bounded presentation increment passes the complete local gate:
 134 unit tests, 35 browser tests, installed consumers and licenses. Defaults
 preserve all nine screenshots. Broader theme contracts remain required work;
 see ADR 003 and current journal for evidence and limits.
+
+Theme motion increment: added bounded per-theme intensity/speed scalars and a
+parallax preference while retaining user-level motion-off and reduced-motion
+behavior. Five tests were observed failing before implementation. The local gate passes
+139 unit and 35 browser tests. Static export, independent SDK and package audit
+results are recorded in
+[`theme_motion_final_gate.txt`](../evidence/theme_motion_final_gate.txt). Hosted
+CI and merge status are tracked in the pull request.

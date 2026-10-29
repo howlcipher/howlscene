@@ -210,3 +210,32 @@ external asset collection, followed by general section/layout registration.
 Human usability/screen-reader review, broader exported visual coverage,
 production performance and deployment remain open. This is not a v1 release.
 Repository isolation and experiment evidence remain intact.
+
+## Theme motion and parallax contract
+
+Current branch: `work/theme-motion-accessibility`, based on merged main at
+`3b1270b`. Added optional immutable theme motion scalars and parallax preference.
+Scalars are runtime-validated and bounded; theme intensity can reduce the user's
+site setting, while combined speed is clamped. Themes that opt out of parallax do
+not schedule layer movement; site motion-off, manual disable and reduced-motion
+remain authoritative. These are public developer theme settings, not visual
+editor controls.
+
+TDD evidence: the five new `tests/theme_motion.test.tsx` cases failed before
+implementation; the sanitized RED is retained in `docs/evidence/theme_motion_red.txt`.
+The complete Node 24.22.2 `npm run check` passes with **139 unit tests across 34
+files, 35 Playwright tests, 89.57% branch coverage overall**, production builds,
+installed SDK consumer checks, and 267-package license/provenance review. A fresh
+`npm audit --audit-level=moderate` reports zero vulnerabilities. Independent
+review found no blocker and recommended explicitly emulating no-preference in the
+presentation browser scenario; that change passes the focused test and full gate.
+See `docs/evidence/theme_motion_final_gate.txt`,
+`theme_motion_audit.txt`, and `theme_motion_performance.json`. Local performance is
+one controlled observation, not a production or field guarantee.
+
+The reference video remains unavailable. Human accessibility/usability review,
+editor controls for theme accessibility, external theme-asset collection,
+broader responsive/full manifest and section/layout contracts, deployment, and
+release gates remain outstanding. Isolation is intact: no other track or
+William Elias repository has been modified or consulted for implementation.
+Independent comparison evidence continues in `docs/experiment/`.

@@ -74,6 +74,8 @@ export function resolvePrimitive(
 export function readMotionSettings(data: {
   motionIntensity?: string;
   motionSpeed?: string;
+  themeMotionIntensity?: string;
+  themeMotionSpeed?: string;
 }) {
   const read = (value: string | undefined, min: number, max: number) => {
     if (value === undefined || value.trim() === "") return 1;
@@ -82,9 +84,13 @@ export function readMotionSettings(data: {
       ? number
       : 1;
   };
+  const intensity =
+    read(data.motionIntensity, 0, 1) * read(data.themeMotionIntensity, 0, 1);
+  const speed =
+    read(data.motionSpeed, 0.5, 2) * read(data.themeMotionSpeed, 0.5, 2);
   return {
-    intensity: read(data.motionIntensity, 0, 1),
-    speed: read(data.motionSpeed, 0.5, 2),
+    intensity,
+    speed: Math.max(0.5, Math.min(2, speed)),
   };
 }
 
@@ -100,4 +106,9 @@ export function resolveSceneMotion(
     section === "none"
     ? section
     : site;
+}
+
+/** Invalid theme attributes fail closed so they cannot enable scenery parallax. */
+export function readThemeParallax(setting: string | undefined): boolean {
+  return setting === undefined ? true : setting === "true";
 }

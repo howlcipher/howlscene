@@ -19,7 +19,8 @@ establish public v1 readiness.
 - Hosted CI passed for checkpoint `ce06f23`:
   [executed run](https://github.com/howlcipher/howlscene/actions/runs/40878831459).
   The theme-layer increment also passed hosted run `40884610329`.
-  Bounded presentation changes pass locally and await their own hosted check.
+  Bounded presentation passed hosted run `40887036736`; the theme-motion PR
+  hosted result is pending.
   GitHub Pages is not configured and no live deployment is claimed.
 - The experiment reference video is unavailable, so reference fidelity cannot be
   scored. No comparison with the independent implementation is claimed.
@@ -51,3 +52,7 @@ paused and explain that backups are needed.
 Excluded v1 scope remains excluded: accounts, cloud synchronization, free-position
 canvas, e-commerce, full 3D editor, collaboration and plugin marketplace.
 Unfinished required v1 work is not reclassified as excluded scope.
+
+- Theme manifests can scale motion down and disable parallax. These are developer
+  manifest options, not yet visual-editor controls; human reduced-motion,
+  screen-reader and text-zoom review remains open.

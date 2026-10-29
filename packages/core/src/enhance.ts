@@ -1,6 +1,7 @@
 import { animate } from "motion/mini";
 import {
   readMotionSettings,
+  readThemeParallax,
   resolveMotion,
   resolveSceneMotion,
   resolvePrimitive,
@@ -23,9 +24,11 @@ export function enhanceSite(root: HTMLElement): () => void {
   }
   let disposed = false;
   const settings = readMotionSettings(root.dataset);
-  const layers = Array.from(
-    root.querySelectorAll<HTMLElement>(".scenery-layer[data-depth]"),
-  );
+  const layers = readThemeParallax(root.dataset.themeParallax)
+    ? Array.from(
+        root.querySelectorAll<HTMLElement>(".scenery-layer[data-depth]"),
+      )
+    : [];
   let frame: number | undefined;
   const controls = new Map<
     Element,

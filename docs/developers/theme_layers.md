@@ -91,3 +91,31 @@ The [presentation decision](../architecture/adr_003_theme_presentation.md) recor
 Pass both registries to `Site` and `exportWebsite`. Static export includes the rendered artwork as meaningful SVG markup in its complete HTML, independent of editor code. JavaScript remains optional enhancement for motion. The independent SDK check installs packed packages, renders custom artwork, exports it in the browser, and serves that ZIP under real nested mounts with and without JavaScript.
 
 Callbacks are not sandboxed. A trusted developer can introduce unsafe markup, external URLs, incompatible components, or unlicensed artwork; registry validation does not audit their implementation. There is no collector that discovers arbitrary external images, custom font files, CSS imports, or runtime dependencies from an artwork callback. Keep artwork self-contained or explicitly manage and verify resources through the supported asset contract. This layer slice does not claim the full long-term theme manifest, third-party marketplace, or 3D plugin contract is implemented.
+
+## Motion and parallax preferences
+
+A theme may optionally define validated motion scalars and disable decorative
+parallax:
+
+```ts
+const theme = {
+  ...themes.ink,
+  motion: { intensityScale: 0.7, speedScale: 1.2 },
+  accessibility: { parallax: false },
+};
+```
+
+Defaults preserve earlier manifests: both scalars are `1`, and parallax is
+enabled. Intensity is bounded to `0..1`; speed is bounded to `0.5..2` and its
+product with the site setting is clamped to the same range. A theme can reduce
+effects but cannot exceed the user's site intensity. When parallax is false,
+decorative layer movement stops while scene entry effects, navigation and
+content remain available. Site motion-off, the editor's manual motion control,
+and `prefers-reduced-motion` continue to disable decorative motion globally.
+Preview and static output use the same validated manifest values; imported
+projects do not supply executable code or CSS.
+
+The [motion contract tests](../../tests/theme_motion.test.tsx) and presentation
+browser scenario cover defaults, bounds, theme switching, reduced motion and
+motionless scenery. These are API-level options rather than editor controls;
+broader accessible theme customization remains open v1 work.

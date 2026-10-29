@@ -64,6 +64,9 @@ export function Site({
       data-motion={site.motion}
       data-motion-intensity={site.motionSettings.intensity}
       data-motion-speed={site.motionSettings.speed}
+      data-theme-motion-intensity={theme.motion.intensityScale}
+      data-theme-motion-speed={theme.motion.speedScale}
+      data-theme-parallax={theme.accessibility.parallax}
     >
       <a className="skip-link" href="#site-content">
         Skip to content
