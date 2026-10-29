@@ -17,14 +17,15 @@ These measurements are historical, scoped observations reported during implement
 
 ## Latest integrated verification snapshot
 
-The Node 24.22.2 gate passes 150 unit tests in 35 files, 44 Playwright browser
+The Node 24.22.2 gate passes 150 unit tests in 35 files, 45 Playwright browser
 tests, and 94.85% statement / 89.54% branch coverage. Core branch coverage is
 89.97%, configuration is 92.59%, and export is 97.72%. The separate npm audit
 reports zero vulnerabilities. THM-PRES-005 checks maximum valid presentation
 tokens and long text at 200% root text size and 320 CSS px; it does not simulate
-browser zoom. See the [gate log](../evidence/theme_presentation_zoom_final_gate.txt)
-and [audit log](../evidence/theme_presentation_zoom_audit.txt). No new
-performance measurement was taken for this test-only increment.
+browser zoom. EDT-012 verifies compatible layouts, real image positioning,
+phone reflow, reload and export. See the [integrated gate](../evidence/section_layout_final_gate.txt)
+and [audit log](../evidence/section_layout_audit.txt). No new performance
+measurement was taken for these browser-coverage increments.
 
 ## Reproduce current checks
 

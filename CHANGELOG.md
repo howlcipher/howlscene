@@ -16,6 +16,7 @@
 - Validated creator overrides for card appearance, navigation link style, and phone navigation layout.
 - Deterministic image-rich static-export visual checks across all three themes and representative viewports.
 - Browser coverage for maximum theme presentation tokens under 200% root text sizing at 320 CSS pixels.
+- End-to-end verification for compatible section layouts across editor preview, local draft reload, phone reflow, and static export.
 
 ### Fixed
 
