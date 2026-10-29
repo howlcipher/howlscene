@@ -83,3 +83,12 @@ Explicit navigator stubs now test supported and unsupported environments.
 [Full Node 24.22.2 gate](../evidence/node24_final_gate.txt) passes 114 unit tests
 and 32 browser tests, plus all build, package and license checks. No production
 behavior changed. Coverage percentages are unchanged.
+
+## Deterministic visual acceptance snapshot
+
+[Full Node 24.22.2 gate](../evidence/font_final_gate.txt) passes 114 unit tests
+and 34 browser tests, including rapid transitions and long content. Unit coverage
+is unchanged. Test-only font fixtures are documented with hashes/licenses and
+[reviewed baseline rationale](../evidence/font_fixture_review.md). No screenshot
+threshold was relaxed. This local result does not itself prove remote Ubuntu
+rendering; the clean-runner result is tracked separately.

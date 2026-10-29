@@ -9,10 +9,10 @@ Phase 0 proved the shared editor-to-static-export approach. Core/schema, rich te
 ## Latest executed milestone
 
 The final local continuation gate passed: formatting, lint, strict TypeScript,
-production build and semantic prerendering, **113 unit tests in 30 files**, **32
+production build and semantic prerendering, **114 unit tests in 30 files**, **34
 browser tests**, independent core/export tarball consumption and the 267-package
 license/provenance audit. The separate vulnerability audit reports zero issues.
-Evidence: [complete gate](docs/evidence/continuation_final_gate.txt),
+Evidence: [complete gate](docs/evidence/font_final_gate.txt),
 [audit](docs/evidence/continuation_audit.txt), and
 [local performance observations](docs/evidence/local_performance.json).
 
@@ -44,8 +44,7 @@ loading. Focused journey and complete gate both passed afterward.
 
 ## Next work and open release gates
 
-Complete broader image-rich/long-form export visual coverage, dedicated rapid
-transition/theme-switch scenarios, manual zoom/assistive-technology and
+Complete broader image-rich/long-form export visual coverage, manual zoom/assistive-technology and
 nontechnical usability review, production performance review, hosted CI and
 public deployment. Finish release review before calling v1 ready. Keep open
 requirements visible in [acceptance](docs/experiment/acceptance.md) and
@@ -72,3 +71,21 @@ the installed GitHub CLI successfully without changing global configuration.
 
 Terminal output in committed evidence has trailing whitespace normalized; the
 underlying test results are preserved. The final source/test gate is unchanged.
+
+## Deterministic visual and motion acceptance checkpoint
+
+The second hosted run passed functional browser tests but failed seven visual
+comparisons because system fonts differed. Chromium platform-font inspection
+identified actual glyph sources; complete unchanged test-only fonts now pin all
+three typography styles. Their licenses and hashes were independently reviewed.
+Root and reviewer inspected actual/diff images before nine intentional fixture
+baseline updates. Screenshot thresholds and production fonts are unchanged.
+[Review evidence](docs/evidence/font_fixture_review.md).
+
+New actual-browser acceptance tests cover rapid theme/anchor changes during
+transitions and >10k-character sections at phone/tablet widths across all themes.
+The complete Node 24.22.2 gate passes **114 unit and 34 browser tests**, including
+normal screenshot comparisons and independent package consumption.
+[Executed final output](docs/evidence/font_final_gate.txt). Hosted verification
+of the font correction remains pending. General theme artwork/layer manifests
+and section/layout extension contracts remain required v1 work; see limitations.

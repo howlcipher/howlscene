@@ -19,10 +19,19 @@ establish public v1 readiness.
 - The verified checkpoint `ce5a57c` is pushed to the standalone GitHub repository.
   The first clean GitHub Actions run exposed a Node 24 test-isolation assumption;
   it is reproduced and corrected. The complete local Node 24 gate passes;
-  hosted verification of the correction remains pending.
+  the second hosted run then exposed seven system-font screenshot differences.
+  Reviewed deterministic font fixtures and unchanged pixel thresholds now pass
+  all nine normal local comparisons. Hosted confirmation remains pending.
   GitHub Pages is not configured and no live deployment is claimed.
 - The experiment reference video is unavailable, so reference fidelity cannot be
   scored. No comparison with the independent implementation is claimed.
+- Theme manifests currently validate design tokens and metadata; bundled scenery
+  is procedural presentation selected by the renderer. Fully declarative artwork,
+  layer manifests and broader component/navigation styling contracts remain
+  required architecture work before claiming the complete master specification.
+- Component registration overrides the ten supported section types. Adding a new
+  schema-level section type or arbitrary layout identifier still requires core
+  changes; this is narrower than the requested general section-authoring contract.
 - Rich text supports paragraphs, two heading ranks, bold, italic, links and
   single-level ordered/unordered lists. Arbitrary HTML and nested lists are not
   supported by the portable model.

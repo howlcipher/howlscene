@@ -1,5 +1,20 @@
 import { test, expect } from "@playwright/test";
 
+const fontFamilies = {
+  ink: "HowlScene Test Serif",
+  cyber: "HowlScene Test Mono",
+  modern: "HowlScene Test Sans",
+} as const;
+const testFonts = `
+@font-face{font-family:"HowlScene Test Serif";src:url("/tests/fixtures/fonts/LiberationSerif-Regular.ttf") format("truetype");font-style:normal;font-weight:400;font-display:block;}
+@font-face{font-family:"HowlScene Test Serif";src:url("/tests/fixtures/fonts/LiberationSerif-Bold.ttf") format("truetype");font-style:normal;font-weight:700;font-display:block;}
+@font-face{font-family:"HowlScene Test Mono";src:url("/tests/fixtures/fonts/DejaVuSansMono.ttf") format("truetype");font-style:normal;font-weight:400;font-display:block;}
+@font-face{font-family:"HowlScene Test Mono";src:url("/tests/fixtures/fonts/DejaVuSansMono-Bold.ttf") format("truetype");font-style:normal;font-weight:700;font-display:block;}
+@font-face{font-family:"HowlScene Test Sans";src:url("/tests/fixtures/fonts/NotoSans-Regular.ttf") format("truetype");font-style:normal;font-weight:400;font-display:block;}
+@font-face{font-family:"HowlScene Test Sans";src:url("/tests/fixtures/fonts/NotoSans-Bold.ttf") format("truetype");font-style:normal;font-weight:700;font-display:block;}
+`;
+// Tests pin the fonts Chromium used for the reviewed baselines. Production keeps
+// its system font choices; these unmodified licensed fixtures never enter builds.
 // Generate baselines explicitly, review them, and commit only intended appearances.
 // Motion is disabled through the user's media preference, not timing assumptions.
 for (const width of [375, 768, 1440]) {
@@ -22,7 +37,22 @@ for (const width of [375, 768, 1440]) {
       await expect(page.getByRole("status")).toContainText(
         "Saved on this browser",
       );
-      await page.evaluate(() => document.fonts.ready);
+      const family = fontFamilies[theme];
+      await page.addStyleTag({
+        content:
+          testFonts +
+          `.preview .howlscene{--scene-font:"${family}" !important;}`,
+      });
+      const loaded = await page.evaluate(async (family) => {
+        const faces = await Promise.all(
+          [400, 700].map((weight) =>
+            document.fonts.load(`${weight} 16px "${family}"`),
+          ),
+        );
+        await document.fonts.ready;
+        return faces.map((matches) => matches.length);
+      }, family);
+      expect(loaded).toEqual([1, 1]);
       const preview = page.getByRole("region", {
         name: "Live website preview",
       });
