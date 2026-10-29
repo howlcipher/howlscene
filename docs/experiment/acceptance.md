@@ -55,3 +55,14 @@ custom theme scalars, parallax suppression, theme changes, reduced motion and
 nested no-script output. Local integrated results are recorded in
 [`theme_motion_final_gate.txt`](../evidence/theme_motion_final_gate.txt); hosted
 verification is tracked in the pull request.
+
+THM-NAV-001 validates navigation treatment defaults and rejects unknown values.
+THM-NAV-002 checks the three bundled themes' computed link styles, visible
+anchors, and wrapping at mobile/tablet/desktop widths. The six changed Ink and
+Cyberpunk screenshot baselines were reviewed; all nine visual tests pass, and
+Modern baselines remain unchanged.
+
+The theme navigation update is recorded in `theme_navigation_final_gate.txt` with
+140 unit tests across 34 files and 36 browser tests. Branch coverage remains
+89.57%; the dependency audit reports zero vulnerabilities. Performance and visual
+baseline evidence are stored beside the gate log.

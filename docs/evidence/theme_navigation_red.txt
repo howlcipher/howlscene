@@ -1,0 +1,33 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/theme_presentation.test.tsx (5 tests | 1 failed) 128ms
+   ❯ validated theme presentation (5)
+     × THM-NAV-001 normalizes safe navigation treatments and keeps them theme-owned 16ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/theme_presentation.test.tsx > validated theme presentation > THM-NAV-001 normalizes safe navigation treatments and keeps them theme-owned
+AssertionError: expected undefined to be 'plain' // Object.is equality
+
+- Expected:
+"plain"
+
++ Received:
+undefined
+
+ ❯ tests/theme_presentation.test.tsx:40:68
+     38| describe("validated theme presentation", () => {
+     39|   it("THM-NAV-001 normalizes safe navigation treatments and keeps them…
+     40|     expect(themeSchema.parse(legacy).presentation.navigationStyle).toB…
+       |                                                                    ^
+     41|       "plain",
+     42|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  10:17:27
+   Duration  1.24s (import 57%, transform 28%, tests 14%, worker 1%)

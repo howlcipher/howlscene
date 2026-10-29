@@ -24,6 +24,7 @@ export const themePresentationSchema = z
     cardGapRem: z.number().min(0.5).max(3).default(1.5),
     cardRadiusRem: z.number().min(0).max(2).default(0.7),
     navigationGapRem: z.number().min(0.5).max(3).default(1.2),
+    navigationStyle: z.enum(["plain", "underline", "framed"]).default("plain"),
   })
   .readonly();
 export type ThemePresentation = z.infer<typeof themePresentationSchema>;
@@ -99,6 +100,7 @@ export const themes: ThemeRegistry &
       foreground: "#263b36",
       accent: "#496052",
       font: "Georgia, serif",
+      presentation: { navigationStyle: "underline" },
       layers: [
         { id: "sky", artwork: "ink-sky", depth: 0.08 },
         { id: "mountains", artwork: "ink-mountains", depth: 0.2 },
@@ -118,6 +120,7 @@ export const themes: ThemeRegistry &
       foreground: "#f4f3ff",
       accent: "#6ee7ed",
       font: "ui-monospace, monospace",
+      presentation: { navigationStyle: "framed" },
       layers: [
         { id: "horizon", artwork: "cyber-horizon", depth: 0.08 },
         { id: "city-distant", artwork: "cyber-city-distant", depth: 0.22 },

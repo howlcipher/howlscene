@@ -19,16 +19,17 @@ establish public v1 readiness.
 - Hosted CI passed for checkpoint `ce06f23`:
   [executed run](https://github.com/howlcipher/howlscene/actions/runs/40878831459).
   The theme-layer increment also passed hosted run `40884610329`.
-  Bounded presentation passed hosted run `40887036736`; the theme-motion PR
-  hosted result is pending.
-  GitHub Pages is not configured and no live deployment is claimed.
+  Bounded presentation passed hosted run `40887036736`; theme motion passed hosted
+  run `40889458958`. GitHub Pages is not configured and no live deployment is
+  claimed.
 - The experiment reference video is unavailable, so reference fidelity cannot be
   scored. No comparison with the independent implementation is claimed.
-- Theme manifests now declare validated layers referencing trusted, immutable
+- Theme manifests declare validated layers referencing trusted, immutable
   artwork registries. Preview and export share that contract. External image-layer
-  collection and broader component/navigation, responsive, motion and accessibility
-  manifest contracts remain required v1 work. The integrated
-  gate passes after correcting an aggregate asset-validation ordering weakness.
+  collection and broader component styling remain required. A bounded navigation
+  link treatment is now available; responsive and accessibility manifest controls
+  remain incomplete. The integrated gate passes after correcting an aggregate
+  asset-validation ordering weakness.
 - Presentation defaults now cover four validated CSS settings. Maximum values
   at narrow widths and increased text zoom remain a verification gap. Broader
   responsive/accessibility/motion contracts remain required v1 work.
@@ -56,3 +57,7 @@ Unfinished required v1 work is not reclassified as excluded scope.
 - Theme manifests can scale motion down and disable parallax. These are developer
   manifest options, not yet visual-editor controls; human reduced-motion,
   screen-reader and text-zoom review remains open.
+
+- Navigation treatment is now theme-configurable through a closed manifest enum
+  used by shared CSS. The editor does not expose this setting, and the larger
+  component-styling and responsive manifest contract remains incomplete.

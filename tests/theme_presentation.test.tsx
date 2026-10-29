@@ -9,6 +9,7 @@ import {
   createThemeRegistry,
   resolveTheme,
   type ThemeManifestInput,
+  themes,
 } from "../packages/core/src/index";
 import { exportWebsite } from "../packages/export/src/index";
 const defaults = {
@@ -16,6 +17,7 @@ const defaults = {
   cardGapRem: 1.5,
   cardRadiusRem: 0.7,
   navigationGapRem: 1.2,
+  navigationStyle: "plain",
 };
 // Token-only manifests remain accepted at existing public authoring boundaries.
 const legacy: ThemeManifestInput = {
@@ -32,9 +34,32 @@ const custom = {
     cardGapRem: 2,
     cardRadiusRem: 0.2,
     navigationGapRem: 2.4,
+    navigationStyle: "underline" as const,
   },
 };
 describe("validated theme presentation", () => {
+  it("THM-NAV-001 normalizes safe navigation treatments and keeps them theme-owned", () => {
+    expect(themeSchema.parse(legacy).presentation.navigationStyle).toBe(
+      "plain",
+    );
+    expect(themes.modern.presentation.navigationStyle).toBe("plain");
+    expect(themes.ink.presentation.navigationStyle).toBe("underline");
+    expect(themes.cyber.presentation.navigationStyle).toBe("framed");
+    expect(
+      themeSchema.parse({
+        ...legacy,
+        presentation: { navigationStyle: "underline" },
+      }).presentation.navigationStyle,
+    ).toBe("underline");
+    for (const navigationStyle of [
+      "arbitrary-css",
+      "url(javascript:alert(1))",
+      "",
+    ])
+      expect(() =>
+        themeSchema.parse({ ...legacy, presentation: { navigationStyle } }),
+      ).toThrow();
+  });
   it("THM-PRE-001 legacy manifests and partial settings normalize immutable, isolated, idempotent defaults", () => {
     const original = JSON.stringify(legacy);
     const normalized = themeSchema.parse(legacy);
@@ -135,6 +160,8 @@ describe("validated theme presentation", () => {
       expect(preview).toContain(expected);
       expect(html).toContain(expected);
     }
+    expect(preview).toContain('data-theme-navigation-style="underline"');
+    expect(html).toContain('data-theme-navigation-style="underline"');
     expect(html).not.toContain("<script");
     expect(site.sections).toEqual(starterSite.sections);
   });
