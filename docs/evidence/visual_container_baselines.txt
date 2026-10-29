@@ -1,0 +1,23 @@
+
+Running 9 tests using 1 worker
+
+/run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/visual.spec.ts-snapshots/preview-ink-375-linux.png is re-generated, writing actual.
+  ✓  1 tests/e2e/visual.spec.ts:7:5 › visual preview ink 375px (2.5s)
+/run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/visual.spec.ts-snapshots/preview-cyber-375-linux.png is re-generated, writing actual.
+  ✓  2 tests/e2e/visual.spec.ts:7:5 › visual preview cyber 375px (2.2s)
+/run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/visual.spec.ts-snapshots/preview-modern-375-linux.png is re-generated, writing actual.
+  ✓  3 tests/e2e/visual.spec.ts:7:5 › visual preview modern 375px (1.8s)
+/run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/visual.spec.ts-snapshots/preview-ink-768-linux.png is re-generated, writing actual.
+  ✓  4 tests/e2e/visual.spec.ts:7:5 › visual preview ink 768px (2.2s)
+/run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/visual.spec.ts-snapshots/preview-cyber-768-linux.png is re-generated, writing actual.
+  ✓  5 tests/e2e/visual.spec.ts:7:5 › visual preview cyber 768px (2.1s)
+/run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/visual.spec.ts-snapshots/preview-modern-768-linux.png is re-generated, writing actual.
+  ✓  6 tests/e2e/visual.spec.ts:7:5 › visual preview modern 768px (2.0s)
+/run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/visual.spec.ts-snapshots/preview-ink-1440-linux.png is re-generated, writing actual.
+  ✓  7 tests/e2e/visual.spec.ts:7:5 › visual preview ink 1440px (2.5s)
+/run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/visual.spec.ts-snapshots/preview-cyber-1440-linux.png is re-generated, writing actual.
+  ✓  8 tests/e2e/visual.spec.ts:7:5 › visual preview cyber 1440px (2.2s)
+/run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/visual.spec.ts-snapshots/preview-modern-1440-linux.png is re-generated, writing actual.
+  ✓  9 tests/e2e/visual.spec.ts:7:5 › visual preview modern 1440px (2.2s)
+
+  9 passed (22.6s)

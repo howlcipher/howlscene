@@ -1,0 +1,27 @@
+{
+  "name": "@howlscene/export",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./dist/export/src/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "description": "Browser-first static HTML, media, backup and ZIP export for HowlScene",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/export/src/index.d.ts",
+  "peerDependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "dependencies": {
+    "zod": "4.6.7",
+    "jszip": "3.10.2"
+  },
+  "sideEffects": false
+}

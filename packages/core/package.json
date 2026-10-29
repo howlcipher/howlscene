@@ -1,0 +1,29 @@
+{
+  "name": "@howlscene/core",
+  "version": "0.1.0",
+  "description": "Accessible configuration-driven website renderer for HowlScene",
+  "type": "module",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "peerDependencies": {
+    "react": "^19.3.1"
+  },
+  "dependencies": {
+    "zod": "4.6.7",
+    "motion": "14.7.1"
+  }
+}

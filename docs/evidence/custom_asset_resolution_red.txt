@@ -1,0 +1,35 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+stderr | tests/sections.test.tsx > SDK-004 a custom section receives a fail-closed asset resolver
+An empty string ("") was passed to the src attribute. This may cause the browser to download the whole page again over the network. To fix this, either do not render the element at all or pass null to src instead of an empty string.
+
+ ❯ tests/sections.test.tsx (5 tests | 1 failed) 47ms
+   × SDK-004 a custom section receives a fail-closed asset resolver 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/sections.test.tsx > SDK-004 a custom section receives a fail-closed asset resolver
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/sections.test.tsx:80:90
+     78|  const {Site,starterSite,createSectionRegistry}=await import('../packa…
+     79|  const registry=createSectionRegistry({hero:({assetUrl})=><img src={as…
+     80|  expect(()=>renderToStaticMarkup(<Site site={starterSite} sectionRegis…
+       |                                                                                          ^
+     81| });
+     82|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  20:36:50
+   Duration  966ms (import 55%, transform 36%, tests 8%, worker 1%)

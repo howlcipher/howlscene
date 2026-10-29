@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+[WebServer] 5:03:42 PM [vite] (client) [console.warn] When using "display: flex" or "display: inline-flex" on an element containing content editable, Chrome may have unwanted focusing behavior when clicking outside of it. Consider wrapping the content editable within a non-flex element.
+[WebServer] 5:03:47 PM [vite] (client) [console.warn] When using "display: flex" or "display: inline-flex" on an element containing content editable, Chrome may have unwanted focusing behavior when clicking outside of it. Consider wrapping the content editable within a non-flex element.
+[WebServer] 5:03:47 PM [vite] (client) [console.warn] When using "display: flex" or "display: inline-flex" on an element containing content editable, Chrome may have unwanted focusing behavior when clicking outside of it. Consider wrapping the content editable within a non-flex element.
+  ✘  1 tests/e2e/editor.spec.ts:36:1 › AST-001 EDT-005 delayed image preparation preserves newer edits (5.6s)
+
+
+  1) tests/e2e/editor.spec.ts:36:1 › AST-001 EDT-005 delayed image preparation preserves newer edits
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByLabel('Website title')
+    Expected: "Newer edit"
+    Received: "My website"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveValue" getByLabel('Website title') with timeout 5000ms
+      - waiting for getByLabel('Website title')
+        14 × locator resolved to <input maxlength="200" value="My website"/>
+           - unexpected value "My website"
+
+
+      42 |  await page.evaluate(()=>window.dispatchEvent(new Event('finish-image')));
+      43 |  await expect(page.getByRole('region',{name:'Live website preview'}).locator('img')).toBeVisible();
+    > 44 |  await expect(page.getByLabel('Website title')).toHaveValue('Newer edit');
+         |                                                 ^
+      45 | });
+      46 |
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/editor.spec.ts:44:49
+
+    Error Context: test-results/editor-AST-001-EDT-005-del-1d367-ation-preserves-newer-edits/error-context.md
+
+  1 failed
+    tests/e2e/editor.spec.ts:36:1 › AST-001 EDT-005 delayed image preparation preserves newer edits

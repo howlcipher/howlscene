@@ -1,0 +1,25 @@
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/editor.spec.ts:135:1 › EDT-009 phone preview responds to its own width on a desktop screen (799ms)
+
+
+  1) tests/e2e/editor.spec.ts:135:1 › EDT-009 phone preview responds to its own width on a desktop screen
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 57.6
+    Received:   57.6
+
+      137 |  const heading=preview.locator('.scene h1');await expect(heading).toBeVisible();const desktop=await heading.evaluate(el=>parseFloat(getComputedStyle(el).fontSize));
+      138 |  await page.getByLabel('Preview size').selectOption('375px');const phone=await heading.evaluate(el=>parseFloat(getComputedStyle(el).fontSize));
+    > 139 |  expect(phone).toBeLessThan(desktop);expect(await preview.locator('.site-header').evaluate(el=>getComputedStyle(el).flexDirection)).toBe('column');
+          |                ^
+      140 | });
+      141 |
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/editor.spec.ts:139:16
+
+    Error Context: test-results/editor-EDT-009-phone-previ-fdb78-n-width-on-a-desktop-screen/error-context.md
+
+  1 failed
+    tests/e2e/editor.spec.ts:135:1 › EDT-009 phone preview responds to its own width on a desktop screen

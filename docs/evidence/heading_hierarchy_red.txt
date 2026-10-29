@@ -1,0 +1,92 @@
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 npx
+npm notice run 'vitest' run tests/heading_hierarchy.test.tsx
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/heading_hierarchy.test.tsx (3 tests | 3 failed) 62ms
+   × A11Y-005 reordered first projects and later gallery use headings relative to their owning section 42ms
+   × TXT-004 nested rich headings adapt to the owning section without changing portable content or standalone semantics 7ms
+   × A11Y-005 blank headings have the same accessible fallback in navigation and semantic headings 10ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/heading_hierarchy.test.tsx > A11Y-005 reordered first projects and later gallery use headings relative to their owning section
+AssertionError: expected [ [ 1, 'Projects' ], …(3) ] to deeply equal [ [ 1, 'Projects' ], …(3) ]
+
+- Expected
++ Received
+
+@@ -2,11 +2,11 @@
+    [
+      1,
+      "Projects",
+    ],
+    [
+-     2,
++     3,
+      "Tool",
+    ],
+    [
+      2,
+      "Gallery",
+
+ ❯ tests/heading_hierarchy.test.tsx:9:62
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/heading_hierarchy.test.tsx > TXT-004 nested rich headings adapt to the owning section without changing portable content or standalone semantics
+AssertionError: expected [ [ 1, 'First' ], …(5) ] to deeply equal [ [ 1, 'First' ], …(5) ]
+
+- Expected
++ Received
+
+@@ -14,13 +14,13 @@
+    [
+      2,
+      "Second",
+    ],
+    [
+-     3,
++     2,
+      "<span>Topic</span>",
+    ],
+    [
+-     4,
++     3,
+      "<span>Detail</span>",
+    ],
+  ]
+
+ ❯ tests/heading_hierarchy.test.tsx:15:62
+     13| it('TXT-004 nested rich headings adapt to the owning section without c…
+     14|  const site=parseSite({...starterSite,sections:[{id:'first',type:'rich…
+     15|  expect(headings(renderToStaticMarkup(<Site site={site}/>))).toEqual([…
+       |                                                              ^
+     16|  expect(headings(renderToStaticMarkup(<RichText value={richText}/>))).…
+     17|  expect(site.sections[1]?.richText).toEqual(richText);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/heading_hierarchy.test.tsx > A11Y-005 blank headings have the same accessible fallback in navigation and semantic headings
+AssertionError: expected '<div class="howlscene" style="--scene…' to contain '<h1>Untitled section</h1>'
+
+Expected: "<h1>Untitled section</h1>"
+Received: "<div class="howlscene" style="--scene-bg:#f4f5f7;--scene-fg:#162439;--scene-accent:#184ca0;--scene-font:system-ui, sans-serif" data-theme="modern" data-motion="none" data-motion-intensity="1" data-motion-speed="1"><a class="skip-link" href="#site-content">Skip to content</a><header class="site-header"><span class="site-title">My website</span><nav aria-label="Website sections"><a href="#intro">Untitled section</a></nav><button type="button" data-motion-toggle="true" hidden="">Disable animation</button></header><main id="site-content"><section id="intro" data-scene-motion="inherit" class="scene layout-centered spacing-comfortable align-center width-normal"><div class="scenery" data-theme="modern" aria-hidden="true"><svg class="scenery-layer scene-layer scenery-modern-paper" data-depth="0.08" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" focusable="false" aria-hidden="true"><path d="M865-100c-67 234 352 255 303 462S985 641 1101 939h441V-100Z"></path></svg><svg class="scenery-layer scene-layer scenery-orbit" data-depth="0.2" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" focusable="false" aria-hidden="true"><circle cx="1329" cy="248" r="291"></circle><circle cx="1329" cy="248" r="221"></circle><path d="M1130 630h246M1253 507v246"></path></svg><svg class="scenery-layer scene-layer scenery-modern-ribbon" data-depth="0.38" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" focusable="false" aria-hidden="true"><path d="M-117 816C122 521 271 639 438 791S730 1043 915 931v181H-117Z"></path><path d="M-30 855C156 668 287 769 399 861"></path></svg><div class="scenery-veil"></div></div><div class="scene-content"><p class="eyebrow">hero</p><h1></h1> <p>Your ideas deserve a place of their own. Start with a few words, then make this space yours.</p><div class="entry-cards"></div></div></section></main><footer>Made with HowlScene</footer></div>"
+
+ ❯ tests/heading_hierarchy.test.tsx:23:16
+     21|   const site=parseSite({...starterSite,sections:[{...starterSite.secti…
+     22|   const html=renderToStaticMarkup(<Site site={site}/>);
+     23|   expect(html).toContain('<h1>Untitled section</h1>');expect(html).toC…
+       |                ^
+     24|   expect(site.sections[0]?.heading).toBe(heading);
+     25|  }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  20:53:50
+   Duration  907ms (import 68%, transform 18%, tests 12%, worker 2%)

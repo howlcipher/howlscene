@@ -1,0 +1,33 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/core.test.tsx (8 tests | 1 failed) 142ms
+   ❯ configuration and rendering contracts (6)
+     × CFG-003 rejects reserved navigation anchors 10ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/core.test.tsx > configuration and rendering contracts > CFG-003 rejects reserved navigation anchors
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/core.test.tsx:21:159
+     19|   expect(()=>parseSite({...starterSite,unknown:'data'})).toThrow();
+     20|  });
+     21|  it('CFG-003 rejects reserved navigation anchors',()=>{expect(()=>pars…
+       |                                                                                                                                                               ^
+     22|  it('CFG-007 rejects duplicate section IDs',()=>{
+     23|   expect(()=>parseSite({...starterSite,sections:[starterSite.sections[…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  16:44:12
+   Duration  770ms (import 50%, tests 31%, transform 17%, worker 2%)

@@ -1,0 +1,24 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/core.test.tsx (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/core.test.tsx [ tests/core.test.tsx ]
+Error: Cannot find module '../packages/core/src/index' imported from /run/host/run/media/system/tallgeese/dev/howlscene/tests/core.test.tsx
+ ❯ tests/core.test.tsx:4:1
+      2| import fc from 'fast-check';
+      3| import { renderToStaticMarkup } from 'react-dom/server';
+      4| import { parseSite, starterSite, Site, themes } from '../packages/core…
+       | ^
+      5| import { exportWebsite } from '../packages/export/src/index';
+      6| import JSZip from 'jszip';
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  16:42:11
+   Duration  477ms (worker 96%, environment 4%)

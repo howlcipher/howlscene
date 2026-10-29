@@ -1,0 +1,20 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/motion.test.ts (5 tests | 1 failed) 33ms
+   × MOT-003 section overrides inherit global motion and cannot bypass site-wide none 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/motion.test.ts > MOT-003 section overrides inherit global motion and cannot bypass site-wide none
+TypeError: resolveSceneMotion is not a function
+ ❯ tests/motion.test.ts:98:9
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  17:27:57
+   Duration  704ms (import 72%, transform 17%, tests 9%, worker 2%)

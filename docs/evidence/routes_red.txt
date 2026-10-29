@@ -1,0 +1,28 @@
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/routes.spec.ts:2:1 › product routes lead to a real editor and consumer example (30.1s)
+
+
+  1) tests/e2e/routes.spec.ts:2:1 › product routes lead to a real editor and consumer example ──────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Open the editor' })
+
+
+      1 | import {test,expect} from '@playwright/test';
+      2 | test('product routes lead to a real editor and consumer example',async({page})=>{
+    > 3 |  await page.goto('/');await page.getByRole('link',{name:'Open the editor',exact:false}).click();
+        |                                                                                         ^
+      4 |  await expect(page).toHaveURL(/\/editor\/$/);await expect(page.getByLabel('Website title')).toBeVisible();
+      5 |  await page.goto('/examples/william-elias/');await expect(page.getByRole('heading',{name:'William Elias',exact:true})).toBeVisible();
+      6 | });
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/routes.spec.ts:3:89
+
+    Error Context: test-results/routes-product-routes-lead-e3392-editor-and-consumer-example/error-context.md
+
+  1 failed
+    tests/e2e/routes.spec.ts:2:1 › product routes lead to a real editor and consumer example ───────

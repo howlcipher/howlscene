@@ -1,0 +1,71 @@
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 npx
+npm notice run 'playwright' test tests/e2e/motion.spec.ts
+[WebServer] (node:1733434) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:1733585) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/motion.spec.ts:13:1 › MOT-002 A11Y-003 reduced motion cancels entry effects immediately (509ms)
+(node:1733687) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/motion.spec.ts:20:1 › MOT-003 A11Y-004 manual motion choice persists and anchors work (521ms)
+(node:1733977) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/motion.spec.ts:29:1 › MOT-005 cleanup cancels work and detaches controls (457ms)
+
+
+  1) tests/e2e/motion.spec.ts:13:1 › MOT-002 A11Y-003 reduced motion cancels entry effects immediately
+
+    Error: page.evaluate: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:4173/packages/core/src/enhance.ts
+
+      2 | async function mount(page:Page,preset='cinematic'){
+      3 |  await page.goto('/');
+    > 4 |  await page.evaluate(async(preset)=>{
+        |             ^
+      5 |   document.body.innerHTML=`<div class="howlscene" data-motion="${preset}"><button data-motion-toggle></button><a href="#second">Next scene</a><section class="scene" style="min-height:100vh"><h1>Always readable</h1></section><section id="second" class="scene" style="min-height:100vh"><h2>Second scene</h2></section></div>`;
+      6 |   localStorage.removeItem('howlscene-motion');
+      7 |   const modulePath='/packages/core/src/enhance.ts';
+        at mount (/run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/motion.spec.ts:4:13)
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/motion.spec.ts:14:59
+
+    Error Context: test-results/motion-MOT-002-A11Y-003-re-7ffaf-s-entry-effects-immediately/error-context.md
+
+  2) tests/e2e/motion.spec.ts:20:1 › MOT-003 A11Y-004 manual motion choice persists and anchors work
+
+    Error: page.evaluate: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:4173/packages/core/src/enhance.ts
+
+      2 | async function mount(page:Page,preset='cinematic'){
+      3 |  await page.goto('/');
+    > 4 |  await page.evaluate(async(preset)=>{
+        |             ^
+      5 |   document.body.innerHTML=`<div class="howlscene" data-motion="${preset}"><button data-motion-toggle></button><a href="#second">Next scene</a><section class="scene" style="min-height:100vh"><h1>Always readable</h1></section><section id="second" class="scene" style="min-height:100vh"><h2>Second scene</h2></section></div>`;
+      6 |   localStorage.removeItem('howlscene-motion');
+      7 |   const modulePath='/packages/core/src/enhance.ts';
+        at mount (/run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/motion.spec.ts:4:13)
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/motion.spec.ts:21:59
+
+    Error Context: test-results/motion-MOT-003-A11Y-004-ma-15b61-e-persists-and-anchors-work/error-context.md
+
+  3) tests/e2e/motion.spec.ts:29:1 › MOT-005 cleanup cancels work and detaches controls ────────────
+
+    Error: page.evaluate: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:4173/packages/core/src/enhance.ts
+
+      2 | async function mount(page:Page,preset='cinematic'){
+      3 |  await page.goto('/');
+    > 4 |  await page.evaluate(async(preset)=>{
+        |             ^
+      5 |   document.body.innerHTML=`<div class="howlscene" data-motion="${preset}"><button data-motion-toggle></button><a href="#second">Next scene</a><section class="scene" style="min-height:100vh"><h1>Always readable</h1></section><section id="second" class="scene" style="min-height:100vh"><h2>Second scene</h2></section></div>`;
+      6 |   localStorage.removeItem('howlscene-motion');
+      7 |   const modulePath='/packages/core/src/enhance.ts';
+        at mount (/run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/motion.spec.ts:4:13)
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/motion.spec.ts:30:59
+
+    Error Context: test-results/motion-MOT-005-cleanup-cancels-work-and-detaches-controls/error-context.md
+
+  3 failed
+    tests/e2e/motion.spec.ts:13:1 › MOT-002 A11Y-003 reduced motion cancels entry effects immediately
+    tests/e2e/motion.spec.ts:20:1 › MOT-003 A11Y-004 manual motion choice persists and anchors work
+    tests/e2e/motion.spec.ts:29:1 › MOT-005 cleanup cancels work and detaches controls ─────────────

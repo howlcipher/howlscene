@@ -1,0 +1,25 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/theme_registry.test.tsx (1 test | 1 failed) 10ms
+   × SDK-004 THM-004 registers validated themes without changing defaults 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/theme_registry.test.tsx > SDK-004 THM-004 registers validated themes without changing defaults
+TypeError: createThemeRegistry is not a function
+ ❯ tests/theme_registry.test.tsx:5:17
+      3| import {renderToStaticMarkup} from 'react-dom/server';
+      4| it('SDK-004 THM-004 registers validated themes without changing defaul…
+      5|  const registry=createThemeRegistry({forest:{...themes.ink,name:'Fores…
+       |                 ^
+      6|  const site=parseSite({...starterSite,theme:'forest'},registry);
+      7|  expect(renderToStaticMarkup(<Site site={site} themeRegistry={registry…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  17:04:04
+   Duration  599ms (import 62%, transform 31%, tests 4%, worker 3%)

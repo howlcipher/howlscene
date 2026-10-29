@@ -1,0 +1,23 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/assets.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/assets.test.ts [ tests/assets.test.ts ]
+Error: Cannot find module '../packages/core/src/assets' imported from /run/host/run/media/system/tallgeese/dev/howlscene/tests/assets.test.ts
+ ❯ tests/assets.test.ts:2:1
+      1| import {describe, expect, it} from 'vitest';
+      2| import {validateImageBytes, validateImageBounds} from '../packages/cor…
+       | ^
+      3|
+      4| const png = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  16:46:24
+   Duration  415ms (worker 96%, environment 4%)

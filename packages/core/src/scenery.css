@@ -1,0 +1,142 @@
+.scenery {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+  z-index: 0;
+  border-radius: inherit;
+}
+.scenery-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  fill: currentColor;
+  stroke: none;
+}
+.scenery-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, var(--scene-bg) 4%, transparent 75%),
+    linear-gradient(
+      180deg,
+      var(--scene-bg) 0%,
+      transparent 26%,
+      transparent 68%,
+      var(--scene-bg) 100%
+    );
+  opacity: 0.84;
+}
+.scenery-ink-sky {
+  color: #ad7063;
+  opacity: 0.19;
+}
+.scenery-ink-sky path {
+  fill: none;
+  stroke: var(--scene-bg);
+  stroke-width: 9;
+}
+.scenery-mountains {
+  color: #687b74;
+  opacity: 0.3;
+}
+.scenery-mountain-veins {
+  fill: none;
+  stroke: #334b43;
+  stroke-width: 3;
+  opacity: 0.38;
+}
+.scenery-mist {
+  color: var(--scene-bg);
+  opacity: 0.81;
+}
+.scenery-ink-ridges {
+  color: #62786b;
+  opacity: 0.27;
+}
+.scenery-ink-edge {
+  fill: #253e35;
+  opacity: 0.6;
+}
+.scenery-cyber-horizon {
+  color: #d144a4;
+  opacity: 0.18;
+}
+.scenery-cyber-horizon path {
+  fill: none;
+  stroke: var(--scene-bg);
+  stroke-width: 10;
+}
+.scenery-city-distant {
+  color: #3c3765;
+  opacity: 0.62;
+}
+.scenery-city-near {
+  color: #131a35;
+  opacity: 0.93;
+}
+.scenery-city-neon {
+  fill: none;
+  stroke: #68e0e9;
+  stroke-width: 3;
+  opacity: 0.65;
+}
+.scenery-city-windows {
+  fill: none;
+  stroke: #c877bf;
+  stroke-width: 4;
+  opacity: 0.7;
+}
+.scenery-cyber-grid {
+  fill: none;
+  stroke: #71c1d2;
+  stroke-width: 1.3;
+  opacity: 0.17;
+}
+.scenery-modern-paper {
+  color: #dce3ef;
+  opacity: 0.55;
+}
+.scenery-orbit {
+  fill: none;
+  stroke: #a8b9d5;
+  stroke-width: 1;
+  opacity: 0.48;
+}
+.scenery-modern-ribbon {
+  color: #c8d8e8;
+  opacity: 0.36;
+}
+.scenery-modern-ribbon path + path {
+  fill: none;
+  stroke: #91abc4;
+  stroke-width: 2;
+}
+@media (max-width: 600px) {
+  .scenery-veil {
+    background: linear-gradient(
+      180deg,
+      var(--scene-bg),
+      transparent 36%,
+      var(--scene-bg)
+    );
+    opacity: 0.86;
+  }
+  .scenery-layer {
+    opacity: 0.16;
+  }
+  .scenery-mist {
+    opacity: 0.8;
+  }
+  .scenery-city-near {
+    opacity: 0.65;
+  }
+}
+@media (forced-colors: active) {
+  .scenery {
+    display: none;
+  }
+}

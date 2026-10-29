@@ -1,0 +1,56 @@
+
+Running 2 tests using 1 worker
+
+  ✘  1 tests/e2e/destructive.spec.ts:2:1 › EDT-008 A11Y-006 item deletion confirms and restores useful keyboard focus (1.3s)
+  ✘  2 tests/e2e/motion.spec.ts:95:1 › MOT-004 MOT-006 scene exits crossfade scenery and theme changes retain readable content (5.3s)
+
+
+  1) tests/e2e/destructive.spec.ts:2:1 › EDT-008 A11Y-006 item deletion confirms and restores useful keyboard focus
+
+    Error: expect(received).toHaveLength(expected)
+
+    Expected length: 1
+    Received length: 0
+    Received array:  []
+
+      3 |  await page.goto('/editor/');await page.getByLabel('New section type').selectOption('projects');await page.getByRole('button',{name:'Add a section',exact:true}).click();await page.getByRole('button',{name:'Add item',exact:true}).click();await page.getByLabel('Item title',{exact:true}).fill('Important work');
+      4 |  const dialogs:string[]=[];const dismiss=async(dialog:Dialog)=>{dialogs.push(dialog.message());await dialog.dismiss();};page.on('dialog',dismiss);
+    > 5 |  const remove=page.getByRole('button',{name:'Remove item 1',exact:true});await remove.focus();await remove.press('Enter');expect(dialogs).toHaveLength(1);await expect(page.getByLabel('Item title',{exact:true})).toHaveValue('Important work');await expect(remove).toBeFocused();
+        |                                                                                                                                           ^
+      6 |  page.off('dialog',dismiss);page.once('dialog',dialog=>dialog.accept());await remove.press('Enter');await expect(page.getByLabel('Item title',{exact:true})).toHaveCount(0);await expect(page.getByRole('button',{name:'Add item',exact:true})).toBeFocused();
+      7 |  page.once('dialog',dialog=>dialog.accept());await page.getByRole('button',{name:'Delete section',exact:true}).focus();await page.keyboard.press('Enter');await expect(page.locator('.section-list [aria-pressed=true]')).toBeFocused();
+      8 | });
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/destructive.spec.ts:5:139
+
+    Error Context: test-results/destructive-EDT-008-A11Y-0-69a45-tores-useful-keyboard-focus/error-context.md
+
+  2) tests/e2e/motion.spec.ts:95:1 › MOT-004 MOT-006 scene exits crossfade scenery and theme changes retain readable content
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('.scene').first()
+    Expected pattern: /entering|active/
+    Received string:  ""
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('.scene').first() with timeout 5000ms
+      - waiting for locator('.scene').first()
+        14 × locator resolved to <section class="scene">…</section>
+           - unexpected value "null"
+
+
+       98 |  // Remount with scenery present; a viewport-crossing exit must own a finite transition.
+       99 |  await page.evaluate(async()=>{(window as unknown as {disposeMotion:()=>void}).disposeMotion();const path='/packages/core/src/enhance.ts';const {enhanceSite}=await import(path);(window as unknown as {disposeMotion:()=>void}).disposeMotion=enhanceSite(document.querySelector<HTMLElement>('.howlscene')!);});
+    > 100 |  const first=page.locator('.scene').first();await expect(first).toHaveAttribute('data-scene-state',/entering|active/);await page.evaluate(()=>window.scrollTo(0,window.innerHeight*0.65));await expect(first).toHaveAttribute('data-scene-state','exiting');await expect(first.locator('.scenery')).toHaveCSS('opacity',/0\.[7-9][0-9]*|1/);
+          |                                                                 ^
+      101 |  await page.evaluate(()=>window.scrollTo(0,window.innerHeight*1.2));await expect(first).toHaveAttribute('data-scene-state','offscreen');expect(await first.evaluate(el=>el.getAnimations({subtree:true}).length)).toBe(0);
+      102 |  await page.getByRole('button',{name:'Disable animation'}).click();await expect(page.getByRole('heading',{name:'Second scene'})).toBeVisible();
+      103 | });
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/motion.spec.ts:100:65
+
+    Error Context: test-results/motion-MOT-004-MOT-006-sce-352bc-ges-retain-readable-content/error-context.md
+
+  2 failed
+    tests/e2e/destructive.spec.ts:2:1 › EDT-008 A11Y-006 item deletion confirms and restores useful keyboard focus
+    tests/e2e/motion.spec.ts:95:1 › MOT-004 MOT-006 scene exits crossfade scenery and theme changes retain readable content

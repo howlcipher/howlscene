@@ -1,0 +1,31 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/motion.test.ts (0 test)
+ ❯ tests/rich_text.test.tsx (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/motion.test.ts [ tests/motion.test.ts ]
+Error: Cannot find module '../packages/core/src/motion' imported from /run/host/run/media/system/tallgeese/dev/howlscene/tests/motion.test.ts
+ ❯ tests/motion.test.ts:2:1
+      1| import {expect,it} from 'vitest';
+      2| import {resolveMotion} from '../packages/core/src/motion';
+       | ^
+      3| it('MOT-001 validates intensity, speed and all presets',()=>{
+      4|  for(const preset of ['none','calm','cinematic','dynamic'] as const){
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/rich_text.test.tsx [ tests/rich_text.test.tsx ]
+Error: Cannot find module '../packages/core/src/rich_text' imported from /run/host/run/media/system/tallgeese/dev/howlscene/tests/rich_text.test.tsx
+ ❯ tests/rich_text.test.tsx:3:1
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  no tests
+   Start at  16:45:26
+   Duration  447ms (worker 95%, environment 5%)

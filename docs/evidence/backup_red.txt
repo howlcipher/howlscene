@@ -1,0 +1,24 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/backup.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/backup.test.ts [ tests/backup.test.ts ]
+Error: Cannot find module '../packages/export/src/backup' imported from /run/host/run/media/system/tallgeese/dev/howlscene/tests/backup.test.ts
+ ❯ tests/backup.test.ts:3:1
+      1| import {it,expect} from 'vitest';
+      2| import {parseSite,starterSite} from '../packages/core/src/index';
+      3| import {serializeBackup,importBackup} from '../packages/export/src/bac…
+       | ^
+      4| it('EXP-010 AST-004 editable backups round trip supported content and …
+      5|  const site=parseSite({...starterSite,assets:[{id:'asset-test',mime:'i…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  16:47:57
+   Duration  568ms (worker 95%, environment 5%)

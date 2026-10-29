@@ -1,0 +1,34 @@
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/export.spec.ts:56:1 › editor prevents introduction overflow before export (5.3s)
+
+
+  1) tests/e2e/export.spec.ts:56:1 › editor prevents introduction overflow before export ───────────
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByLabel('Edit introduction')
+    Expected: "30000"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByLabel('Edit introduction') with timeout 5000ms
+      - waiting for getByLabel('Edit introduction')
+        14 × locator resolved to <textarea rows="6">Your ideas deserve a place of their own. Start wi…</textarea>
+           - unexpected value "null"
+
+
+      56 | test('editor prevents introduction overflow before export',async({page})=>{
+      57 |  await page.goto('/');
+    > 58 |  await expect(page.getByLabel('Edit introduction')).toHaveAttribute('maxlength','30000');
+         |                                                     ^
+      59 | });
+      60 |
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export.spec.ts:58:53
+
+    Error Context: test-results/export-editor-prevents-introduction-overflow-before-export/error-context.md
+
+  1 failed
+    tests/e2e/export.spec.ts:56:1 › editor prevents introduction overflow before export ────────────

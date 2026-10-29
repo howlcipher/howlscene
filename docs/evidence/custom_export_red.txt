@@ -1,0 +1,42 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/custom_export.test.tsx (2 tests | 2 failed) 17ms
+   × custom developer themes and trusted section renderers export through the same registries 13ms
+   × custom theme project backups round trip only when their registry is supplied 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/custom_export.test.tsx > custom developer themes and trusted section renderers export through the same registries
+Error: This project uses an unsupported theme. Register it before rendering.
+ ❯ parseSite packages/core/src/config.ts:149:11
+    147|   const parsed = siteSchema.parse(input);
+    148|   if (!Object.hasOwn(themeRegistry, parsed.theme))
+    149|     throw Error(
+       |           ^
+    150|       "This project uses an unsupported theme. Register it before rend…
+    151|     );
+ ❯ exportWebsite packages/export/src/index.tsx:21:16
+ ❯ tests/custom_export.test.tsx:10:40
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/custom_export.test.tsx > custom theme project backups round trip only when their registry is supplied
+Error: This project uses an unsupported theme. Register it before rendering.
+ ❯ parseSite packages/core/src/config.ts:149:11
+    147|   const parsed = siteSchema.parse(input);
+    148|   if (!Object.hasOwn(themeRegistry, parsed.theme))
+    149|     throw Error(
+       |           ^
+    150|       "This project uses an unsupported theme. Register it before rend…
+    151|     );
+ ❯ serializeBackup packages/export/src/backup.ts:15:11
+ ❯ tests/custom_export.test.tsx:17:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  20:40:07
+   Duration  1.00s (import 61%, transform 35%, tests 3%, worker 1%)

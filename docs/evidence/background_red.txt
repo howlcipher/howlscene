@@ -1,0 +1,33 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/core.test.tsx (10 tests | 1 failed) 272ms
+   × AST-005 background images keep descriptive text and safe asset references 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/core.test.tsx > AST-005 background images keep descriptive text and safe asset references
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "imageTreatment"
+    ],
+    "path": [
+      "sections",
+      0
+    ],
+    "message": "Unrecognized key: \"imageTreatment\""
+  }
+]
+ ❯ parseSite packages/core/src/index.tsx:26:26
+
+ ❯ tests/core.test.tsx:70:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 passed (10)
+   Start at  17:09:22
+   Duration  1.27s (import 44%, tests 33%, transform 22%, worker 1%)

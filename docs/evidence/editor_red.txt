@@ -1,0 +1,50 @@
+
+Running 2 tests using 1 worker
+
+  ✘  1 tests/e2e/editor.spec.ts:3:1 › EDT-001 EDT-003 EDT-004 EDT-006 guided editing survives history themes and reload (30.1s)
+  ✘  2 tests/e2e/editor.spec.ts:22:1 › TXT-001 EDT-002 formatting edits update preview without HTML (30.1s)
+
+
+  1) tests/e2e/editor.spec.ts:3:1 › EDT-001 EDT-003 EDT-004 EDT-006 guided editing survives history themes and reload
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('New section type')
+
+
+       6 |  await page.getByLabel('Edit heading').fill('Alex builds useful things');
+       7 |  await page.getByLabel('Visual theme').selectOption('ink');
+    >  8 |  await page.getByLabel('New section type').selectOption('projects');
+         |                                            ^
+       9 |  await page.getByRole('button',{name:'Add a section',exact:true}).click();
+      10 |  await page.getByLabel('Edit heading').fill('Selected work');
+      11 |  await page.getByRole('button',{name:'Move section up',exact:true}).click();
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/editor.spec.ts:8:44
+
+    Error Context: test-results/editor-EDT-001-EDT-003-EDT-f5c76-s-history-themes-and-reload/error-context.md
+
+  2) tests/e2e/editor.spec.ts:22:1 › TXT-001 EDT-002 formatting edits update preview without HTML ──
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('textbox', { name: 'Rich text introduction' })
+
+
+      23 |  await page.goto('/');
+      24 |  const textbox=page.getByRole('textbox',{name:'Rich text introduction'});
+    > 25 |  await textbox.fill('A thoughtfully made introduction');
+         |                ^
+      26 |  await textbox.press('ControlOrMeta+a');
+      27 |  await page.getByRole('button',{name:'Bold',exact:true}).click();
+      28 |  await expect(page.getByRole('region',{name:'Live website preview'}).locator('strong')).toContainText('A thoughtfully made introduction');
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/editor.spec.ts:25:16
+
+    Error Context: test-results/editor-TXT-001-EDT-002-for-64db7-update-preview-without-HTML/error-context.md
+
+  2 failed
+    tests/e2e/editor.spec.ts:3:1 › EDT-001 EDT-003 EDT-004 EDT-006 guided editing survives history themes and reload
+    tests/e2e/editor.spec.ts:22:1 › TXT-001 EDT-002 formatting edits update preview without HTML ───

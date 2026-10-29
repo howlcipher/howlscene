@@ -1,0 +1,61 @@
+{
+  "name": "howlscene",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "npm run build:runtime && tsc --noEmit && vite build && vite build --config vite.prerender.config.ts && node scripts/prerender.mjs",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "check": "npm run format:check && npm run lint && npm run build && npm test -- --coverage && npm run test:e2e && npm run sdk:check && npm run licenses",
+    "build:runtime": "vite build --config vite.runtime.config.ts",
+    "predev": "npm run build:runtime",
+    "pretest": "npm run build:runtime",
+    "build:sdk": "vite build --config vite.sdk.config.ts && tsc -p tsconfig.sdk.json",
+    "sdk:check": "npm run build:sdk && npm run build:export && node scripts/sdk_check.mjs",
+    "licenses": "node scripts/license_audit.mjs",
+    "build:export": "npm run build:runtime && vite build --config vite.export.config.ts && tsc -p tsconfig.export.json"
+  },
+  "dependencies": {
+    "@lexical/link": "0.53.0",
+    "@lexical/list": "0.53.0",
+    "@lexical/react": "0.53.0",
+    "@lexical/rich-text": "0.53.0",
+    "@lexical/selection": "0.53.0",
+    "@lexical/utils": "0.53.0",
+    "jszip": "3.10.2",
+    "lexical": "0.53.0",
+    "motion": "14.7.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "@types/node": "26.6.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitest/coverage-v8": "5.0.5",
+    "eslint": "10.13.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "fake-indexeddb": "6.2.6",
+    "fast-check": "4.10.2",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.1",
+    "vite": "8.3.5",
+    "vitest": "5.0.5"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

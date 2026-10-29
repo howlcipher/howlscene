@@ -1,0 +1,30 @@
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 npx
+npm notice run 'vitest' run tests/editor_model.test.ts tests/storage.test.ts
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/storage.test.ts (0 test)
+ ❯ tests/editor_model.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/editor_model.test.ts [ tests/editor_model.test.ts ]
+Error: Cannot find module '../apps/editor/model' imported from /run/host/run/media/system/tallgeese/dev/howlscene/tests/editor_model.test.ts
+ ❯ tests/editor_model.test.ts:3:1
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/storage.test.ts [ tests/storage.test.ts ]
+Error: Cannot find module '../apps/editor/storage' imported from /run/host/run/media/system/tallgeese/dev/howlscene/tests/storage.test.ts
+ ❯ tests/storage.test.ts:2:1
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  no tests
+   Start at  16:45:19
+   Duration  564ms (worker 96%, environment 4%)

@@ -1,0 +1,24 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/lexical.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/lexical.test.ts [ tests/lexical.test.ts ]
+Error: Cannot find module '../apps/editor/document' imported from /run/host/run/media/system/tallgeese/dev/howlscene/tests/lexical.test.ts
+ ❯ tests/lexical.test.ts:6:1
+      4| import {ListNode,ListItemNode} from '@lexical/list';
+      5| import {LinkNode} from '@lexical/link';
+      6| import {readDocument,writeDocument} from '../apps/editor/document';
+       | ^
+      7| import {richTextSchema} from '../packages/core/src/rich_text';
+      8| it('TXT-001 converts every portable rich text node through Lexical wit…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  16:46:31
+   Duration  541ms (worker 95%, environment 5%)

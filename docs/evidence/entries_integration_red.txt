@@ -1,0 +1,33 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/core.test.tsx (9 tests | 1 failed) 149ms
+   × THM-002 projects render entries identically in every bundled theme 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/core.test.tsx > THM-002 projects render entries identically in every bundled theme
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "entries"
+    ],
+    "path": [
+      "sections",
+      0
+    ],
+    "message": "Unrecognized key: \"entries\""
+  }
+]
+ ❯ parseSite packages/core/src/index.tsx:18:20
+
+ ❯ tests/core.test.tsx:64:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  17:03:26
+   Duration  809ms (import 51%, tests 30%, transform 18%, worker 1%)

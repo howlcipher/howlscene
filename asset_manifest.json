@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "id": "bundled-scenery",
+      "source": "packages/core/src/scenery.tsx and scenery.css",
+      "creator": "HowlScene contributors",
+      "license": "MIT",
+      "attributionRequirements": "Retain MIT copyright and license notice when redistributing the code.",
+      "exportEligible": true,
+      "description": "Original inline SVG and CSS mountain, mist, city, grid and abstract scenery. No external artwork or AI-generated assets."
+    }
+  ],
+  "notes": "Bundled scenery is original MIT code. System fonts are referenced; no font files or external image assets are bundled. No AI-generated artwork is bundled. Users remain responsible for permission to publish uploaded images."
+}

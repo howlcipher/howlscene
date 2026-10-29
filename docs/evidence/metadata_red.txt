@@ -1,0 +1,36 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/export_assets.test.tsx (5 tests | 1 failed) 152ms
+   × EXP-009 metadata includes canonical index policy and bundled favicon 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/export_assets.test.tsx > EXP-009 metadata includes canonical index policy and bundled favicon
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "canonical",
+      "indexable"
+    ],
+    "path": [],
+    "message": "Unrecognized keys: \"canonical\", \"indexable\""
+  }
+]
+ ❯ parseSite packages/core/src/index.tsx:152:29
+    150|       "Unsupported project version. Open it in a compatible version of…
+    151|     );
+    152|   const parsed = siteSchema.parse(input);
+       |                             ^
+    153|   if (!Object.hasOwn(themeRegistry, parsed.theme))
+    154|     throw Error(
+ ❯ tests/export_assets.test.tsx:91:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  17:13:13
+   Duration  977ms (import 58%, tests 23%, transform 17%, worker 1%)

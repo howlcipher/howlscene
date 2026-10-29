@@ -1,0 +1,41 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/core.test.tsx (11 tests | 1 failed) 235ms
+   × CFG-002 guided presentation settings validate and reach both shared renderers 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/core.test.tsx > CFG-002 guided presentation settings validate and reach both shared renderers
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "spacing",
+      "alignment",
+      "contentWidth",
+      "imagePosition"
+    ],
+    "path": [
+      "sections",
+      0
+    ],
+    "message": "Unrecognized keys: \"spacing\", \"alignment\", \"contentWidth\", \"imagePosition\""
+  }
+]
+ ❯ parseSite packages/core/src/index.tsx:159:29
+    157|       "Unsupported project version. Open it in a compatible version of…
+    158|     );
+    159|   const parsed = siteSchema.parse(input);
+       |                             ^
+    160|   if (!Object.hasOwn(themeRegistry, parsed.theme))
+    161|     throw Error(
+ ❯ tests/core.test.tsx:151:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  17:26:39
+   Duration  1.21s (import 50%, tests 28%, transform 21%, worker 1%)
