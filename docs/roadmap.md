@@ -19,8 +19,10 @@ features; unfinished acceptance requirements are tracked in
    Hosted run `40963619832` passed all three engines; human cross-platform visual
    and transition review remains open, and fixtures should grow if review finds
    gaps.
-4. Review the complete editor with nontechnical users and assistive technology;
-   correct findings before making accessibility or release-readiness claims.
+4. Review the complete editor and exported themes with nontechnical users and
+   assistive technology; automated exported-site scans now cover all themes at
+   phone and desktop widths, but correct human-review findings before making
+   accessibility or release-readiness claims.
 5. Measure representative production loading and motion on mobile/older hardware.
    `PERF-LAB-001` measures an actual exported ZIP under an emulated mobile
    profile; physical-device and older-computer review remain open.

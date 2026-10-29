@@ -7,8 +7,10 @@ establish public v1 readiness.
   Both are corrected with regressions; the final local gate passes. Wider review
   remains required before a v1 release.
 - Browser automation covers the complete create/edit/restore/backup/export/static
-  serving journey, keyboard editing, reduced motion, save failures and competing
-  tabs. It does not replace a human nontechnical usability or screen-reader review.
+  serving journey, keyboard editing, reduced motion, save failures, competing
+  tabs, and serious/critical automated accessibility checks on actual exported
+  theme ZIPs at phone and desktop widths. It does not replace nontechnical
+  usability, screen-reader, browser-zoom or text-over-artwork review.
 - Nine deterministic preview screenshots and nine image-rich/long-form exported
   screenshots pass comparisons across the three themes and 375/768/1440 px
   viewports. Representative exported captures have been visually inspected for
