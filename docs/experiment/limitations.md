@@ -89,3 +89,9 @@ Unfinished required v1 work is not reclassified as excluded scope.
 - The editor's flat background/text/accent color overrides are validated and
   contrast-resolved, but the contrast check cannot inspect text over scenery,
   imagery, gradients, or developer artwork. No WCAG conformance claim follows.
+
+- The focused static-export compatibility journey passes in Chromium, Firefox
+  and WebKit in the pinned Playwright container. Direct WebKit launch on the
+  Bazzite host lacks GTK/WebKit libraries, so local validation uses the
+  container. Hosted CI has not yet verified the updated workflow. Cross-engine
+  visual and human platform review remain open.

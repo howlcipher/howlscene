@@ -413,3 +413,19 @@ and [security audit](docs/evidence/export_layout_static_audit.txt). This is a
 test-only addition; the prior layout behavior was already implemented. Hosted
 verification is pending. The local npm bootstrap warns that its host runtime is
 Node 22.22.1; the command explicitly runs the project under Node 24.22.2.
+
+## Current milestone: target-engine static export compatibility
+
+Added `EXP-PLATFORM-001` and a focused Playwright project for Chromium, Firefox
+and WebKit rather than tripling the editor and screenshot suites. Each engine
+creates an image section in the editor, then loads the actual ZIP at a nested
+path with JavaScript disabled across all three themes, desktop/phone widths,
+long text, image/alt text, anchors and overflow. All three projects pass in the
+version-matched Playwright container. Direct WebKit on Bazzite lacks GTK/WebKit
+libraries, so the container provides the local Linux runtime. CI invokes
+Playwright's dependency installer for all engines; hosted verification remains
+pending. The integrated gate passes 150 unit and 48 browser tests, plus SDK,
+export, license and zero-vulnerability checks. Architecture trade-offs are in
+[`adr_010_target_browser_export_checks.md`](docs/architecture/adr_010_target_browser_export_checks.md).
+Evidence is in [`cross_browser_final_gate.txt`](docs/evidence/cross_browser_final_gate.txt)
+and [`cross_browser_audit.txt`](docs/evidence/cross_browser_audit.txt).

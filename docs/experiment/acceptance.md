@@ -21,6 +21,7 @@ It does not assert that every scenario within a group is complete. See the
 | EDT-012           | Registry-derived layout options, `SectionPanel` and `tests/e2e/layout_controls.spec.ts`                                                                           | About-section layout choices stay compatible; a real image moves beside text in the wide preview, stacks in the phone preview, survives reload and appears in the published HTML                                                                                                                            |
 | THM-PRES-005      | `tests/e2e/presentation.spec.ts` and `tests/fixtures/presentation.tsx`                                                                                            | Maximum bounded line-height, card gap/radius and navigation gap reflow with long text at 200% root text sizing and 320 CSS px for Modern, Ink Wash and Cyberpunk; no document, navigation, card or text overflow                                                                                            |
 | VIS-001           | `tests/e2e/export_image_rich_visual.spec.ts` and nine reviewed Playwright baselines                                                                               | Actual ZIP with generated uploaded artwork and long copy, JavaScript disabled, three themes at 375/768/1440 px; all four images load and retain alt text, pinned font weights load, and computed theme font is asserted. Font mismatch correction passed hosted run 40956127243; PR #13 merged as `6efd87b` |
+| EXP-PLATFORM-001  | `tests/e2e/cross_browser_export.spec.ts`, browser-specific Playwright projects                                                                                    | Actual editor-generated ZIP at a nested path with JavaScript disabled; all themes, long text, image decoding/alt text, responsive split layout, anchor navigation and overflow are checked in Chromium, Firefox and WebKit                                                                                  |
 
 ## Final journey
 
@@ -172,3 +173,15 @@ browser tests, with 94.85% statement and 89.54% branch coverage; independent SDK
 consumption, license review, and a separate zero-vulnerability audit pass. See
 [`export_layout_static_final_gate.txt`](../evidence/export_layout_static_final_gate.txt)
 and [`export_layout_static_audit.txt`](../evidence/export_layout_static_audit.txt).
+
+EXP-PLATFORM-001 extends static-export verification to Chromium, Firefox and
+WebKit without tripling the editor or screenshot suite. Each engine loads an
+actual editor-generated ZIP under `/howlscene/platform-review/` with JavaScript
+disabled, across Modern, Ink Wash and Cyberpunk at 1280 and 375 CSS pixels. The
+scenario checks long content, image bytes and alternative text, responsive
+split layout, working section anchors, and horizontal overflow. All three
+browser projects pass in the pinned Playwright container. Direct WebKit launch
+on this Bazzite host is unavailable without GTK/WebKit system libraries; hosted
+CI is pending. See
+[ADR 010](../architecture/adr_010_target_browser_export_checks.md) and the
+[integrated gate](../evidence/cross_browser_final_gate.txt).

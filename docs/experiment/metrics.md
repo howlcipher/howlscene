@@ -346,3 +346,25 @@ acceptance coverage. See
 [`export_layout_static_final_gate.txt`](../evidence/export_layout_static_final_gate.txt)
 and [`export_layout_static_audit.txt`](../evidence/export_layout_static_audit.txt)
 for reproducible commands and output.
+
+The complete verification command was run in
+`mcr.microsoft.com/playwright:v1.64.1-noble` (Node 24.22.1), which provides the
+version-matched Chromium, Firefox and WebKit binaries and Linux dependencies.
+All 150 unit and 48 browser tests passed, including one static-export journey in
+each engine. The separate `npm audit --audit-level=moderate` reports zero
+vulnerabilities. Output is retained in
+[`cross_browser_final_gate.txt`](../evidence/cross_browser_final_gate.txt) and
+[`cross_browser_audit.txt`](../evidence/cross_browser_audit.txt). No new
+performance numbers were gathered. Direct WebKit launch on Bazzite remains
+unavailable without the system libraries; hosted CI is pending.
+
+The exact local container commands are:
+
+```sh
+podman run --rm --network host --security-opt label=disable \
+  -v "$PWD:/work" -w /work mcr.microsoft.com/playwright:v1.64.1-noble \
+  sh -lc 'node --version && npm run check'
+podman run --rm --network host --security-opt label=disable \
+  -v "$PWD:/work" -w /work mcr.microsoft.com/playwright:v1.64.1-noble \
+  sh -lc 'node --version && npm audit --audit-level=moderate'
+```
