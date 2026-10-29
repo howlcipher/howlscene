@@ -116,8 +116,22 @@ strict typing, production/prerender builds, 150 unit tests, 49 browser tests,
 independent SDK/export consumption, and the 267-package license/provenance audit.
 Coverage is 94.85% statements and 89.54% branches. The separate dependency scan
 reports zero vulnerabilities. Command output is preserved in the [full gate](../evidence/production_mobile_final_gate.txt)
-and [audit log](../evidence/production_mobile_audit.txt). Hosted verification of
-this increment is still required.
+and [audit log](../evidence/production_mobile_audit.txt). Hosted run
+[`40966448827`](https://github.com/howlcipher/howlscene/actions/runs/40966448827)
+passed for this increment.
+
+## Exported-theme accessibility increment
+
+`A11Y-008` adds a real ZIP export scenario with an uploaded image and all three
+themes, served beneath a nested path. Axe checks WCAG 2.2 AA tagged rules at 375
+and 1440 CSS px with reduced motion; the phone run also uses the skip link by
+keyboard. The Node 24.22.1 local gate passes 150 unit and 50 browser tests,
+94.85% statement / 89.54% branch coverage, package consumption and license
+review. The separate `npm audit --audit-level=moderate` reports zero
+vulnerabilities. See the [full gate](../evidence/export_a11y_final_gate.txt)
+and [audit](../evidence/export_a11y_audit.txt). Human screen-reader, browser
+zoom, artwork contrast and usability review remain open; the hosted run is
+pending.
 
 ## Node 24 compatibility correction
 

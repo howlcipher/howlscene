@@ -444,9 +444,24 @@ animation-frame intervals, 3,750 transferred bytes for the selected image
 resource, and a 68,879-byte runtime (21,330 gzip). Motion can be disabled while
 the heading remains visible, and anchor navigation works. This single emulated-
 browser observation is not physical-device performance, field Core Web Vitals,
-or a 60 FPS guarantee. Hosted CI for this addition remains pending. See
+or a 60 FPS guarantee. Hosted run
+[`40966448827`](https://github.com/howlcipher/howlscene/actions/runs/40966448827)
+passed. See
 [`ADR 011`](docs/architecture/adr_011_production_mobile_export_probe.md),
 [`raw observation`](docs/evidence/production_mobile_performance.json),
 [`full gate`](docs/evidence/production_mobile_final_gate.txt),
 [`dependency audit`](docs/evidence/production_mobile_audit.txt), and the
 [measurement method and limitations](docs/experiment/metrics.md).
+
+## Current milestone: accessibility coverage of exported themes
+
+`A11Y-008` builds the Modern, Ink Wash and Cyberpunk exports through the editor,
+then serves each image-bearing ZIP under a nested mount. All six phone/desktop
+axe scans report no serious or critical findings; reduced motion, skip-link
+keyboard access and horizontal reflow are also checked. The full local gate
+passes 150 unit and 50 browser tests, 94.85% statement / 89.54% branch coverage,
+independent SDK/export checks, license review and a zero-vulnerability audit.
+Evidence is in [`export_a11y_final_gate.txt`](docs/evidence/export_a11y_final_gate.txt)
+and [`export_a11y_audit.txt`](docs/evidence/export_a11y_audit.txt). Hosted CI for
+this increment, screen-reader/browser-zoom testing, human artwork-contrast
+inspection and usability review remain open; no WCAG conformance claim follows.

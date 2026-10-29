@@ -15,7 +15,7 @@ It does not assert that every scenario within a group is complete. See the
 | AST-001–006       | Header/decode validation, normalization/srcset, manifest; assets and collision regression tests                                                                   | Upload, restore/backup, image export, path isolation; final ZIP journey uses real images                                                                                                                                                                                                                    |
 | EXP-001–011       | Shared renderer and standalone ZIP, backups, metadata and runtime                                                                                                 | Extracted files served root/nested with JS on/off; malformed input rejected; independent exporter package exercised                                                                                                                                                                                         |
 | SDK-001–005       | Public registries/render/validation/export packages; `scripts/sdk_check.mjs`                                                                                      | Actual tarballs installed in independent typed consumer, including custom-section registration, backup, browser render and nested export; no editor imports                                                                                                                                                 |
-| A11Y-001–007      | Semantics, focus recovery, motion control, keyboard and axe browser tests                                                                                         | Automated 200% root text-size and 320 CSS-pixel reflow passes with maximum valid presentation tokens in all three themes; human browser-zoom, assistive-technology and usability review remain open; no WCAG conformance claim                                                                              |
+| A11Y-001–008      | Semantics, focus recovery, motion control, keyboard and axe browser tests, including actual exported ZIPs                                                         | Automated 200% root text-size and 320 CSS-pixel reflow pass with maximum valid presentation tokens in all themes; exported theme ZIPs have serious/critical axe scans, reduced-motion behavior, skip-link keyboard access and mobile/desktop overflow checks; human review remains open; no WCAG claim      |
 | SEC-001–006       | Strict runtime schema, safe URLs, bounded media/imports, controlled paths, inert text                                                                             | Positive/negative regression tests and vulnerability/provenance audit; not a complete adversarial audit                                                                                                                                                                                                     |
 | EDT-011           | Theme presentation overrides, `AppearancePanel`, shared resolver and export; `tests/theme_presentation.test.tsx`, `tests/e2e/theme_presentation_controls.spec.ts` | Card appearance, navigation treatment and phone link layout are selectable, validated, retained across theme changes/reload and exported with the same values                                                                                                                                               |
 | EDT-012           | Registry-derived layout options, `SectionPanel` and `tests/e2e/layout_controls.spec.ts`                                                                           | About-section layout choices stay compatible; a real image moves beside text in the wide preview, stacks in the phone preview, survives reload and appears in the published HTML                                                                                                                            |
@@ -182,13 +182,27 @@ disabled, across Modern, Ink Wash and Cyberpunk at 1280 and 375 CSS pixels. The
 scenario checks long content, image bytes and alternative text, responsive
 split layout, working section anchors, and horizontal overflow. All three
 browser projects pass in the pinned Playwright container. Direct WebKit launch
-on this Bazzite host is unavailable without GTK/WebKit system libraries; hosted
-CI is pending. See
+on this Bazzite host is unavailable without GTK/WebKit system libraries. See
 [ADR 010](../architecture/adr_010_target_browser_export_checks.md) and the
 [integrated gate](../evidence/cross_browser_final_gate.txt).
 
 The updated cross-engine check passed the hosted quality gate in run
 [`40963619832`](https://github.com/howlcipher/howlscene/actions/runs/40963619832).
-`PERF-LAB-001` is local lab evidence until the new probe passes hosted CI; the
-first result is preserved in
+`PERF-LAB-001` also passed hosted CI in run
+[`40966448827`](https://github.com/howlcipher/howlscene/actions/runs/40966448827);
+its local sample is preserved in
 [`production_mobile_performance.json`](../evidence/production_mobile_performance.json).
+
+`A11Y-008` is locally verified by the accessibility gate with 150 unit and 50
+browser tests. Hosted verification is pending. The full command output and
+separate dependency scan are in
+[`export_a11y_final_gate.txt`](../evidence/export_a11y_final_gate.txt) and
+[`export_a11y_audit.txt`](../evidence/export_a11y_audit.txt).
+
+`A11Y-008` creates the same image-bearing portfolio through the editor, exports
+all three themes, and serves each ZIP at a nested path. At 375 and 1440 CSS
+pixels, reduced motion remains active, essential content and image alternatives
+are available, and no horizontal overflow or serious/critical axe violations
+are present. Keyboard-only navigation to the skip link and main content is
+checked on the phone layout. This automated evidence does not substitute for
+screen-reader, zoom, color-over-artwork, or nontechnical-user review.
