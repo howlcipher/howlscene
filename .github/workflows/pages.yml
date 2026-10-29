@@ -1,0 +1,115 @@
+name: Prepare GitHub Pages
+
+on:
+  pull_request:
+    paths:
+      - "apps/**"
+      - "packages/**"
+      - "public/**"
+      - "scripts/**"
+      - "tests/e2e/production.spec.ts"
+      - "vite.config.ts"
+      - "vite.prerender.config.ts"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish the verified main-branch artifact (requires repository safeguards)
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and verify deployable site
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Build production site
+        run: npm run build
+      - name: Install Chromium dependencies
+        run: npx playwright install --with-deps chromium
+      - name: Verify root and project Pages paths
+        run: npx playwright test tests/e2e/production.spec.ts
+      - name: Package Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: dist
+
+  approval_one:
+    name: First independent release approval
+    needs: build
+    if: >-
+      ${{
+        github.event_name == 'workflow_dispatch' &&
+        inputs.publish == true &&
+        vars.HOWLSCENE_PAGES_ENABLED == 'true' &&
+        github.ref == 'refs/heads/main'
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages-approval-one
+    steps:
+      - name: Record first approval gate
+        run: echo "First independent release approval completed."
+
+  approval_two:
+    name: Second independent release approval
+    needs: approval_one
+    if: >-
+      ${{
+        github.event_name == 'workflow_dispatch' &&
+        inputs.publish == true &&
+        vars.HOWLSCENE_PAGES_ENABLED == 'true' &&
+        github.ref == 'refs/heads/main'
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages-approval-two
+    steps:
+      - name: Record second approval gate
+        run: echo "Second independent release approval completed."
+
+  deploy:
+    name: Publish approved Pages artifact
+    needs: [build, approval_one, approval_two]
+    if: >-
+      ${{
+        github.event_name == 'workflow_dispatch' &&
+        inputs.publish == true &&
+        vars.HOWLSCENE_PAGES_ENABLED == 'true' &&
+        github.ref == 'refs/heads/main'
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy verified artifact
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.0

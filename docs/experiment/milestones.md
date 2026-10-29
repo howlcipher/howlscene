@@ -17,6 +17,18 @@ No hosted deployment or public v1 release is established. Later hosted gates
 include cross-engine export run `40963619832`; subsequent edits still require
 fresh verification. Comparison with the independent track remains pending.
 
+GitHub Pages preparation is implemented on `build/github-pages-preparation`.
+The local full gate passes with 150 unit tests, 50 browser tests, 89.54% overall
+branch coverage, independent package consumers, license review and zero
+dependency vulnerabilities; see
+[`pages_preparation_local_gate.txt`](../evidence/pages_preparation_local_gate.txt).
+The workflow builds and tests a Pages artifact, while public deployment is
+disabled unless the manual input, main ref, owner-managed repository variable,
+and both distinct protected reviewer approvals all match. Hosted verification and
+repository-side safeguards are not yet complete. See
+[ADR 012](../architecture/adr_012_github_pages_release_gate.md) and the
+[administrator guide](../developers/github_pages_deployment.md).
+
 Creator background/text/accent colors now pass the integrated local gate:
 145 unit tests, 39 browser tests, 89.54% overall branch coverage, production
 build/prerender, independent package consumers, and dependency/license audits.

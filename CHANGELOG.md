@@ -17,6 +17,8 @@
 - Deterministic image-rich static-export visual checks across all three themes and representative viewports.
 - Browser coverage for maximum theme presentation tokens under 200% root text sizing at 320 CSS pixels.
 - End-to-end verification for compatible section layouts across editor preview, local draft reload, phone reflow, and static export.
+- A fail-closed GitHub Pages artifact workflow with project-path production checks and a manual, independently approved deployment gate; Pages remains unconfigured.
+- Administrator instructions and ADR for the Pages approval gate and the required repository safeguards.
 
 ### Fixed
 
@@ -24,6 +26,6 @@
 
 ### Limitations
 
-- This is not a v1 release. Human usability, assistive-technology review, broader visual acceptance, hosted CI and deployment remain unfinished.
+- This is not a v1 release. Human usability, assistive-technology review, broader visual acceptance and public deployment remain unfinished; the Pages workflow is prepared but not activated.
 - Independent core/export package consumption and configured coverage gates have passed locally; final results are recorded in milestone evidence.
 - Test counts and final acceptance status belong in current milestone evidence rather than this change history.

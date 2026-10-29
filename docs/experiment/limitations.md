@@ -33,6 +33,12 @@ establish public v1 readiness.
   is not configured and no live deployment is claimed.
 - The experiment reference video is unavailable, so reference fidelity cannot be
   scored. No comparison with the independent implementation is claimed.
+- GitHub Pages is not configured, there are no Actions environments, and `main`
+  has no branch protection rule. A
+  fail-closed artifact workflow and administrator setup guide are prepared, but
+  the workflow has not yet passed hosted verification and no public URL exists.
+  Deployment requires two independently approved protected environments; do
+  not enable its repository variable until both controls are verified.
 - Theme manifests declare validated layers referencing trusted, immutable
   artwork registries. Preview and export share that contract. External image-layer
   collection and broader component styling remain required. A bounded navigation
