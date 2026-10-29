@@ -137,6 +137,16 @@ passed in run `40974740672`, and the Pages artifact/path check passed in run
 [ADR 014](../architecture/adr_014_readable_surfaces_for_background_images.md)
 and current evidence in `PROGRESS.md`.
 
+The current editor onboarding increment adds `EDT-ONBOARD-001`. Its five-step
+guide supports back/next navigation, skip, finish, reopen, and keyboard
+activation. The browser regression passes against a new draft and checks that
+the save, backup and published ZIP explanations stay distinct. The local run
+passed 151 unit tests and 52 of 53 browser scenarios; WebKit could not launch on
+this host because system libraries are missing. SDK, license and dependency
+audits also pass locally. Hosted verification remains pending. See the current
+run journal, `docs/evidence/editor_onboarding_red.txt`, and the focused run
+transcript at `docs/evidence/editor_onboarding_focused.txt`.
+
 Theme motion increment: added bounded per-theme intensity/speed scalars and a
 parallax preference while retaining user-level motion-off and reduced-motion
 behavior. Five tests were observed failing before implementation. The local gate passes

@@ -1,0 +1,37 @@
+[WebServer] (node:611917) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:611950) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/onboarding.spec.ts:3:1 › EDT-ONBOARD-001 the optional beginner guide can be skipped, reopened and completed (5.6s)
+
+
+  1) tests/e2e/onboarding.spec.ts:3:1 › EDT-ONBOARD-001 the optional beginner guide can be skipped, reopened and completed
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'Getting started guide' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'Getting started guide' }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Getting started guide' })
+
+
+       6 |   await page.goto("/editor/");
+       7 |   const guide = page.getByRole("region", { name: "Getting started guide" });
+    >  8 |   await expect(guide).toBeVisible();
+         |                       ^
+       9 |   await expect(guide).toContainText("Step 1 of 5");
+      10 |   await expect(
+      11 |     page.getByRole("button", { name: "Previous step" }),
+        at ./tests/e2e/onboarding.spec.ts:8:23
+
+    Error Context: test-results/onboarding-EDT-ONBOARD-001-a4c9d-pped-reopened-and-completed/error-context.md
+
+  1 failed
+    tests/e2e/onboarding.spec.ts:3:1 › EDT-ONBOARD-001 the optional beginner guide can be skipped, reopened and completed

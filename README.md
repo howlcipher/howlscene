@@ -48,7 +48,7 @@ This runs the checks currently defined in the package scripts. Full release veri
 
 Change the title, heading, and introduction. Select a theme, then choose **Download my website**. Extract the ZIP and upload all extracted files to a static host. See [getting started](docs/users/getting_started.md) and [publishing](docs/users/publishing.md).
 
-The editor attempts to save drafts in this browser and reports save status. Storage can fail or be cleared. Use **Save project backup** to keep an editable copy. **Download my website** creates a separate published artifact.
+The editor offers a five-step beginner guide that can be skipped or reopened from **Getting started**. Drafts are saved in this browser and the editor reports save status. Storage can fail or be cleared. Use **Save project backup** to keep an editable copy. **Download my website** creates a separate published artifact.
 
 ## Architecture
 

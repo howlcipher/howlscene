@@ -8,30 +8,25 @@ Phase 0 proved the shared editor-to-static-export approach. Core/schema, rich te
 
 ## Latest executed milestone
 
-The latest merged increment is PR #22, which adds validated theme-owned section
-heading treatments. Hosted `verify` passed in run
-[`40972904183`](https://github.com/howlcipher/howlscene/actions/runs/40972904183),
+The latest merged increment is PR #23, which adds opaque theme-colored copy
+surfaces for sections with uploaded background images. Hosted `verify` passed
+in run [`40975173306`](https://github.com/howlcipher/howlscene/actions/runs/40975173306),
 and the Pages artifact/path check passed in run
-[`40972904198`](https://github.com/howlcipher/howlscene/actions/runs/40972904198).
-The current branch, `work/theme-scene-legibility`, adds an opaque theme-colored
-copy surface only when a section uses an uploaded background image.
+[`40975173287`](https://github.com/howlcipher/howlscene/actions/runs/40975173287).
+The current branch, `work/editor-onboarding-guide`, extends the existing first-use
+help panel into a skippable, reopenable five-step workflow.
 
-On the current Node 22.22.1 host, formatting, lint, strict TypeScript, build and
-prerender, all **151 unit tests**, SDK tarball consumers, 267-package
-license/provenance review, and `npm audit` pass. Coverage is 94.87% statements
-and 89.68% branches. The browser suite ran 52 scenarios: 51 passed, including
-Chromium and Firefox export checks; local WebKit launch is blocked by missing
-host GTK/media libraries. Docker is installed but this account cannot access its
-socket, so the pinned Playwright container could not be run locally. The focused
-background-readability test and the changed visual exports passed, and nine
-image-rich export baselines were reviewed. Hosted `verify` passed in run
-[`40974740672`](https://github.com/howlcipher/howlscene/actions/runs/40974740672),
-and the Pages artifact/path check passed in run
-[`40974740693`](https://github.com/howlcipher/howlscene/actions/runs/40974740693).
-The hosted browser matrix includes the WebKit scenario unavailable on this host.
-Logs are in
-[`background_readability_host_local_attempt.txt`](docs/evidence/background_readability_host_local_attempt.txt)
-and [`background_readability_local_extras.txt`](docs/evidence/background_readability_local_extras.txt).
+On Node 22.22.1/npm 12.0.2, formatting, lint, strict TypeScript, production
+build/prerender, and all **151 unit tests** pass. Coverage is 94.87% statements
+and 89.68% branches. The browser suite ran 53 scenarios: 52 passed, including
+the onboarding flow and Chromium/Firefox exports; local WebKit launch is blocked
+by missing host GTK/media libraries. Docker is installed but this account cannot
+access its socket, so the pinned Playwright container could not run locally.
+Separate SDK tarball checks, the 267-package license audit, and the zero-
+vulnerability audit pass. Hosted verification for this change is pending. Logs
+are in
+[`editor_onboarding_host_local_attempt.txt`](docs/evidence/editor_onboarding_host_local_attempt.txt)
+and [`editor_onboarding_local_extras.txt`](docs/evidence/editor_onboarding_local_extras.txt).
 Human zoom, assistive-technology, text-over-scenery, and nontechnical usability
 review remain open. No comparison result or v1 readiness is claimed.
 
@@ -121,7 +116,7 @@ Six preview and six exported-site baselines changed for Ink Wash and Cyberpunk;
 the revised screenshots were inspected. PR #22 merged as `e4239ed`; hosted
 verification passed in runs `40972904183` and `40972904198`.
 
-## Current increment: readable surfaces over uploaded backgrounds
+## Last merged increment: readable surfaces over uploaded backgrounds
 
 `A11Y-SCENE-001` adds a shared opaque panel using the resolved theme colors for
 semantic copy when a section uses an uploaded background image. The original
@@ -139,6 +134,21 @@ on this host. This work does not verify text over the built-in scenery or
 establish WCAG conformance. The focused preview and nested no-script export test
 passes in [`background_readability_focused.txt`](docs/evidence/background_readability_focused.txt);
 the incomplete integrated host run is retained separately.
+
+## Current increment: beginner onboarding guide
+
+`EDT-ONBOARD-001` expands the existing first-use help into five short steps for
+templates/themes, text editing, images/sections, responsive preview/motion, and
+saving/publishing. A new project sees the guide after successful local-draft
+initialization. Users can move backward and forward, skip it, finish it, reopen
+it from **Getting started**, and activate the controls by keyboard. The final
+step distinguishes this browser's local draft, an editable backup, and the
+published website ZIP. The preimplementation browser failure is in
+[`editor_onboarding_red.txt`](docs/evidence/editor_onboarding_red.txt). The
+focused workflow passes in
+[`editor_onboarding_focused.txt`](docs/evidence/editor_onboarding_focused.txt),
+and the accessibility scan passes with the guide visible. Hosted verification
+remains pending.
 
 ## Published development checkpoint
 
