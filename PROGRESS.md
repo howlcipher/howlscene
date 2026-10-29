@@ -251,4 +251,17 @@ Playwright verifies computed styles and wrapping at mobile, tablet, and desktop
 widths. Six reviewed Ink/Cyber screenshot baselines changed intentionally; all
 nine visual comparisons pass. TDD RED is preserved at
 `docs/evidence/theme_navigation_red.txt`. The complete local gate now passes 140
-unit tests and 36 browser tests; hosted CI and merge are the next steps.
+unit tests and 36 browser tests; hosted run `40938230422` passed and merged
+as `c1e33a1`.
+
+## Theme-responsive navigation layout
+
+Current branch: `work/theme-responsive-navigation`, based on main at `4691737`.
+Added a closed `mobileNavigationLayout` field with `wrap` and `stack` choices.
+Legacy themes default to wrap; Cyberpunk selects stack below the shared 600px
+breakpoint. Anchors, focus, ordering and breakpoint remain common. THM-RESP-001
+failed before implementation and its RED is preserved at
+`docs/evidence/theme_responsive_red.txt`. Focused schema and browser tests pass;
+the real editor test creates multiple section links and checks visibility and
+overflow at 375, 768 and 1440 pixels. The full gate passes 142 unit and 38
+browser tests with 89.57% branch coverage. Hosted verification is pending.

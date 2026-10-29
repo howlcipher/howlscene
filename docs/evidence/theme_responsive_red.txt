@@ -1,0 +1,33 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/theme_presentation.test.tsx (7 tests | 1 failed) 120ms
+   ❯ validated theme presentation (7)
+     × THM-RESP-001 normalizes the mobile navigation layout and preserves legacy themes 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/theme_presentation.test.tsx > validated theme presentation > THM-RESP-001 normalizes the mobile navigation layout and preserves legacy themes
+AssertionError: expected undefined to be 'wrap' // Object.is equality
+
+- Expected:
+"wrap"
+
++ Received:
+undefined
+
+ ❯ tests/theme_presentation.test.tsx:44:75
+     42| describe("validated theme presentation", () => {
+     43|   it("THM-RESP-001 normalizes the mobile navigation layout and preserv…
+     44|     expect(themeSchema.parse(legacy).presentation.mobileNavigationLayo…
+       |                                                                           ^
+     45|       "wrap",
+     46|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  15:27:11
+   Duration  1.04s (import 59%, transform 22%, tests 17%, worker 1%)

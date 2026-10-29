@@ -187,3 +187,14 @@ with loopback Vite and no network/CPU emulation. Editor ready was 504 ms; sample
 frame p50/p95 was 16.7 ms; ten-section text-only export was 78.6 ms; runtime was
 68,879 bytes (21,330 gzip). These are single-run lab observations, not production
 Core Web Vitals, FPS guarantees, or comparative results.
+
+## Responsive-navigation integrated snapshot
+
+The [gate log](../evidence/theme_responsive_final_gate.txt) records 142 unit tests
+across 34 files and 38 browser tests, with 89.57% overall branch coverage. The
+[dependency audit](../evidence/theme_responsive_audit.txt) found zero
+vulnerabilities. The [performance sample](../evidence/theme_responsive_performance.json)
+was one Node 24.22.2 / Chromium 156 headless run on the Ryzen 5 1600 at 1440×1000,
+using loopback Vite and no network/CPU emulation: editor ready 444 ms, sampled
+frame p50/p95 16.7 ms, text-only export 69.4 ms, runtime 68,879 bytes / 21,330
+gzip. This is not a field or comparative result.

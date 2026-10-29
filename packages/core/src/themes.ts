@@ -26,6 +26,7 @@ export const themePresentationSchema = z
     cardStyle: z.enum(["outlined", "soft", "glow"]).default("outlined"),
     navigationGapRem: z.number().min(0.5).max(3).default(1.2),
     navigationStyle: z.enum(["plain", "underline", "framed"]).default("plain"),
+    mobileNavigationLayout: z.enum(["wrap", "stack"]).default("wrap"),
   })
   .readonly();
 export type ThemePresentation = z.infer<typeof themePresentationSchema>;
@@ -124,6 +125,7 @@ export const themes: ThemeRegistry &
       presentation: {
         navigationStyle: "framed",
         cardStyle: "glow",
+        mobileNavigationLayout: "stack",
       },
       layers: [
         { id: "horizon", artwork: "cyber-horizon", depth: 0.08 },

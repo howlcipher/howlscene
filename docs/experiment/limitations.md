@@ -20,8 +20,8 @@ establish public v1 readiness.
   [executed run](https://github.com/howlcipher/howlscene/actions/runs/40878831459).
   The theme-layer increment also passed hosted run `40884610329`.
   Bounded presentation passed hosted run `40887036736`; theme motion passed hosted
-  run `40889458958`. GitHub Pages is not configured and no live deployment is
-  claimed.
+  run `40889458958`. GitHub Pages is not configured and no live deployment is claimed.
+  Responsive-navigation hosted verification is pending.
 - The experiment reference video is unavailable, so reference fidelity cannot be
   scored. No comparison with the independent implementation is claimed.
 - Theme manifests declare validated layers referencing trusted, immutable
@@ -65,3 +65,7 @@ Unfinished required v1 work is not reclassified as excluded scope.
 - Card presentation now supports outlined, soft, and accent-glow variants for
   shared cards and gallery figures. Other section-component styling remains
   shared and cannot yet be customized by themes.
+
+- The responsive theme contract currently offers only one mobile navigation
+  choice at the fixed shared breakpoint. It does not expose arbitrary per-theme
+  breakpoints or broader responsive component rules.

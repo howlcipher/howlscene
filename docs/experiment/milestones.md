@@ -54,3 +54,12 @@ The card-style contract passes the integrated Node 24 gate: 141 unit tests acros
 appearance, SDK consumer, and static export checks. Overall branch coverage is
 89.57%; the dependency audit reports zero vulnerabilities. Hosted verification
 remains pending.
+
+Responsive navigation increment: added an optional `wrap`/`stack` theme choice at
+the shared mobile breakpoint. Browser tests confirm link availability and no
+horizontal overflow across mobile/tablet/desktop widths.
+
+Responsive navigation passed the complete local Node 24 gate: 142 unit tests, 38
+browser tests, 89.57% overall branch coverage, SDK/export verification, nine visual
+comparisons, and zero dependency vulnerabilities. Hosted verification remains
+pending.

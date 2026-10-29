@@ -143,6 +143,10 @@ a {
   .site-header nav {
     font-size: 0.9rem;
   }
+  .howlscene[data-theme-mobile-navigation="stack"] .site-header nav {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   html {
