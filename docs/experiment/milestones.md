@@ -44,3 +44,13 @@ The navigation-style implementation passes the full local gate: 140 unit tests,
 36 browser tests, nine visual comparisons, SDK/export checks, license audit, and
 zero dependency vulnerabilities. See `theme_navigation_final_gate.txt` and
 `theme_navigation_audit.txt`; hosted CI is still required.
+
+Card presentation increment: a bounded card-style enum selects outlined, soft, or
+accent-glow styles for the shared project/gallery components. Editor-based tests
+verify computed appearance, readable color/background, and responsive grid fit.
+
+The card-style contract passes the integrated Node 24 gate: 141 unit tests across
+34 files and 37 browser tests, including the visual baselines, real-editor card
+appearance, SDK consumer, and static export checks. Overall branch coverage is
+89.57%; the dependency audit reports zero vulnerabilities. Hosted verification
+remains pending.
