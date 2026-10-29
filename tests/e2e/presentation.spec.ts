@@ -124,3 +124,89 @@ test("THM-PRES-001 manifest presentation affects preview and nested no-script ex
     );
   }
 });
+
+test("THM-PRES-005 maximum theme spacing reflows at 200% text size and 320 CSS pixels", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 900 });
+  await page.goto("/tests/fixtures/presentation.html");
+  await page.addStyleTag({
+    content:
+      ".fixture-controls{max-width:100%}.fixture-controls label,.fixture-controls select,.fixture-controls button{box-sizing:border-box;max-width:100%}",
+  });
+  await page.evaluate(() => {
+    document.documentElement.style.fontSize = "200%";
+  });
+
+  for (const theme of ["maximum", "maximum-ink", "maximum-cyber"]) {
+    await page.getByLabel("Fixture theme").selectOption(theme);
+    const sizes = await page.evaluate(() => {
+      const site = document.querySelector<HTMLElement>(".howlscene");
+      const paragraph = site?.querySelector(".scene p:not(.eyebrow)");
+      const cards = site?.querySelector<HTMLElement>(".entry-cards");
+      const card = site?.querySelector<HTMLElement>(".entry-cards article");
+      const navigation = site?.querySelector<HTMLElement>(".site-header nav");
+      if (!site || !paragraph || !cards || !card || !navigation)
+        throw Error("Missing maximum-presentation fixture content");
+      return {
+        rootFontSize: getComputedStyle(document.documentElement).fontSize,
+        paragraphFontSize: getComputedStyle(paragraph).fontSize,
+        lineHeight: getComputedStyle(paragraph).lineHeight,
+        cardGap: getComputedStyle(cards).gap,
+        cardRadius: getComputedStyle(card).borderRadius,
+        navigationGap: getComputedStyle(navigation).gap,
+      };
+    });
+    expect(sizes).toEqual({
+      rootFontSize: "32px",
+      paragraphFontSize: "36px",
+      lineHeight: "79.2px",
+      cardGap: "96px",
+      cardRadius: "64px",
+      navigationGap: "96px",
+    });
+
+    await expect(
+      page.getByRole("heading", { name: "A considered portfolio" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Selected work" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "A considered portfolio" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "Selected work" }),
+    ).toBeVisible();
+    const overflow = await page.evaluate(() => {
+      const navigation =
+        document.querySelector<HTMLElement>(".site-header nav");
+      const cards = document.querySelector<HTMLElement>(".entry-cards");
+      const card = document.querySelector<HTMLElement>(".entry-cards article");
+      const site = document.querySelector<HTMLElement>(".howlscene");
+      const text = site?.querySelectorAll("h1,h2,h3,p,a");
+      if (!site || !navigation || !cards || !card)
+        throw Error("Missing maximum-presentation layout elements");
+      return {
+        document: document.documentElement.scrollWidth <= innerWidth + 1,
+        site: site.scrollWidth <= site.clientWidth + 1,
+        navigation: navigation.scrollWidth <= navigation.clientWidth + 1,
+        cards: cards.scrollWidth <= cards.clientWidth + 1,
+        card: card.scrollWidth <= card.clientWidth + 1,
+        text:
+          !!text &&
+          Array.from(text).every(
+            (element) => element.scrollWidth <= element.clientWidth + 1,
+          ),
+      };
+    });
+    expect(overflow).toEqual({
+      document: true,
+      site: true,
+      navigation: true,
+      cards: true,
+      card: true,
+      text: true,
+    });
+  }
+});
