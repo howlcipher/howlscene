@@ -86,6 +86,9 @@ function Fixture() {
           >
             <option value="spacious">Spacious</option>
             <option value="baseline">Baseline</option>
+            <option value="modern">Built-in Modern</option>
+            <option value="ink">Built-in Ink Wash</option>
+            <option value="cyber">Built-in Cyberpunk</option>
             <option value="maximum">Maximum supported</option>
             <option value="maximum-ink">Maximum supported Ink Wash</option>
             <option value="maximum-cyber">Maximum supported Cyberpunk</option>

@@ -96,6 +96,27 @@ and the full `verify` suite in run
 The three approval/deploy jobs were skipped for the pull request. Public
 deployment remains pending owner setup and approvals.
 
+## Current increment: theme section-heading treatments
+
+On `work/theme-section-headings`, `presentation.headingTreatment` adds the
+closed values `plain`, `accent-rule`, and `accent-rail`. Modern Professional,
+Ink Wash, and Cyberpunk use them respectively through the shared `Site` data
+attribute and stylesheet. No project content or user-editable schema changes.
+The initial failing schema test is preserved in
+[`theme_component_treatment_red.txt`](docs/evidence/theme_component_treatment_red.txt).
+
+Focused unit tests pass (11 tests), and `THM-COMP-002` passes at 375/768/1440
+CSS pixels while checking computed CSS, content preservation and horizontal
+overflow. A downloaded Ink Wash ZIP served at `/howlscene/theme-heading/` with
+JavaScript disabled retains the same heading treatment and working anchor. The
+full pinned local gate passes **151 unit tests and 51 browser tests**, 94.86%
+statement coverage and 89.54% branch coverage, independent SDK checks, the
+267-package license audit, and a separate zero-vulnerability audit. Output is in
+[`theme_heading_final_gate.txt`](docs/evidence/theme_heading_final_gate.txt).
+Six preview and six exported-site baselines changed for Ink Wash and Cyberpunk;
+the revised screenshots were inspected. Hosted verification remains pending; no
+release readiness is claimed.
+
 ## Published development checkpoint
 
 Commit `ce5a57c` is pushed to the standalone repository's `main` branch.

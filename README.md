@@ -52,7 +52,7 @@ The editor attempts to save drafts in this browser and reports save status. Stor
 
 ## Architecture
 
-`packages/core` owns validated configuration and semantic rendering. `packages/export` validates input and creates static output using the same renderer. `apps/editor` owns browser controls. The exporter does not depend on editor state or components.
+`packages/core` owns validated configuration and semantic rendering. Theme manifests select safe shared treatments for cards, navigation, and section headings. `packages/export` validates input and creates static output using the same renderer. `apps/editor` owns browser controls. The exporter does not depend on editor state or components.
 
 Read [the static export decision](docs/architecture/adr_001_static_export.md) for alternatives and limitations. The original portfolio remains outside this project and read-only. A verified HowlScene demonstration is still an open release gate.
 

@@ -20,6 +20,7 @@
 - A fail-closed GitHub Pages artifact workflow with project-path production checks and a manual, independently approved deployment gate; Pages remains unconfigured.
 - Administrator instructions and ADR for the Pages approval gate and the required repository safeguards.
 - Protected `main` with pull-request-only updates and the up-to-date `verify` check enforced for admins.
+- Added a validated theme-owned section-heading treatment enum with shared preview/export rendering and reviewed visual updates for Ink Wash and Cyberpunk.
 
 ### Fixed
 
