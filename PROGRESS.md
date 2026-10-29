@@ -9,21 +9,24 @@ Phase 0 proved the shared editor-to-static-export approach. Core/schema, rich te
 ## Latest executed milestone
 
 The current Node 24.22.2 local gate passes formatting, lint, strict TypeScript,
-production build/prerender, **150 unit tests in 35 files**, **43 browser tests**,
+production build/prerender, **150 unit tests in 35 files**, **44 browser tests**,
 independent SDK/export tarball consumption and the 267-package license/provenance
 audit. `npm audit --audit-level=moderate` reports zero vulnerabilities. Overall
 coverage is 94.85% statements and 89.54% branches; core branch coverage is
 89.97%, configuration 92.59%, and exporter 97.72%. Executed logs are in the
-[image-rich visual gate](docs/evidence/export_image_visual_final_gate.txt),
-[audit](docs/evidence/export_image_visual_audit.txt), and
+[presentation reflow gate](docs/evidence/theme_presentation_zoom_final_gate.txt),
+[audit](docs/evidence/theme_presentation_zoom_audit.txt), and previous
 [performance record](docs/evidence/export_image_visual_performance.json).
 
 Nine deterministic preview screenshots and nine image-rich, long-form static
 export screenshots pass across all three themes at 375, 768, and 1440 px. The
 new export baselines show user-uploaded scenery and card images served with
-JavaScript disabled. This does not close manual assistive-technology, zoom, or
-nontechnical usability review. Hosted verification, deployment, and the missing
-reference video remain open; comparison and v1 release readiness are not
+JavaScript disabled. Maximum presentation tokens pass automated 200% root text
+sizing at 320 CSS pixels across all three themes, including long text, navigation
+and cards. This does not close actual browser-zoom, assistive-technology, or
+nontechnical usability review. PR #13 passed hosted run `40956127243` and merged
+as `6efd87b`; current-branch hosted verification, deployment, and the missing
+reference video remain open. Comparison and v1 release readiness are not
 claimed.
 
 ## Review corrections completed
@@ -43,9 +46,9 @@ loading. Focused journey and complete gate both passed afterward.
 
 ## Next work and open release gates
 
-Complete broader image-rich/long-form export visual coverage, manual zoom/assistive-technology and
-nontechnical usability review, production performance review, hosted CI and
-public deployment. Finish release review before calling v1 ready. Keep open
+Complete manual browser-zoom/assistive-technology and nontechnical usability
+review, production performance review, hosted verification of subsequent changes,
+and public deployment. Finish release review before calling v1 ready. Keep open
 requirements visible in [acceptance](docs/experiment/acceptance.md) and
 [limitations](docs/experiment/limitations.md).
 
@@ -364,7 +367,20 @@ could not override the renderer's inline font token. Root-cause evidence is in
 The fixture now overrides the inline token and asserts both font weights load
 and that the computed theme font is correct. All nine baselines were regenerated
 under the pinned fonts and visually reviewed; the complete local gate passes.
-The PR #13 hosted rerun is pending. `tia` and the referenced
-`documentation/TESTING.md` are not available in this repository/environment, so
-the test-impact pathways are mapped manually in
+PR #13 passed hosted run `40956127243` and merged as `6efd87b`. `tia` and the
+referenced `documentation/TESTING.md` are unavailable in this repository or
+environment, so test-impact pathways are mapped manually in
 [`acceptance.md`](docs/experiment/acceptance.md).
+
+## Current milestone: maximum theme presentation reflow
+
+THM-PRES-005 covers maximum valid presentation tokens in
+all three themes with long copy at 200% root text sizing and a 320 CSS-pixel
+viewport. The first failure came from the test-only theme selector exceeding the
+viewport; bounding that control leaves the rendered website within its tested
+layout. The focused and integrated tests pass. Full results are in
+[`theme_presentation_zoom_final_gate.txt`](docs/evidence/theme_presentation_zoom_final_gate.txt)
+and [`theme_presentation_zoom_audit.txt`](docs/evidence/theme_presentation_zoom_audit.txt).
+The integrated gate passes 150 unit tests and 44 browser tests with 89.54%
+overall branch coverage. The 200% root-size test is a deterministic text-resize
+stress case, not real browser zoom or human review.

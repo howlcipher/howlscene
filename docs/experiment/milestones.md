@@ -51,8 +51,20 @@ EXP-VISUAL-001 captures image-rich, long-form exported content with JavaScript
 disabled for all themes at three viewports. The nine new baseline images and the
 existing nine preview baselines pass. The complete local gate now passes 150
 unit and 43 browser tests; SDK/export and 267-package license/provenance checks
-pass, and the separate vulnerability audit reports zero. Hosted verification
-remains pending.
+pass, and the separate vulnerability audit reports zero. An initial hosted run
+exposed system-font-dependent wrapping; pinned exported font fixtures and an
+assertion on computed font family corrected it. PR #13 merged as `6efd87b` after
+hosted run `40956127243` passed.
+
+The following browser check exercises maximum presentation token values from
+each bundled theme at 200% root text size and 320 CSS px with long copy. It
+checks headings, paragraphs, navigation and cards for overflow. The test page's
+theme selector itself was constrained to its viewport; it was the source of the
+initial document-level false positive, not the rendered website. Actual browser
+zoom and human text-zoom review remain open. The focused and full local gates
+pass; the latter runs 150 unit and 44 browser tests with 89.54% overall branch
+coverage. See [`theme_presentation_zoom_final_gate.txt`](../evidence/theme_presentation_zoom_final_gate.txt)
+and [`theme_presentation_zoom_audit.txt`](../evidence/theme_presentation_zoom_audit.txt).
 
 Current branch: `work/theme-layers`. Manifest-driven artwork passes the complete local gate:
 130 unit tests, 34 browser tests, independent package consumption and licenses.

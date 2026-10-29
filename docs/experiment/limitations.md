@@ -22,8 +22,9 @@ establish public v1 readiness.
   [executed run](https://github.com/howlcipher/howlscene/actions/runs/40878831459).
   The theme-layer increment also passed hosted run `40884610329`.
   Bounded presentation passed hosted run `40887036736`; theme motion passed hosted
-  run `40889458958`. GitHub Pages is not configured and no live deployment is claimed.
-  Responsive-navigation hosted verification is pending.
+  run `40889458958`; image-rich export visuals and corrected pinned-font fixtures
+  passed hosted run `40956127243` after PR #13 merged as `6efd87b`. GitHub Pages
+  is not configured and no live deployment is claimed.
 - The experiment reference video is unavailable, so reference fidelity cannot be
   scored. No comparison with the independent implementation is claimed.
 - Theme manifests declare validated layers referencing trusted, immutable
@@ -33,8 +34,11 @@ establish public v1 readiness.
   remain incomplete. The integrated gate passes after correcting an aggregate
   asset-validation ordering weakness.
 - Presentation defaults now cover four validated CSS settings. Maximum values
-  at narrow widths and increased text zoom remain a verification gap. Broader
-  responsive/accessibility/motion contracts remain required v1 work.
+  for line height, card gap/radius and navigation gap pass automated 200% root
+  text-size reflow at 320 CSS px in all three themes with long copy and no tested
+  horizontal overflow. This does not simulate browser zoom fully or replace a
+  human zoom review. Broader responsive/accessibility/motion contracts remain
+  required v1 work.
 - Custom section renderers can now register new safe type IDs while reusing the
   portable section content fields. Arbitrary custom payload schemas, adding
   those types to the standard no-code editor chooser, and arbitrary layout-ID

@@ -10,6 +10,12 @@ import { exportWebsite } from "../../packages/export/src/index";
 import { enhanceSite } from "../../packages/core/src/enhance";
 import "../../packages/core/src/site.css";
 
+const maximumPresentation = {
+  bodyLineHeight: 2.2,
+  cardGapRem: 3,
+  cardRadiusRem: 2,
+  navigationGapRem: 3,
+};
 const registry = createThemeRegistry({
   baseline: { ...themes.modern, name: "Baseline" },
   spacious: {
@@ -24,6 +30,21 @@ const registry = createThemeRegistry({
     motion: { intensityScale: 0.35, speedScale: 1.8 },
     accessibility: { parallax: false },
   },
+  maximum: {
+    ...themes.modern,
+    name: "Maximum supported modern presentation",
+    presentation: maximumPresentation,
+  },
+  "maximum-ink": {
+    ...themes.ink,
+    name: "Maximum supported Ink Wash presentation",
+    presentation: maximumPresentation,
+  },
+  "maximum-cyber": {
+    ...themes.cyber,
+    name: "Maximum supported Cyberpunk presentation",
+    presentation: maximumPresentation,
+  },
 });
 const content = {
   schemaVersion: 1,
@@ -34,7 +55,7 @@ const content = {
       id: "intro",
       type: "hero",
       heading: "A considered portfolio",
-      body: "The same words in every theme.",
+      body: "The same words in every theme, at every size. Read slowly through a record of careful work, thoughtful questions, quiet experiments, and useful discoveries. Even when a longUnbrokenWordNeedsToWrapAcrossTheAvailableMeasure, the complete introduction should remain visible and readable without forcing the page to scroll sideways.",
     },
     {
       id: "projects",
@@ -56,32 +77,39 @@ function Fixture() {
   }, [theme]);
   return (
     <>
-      <label>
-        Fixture theme
-        <select
-          value={theme}
-          onChange={(event) => setTheme(event.target.value)}
+      <div className="fixture-controls">
+        <label>
+          Fixture theme
+          <select
+            value={theme}
+            onChange={(event) => setTheme(event.target.value)}
+          >
+            <option value="spacious">Spacious</option>
+            <option value="baseline">Baseline</option>
+            <option value="maximum">Maximum supported</option>
+            <option value="maximum-ink">Maximum supported Ink Wash</option>
+            <option value="maximum-cyber">Maximum supported Cyberpunk</option>
+          </select>
+        </label>
+        <button
+          type="button"
+          onClick={async () => {
+            const bytes = await exportWebsite(site, {
+              themeRegistry: registry,
+            });
+            const url = URL.createObjectURL(
+              new Blob([new Uint8Array(bytes)], { type: "application/zip" }),
+            );
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "presentation.zip";
+            link.click();
+            setTimeout(() => URL.revokeObjectURL(url), 0);
+          }}
         >
-          <option value="spacious">Spacious</option>
-          <option value="baseline">Baseline</option>
-        </select>
-      </label>
-      <button
-        type="button"
-        onClick={async () => {
-          const bytes = await exportWebsite(site, { themeRegistry: registry });
-          const url = URL.createObjectURL(
-            new Blob([new Uint8Array(bytes)], { type: "application/zip" }),
-          );
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = "presentation.zip";
-          link.click();
-          setTimeout(() => URL.revokeObjectURL(url), 0);
-        }}
-      >
-        Download contract website
-      </button>
+          Download contract website
+        </button>
+      </div>
       <Site site={site} themeRegistry={registry} />
     </>
   );

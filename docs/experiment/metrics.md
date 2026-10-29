@@ -15,6 +15,17 @@ These measurements are historical, scoped observations reported during implement
 | Core Web Vitals and animation FPS     | Not measured            | No claim of meeting targets                                                                  |
 | Manual accessibility/usability review | Not completed           | Automated tests cannot establish WCAG conformance                                            |
 
+## Latest integrated verification snapshot
+
+The Node 24.22.2 gate passes 150 unit tests in 35 files, 44 Playwright browser
+tests, and 94.85% statement / 89.54% branch coverage. Core branch coverage is
+89.97%, configuration is 92.59%, and export is 97.72%. The separate npm audit
+reports zero vulnerabilities. THM-PRES-005 checks maximum valid presentation
+tokens and long text at 200% root text size and 320 CSS px; it does not simulate
+browser zoom. See the [gate log](../evidence/theme_presentation_zoom_final_gate.txt)
+and [audit log](../evidence/theme_presentation_zoom_audit.txt). No new
+performance measurement was taken for this test-only increment.
+
 ## Reproduce current checks
 
 Use the commands defined in the current package scripts. The following direct commands support focused verification while integration scripts are being finalized:

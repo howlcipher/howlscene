@@ -6,7 +6,9 @@ features; unfinished acceptance requirements are tracked in
 
 ## Before v1
 
-1. Make clean hosted CI reproducible, including deterministic visual fixtures.
+1. Keep hosted CI reproducible as acceptance grows. The image-rich exported
+   visual fixtures, with explicitly pinned fonts, passed hosted run
+   `40956127243`; future baseline changes still require a reviewed hosted pass.
 2. Extend the validated custom-section registration contract to cover any
    remaining layout and editor integration needs. The first developer API now
    supports trusted custom renderers using portable v1 fields, and creators can
