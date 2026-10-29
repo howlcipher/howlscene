@@ -12,7 +12,7 @@ function asRgb(hexColor: string): string {
 
 async function headingStyle(page: Page) {
   return page.locator(".howlscene").evaluate((site) => {
-    const heading = site.querySelector<HTMLElement>(".scene-content > h2");
+    const heading = site.querySelector<HTMLElement>(".scene-copy > h2");
     if (!heading) throw Error("Missing section heading");
     const style = getComputedStyle(heading);
     const range = document.createRange();

@@ -8,28 +8,32 @@ Phase 0 proved the shared editor-to-static-export approach. Core/schema, rich te
 
 ## Latest executed milestone
 
-The current Node 24.22.2 local gate passes formatting, lint, strict TypeScript,
-production build/prerender, **150 unit tests in 35 files**, **45 browser tests**,
-independent SDK/export tarball consumption and the 267-package license/provenance
-audit. `npm audit --audit-level=moderate` reports zero vulnerabilities. Overall
-coverage is 94.85% statements and 89.54% branches; core branch coverage is
-89.97%, configuration 92.59%, and exporter 97.72%. Executed logs are in the
-[layout preset gate](docs/evidence/section_layout_final_gate.txt),
-[audit](docs/evidence/section_layout_audit.txt), and previous
-[performance record](docs/evidence/export_image_visual_performance.json).
+The latest merged increment is PR #22, which adds validated theme-owned section
+heading treatments. Hosted `verify` passed in run
+[`40972904183`](https://github.com/howlcipher/howlscene/actions/runs/40972904183),
+and the Pages artifact/path check passed in run
+[`40972904198`](https://github.com/howlcipher/howlscene/actions/runs/40972904198).
+The current branch, `work/theme-scene-legibility`, adds an opaque theme-colored
+copy surface only when a section uses an uploaded background image.
 
-Nine deterministic preview screenshots and nine image-rich, long-form static
-export screenshots pass across all three themes at 375, 768, and 1440 px. The
-new export baselines show user-uploaded scenery and card images served with
-JavaScript disabled. Maximum presentation tokens pass automated 200% root text
-sizing at 320 CSS pixels across all three themes, including long text, navigation
-and cards. A new editor workflow verifies compatible section layout choices,
-desktop image/text placement, phone fallback, reload and static export. These
-automated results do not close actual browser-zoom, assistive-technology, or
-nontechnical usability review. PR #13 passed hosted run `40956127243` and merged
-as `6efd87b`; PR #14 passed and merged as `6e97bab`. Current-branch hosted
-verification, deployment, and the missing reference video remain open.
-Comparison and v1 release readiness are not claimed.
+On the current Node 22.22.1 host, formatting, lint, strict TypeScript, build and
+prerender, all **151 unit tests**, SDK tarball consumers, 267-package
+license/provenance review, and `npm audit` pass. Coverage is 94.87% statements
+and 89.68% branches. The browser suite ran 52 scenarios: 51 passed, including
+Chromium and Firefox export checks; local WebKit launch is blocked by missing
+host GTK/media libraries. Docker is installed but this account cannot access its
+socket, so the pinned Playwright container could not be run locally. The focused
+background-readability test and the changed visual exports passed, and nine
+image-rich export baselines were reviewed. Hosted `verify` passed in run
+[`40974740672`](https://github.com/howlcipher/howlscene/actions/runs/40974740672),
+and the Pages artifact/path check passed in run
+[`40974740693`](https://github.com/howlcipher/howlscene/actions/runs/40974740693).
+The hosted browser matrix includes the WebKit scenario unavailable on this host.
+Logs are in
+[`background_readability_host_local_attempt.txt`](docs/evidence/background_readability_host_local_attempt.txt)
+and [`background_readability_local_extras.txt`](docs/evidence/background_readability_local_extras.txt).
+Human zoom, assistive-technology, text-over-scenery, and nontechnical usability
+review remain open. No comparison result or v1 readiness is claimed.
 
 ## Review corrections completed
 
@@ -96,7 +100,7 @@ and the full `verify` suite in run
 The three approval/deploy jobs were skipped for the pull request. Public
 deployment remains pending owner setup and approvals.
 
-## Current increment: theme section-heading treatments
+## Last merged increment: theme section-heading treatments
 
 On `work/theme-section-headings`, `presentation.headingTreatment` adds the
 closed values `plain`, `accent-rule`, and `accent-rail`. Modern Professional,
@@ -114,8 +118,27 @@ statement coverage and 89.54% branch coverage, independent SDK checks, the
 267-package license audit, and a separate zero-vulnerability audit. Output is in
 [`theme_heading_final_gate.txt`](docs/evidence/theme_heading_final_gate.txt).
 Six preview and six exported-site baselines changed for Ink Wash and Cyberpunk;
-the revised screenshots were inspected. Hosted verification remains pending; no
-release readiness is claimed.
+the revised screenshots were inspected. PR #22 merged as `e4239ed`; hosted
+verification passed in runs `40972904183` and `40972904198`.
+
+## Current increment: readable surfaces over uploaded backgrounds
+
+`A11Y-SCENE-001` adds a shared opaque panel using the resolved theme colors for
+semantic copy when a section uses an uploaded background image. The original
+browser failure is retained in
+[`background_readability_red.txt`](docs/evidence/background_readability_red.txt).
+The focused browser test checks at least 4.5:1 contrast in all three built-in
+themes, both in preview and in a nested ZIP served without JavaScript. The local
+export snapshots changed for all themes and three viewports and were visually
+reviewed. Local unit/build/type/lint/format, SDK, license, and vulnerability
+checks pass. Of 52 local browser scenarios, 51 passed; the WebKit export scenario
+could not launch because this host lacks WebKit libraries. Hosted `verify` passed
+in run `40974740672`, and the Pages artifact/path check passed in run
+`40974740693`; the hosted browser matrix includes the WebKit scenario unavailable
+on this host. This work does not verify text over the built-in scenery or
+establish WCAG conformance. The focused preview and nested no-script export test
+passes in [`background_readability_focused.txt`](docs/evidence/background_readability_focused.txt);
+the incomplete integrated host run is retained separately.
 
 ## Published development checkpoint
 

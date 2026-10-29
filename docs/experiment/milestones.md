@@ -119,8 +119,23 @@ browser tests, including rendered theme differences and nested no-script export;
 overall branch coverage is 89.54%. Six preview and six exported-site screenshots
 for Ink Wash and Cyberpunk were reviewed and updated. The RED log and
 [final gate output](../evidence/theme_heading_final_gate.txt) are retained.
-Hosted verification and human contrast/usability review remain open. See
-[ADR 013](../architecture/adr_013_theme_heading_treatments.md).
+PR #22 merged as `e4239ed` after hosted `verify` run `40972904183` and Pages
+artifact/path run `40972904198` passed. Human contrast/usability review remains
+open. See [ADR 013](../architecture/adr_013_theme_heading_treatments.md).
+
+The current `A11Y-SCENE-001` increment places semantic copy on an opaque,
+theme-colored surface for sections with uploaded background images. The local
+preview/nested no-script export test passes against all built-in theme tokens at
+4.5:1 or better, and nine image-rich baselines were visually reviewed. The host
+ran 151 unit tests and 51 of 52 browser scenarios; WebKit could not launch due to
+missing host libraries. The separate SDK, license and vulnerability checks pass.
+The focused test transcript and incomplete full host run are retained in
+`docs/evidence/background_readability_focused.txt` and
+`docs/evidence/background_readability_host_local_attempt.txt`. Hosted `verify`
+passed in run `40974740672`, and the Pages artifact/path check passed in run
+`40974740693`; the pinned hosted browser matrix verifies WebKit. See
+[ADR 014](../architecture/adr_014_readable_surfaces_for_background_images.md)
+and current evidence in `PROGRESS.md`.
 
 Theme motion increment: added bounded per-theme intensity/speed scalars and a
 parallax preference while retaining user-level motion-off and reduced-motion

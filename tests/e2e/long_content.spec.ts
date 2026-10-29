@@ -43,7 +43,7 @@ test("MOT-007 long cinematic content grows naturally and remains reachable with 
         theme,
       );
       const geometry = await scene.evaluate((element) => {
-        const last = element.querySelector(".scene-content > p:last-of-type");
+        const last = element.querySelector(".scene-copy > p:last-of-type");
         if (!last) throw new Error("Missing final paragraph");
         return {
           height: element.getBoundingClientRect().height,

@@ -51,6 +51,11 @@ establish public v1 readiness.
   all three themes with long copy and no tested horizontal overflow. This does
   not simulate browser zoom fully or replace a human zoom review. Broader
   responsive/accessibility/motion contracts remain required v1 work.
+- Uploaded background-image sections now place copy on an opaque panel using
+  the resolved theme colors, so the contrast check applies to a flat surface in
+  preview and export. Theme scenery behind text without an uploaded image,
+  gradients, and developer artwork are still not sampled or contrast-verified;
+  human review remains required.
 - Custom section renderers can now register new safe type IDs while reusing the
   portable section content fields. Arbitrary custom payload schemas, adding
   those types to the standard no-code editor chooser, and arbitrary layout-ID
@@ -92,8 +97,8 @@ Unfinished required v1 work is not reclassified as excluded scope.
   broader responsive component rules are not supported.
 
 - Text contrast resolution checks only flat theme foreground/background colors.
-  Text over scenery, gradients, uploaded images, and developer artwork still
-  needs contrast review; this check alone does not establish WCAG conformance.
+  Text over scenery, gradients, and developer artwork still needs contrast
+  review; this check alone does not establish WCAG conformance.
 
 - Foreground contrast fallback checks the flat theme foreground/background pair
   only. Contrast against scenery, gradients, uploaded media, and registered

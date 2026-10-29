@@ -254,7 +254,7 @@ describe("validated theme presentation", () => {
     for (const markup of [preview, html])
       expect(markup).toContain('data-theme-heading-treatment="accent-rule"');
     expect(css).toContain(
-      '.howlscene[data-theme-heading-treatment="accent-rule"] .scene-content > h2',
+      '.howlscene[data-theme-heading-treatment="accent-rule"] .scene-copy > h2',
     );
     expect(site.sections).toEqual(starterSite.sections);
   });
