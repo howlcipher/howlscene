@@ -357,7 +357,14 @@ test and all nine existing theme snapshots pass together (10 browser tests);
 the full Node 24.22.2 gate passes 150 unit tests and all 43 browser tests, with
 89.54% overall branch coverage. SDK/export, 267-package license, and zero-issue
 vulnerability audits pass; detailed logs and local measurements are in
-`docs/evidence/export_image_visual_*`. Hosted CI is pending. `tia` and the referenced
+`docs/evidence/export_image_visual_*`. The first PR #13 hosted run exposed an
+environment-dependent system-font capture: the fixture's ordinary CSS rule
+could not override the renderer's inline font token. Root-cause evidence is in
+[`export_image_visual_font_red.txt`](docs/evidence/export_image_visual_font_red.txt).
+The fixture now overrides the inline token and asserts both font weights load
+and that the computed theme font is correct. All nine baselines were regenerated
+under the pinned fonts and visually reviewed; the complete local gate passes.
+The PR #13 hosted rerun is pending. `tia` and the referenced
 `documentation/TESTING.md` are not available in this repository/environment, so
 the test-impact pathways are mapped manually in
 [`acceptance.md`](docs/experiment/acceptance.md).

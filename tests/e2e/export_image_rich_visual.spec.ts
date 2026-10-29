@@ -146,7 +146,7 @@ test("EXP-VISUAL-001 image-rich, long-form exports match reviewed theme and view
       visualFontFaceCss("./visual-fonts"),
       ...themes.map(
         (id) =>
-          `.howlscene[data-theme="${id}"]{--scene-font:"${visualFontFamilies[id]}";}`,
+          `.howlscene[data-theme="${id}"]{--scene-font:"${visualFontFamilies[id]}"!important;}`,
       ),
       ".howlscene{scroll-behavior:auto!important}",
     ].join("\n");
@@ -204,6 +204,21 @@ test("EXP-VISUAL-001 image-rich, long-form exports match reviewed theme and view
           "data-theme",
           theme,
         );
+        const fontFamily = visualFontFamilies[theme];
+        const loadedFontWeights = await exported.evaluate(async (family) => {
+          const loaded = await Promise.all(
+            [400, 700].map((weight) =>
+              document.fonts.load(`${weight} 16px "${family}"`),
+            ),
+          );
+          await document.fonts.ready;
+          return loaded.map((faces) => faces.length);
+        }, fontFamily);
+        expect(loadedFontWeights).toEqual([1, 1]);
+        const computedFontFamily = await exported
+          .locator(".howlscene")
+          .evaluate((element) => getComputedStyle(element).fontFamily);
+        expect(computedFontFamily).toContain(fontFamily);
         const images = exported.locator("img");
         await expect(images).toHaveCount(4);
         for (const imageElement of await images.all()) {

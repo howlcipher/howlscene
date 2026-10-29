@@ -16,6 +16,10 @@
 - Validated creator overrides for card appearance, navigation link style, and phone navigation layout.
 - Deterministic image-rich static-export visual checks across all three themes and representative viewports.
 
+### Fixed
+
+- Pinned exported-site visual fixtures now override inline theme fonts and verify the loaded, computed font to prevent host-dependent screenshot layout.
+
 ### Limitations
 
 - This is not a v1 release. Human usability, assistive-technology review, broader visual acceptance, hosted CI and deployment remain unfinished.
