@@ -1,5 +1,7 @@
-import { expect, it, vi } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { acquireDraftLock } from "../apps/editor/draft_lock";
+
+afterEach(() => vi.unstubAllGlobals());
 
 function fakeManager() {
   let owned = false;
@@ -42,7 +44,8 @@ it("EDT-006 grants exactly one draft editor until idempotent release", async () 
   next.release();
 });
 it("EDT-007 unsupported locking pauses autosave rather than guessing ownership", async () => {
-  const lock = await acquireDraftLock(undefined);
+  vi.stubGlobal("navigator", {});
+  const lock = await acquireDraftLock();
   expect(lock).toMatchObject({ granted: false, reason: "unavailable" });
   lock.release();
   lock.release();
@@ -63,4 +66,12 @@ it("EDT-007 propagates manager rejection and synchronous failures", async () => 
   await expect(acquireDraftLock(throwing)).rejects.toThrow(
     "Lock permission refused",
   );
+});
+
+it("EDT-006 the default manager uses available browser locks", async () => {
+  const manager = fakeManager();
+  vi.stubGlobal("navigator", { locks: manager });
+  const lock = await acquireDraftLock();
+  expect(lock.granted).toBe(true);
+  lock.release();
 });

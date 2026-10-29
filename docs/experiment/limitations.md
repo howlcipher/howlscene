@@ -16,8 +16,11 @@ establish public v1 readiness.
   it does not establish production field Core Web Vitals or a 60 FPS guarantee.
 - The independent core and export packages install and render from tarballs.
   Public npm publication has not occurred.
-- The standalone GitHub repository exists but source has not been pushed and no
-  hosted deployment or executed GitHub Actions run is established.
+- The verified checkpoint `ce5a57c` is pushed to the standalone GitHub repository.
+  The first clean GitHub Actions run exposed a Node 24 test-isolation assumption;
+  it is reproduced and corrected. The complete local Node 24 gate passes;
+  hosted verification of the correction remains pending.
+  GitHub Pages is not configured and no live deployment is claimed.
 - The experiment reference video is unavailable, so reference fidelity cannot be
   scored. No comparison with the independent implementation is claimed.
 - Rich text supports paragraphs, two heading ranks, bold, italic, links and

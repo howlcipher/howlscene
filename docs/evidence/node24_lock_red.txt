@@ -1,0 +1,36 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/draft_lock.test.ts (3 tests | 1 failed) 17ms
+   × EDT-007 unsupported locking pauses autosave rather than guessing ownership 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/draft_lock.test.ts > EDT-007 unsupported locking pauses autosave rather than guessing ownership
+AssertionError: expected { granted: true, …(1) } to match object { granted: false, …(1) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "granted": false,
+-   "reason": "unavailable",
++   "granted": true,
+  }
+
+ ❯ tests/draft_lock.test.ts:46:16
+     44| it("EDT-007 unsupported locking pauses autosave rather than guessing o…
+     45|   const lock = await acquireDraftLock(undefined);
+     46|   expect(lock).toMatchObject({ granted: false, reason: "unavailable" }…
+       |                ^
+     47|   lock.release();
+     48|   lock.release();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  21:03:24
+   Duration  234ms (transform 61%, tests 19%, import 15%, worker 5%)

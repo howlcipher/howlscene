@@ -54,3 +54,21 @@ requirements visible in [acceptance](docs/experiment/acceptance.md) and
 The standalone remote is https://github.com/howlcipher/howlscene. No deployment
 or release is established. Repository isolation remains intact. No comparison
 outcome is claimed. The missing reference video remains recorded.
+
+## Published development checkpoint
+
+Commit `ce5a57c` is pushed to the standalone repository's `main` branch.
+[Clean GitHub Actions verification](https://github.com/howlcipher/howlscene/actions/runs/40797818564)
+failed on a Node 24 test-isolation assumption: Node now has Web Locks, so passing
+`undefined` uses the real default manager instead of simulating absence. This was
+reproduced locally under Node 24; the unsupported-browser test now explicitly
+stubs navigator and a companion test covers default-manager discovery. The four
+focused tests pass on Node 24. The complete Node 24.22.2 gate also passes:
+114 unit tests, 32 browser tests, build, package consumers, coverage and licenses.
+[Full Node 24 evidence](docs/evidence/node24_final_gate.txt). Production code is
+unchanged; a fresh hosted CI run is needed for the test correction. GitHub reports Pages disabled. The initial Git push encountered
+a stale global credential-helper path; a command-scoped helper override used
+the installed GitHub CLI successfully without changing global configuration.
+
+Terminal output in committed evidence has trailing whitespace normalized; the
+underlying test results are preserved. The final source/test gate is unchanged.

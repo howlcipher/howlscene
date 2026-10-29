@@ -65,3 +65,21 @@ The [vulnerability scan](../evidence/continuation_audit.txt) reports zero issues
 The final raw [performance report](../evidence/local_performance.json) supersedes
 earlier single-run timing observations. Values naturally vary between runs;
 compare its environment and limitations before drawing conclusions.
+
+## Full production build observation
+
+A complete `npm run build` (runtime, TypeScript, client build, SSR build and
+semantic HTML insertion) on the local Linux x64 / Node 22.22.1 environment took
+7.887 seconds of wall time using Bash `time`. See [raw elapsed output](../evidence/production_build_time.txt).
+This is one uncontrolled warm local observation, including process startup;
+filesystem cache and competing load were not controlled. It is not comparable
+to another platform's isolated build benchmark.
+
+## Node 24 compatibility correction
+
+The first hosted CI run exposed a test that assumed the host lacked Web Locks.
+[Actual Node 24 RED](../evidence/node24_lock_red.txt) reproduces the failure.
+Explicit navigator stubs now test supported and unsupported environments.
+[Full Node 24.22.2 gate](../evidence/node24_final_gate.txt) passes 114 unit tests
+and 32 browser tests, plus all build, package and license checks. No production
+behavior changed. Coverage percentages are unchanged.
