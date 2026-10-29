@@ -35,9 +35,15 @@ verification and merge remain pending; see
 
 The custom-section registration increment now passes 149 unit and 41 browser
 tests, the independent package/browser export check, license audit, and local
-vulnerability audit. Hosted verification remains pending. The portable section
-fields and trusted registry behavior are documented in ADR 009 and the
-[custom-section guide](../developers/custom_sections.md).
+vulnerability audit. PR #11 merged as `ba6125f` after hosted run `40950249941`
+passed. The portable section fields and trusted registry behavior are documented
+in ADR 009 and the [custom-section guide](../developers/custom_sections.md).
+
+The creator presentation increment adds allowlisted overrides for shared card
+and navigation settings. Its initial schema and editor-control failures are
+preserved in `editor_presentation_red.txt` and
+`editor_presentation_e2e_red.txt`. Focused unit and browser tests pass. The
+complete local and hosted gates remain to be run.
 
 Current branch: `work/theme-layers`. Manifest-driven artwork passes the complete local gate:
 130 unit tests, 34 browser tests, independent package consumption and licenses.

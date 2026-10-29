@@ -3,6 +3,9 @@ import {
   themes,
   resolveTheme,
   parseSite,
+  themeCardStyles,
+  themeNavigationStyles,
+  themeMobileNavigationLayouts,
   type SiteConfig,
 } from "../../../packages/core/src/index";
 export interface ProjectActions {
@@ -187,6 +190,80 @@ export function AppearancePanel({
           </select>
         </label>
       </div>
+      <details>
+        <summary>More style choices</summary>
+        <label>
+          Card appearance
+          <select
+            value={site.overrides.cardStyle ?? ""}
+            onChange={(e) =>
+              commit({
+                ...site,
+                overrides: {
+                  ...site.overrides,
+                  cardStyle: (e.target.value ||
+                    undefined) as SiteConfig["overrides"]["cardStyle"],
+                },
+              })
+            }
+          >
+            <option value="">Theme default</option>
+            {themeCardStyles.map((value) => (
+              <option key={value} value={value}>
+                {value === "glow"
+                  ? "Accent glow"
+                  : value[0]!.toUpperCase() + value.slice(1)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Navigation link style
+          <select
+            value={site.overrides.navigationStyle ?? ""}
+            onChange={(e) =>
+              commit({
+                ...site,
+                overrides: {
+                  ...site.overrides,
+                  navigationStyle: (e.target.value ||
+                    undefined) as SiteConfig["overrides"]["navigationStyle"],
+                },
+              })
+            }
+          >
+            <option value="">Theme default</option>
+            {themeNavigationStyles.map((value) => (
+              <option key={value} value={value}>
+                {value[0]!.toUpperCase() + value.slice(1)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Phone navigation layout
+          <select
+            value={site.overrides.mobileNavigationLayout ?? ""}
+            onChange={(e) =>
+              commit({
+                ...site,
+                overrides: {
+                  ...site.overrides,
+                  mobileNavigationLayout: (e.target.value ||
+                    undefined) as SiteConfig["overrides"]["mobileNavigationLayout"],
+                },
+              })
+            }
+          >
+            <option value="">Theme default</option>
+            {themeMobileNavigationLayouts.map((value) => (
+              <option key={value} value={value}>
+                {value === "wrap" ? "Wrap links" : "Stack links"}
+              </option>
+            ))}
+          </select>
+        </label>
+      </details>
       <label>
         Choose animation style
         <select

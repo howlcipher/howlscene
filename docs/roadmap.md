@@ -9,8 +9,9 @@ features; unfinished acceptance requirements are tracked in
 1. Make clean hosted CI reproducible, including deterministic visual fixtures.
 2. Extend the validated custom-section registration contract to cover any
    remaining layout and editor integration needs. The first developer API now
-   supports trusted custom renderers using portable v1 fields; arbitrary payload
-   schemas and a plugin system remain outside scope.
+   supports trusted custom renderers using portable v1 fields, and creators can
+   override the shared card/navigation presentation choices. Arbitrary payload
+   schemas, custom editor forms, and a plugin system remain outside scope.
 3. Complete transition, long-content and image-rich visual acceptance coverage.
 4. Review the complete editor with nontechnical users and assistive technology;
    correct findings before making accessibility or release-readiness claims.

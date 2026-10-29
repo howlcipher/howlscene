@@ -287,3 +287,21 @@ The production site runtime was 127.03 kB / 38.84 kB gzip. The sample is
 single-run, image-free, and is not a field Core Web Vitals or animation
 guarantee. Raw context is in the
 [performance record](../evidence/custom_sections_performance.json).
+
+## Creator presentation overrides snapshot
+
+The complete Node 24.22.2 gate passes 150 unit tests across 35 files and 42
+browser tests. Coverage is 94.85% statements and 89.54% branches overall; core
+branch coverage is 89.97%, configuration 92.59%, and export 97.72%. The
+independent package/export checks and 267-package license audit pass. A separate
+`npm audit --audit-level=moderate` reports zero vulnerabilities. Full commands
+and outputs are in the [gate log](../evidence/editor_presentation_final_gate.txt)
+and [audit log](../evidence/editor_presentation_audit.txt).
+
+One local observation on Node 24.22.2 / Chromium 156 headless / Ryzen 5 1600 /
+1440×1000 / loopback Vite measured editor-ready 417 ms, session-observed LCP
+440 ms and CLS 0.000087, frame interval p50/p95 16.7 ms, ten-section text-only
+ZIP export 70.3 ms, and static runtime 68,879 bytes / 21,330 gzip. The production
+site JavaScript was 127.46 kB / 38.95 kB gzip. The run is a single local sample,
+not field Core Web Vitals or an animation guarantee; see the
+[raw measurement](../evidence/editor_presentation_performance.json).
