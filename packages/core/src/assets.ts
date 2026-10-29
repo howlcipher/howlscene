@@ -18,6 +18,24 @@ export interface ImageAsset {
 const MAX_BYTES = 5 * 1024 * 1024;
 const MAX_DIMENSION = 8192;
 const MAX_PIXELS = 24_000_000;
+/** Includes base64, responsive variants and serialized asset metadata. */
+export const MAX_PROJECT_ASSET_CHARACTERS = 28_000_000;
+
+/** Run after cheap metadata validation, before any image decode. Raw payload
+ * lengths are a lower bound on JSON size and need no large temporary string.
+ */
+export function assertProjectAssetBudget(assets: readonly ImageAsset[]): void {
+  let payloadLength = 0;
+  for (const asset of assets) {
+    for (const image of [asset, ...(asset.variants ?? [])]) {
+      payloadLength += image.data.length;
+      if (payloadLength > MAX_PROJECT_ASSET_CHARACTERS)
+        throw new Error("Images exceed the 28 MB project limit");
+    }
+  }
+  if (JSON.stringify(assets).length > MAX_PROJECT_ASSET_CHARACTERS)
+    throw new Error("Images exceed the 28 MB project limit");
+}
 
 /** Decode project images before accepting an imported project or publishing it.
  * Schema validation alone establishes format signatures, not decodability.

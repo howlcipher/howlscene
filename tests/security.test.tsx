@@ -1,10 +1,30 @@
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import { parseSite, safeUrl, starterSite } from "../packages/core/src/index";
 import { importBackup } from "../packages/export/src/backup";
+import {
+  assertProjectAssetBudget,
+  MAX_PROJECT_ASSET_CHARACTERS,
+} from "../packages/core/src/assets";
 
 const data =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=";
 const asset = { id: "asset-pixel", mime: "image/png", data, alt: "Pixel" };
+
+it("SEC-004 preserves the exact serialized asset budget boundary", () => {
+  const chunk = "A".repeat(5599900);
+  const assets = Array.from({ length: 5 }, (_, i) => ({
+    id: `asset-${i}`,
+    mime: "image/png" as const,
+    data: chunk,
+    alt: "",
+  }));
+  assets[4]!.data += "A".repeat(
+    MAX_PROJECT_ASSET_CHARACTERS - JSON.stringify(assets).length,
+  );
+  expect(() => assertProjectAssetBudget(assets)).not.toThrow();
+  assets[4]!.data += "A";
+  expect(() => assertProjectAssetBudget(assets)).toThrow(/28 MB/);
+});
 
 it("SEC-003 AST-002 rejects mismatched signatures, malformed base64 and uncontrolled asset IDs", () => {
   for (const patch of [
@@ -103,5 +123,56 @@ it("SEC-004 rejects combined asset resource exhaustion below individual image li
     data,
     alt: "",
   }));
-  expect(() => parseSite({ ...starterSite, assets })).toThrow(/28 MB/);
+  const decoder = vi.spyOn(globalThis, "atob");
+  try {
+    expect(() => parseSite({ ...starterSite, assets })).toThrow(/28 MB/);
+    expect(decoder.mock.calls.length).toBe(0);
+  } finally {
+    decoder.mockRestore();
+  }
+});
+it("SEC-004 checks responsive payload totals and serialized metadata before decoding", () => {
+  const oversized = "data:image/png;base64," + "A".repeat(5600000);
+  const responsive = Array.from({ length: 3 }, (_, i) => ({
+    ...asset,
+    id: `asset-responsive-${i}`,
+    width: 1,
+    height: 1,
+    data: oversized,
+    variants: [{ width: 1, height: 1, mime: "image/png", data: oversized }],
+  }));
+  // Payload characters fit on their own, but serialized field names and metadata
+  // still put this second input over the existing exact project limit.
+  const metadata = Array.from({ length: 5 }, (_, i) => ({
+    ...asset,
+    id: `asset-metadata-${i}`,
+    data: "A".repeat(5599990),
+  }));
+  const decoder = vi.spyOn(globalThis, "atob");
+  try {
+    for (const assets of [responsive, metadata]) {
+      expect(() => parseSite({ ...starterSite, assets })).toThrow(/28 MB/);
+      expect(decoder.mock.calls.length).toBe(0);
+    }
+  } finally {
+    decoder.mockRestore();
+  }
+});
+
+it("AST-002 rejects misleading stored dimensions and responsive images without an original width", () => {
+  for (const patch of [{ width: 2 }, { height: 2 }])
+    expect(() =>
+      parseSite({ ...starterSite, assets: [{ ...asset, ...patch }] }),
+    ).toThrow(/dimensions do not match/);
+  expect(() =>
+    parseSite({
+      ...starterSite,
+      assets: [
+        {
+          ...asset,
+          variants: [{ mime: "image/png", data, width: 1, height: 1 }],
+        },
+      ],
+    }),
+  ).toThrow(/full image width/);
 });

@@ -1,0 +1,61 @@
+v24.22.2
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ✓ tests/security.test.tsx > SEC-003 AST-002 rejects mismatched signatures, malformed base64 and uncontrolled asset IDs 8ms
+ ✓ tests/security.test.tsx > AST-004 rejects duplicated asset IDs and missing entry-image references atomically 2ms
+ ✓ tests/security.test.tsx > SEC-002 rejects unicode and control-obfuscated executable schemes without rejecting safe links 1ms
+ ✓ tests/security.test.tsx > THM-004 SEC-001 rejects CSS declarations and unsupported font values 1ms
+ ✓ tests/security.test.tsx > SEC-005 rejects nested prototype payloads without changing the current project 1ms
+ ✓ tests/security.test.tsx > SEC-005 rejects unexpected prototype fields on the backup envelope 0ms
+ × tests/security.test.tsx > SEC-004 rejects combined asset resource exhaustion below individual image limits 2817ms
+   → expected 5 to be +0 // Object.is equality
+ × tests/security.test.tsx > SEC-004 checks responsive payload totals and serialized metadata before decoding 1691ms
+   → expected 3 to be +0 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/security.test.tsx > SEC-004 rejects combined asset resource exhaustion below individual image limits
+AssertionError: expected 5 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 5
+
+ ❯ tests/security.test.tsx:109:39
+    107|   try {
+    108|     expect(() => parseSite({ ...starterSite, assets })).toThrow(/28 MB…
+    109|     expect(decoder.mock.calls.length).toBe(0);
+       |                                       ^
+    110|   } finally {decoder.mockRestore();}
+    111| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/security.test.tsx > SEC-004 checks responsive payload totals and serialized metadata before decoding
+AssertionError: expected 3 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 3
+
+ ❯ tests/security.test.tsx:119:148
+    117|  const metadata=Array.from({length:5},(_,i)=>({...asset,id:`asset-meta…
+    118|  const decoder=vi.spyOn(globalThis,'atob');
+    119|  try {for(const assets of [responsive,metadata]){expect(()=>parseSite(…
+       |                                                                                                                                                    ^
+    120|  finally {decoder.mockRestore();}
+    121| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 6 passed (8)
+   Start at  09:36:56
+   Duration  5.06s (tests 92%, import 5%, transform 2%)
+
