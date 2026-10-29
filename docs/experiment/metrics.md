@@ -305,3 +305,24 @@ ZIP export 70.3 ms, and static runtime 68,879 bytes / 21,330 gzip. The productio
 site JavaScript was 127.46 kB / 38.95 kB gzip. The run is a single local sample,
 not field Core Web Vitals or an animation guarantee; see the
 [raw measurement](../evidence/editor_presentation_performance.json).
+
+## Image-rich exported visual acceptance snapshot
+
+The Node 24.22.2 integrated gate passes 150 unit tests across 35 files and 43
+browser tests. It includes nine image-rich, long-form ZIP screenshots across the
+three bundled themes at 375, 768 and 1440 px, all captured from static files with
+JavaScript disabled. The existing nine preview screenshots also pass. Coverage
+remains 94.85% statements and 89.54% branches overall; core is 89.97%,
+configuration 92.59%, and export 97.72%. Independent SDK/export checks, 267
+package license/provenance review, and `npm audit --audit-level=moderate` passed
+with zero vulnerabilities. See the [complete gate](../evidence/export_image_visual_final_gate.txt)
+and [audit](../evidence/export_image_visual_audit.txt).
+
+One local observation on Node 24.22.2 / Chromium 156 headless / Ryzen 5 1600 /
+1440×1000 / loopback Vite measured editor-ready 458 ms, session-observed LCP
+480 ms and CLS 0.000087, frame interval p50 16.7 ms and p95 16.8 ms, a
+ten-section text-only ZIP export in 69.5 ms, and static runtime 68,879 bytes /
+21,330 gzip. Production site JavaScript was 127.46 kB / 38.95 kB gzip. This is
+a single local observation, not field performance evidence; the
+[raw measurement](../evidence/export_image_visual_performance.json) records its
+environment and limitations.

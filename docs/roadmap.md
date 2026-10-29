@@ -12,7 +12,8 @@ features; unfinished acceptance requirements are tracked in
    supports trusted custom renderers using portable v1 fields, and creators can
    override the shared card/navigation presentation choices. Arbitrary payload
    schemas, custom editor forms, and a plugin system remain outside scope.
-3. Complete transition, long-content and image-rich visual acceptance coverage.
+3. Review transition, long-content and image-rich exported baselines on target
+   platforms, then expand the fixtures if those reviews identify gaps.
 4. Review the complete editor with nontechnical users and assistive technology;
    correct findings before making accessibility or release-readiness claims.
 5. Measure representative production loading and motion on mobile/older hardware.

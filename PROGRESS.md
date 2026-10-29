@@ -8,24 +8,23 @@ Phase 0 proved the shared editor-to-static-export approach. Core/schema, rich te
 
 ## Latest executed milestone
 
-The final local continuation gate passed: formatting, lint, strict TypeScript,
-production build and semantic prerendering, **114 unit tests in 30 files**, **34
-browser tests**, independent core/export tarball consumption and the 267-package
-license/provenance audit. The separate vulnerability audit reports zero issues.
-Evidence: [complete gate](docs/evidence/font_final_gate.txt),
-[audit](docs/evidence/continuation_audit.txt), and
-[local performance observations](docs/evidence/local_performance.json).
+The current Node 24.22.2 local gate passes formatting, lint, strict TypeScript,
+production build/prerender, **150 unit tests in 35 files**, **43 browser tests**,
+independent SDK/export tarball consumption and the 267-package license/provenance
+audit. `npm audit --audit-level=moderate` reports zero vulnerabilities. Overall
+coverage is 94.85% statements and 89.54% branches; core branch coverage is
+89.97%, configuration 92.59%, and exporter 97.72%. Executed logs are in the
+[image-rich visual gate](docs/evidence/export_image_visual_final_gate.txt),
+[audit](docs/evidence/export_image_visual_audit.txt), and
+[performance record](docs/evidence/export_image_visual_performance.json).
 
-Branch coverage: overall 89.36%, core 89.82%, configuration 91.89%, export package
-97.72%. All configured coverage gates passed. These results cover the current
-source and test tree. Later documentation changes are checked separately.
-
-The complete browser journey creates, edits, restores, backs up, exports and
-serves a portfolio with responsive uploaded images. Export tests serve root and
-nested paths with JavaScript enabled and disabled. Actual production files also
-work at root and `/howlscene/`. Nine existing visual comparisons passed. Automated
-accessibility and keyboard workflows passed within their asserted scope; human
-usability and screen-reader review remain open.
+Nine deterministic preview screenshots and nine image-rich, long-form static
+export screenshots pass across all three themes at 375, 768, and 1440 px. The
+new export baselines show user-uploaded scenery and card images served with
+JavaScript disabled. This does not close manual assistive-technology, zoom, or
+nontechnical usability review. Hosted verification, deployment, and the missing
+reference video remain open; comparison and v1 release readiness are not
+claimed.
 
 ## Review corrections completed
 
@@ -340,5 +339,25 @@ published ZIP content. The full Node 24.22.2 gate now passes 150 unit tests in 3
 files and 42 browser tests. Overall branch coverage is 89.54%; core is 89.97%,
 configuration 92.59%, and export 97.72%. The 267-package license audit and
 separate zero-vulnerability npm audit passed. Full output and local performance
-data are in `docs/evidence/editor_presentation_*`. Hosted CI is pending. No
-deployment, comparison result, or release readiness is claimed.
+data are in `docs/evidence/editor_presentation_*`. PR #12 merged as `c82bd5b`
+after hosted run `40952321979` passed; its first formatter check caught and
+prompted formatting of the generated performance JSON. No deployment,
+comparison result, or release readiness is claimed.
+
+## Current milestone: image-rich exported visual acceptance
+
+`EXP-VISUAL-001` now captures the actual exported ZIP with an original generated
+landscape uploaded as background scenery and shown on three project cards, plus
+eight paragraphs of long copy. It serves each export with JavaScript disabled
+and pins the same licensed test-font fixtures used by the existing preview
+baselines. Nine screenshots cover Modern, Ink Wash and Cyberpunk at 375, 768
+and 1440 px. All nine have been visually reviewed. The first run's expected
+missing-snapshot RED is in `docs/evidence/export_image_visual_red.txt`. The new
+test and all nine existing theme snapshots pass together (10 browser tests);
+the full Node 24.22.2 gate passes 150 unit tests and all 43 browser tests, with
+89.54% overall branch coverage. SDK/export, 267-package license, and zero-issue
+vulnerability audits pass; detailed logs and local measurements are in
+`docs/evidence/export_image_visual_*`. Hosted CI is pending. `tia` and the referenced
+`documentation/TESTING.md` are not available in this repository/environment, so
+the test-impact pathways are mapped manually in
+[`acceptance.md`](docs/experiment/acceptance.md).

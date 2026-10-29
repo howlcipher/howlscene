@@ -9,9 +9,11 @@ establish public v1 readiness.
 - Browser automation covers the complete create/edit/restore/backup/export/static
   serving journey, keyboard editing, reduced motion, save failures and competing
   tabs. It does not replace a human nontechnical usability or screen-reader review.
-- Nine deterministic preview screenshots pass comparisons. Mobile images have
-  been visually inspected for readable text, theme distinction and composition.
-  Broader image-rich/long-form exported visual baselines remain to be completed.
+- Nine deterministic preview screenshots and nine image-rich/long-form exported
+  screenshots pass comparisons across the three themes and 375/768/1440 px
+  viewports. Representative exported captures have been visually inspected for
+  readable text, theme distinction and composition. This does not replace human
+  accessibility or user review.
 - A local performance probe exists. It uses a development server and one device;
   it does not establish production field Core Web Vitals or a 60 FPS guarantee.
 - The independent core and export packages install and render from tarballs.

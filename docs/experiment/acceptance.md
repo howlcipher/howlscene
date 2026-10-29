@@ -18,6 +18,7 @@ It does not assert that every scenario within a group is complete. See the
 | A11Y-001–007      | Semantics, focus recovery, motion control, keyboard and axe browser tests                                                                                         | Representative keyboard/viewport/focus checks; human assistive-technology and zoom review open; no WCAG conformance claim                                       |
 | SEC-001–006       | Strict runtime schema, safe URLs, bounded media/imports, controlled paths, inert text                                                                             | Positive/negative regression tests and vulnerability/provenance audit; not a complete adversarial audit                                                         |
 | EDT-011           | Theme presentation overrides, `AppearancePanel`, shared resolver and export; `tests/theme_presentation.test.tsx`, `tests/e2e/theme_presentation_controls.spec.ts` | Card appearance, navigation treatment and phone link layout are selectable, validated, retained across theme changes/reload and exported with the same values   |
+| VIS-001           | `tests/e2e/export_image_rich_visual.spec.ts` and nine reviewed Playwright baselines                                                                               | Actual ZIP with generated uploaded artwork and long copy, JavaScript disabled, three themes at 375/768/1440 px; all four images load and retain alt text        |
 
 ## Final journey
 
@@ -29,6 +30,15 @@ extraction, real nested static hosting, images/navigation and disabling motion.
 files under root and `/howlscene/`, including meaningful no-JavaScript content.
 These local servers establish static deployment compatibility, not an actual
 public-host deployment. Human review of clarity and usability remains required.
+
+VIS-001 captures actual exported, image-rich websites with long introductory
+copy in all three themes at mobile, tablet and desktop widths. The fixture
+creates its own original raster landscape in-browser, uploads it through the
+editor, uses it as background scenery and on three project cards, then serves
+the ZIP with JavaScript disabled. All nine baselines were reviewed; only the
+test capture pins licensed fonts, and those assets remain outside production.
+The initial missing-baseline RED is retained in
+[`export_image_visual_red.txt`](../evidence/export_image_visual_red.txt).
 
 ## Theme-layer extension increment
 

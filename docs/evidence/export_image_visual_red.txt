@@ -1,0 +1,161 @@
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 npx
+npm notice run npm run test:e2e -- tests/e2e/export_image_rich_visual.spec.ts
+npm notice run howlscene@0.1.0 test:e2e
+npm notice run playwright test tests/e2e/export_image_rich_visual.spec.ts
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/export_image_rich_visual.spec.ts:21:1 › EXP-VISUAL-001 image-rich, long-form exports match reviewed theme and viewport baselines (21.0s)
+
+
+  1) tests/e2e/export_image_rich_visual.spec.ts:21:1 › EXP-VISUAL-001 image-rich, long-form exports match reviewed theme and viewport baselines
+
+    Error: A snapshot doesn't exist at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-modern-375-linux.png, writing actual.
+
+      219 |         }
+      220 |         await exported.evaluate(() => window.scrollTo(0, 0));
+    > 221 |         await expect(exported).toHaveScreenshot(
+          |         ^
+      222 |           `export-image-rich-${theme}-${width}.png`,
+      223 |           { fullPage: true, animations: "disabled", caret: "hide" },
+      224 |         );
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts:221:9
+
+    Error: A snapshot doesn't exist at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-modern-768-linux.png, writing actual.
+
+      219 |         }
+      220 |         await exported.evaluate(() => window.scrollTo(0, 0));
+    > 221 |         await expect(exported).toHaveScreenshot(
+          |         ^
+      222 |           `export-image-rich-${theme}-${width}.png`,
+      223 |           { fullPage: true, animations: "disabled", caret: "hide" },
+      224 |         );
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts:221:9
+
+    Error: A snapshot doesn't exist at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-modern-1440-linux.png, writing actual.
+
+      219 |         }
+      220 |         await exported.evaluate(() => window.scrollTo(0, 0));
+    > 221 |         await expect(exported).toHaveScreenshot(
+          |         ^
+      222 |           `export-image-rich-${theme}-${width}.png`,
+      223 |           { fullPage: true, animations: "disabled", caret: "hide" },
+      224 |         );
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts:221:9
+
+    Error: A snapshot doesn't exist at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-ink-375-linux.png, writing actual.
+
+      219 |         }
+      220 |         await exported.evaluate(() => window.scrollTo(0, 0));
+    > 221 |         await expect(exported).toHaveScreenshot(
+          |         ^
+      222 |           `export-image-rich-${theme}-${width}.png`,
+      223 |           { fullPage: true, animations: "disabled", caret: "hide" },
+      224 |         );
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts:221:9
+
+    Error: A snapshot doesn't exist at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-ink-768-linux.png, writing actual.
+
+      219 |         }
+      220 |         await exported.evaluate(() => window.scrollTo(0, 0));
+    > 221 |         await expect(exported).toHaveScreenshot(
+          |         ^
+      222 |           `export-image-rich-${theme}-${width}.png`,
+      223 |           { fullPage: true, animations: "disabled", caret: "hide" },
+      224 |         );
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts:221:9
+
+    Error: A snapshot doesn't exist at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-ink-1440-linux.png, writing actual.
+
+      219 |         }
+      220 |         await exported.evaluate(() => window.scrollTo(0, 0));
+    > 221 |         await expect(exported).toHaveScreenshot(
+          |         ^
+      222 |           `export-image-rich-${theme}-${width}.png`,
+      223 |           { fullPage: true, animations: "disabled", caret: "hide" },
+      224 |         );
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts:221:9
+
+    Error: A snapshot doesn't exist at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-cyber-375-linux.png, writing actual.
+
+      219 |         }
+      220 |         await exported.evaluate(() => window.scrollTo(0, 0));
+    > 221 |         await expect(exported).toHaveScreenshot(
+          |         ^
+      222 |           `export-image-rich-${theme}-${width}.png`,
+      223 |           { fullPage: true, animations: "disabled", caret: "hide" },
+      224 |         );
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts:221:9
+
+    Error: A snapshot doesn't exist at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-cyber-768-linux.png, writing actual.
+
+      219 |         }
+      220 |         await exported.evaluate(() => window.scrollTo(0, 0));
+    > 221 |         await expect(exported).toHaveScreenshot(
+          |         ^
+      222 |           `export-image-rich-${theme}-${width}.png`,
+      223 |           { fullPage: true, animations: "disabled", caret: "hide" },
+      224 |         );
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts:221:9
+
+    Error: A snapshot doesn't exist at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-cyber-1440-linux.png, writing actual.
+
+      219 |         }
+      220 |         await exported.evaluate(() => window.scrollTo(0, 0));
+    > 221 |         await expect(exported).toHaveScreenshot(
+          |         ^
+      222 |           `export-image-rich-${theme}-${width}.png`,
+      223 |           { fullPage: true, animations: "disabled", caret: "hide" },
+      224 |         );
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/export_image_rich_visual.spec.ts:221:9
+
+    attachment #1: export-image-rich-modern-375 (image/png) ────────────────────────────────────────
+    Expected: tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-modern-375-linux.png
+    Received: test-results/export_image_rich_visual-E-f6176-heme-and-viewport-baselines/export-image-rich-modern-375-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: export-image-rich-modern-768 (image/png) ────────────────────────────────────────
+    Expected: tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-modern-768-linux.png
+    Received: test-results/export_image_rich_visual-E-f6176-heme-and-viewport-baselines/export-image-rich-modern-768-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: export-image-rich-modern-1440 (image/png) ───────────────────────────────────────
+    Expected: tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-modern-1440-linux.png
+    Received: test-results/export_image_rich_visual-E-f6176-heme-and-viewport-baselines/export-image-rich-modern-1440-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: export-image-rich-ink-375 (image/png) ───────────────────────────────────────────
+    Expected: tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-ink-375-linux.png
+    Received: test-results/export_image_rich_visual-E-f6176-heme-and-viewport-baselines/export-image-rich-ink-375-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #5: export-image-rich-ink-768 (image/png) ───────────────────────────────────────────
+    Expected: tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-ink-768-linux.png
+    Received: test-results/export_image_rich_visual-E-f6176-heme-and-viewport-baselines/export-image-rich-ink-768-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #6: export-image-rich-ink-1440 (image/png) ──────────────────────────────────────────
+    Expected: tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-ink-1440-linux.png
+    Received: test-results/export_image_rich_visual-E-f6176-heme-and-viewport-baselines/export-image-rich-ink-1440-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #7: export-image-rich-cyber-375 (image/png) ─────────────────────────────────────────
+    Expected: tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-cyber-375-linux.png
+    Received: test-results/export_image_rich_visual-E-f6176-heme-and-viewport-baselines/export-image-rich-cyber-375-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #8: export-image-rich-cyber-768 (image/png) ─────────────────────────────────────────
+    Expected: tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-cyber-768-linux.png
+    Received: test-results/export_image_rich_visual-E-f6176-heme-and-viewport-baselines/export-image-rich-cyber-768-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #9: export-image-rich-cyber-1440 (image/png) ────────────────────────────────────────
+    Expected: tests/e2e/export_image_rich_visual.spec.ts-snapshots/export-image-rich-cyber-1440-linux.png
+    Received: test-results/export_image_rich_visual-E-f6176-heme-and-viewport-baselines/export-image-rich-cyber-1440-actual.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/export_image_rich_visual-E-f6176-heme-and-viewport-baselines/error-context.md
+
+  1 failed
+    tests/e2e/export_image_rich_visual.spec.ts:21:1 › EXP-VISUAL-001 image-rich, long-form exports match reviewed theme and viewport baselines

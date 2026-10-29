@@ -14,6 +14,7 @@
 - Theme and section registry developer APIs, separate package-consumer verification tooling, and CI/license audit scaffolding.
 - Browser publishing instructions based on official GitHub Pages and Cloudflare Pages documentation.
 - Validated creator overrides for card appearance, navigation link style, and phone navigation layout.
+- Deterministic image-rich static-export visual checks across all three themes and representative viewports.
 
 ### Limitations
 
