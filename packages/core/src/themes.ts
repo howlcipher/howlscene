@@ -8,6 +8,15 @@ import {
 import type { ArtworkRegistry } from "./artwork.js";
 const color = z.string().regex(/^#[0-9a-fA-F]{6}$/);
 export const DEFAULT_THEME_ID = "modern";
+const themeMotionSchema = z
+  .strictObject({
+    intensityScale: z.number().min(0).max(1).default(1),
+    speedScale: z.number().min(0.5).max(2).default(1),
+  })
+  .readonly();
+const themeAccessibilitySchema = z
+  .strictObject({ parallax: z.boolean().default(true) })
+  .readonly();
 /** Bounded theme styling with fixed units; never arbitrary CSS or layout code. */
 export const themePresentationSchema = z
   .strictObject({
@@ -35,6 +44,8 @@ export const themeSchema = z
       "ui-monospace, monospace",
     ]),
     presentation: themePresentationSchema.prefault({}),
+    motion: themeMotionSchema.prefault({}),
+    accessibility: themeAccessibilitySchema.prefault({}),
     layers: z
       .array(themeLayerSchema)
       .max(12)

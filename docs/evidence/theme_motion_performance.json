@@ -1,0 +1,100 @@
+{
+  "recordedAt": "2026-10-29T14:11:46.402Z",
+  "environment": {
+    "node": "v24.22.2",
+    "platform": "linux",
+    "architecture": "x64",
+    "cpuModel": "AMD Ryzen 5 1600 Six-Core Processor",
+    "browser": "156.0.8078.4",
+    "browserName": "chromium",
+    "headless": true,
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "server": "Vite development server on loopback",
+    "networkEmulation": "none",
+    "cpuEmulation": "none"
+  },
+  "editorReadyMs": 436.5556509999951,
+  "navigation": {
+    "durationMs": 294,
+    "domContentLoadedMs": 292.90000000596046,
+    "loadEventEndMs": 294
+  },
+  "lcpObservedMs": 436,
+  "clsObserved": 0.00008709129050925925,
+  "layoutShifts": [
+    {
+      "time": 450.79999999701977,
+      "value": 0.00008709129050925925
+    }
+  ],
+  "frameIntervals": {
+    "samples": 60,
+    "p50Ms": 16.700000000000045,
+    "p95Ms": 16.700000000000273,
+    "rawMs": [
+      16.653999999999996, 16.59999999999991, 16.700000000000045,
+      16.700000000000045, 16.59999999999991, 16.700000000000045,
+      16.59999999999991, 16.700000000000045, 16.700000000000045,
+      16.700000000000045, 16.59999999999991, 16.700000000000045,
+      16.59999999999991, 16.800000000000182, 16.59999999999991,
+      16.700000000000045, 16.700000000000045, 16.59999999999991,
+      16.700000000000045, 16.59999999999991, 16.700000000000045,
+      16.59999999999991, 16.700000000000045, 16.700000000000045,
+      16.700000000000045, 16.59999999999991, 16.700000000000045,
+      16.700000000000045, 16.59999999999991, 16.700000000000045,
+      16.700000000000045, 16.700000000000045, 16.5, 16.699999999999818,
+      16.700000000000045, 16.700000000000045, 16.59999999999991,
+      16.700000000000045, 16.700000000000045, 16.59999999999991,
+      16.700000000000045, 16.700000000000045, 16.59999999999991,
+      16.700000000000273, 16.699999999999818, 16.59999999999991,
+      16.700000000000273, 16.59999999999991, 16.799999999999727,
+      16.600000000000364, 16.699999999999818, 16.699999999999818,
+      16.600000000000364, 16.699999999999818, 16.699999999999818,
+      16.600000000000364, 16.699999999999818, 16.59999999999991,
+      16.700000000000273, 16.699999999999818
+    ]
+  },
+  "supportedPerformanceEntries": [
+    "element",
+    "event",
+    "first-input",
+    "interaction-contentful-paint",
+    "largest-contentful-paint",
+    "layout-shift",
+    "long-animation-frame",
+    "longtask",
+    "mark",
+    "measure",
+    "navigation",
+    "paint",
+    "resource",
+    "soft-navigation",
+    "visibility-state"
+  ],
+  "export": {
+    "durationMs": 61.3999999910593,
+    "zipBytes": 26717,
+    "sectionCount": 10,
+    "includesImages": false
+  },
+  "heap": {
+    "jsHeapUsedBytes": 22046700,
+    "error": null
+  },
+  "runtime": {
+    "bytes": 68879,
+    "gzipBytes": 21330,
+    "budgetGzipBytes": 256000
+  },
+  "limitations": [
+    "Single controlled local observation, not a field Core Web Vitals assessment.",
+    "LCP and CLS were observed during an editor interaction session; INP is not measured.",
+    "Animation-frame intervals describe scheduling on this test device and are not an animation FPS guarantee.",
+    "Heap is one CDP observation after editor workflow and export, without forced GC or a leak test.",
+    "Export timing excludes dynamic module import and uses a ten-section text-only fixture.",
+    "Runtime budget excludes editor JavaScript, images and HTML/CSS."
+  ]
+}

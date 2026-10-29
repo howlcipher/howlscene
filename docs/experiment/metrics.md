@@ -142,4 +142,23 @@ overall, 89.97% core, 94.59% configuration and 97.72% exporter.
 68,713-byte runtime / 21,275 bytes gzip; text-only ten-section export 83.6 ms.
 These values use the documented local development-server methodology, not a
 production performance or comparative benchmark. Prior layer increment hosted
-CI passed in run `40884610329`; current presentation hosted checks remain pending.
+CI passed in runs `40884610329` (layers) and `40887036736` (presentation).
+
+## Theme motion local integrated snapshot
+
+`theme_motion_final_gate.txt` records the Node 24 `npm run check` run after the
+theme-motion changes: 139 unit tests across 34 files, 35 browser tests,
+89.57% overall branch coverage, formatting, lint, build,
+external SDK consumer and 267-package license/provenance audit. The browser test
+explicitly selects `prefers-reduced-motion: no-preference` before assertions and
+then exercises the reduced-motion state. This is a local snapshot, not a
+production performance claim.
+
+The [theme-motion browser observation](../evidence/theme_motion_performance.json)
+used Node 24.22.2, Chromium 156 headless on an AMD Ryzen 5 1600, 1440×1000,
+loopback Vite server, and no network/CPU emulation. It observed 436.6 ms editor
+ready, 294 ms navigation, 16.7 ms p50/p95 sampled frame intervals, 61.4 ms
+ten-section text-only export, and a 68,879-byte runtime (21,330 gzip). It is a
+single local observation, not a field Core Web Vitals or animation guarantee.
+The [dependency audit](../evidence/theme_motion_audit.txt) found zero
+vulnerabilities.

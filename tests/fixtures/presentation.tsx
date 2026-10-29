@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Site,
@@ -7,6 +7,7 @@ import {
   themes,
 } from "../../packages/core/src/index";
 import { exportWebsite } from "../../packages/export/src/index";
+import { enhanceSite } from "../../packages/core/src/enhance";
 import "../../packages/core/src/site.css";
 
 const registry = createThemeRegistry({
@@ -20,11 +21,14 @@ const registry = createThemeRegistry({
       cardRadiusRem: 1.5,
       navigationGapRem: 2,
     },
+    motion: { intensityScale: 0.35, speedScale: 1.8 },
+    accessibility: { parallax: false },
   },
 });
 const content = {
   schemaVersion: 1,
   title: "Presentation contract",
+  motion: "cinematic",
   sections: [
     {
       id: "intro",
@@ -46,6 +50,10 @@ const content = {
 function Fixture() {
   const [theme, setTheme] = useState("spacious");
   const site = parseSite({ ...content, theme }, registry);
+  useEffect(() => {
+    const root = document.querySelector<HTMLElement>(".howlscene");
+    return root ? enhanceSite(root) : undefined;
+  }, [theme]);
   return (
     <>
       <label>

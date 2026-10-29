@@ -47,3 +47,11 @@ THM-PRES-001 verifies actual computed styles and unchanged content in preview an
 nested no-script export. The [integrated gate](../evidence/theme_presentation_final_gate.txt)
 passes 134 unit and 35 browser tests. Nine original screenshot baselines are
 unchanged. Maximum custom values with increased text zoom still require review.
+
+`tests/theme_motion.test.tsx` covers THM-MOT-001–003 and MOT-008–009: legacy
+manifest defaults, bounded motion settings, parallax opt-out, immutable
+normalization and static rendering. The presentation browser scenario checks
+custom theme scalars, parallax suppression, theme changes, reduced motion and
+nested no-script output. Local integrated results are recorded in
+[`theme_motion_final_gate.txt`](../evidence/theme_motion_final_gate.txt); hosted
+verification is tracked in the pull request.

@@ -34,12 +34,38 @@ test("THM-PRES-001 manifest presentation affects preview and nested no-script ex
   page,
   browser,
 }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/tests/fixtures/presentation.html");
   await expect(
     page.getByRole("heading", { name: "A considered portfolio" }),
   ).toBeVisible();
   expect(await presentation(page)).toEqual(custom);
-  const words = await page.locator(".howlscene").innerText();
+  const site = page.locator(".howlscene");
+  await expect(site).toHaveAttribute("data-motion-enabled", "true");
+  await expect(site).toHaveAttribute("data-theme-motion-intensity", "0.35");
+  await expect(site).toHaveAttribute("data-theme-motion-speed", "1.8");
+  await expect(site).toHaveAttribute("data-theme-parallax", "false");
+  await page.evaluate(() => window.scrollTo(0, 100));
+  expect(
+    await site
+      .locator(".scenery-layer")
+      .first()
+      .evaluate((el) => (el as SVGElement).style.transform),
+  ).toBe("");
+  await page.getByLabel("Fixture theme").selectOption("baseline");
+  await expect(site).toHaveAttribute("data-motion-enabled", "true");
+  await page.evaluate(() => window.scrollTo(0, 100));
+  await expect
+    .poll(() =>
+      site
+        .locator(".scenery-layer")
+        .first()
+        .evaluate((el) => (el as SVGElement).style.transform),
+    )
+    .toContain("translate3d");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(site).toHaveAttribute("data-motion-enabled", "false");
+  const words = await page.locator(".howlscene main").innerText();
   await page.getByLabel("Fixture theme").selectOption("baseline");
   expect(await presentation(page)).toEqual({
     lineHeight: 1.8,
@@ -47,7 +73,7 @@ test("THM-PRES-001 manifest presentation affects preview and nested no-script ex
     cardRadius: "11.2px",
     navigationGap: "19.2px",
   });
-  expect(await page.locator(".howlscene").innerText()).toBe(words);
+  expect(await page.locator(".howlscene main").innerText()).toBe(words);
   await page.getByLabel("Fixture theme").selectOption("spacious");
   const downloading = page.waitForEvent("download");
   await page.getByRole("button", { name: "Download contract website" }).click();
@@ -82,7 +108,9 @@ test("THM-PRES-001 manifest presentation affects preview and nested no-script ex
         published.getByRole("heading", { name: "A considered portfolio" }),
       ).toBeVisible();
       expect(await presentation(published)).toEqual(custom);
-      expect(await published.locator(".howlscene").innerText()).toBe(words);
+      expect(await published.locator(".howlscene main").innerText()).toBe(
+        words,
+      );
       await published
         .getByRole("link", { name: "Selected work", exact: true })
         .click();

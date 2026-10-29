@@ -1,0 +1,123 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/theme_motion.test.tsx (5 tests | 5 failed) 20ms
+   ❯ theme motion and accessibility (5)
+     × THM-MOT-001 provides immutable defaults to prior theme authors 9ms
+     × THM-MOT-002 validates finite bounded motion overrides and exact accessible settings 2ms
+     × MOT-008 composes theme scalars with user choices and preserves fail-safe bounds 3ms
+     × MOT-009 disables only parallax layers when the selected theme disallows them 3ms
+     × THM-MOT-003 carries validated settings into shared static rendering without changing content 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/theme_motion.test.tsx > theme motion and accessibility > THM-MOT-001 provides immutable defaults to prior theme authors
+AssertionError: expected undefined to deeply equal { intensityScale: 1, speedScale: 1 }
+
+- Expected:
+{
+  "intensityScale": 1,
+  "speedScale": 1,
+}
+
++ Received:
+undefined
+
+ ❯ tests/theme_motion.test.tsx:25:31
+     23|   it("THM-MOT-001 provides immutable defaults to prior theme authors",…
+     24|     const normalized = themeSchema.parse(legacy);
+     25|     expect(normalized.motion).toEqual({ intensityScale: 1, speedScale:…
+       |                               ^
+     26|     expect(normalized.accessibility).toEqual({ parallax: true });
+     27|     expect(Object.isFrozen(normalized.motion)).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/theme_motion.test.tsx > theme motion and accessibility > THM-MOT-002 validates finite bounded motion overrides and exact accessible settings
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "motion",
+      "accessibility"
+    ],
+    "path": [],
+    "message": "Unrecognized keys: \"motion\", \"accessibility\""
+  }
+]
+ ❯ tests/theme_motion.test.tsx:32:31
+     30|   });
+     31|   it("THM-MOT-002 validates finite bounded motion overrides and exact …
+     32|     const valid = themeSchema.parse({
+       |                               ^
+     33|       ...legacy,
+     34|       motion: { intensityScale: 0.35, speedScale: 1.8 },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/theme_motion.test.tsx > theme motion and accessibility > MOT-008 composes theme scalars with user choices and preserves fail-safe bounds
+AssertionError: expected { intensity: 0.8, speed: 1.5 } to deeply equal { intensity: 0.4, speed: 2, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "intensity": 0.4,
+-   "parallax": false,
+-   "speed": 2,
++   "intensity": 0.8,
++   "speed": 1.5,
+  }
+
+ ❯ tests/theme_motion.test.tsx:68:7
+     66|         themeParallax: "false",
+     67|       }),
+     68|     ).toEqual({ intensity: 0.4, speed: 2, parallax: false });
+       |       ^
+     69|     expect(
+     70|       readMotionSettings({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/theme_motion.test.tsx > theme motion and accessibility > MOT-009 disables only parallax layers when the selected theme disallows them
+AssertionError: expected [ '.scenery-layer[data-depth]', …(2) ] to not include '.scenery-layer[data-depth]'
+ ❯ tests/theme_motion.test.tsx:107:26
+    105|     const dispose = enhanceSite(root as unknown as HTMLElement);
+    106|     expect(root.dataset.motionEnabled).toBe("true");
+    107|     expect(requests).not.toContain(".scenery-layer[data-depth]");
+       |                          ^
+    108|     dispose();
+    109|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/theme_motion.test.tsx > theme motion and accessibility > THM-MOT-003 carries validated settings into shared static rendering without changing content
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "motion",
+      "accessibility"
+    ],
+    "path": [],
+    "message": "Unrecognized keys: \"motion\", \"accessibility\""
+  }
+]
+ ❯ normalizeManifest packages/core/src/themes.ts:59:32
+     57|   available: ReadonlySet<string>,
+     58| ): ThemeManifest {
+     59|   const manifest = themeSchema.parse(input);
+       |                                ^
+     60|   for (const layer of manifest.layers) {
+     61|     if (!available.has(layer.artwork))
+ ❯ createThemeRegistry packages/core/src/themes.ts:131:18
+ ❯ tests/theme_motion.test.tsx:111:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed (5)
+   Start at  10:04:22
+   Duration  551ms (import 76%, transform 18%, tests 5%, worker 1%)
+
