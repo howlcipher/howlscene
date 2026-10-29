@@ -1,0 +1,37 @@
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 npx
+npm notice run 'playwright' test tests/e2e/image_position.spec.ts --reporter=line
+
+[WebServer] (node:268469) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:268506) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/1] tests/e2e/image_position.spec.ts:5:1 › EDT-005 uploaded section image position is editable, saved and exported
+  1) tests/e2e/image_position.spec.ts:5:1 › EDT-005 uploaded section image position is editable, saved and exported
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Image position')
+
+
+      25 |   ).toBeVisible();
+      26 |   await page.getByLabel("Image treatment").selectOption("background");
+    > 27 |   await page.getByLabel("Image position").selectOption("top");
+         |                                           ^
+      28 |   const preview = page.getByRole("region", { name: "Live website preview" });
+      29 |   await expect(preview.locator("img")).toHaveCSS("object-position", "50% 0%");
+      30 |   await expect(page.getByRole("status")).toContainText("Saved on this browser");
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/image_position.spec.ts:27:43
+
+    Error Context: test-results/image_position-EDT-005-upl-39153-editable-saved-and-exported/error-context.md
+
+
+  1 failed
+    tests/e2e/image_position.spec.ts:5:1 › EDT-005 uploaded section image position is editable, saved and exported

@@ -1,0 +1,229 @@
+v24.22.2
+
+> howlscene@0.1.0 check
+> npm run format:check && npm run lint && npm run build && npm test -- --coverage && npm run test:e2e && npm run sdk:check && npm run licenses
+
+
+> howlscene@0.1.0 format:check
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> howlscene@0.1.0 lint
+> eslint .
+
+
+> howlscene@0.1.0 build
+> npm run build:runtime && tsc --noEmit && vite build && vite build --config vite.prerender.config.ts && node scripts/prerender.mjs
+
+
+> howlscene@0.1.0 build:runtime
+> vite build --config vite.runtime.config.ts
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 385 modules transformed.
+rendering chunks...
+computing gzip size...
+packages/export/generated/site.js  68.87 kB │ gzip: 21.52 kB
+
+✓ built in 107ms
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 484 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/editor/index.html                    0.64 kB │ gzip:   0.32 kB
+dist/index.html                           0.66 kB │ gzip:   0.39 kB
+dist/examples/william-elias/index.html    0.82 kB │ gzip:   0.41 kB
+dist/assets/editor-CwHyVkFq.css           2.44 kB │ gzip:   0.89 kB
+dist/assets/styles-etigoAFB.css           4.31 kB │ gzip:   1.47 kB
+dist/assets/site-BCDpQAxV.css             7.35 kB │ gzip:   2.30 kB
+dist/assets/landing-Ce95X-tl.js           3.53 kB │ gzip:   1.19 kB
+dist/assets/example-CWvt03I0.js           4.14 kB │ gzip:   1.93 kB
+dist/assets/site-VcXk_GaP.js            125.66 kB │ gzip:  38.48 kB
+dist/assets/jsx-runtime-B-3DLZV4.js     220.35 kB │ gzip:  68.95 kB
+dist/assets/editor-C1_L2GaZ.js          309.21 kB │ gzip:  97.25 kB
+dist/assets/src-DKQ4So0k.js             385.08 kB │ gzip: 115.93 kB
+
+✓ built in 500ms
+vite v8.3.5 building ssr environment for production...
+transforming...
+✓ 19 modules transformed.
+rendering chunks...
+computing gzip size...
+.artifacts/prerender/prerender.mjs  57.80 kB │ gzip: 17.33 kB
+
+✓ built in 45ms
+Prerendered index.html: 2164 bytes of semantic HTML.
+Prerendered examples/william-elias/index.html: 15680 bytes of semantic HTML.
+
+> howlscene@0.1.0 pretest
+> npm run build:runtime
+
+
+> howlscene@0.1.0 build:runtime
+> vite build --config vite.runtime.config.ts
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 385 modules transformed.
+rendering chunks...
+computing gzip size...
+packages/export/generated/site.js  68.87 kB │ gzip: 21.52 kB
+
+✓ built in 119ms
+
+> howlscene@0.1.0 test
+> vitest run --coverage
+
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+      Coverage enabled with v8
+
+
+ Test Files  34 passed (34)
+      Tests  145 passed (145)
+   Start at  15:56:36
+   Duration  5.92s (import 62%, tests 28%, worker 7%, transform 2%)
+
+    Isolate  34 workers spawned · ~160ms startup each (spawn + environment, per file)
+             at least ~1.20s faster with isolate: false — reuses workers across files instead of one per file
+
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   95.04 |    89.54 |    95.8 |   97.15 |
+ apps/editor       |    92.8 |     82.5 |   86.95 |   94.48 |
+  document.ts      |   94.44 |    82.35 |     100 |   96.87 | 74
+  model.ts         |   93.61 |    91.66 |   94.11 |   95.12 | 84,124
+  storage.ts       |   91.07 |    72.72 |   77.27 |   92.59 | 31,33,68,72
+ packages/core/src |   95.36 |    90.02 |   99.05 |   97.77 |
+  Site.tsx         |      80 |    83.87 |    90.9 |   86.95 | 42-44
+  artwork.tsx      |     100 |      100 |     100 |     100 |
+  ...k_contract.ts |     100 |      100 |     100 |     100 |
+  assets.ts        |   91.56 |    90.32 |     100 |   96.64 | ...03,188,218,224
+  config.ts        |     100 |    94.59 |     100 |     100 | 49-64
+  enhance.ts       |   96.89 |    83.72 |     100 |   97.54 | 147,179-180
+  index.tsx        |       0 |        0 |       0 |       0 |
+  media.tsx        |     100 |    86.66 |     100 |     100 | 17,19
+  motion.ts        |     100 |    96.77 |     100 |     100 | 68
+  registry.ts      |     100 |      100 |     100 |     100 |
+  rich_text.tsx    |     100 |      100 |     100 |     100 |
+  runtime.ts       |     100 |      100 |     100 |     100 |
+  scenery.tsx      |      90 |    81.25 |     100 |     100 | 19-26
+  sections.tsx     |     100 |       90 |     100 |     100 | 47,68,108
+  themes.ts        |     100 |    95.83 |     100 |     100 | 208
+ ...ges/export/src |   97.95 |    97.72 |     100 |   97.77 |
+  backup.ts        |     100 |      100 |     100 |     100 |
+  index.tsx        |   97.05 |    96.29 |     100 |   96.66 | 57
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 95.04% ( 691/727 )
+Branches     : 89.54% ( 497/555 )
+Functions    : 95.8% ( 160/167 )
+Lines        : 97.15% ( 648/667 )
+================================================================================
+
+> howlscene@0.1.0 test:e2e
+> playwright test
+
+
+Running 40 tests using 1 worker
+
+  ✓   1 tests/e2e/accessibility.spec.ts:16:1 › A11Y-001 EDT-009 keyboard-only editing, section creation and backup download (1.7s)
+  ✓   2 tests/e2e/accessibility.spec.ts:64:1 › A11Y-005 A11Y-007 editor and preview have no serious automated violations or horizontal overflow (7.8s)
+  ✓   3 tests/e2e/accessibility.spec.ts:94:1 › THM-001 example theme switching preserves all section content (567ms)
+  ✓   4 tests/e2e/backup.spec.ts:3:1 › AST-002 AST-004 browser backup validation decodes images before accepting imports (417ms)
+  ✓   5 tests/e2e/destructive.spec.ts:2:1 › EDT-008 A11Y-006 item deletion confirms and restores useful keyboard focus (758ms)
+  ✓   6 tests/e2e/editor.spec.ts:3:1 › EDT-001 EDT-003 EDT-004 EDT-006 guided editing survives history themes and reload (1.9s)
+  ✓   7 tests/e2e/editor.spec.ts:40:1 › TXT-001 EDT-002 formatting edits update preview without HTML (573ms)
+  ✓   8 tests/e2e/editor.spec.ts:55:1 › EDT-007 warns about edits even when browser storage is unavailable (484ms)
+  ✓   9 tests/e2e/editor.spec.ts:71:1 › AST-001 EDT-005 delayed image preparation preserves newer edits (547ms)
+  ✓  10 tests/e2e/editor.spec.ts:118:1 › EDT-002 website title can be replaced using ordinary keyboard editing (699ms)
+  ✓  11 tests/e2e/editor.spec.ts:135:1 › EDT-009 phone preview responds to its own width on a desktop screen (520ms)
+  ✓  12 tests/e2e/export.spec.ts:7:1 › Phase 0: edit, download, extract and serve at root and nested paths without JS (3.3s)
+  ✓  13 tests/e2e/export.spec.ts:89:1 › editor prevents introduction overflow before export (471ms)
+  ✓  14 tests/e2e/image_position.spec.ts:5:1 › EDT-005 uploaded section image position is editable, saved and exported (1.7s)
+  ✓  15 tests/e2e/journey.spec.ts:9:1 › v1 acceptance: create, restore, back up, export and serve a complete portfolio (10.2s)
+  ✓  16 tests/e2e/long_content.spec.ts:3:1 › MOT-007 long cinematic content grows naturally and remains reachable with ordinary document scrolling (10.5s)
+  ✓  17 tests/e2e/motion.spec.ts:20:1 › MOT-002 A11Y-003 reduced motion cancels entry effects immediately (439ms)
+  ✓  18 tests/e2e/motion.spec.ts:36:1 › MOT-002 MOT-005 scenery follows ordinary scroll and resets when motion stops (427ms)
+  ✓  19 tests/e2e/motion.spec.ts:61:1 › MOT-003 A11Y-004 manual motion choice persists and anchors work (311ms)
+  ✓  20 tests/e2e/motion.spec.ts:82:1 › MOT-005 cleanup cancels work and detaches controls (266ms)
+  ✓  21 tests/e2e/motion.spec.ts:95:1 › MOT-004 scene exits crossfade scenery and cancel offscreen work (1.6s)
+  ✓  22 tests/e2e/performance.spec.ts:7:1 › controlled local editor, export and animation timing observations (2.6s)
+  ✓  23 tests/e2e/presentation.spec.ts:33:1 › THM-PRES-001 manifest presentation affects preview and nested no-script export without changing content (1.1s)
+  ✓  24 tests/e2e/production.spec.ts:6:1 › production files work at root and GitHub Pages paths with and without JavaScript (3.2s)
+  ✓  25 tests/e2e/routes.spec.ts:2:1 › product routes lead to a real editor and consumer example (1.5s)
+  ✓  26 tests/e2e/tabs.spec.ts:3:1 › EDT-006 competing editor tabs cannot silently overwrite the owning local draft (3.3s)
+  ✓  27 tests/e2e/theme_cards.spec.ts:3:1 › THM-CARD-002 built-in card treatments preserve readability and responsive grids (1.1s)
+  ✓  28 tests/e2e/theme_colors.spec.ts:22:1 › EDT-010 creators can change text and background colors, switch themes, reload and export (1.8s)
+  ✓  29 tests/e2e/theme_navigation.spec.ts:3:1 › THM-NAV-002 built-in navigation treatments stay distinct, visible and responsive (860ms)
+  ✓  30 tests/e2e/theme_responsive_navigation.spec.ts:3:1 › THM-RESP-002 theme mobile navigation layouts remain readable and overflow-free (1.1s)
+  ✓  31 tests/e2e/transitions.spec.ts:3:1 › MOT-004 MOT-006 rapid theme and anchor changes dispose prior transitions without changing content (3.2s)
+  ✓  32 tests/e2e/visual.spec.ts:22:5 › visual preview ink 375px (1.6s)
+  ✓  33 tests/e2e/visual.spec.ts:22:5 › visual preview cyber 375px (1.6s)
+  ✓  34 tests/e2e/visual.spec.ts:22:5 › visual preview modern 375px (1.6s)
+  ✓  35 tests/e2e/visual.spec.ts:22:5 › visual preview ink 768px (1.7s)
+  ✓  36 tests/e2e/visual.spec.ts:22:5 › visual preview cyber 768px (1.6s)
+  ✓  37 tests/e2e/visual.spec.ts:22:5 › visual preview modern 768px (1.6s)
+  ✓  38 tests/e2e/visual.spec.ts:22:5 › visual preview ink 1440px (1.8s)
+  ✓  39 tests/e2e/visual.spec.ts:22:5 › visual preview cyber 1440px (1.7s)
+  ✓  40 tests/e2e/visual.spec.ts:22:5 › visual preview modern 1440px (1.7s)
+
+  40 passed (1.4m)
+
+> howlscene@0.1.0 sdk:check
+> npm run build:sdk && npm run build:export && node scripts/sdk_check.mjs
+
+
+> howlscene@0.1.0 build:sdk
+> vite build --config vite.sdk.config.ts && tsc -p tsconfig.sdk.json
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 15 modules transformed.
+rendering chunks...
+computing gzip size...
+packages/core/dist/index.js  39.33 kB │ gzip: 12.82 kB
+
+✓ built in 46ms
+
+> howlscene@0.1.0 build:export
+> npm run build:runtime && vite build --config vite.export.config.ts && tsc -p tsconfig.export.json
+
+
+> howlscene@0.1.0 build:runtime
+> vite build --config vite.runtime.config.ts
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 385 modules transformed.
+rendering chunks...
+computing gzip size...
+packages/export/generated/site.js  68.87 kB │ gzip: 21.52 kB
+
+✓ built in 104ms
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 26 modules transformed.
+rendering chunks...
+computing gzip size...
+packages/export/dist/index.js  120.47 kB │ gzip: 36.69 kB
+
+✓ built in 53ms
+SDK-001 through SDK-005: independent install, declarations, custom artwork render, backup and export passed
+SDK CSS export and editor independence verified.
+SDK browser-generated custom ZIP served at two real nested mounts with JavaScript disabled and enabled; content, artwork, CSS and response checks passed.
+SDK clean Vite consumer build, custom artwork, CSS and actual custom-theme browser ZIP verified.
+
+> howlscene@0.1.0 licenses
+> node scripts/license_audit.mjs
+
+License and registry provenance audit: 267 locked packages inspected.
+All inspected dependencies satisfy the configured license allowlist.
+EXIT_CODE=0

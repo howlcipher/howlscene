@@ -235,3 +235,19 @@ animation guarantees. Build time in this run was 466 ms for the production clien
 bundle, not a full clean CI build timing. npm audit used host npm 12 under Node
 22.22.1 and returned zero vulnerabilities; the application gate itself used
 Node 24.22.2.
+
+## Section image position editor snapshot
+
+The [Node 24.22.2 full gate](../evidence/image_position_final_gate.txt) passes
+145 unit and 40 browser tests; branch coverage remains 89.54% overall, 90.02%
+core, 94.59% configuration, and 97.72% exporter. Package-consumer and license
+checks passed. A fresh `npm audit --audit-level=moderate` found zero
+vulnerabilities.
+
+The [controlled performance record](../evidence/image_position_performance.json)
+used the same Ryzen 5 1600 / Chromium 156 headless / loopback-Vite environment at
+1440×1000: editor ready 481.6 ms; session-observed LCP 476 ms and CLS 0.000087;
+sampled frame p50/p95 16.7 ms; ten-section text-only ZIP 68 ms; runtime 68,879
+bytes (21,330 gzip). Production site JS was 125.66 kB (38.48 kB gzip) in the
+build log. Single-run local measurements do not establish production field
+metrics or animation guarantees.

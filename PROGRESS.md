@@ -301,6 +301,17 @@ The local Chromium/Node sample reports a 68,879-byte runtime (21,330 gzip),
 ten-section text-only export; it is one controlled local observation, not field
 performance evidence. npm noted that the host npm 12 is unsupported by host
 Node 22.22.1; the complete application gate ran with Node 24.22.2. Text over
-artwork and human accessibility/usability review remain open. Hosted verification
-is the next gate. Isolation remains intact and comparison evidence is maintained;
-no comparison result or release readiness is claimed.
+artwork and human accessibility/usability review remain open. Isolation remains
+intact and comparison evidence is maintained; no comparison result or release
+readiness is claimed.
+
+Color controls merged as `41618b6`; PR #8's required hosted run `40943699920`
+passed. The next slice exposes the existing section-image position setting in
+the editor. The first browser test failed because the control was missing; RED
+is preserved in `docs/evidence/image_position_red.txt`. The editor now offers
+top/center/bottom and the test verifies upload, preview CSS, local save/reload,
+and static ZIP HTML. Its complete local Node 24.22.2 gate passes 145 unit and 40
+browser tests, with 89.54% branch coverage, independent package checks and the
+267-package license audit. Fresh logs and local performance evidence are in
+`docs/evidence/image_position_*`; the vulnerability scan reports zero issues.
+Hosted CI remains pending for this slice. No release readiness is claimed.

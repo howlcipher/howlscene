@@ -24,6 +24,12 @@ See [`editor_colors_final_gate.txt`](../evidence/editor_colors_final_gate.txt).
 Hosted verification is still required; this does not close the human accessibility
 or usability review or establish release readiness.
 
+The creator color controls merged as `41618b6` after hosted run `40943699920`
+passed. The follow-up image-position editor control passes the full local gate:
+145 unit tests, 40 browser tests, SDK/export consumer checks, and license audit.
+Its hosted verification and merge remain pending; see the
+[`image-position evidence`](../evidence/image_position_final_gate.txt).
+
 Current branch: `work/theme-layers`. Manifest-driven artwork passes the complete local gate:
 130 unit tests, 34 browser tests, independent package consumption and licenses.
 The aggregate asset-preflight regression and cleanup correction pass too. The clean hosted baseline is

@@ -207,6 +207,24 @@ export function SectionPanel({
             <option value="background">Background scenery</option>
           </select>
         </label>
+        {section.image && (
+          <label>
+            Image position
+            <select
+              value={section.imagePosition}
+              onChange={(e) =>
+                update({
+                  imagePosition: e.target
+                    .value as SectionConfig["imagePosition"],
+                })
+              }
+            >
+              <option value="top">Top</option>
+              <option value="center">Center</option>
+              <option value="bottom">Bottom</option>
+            </select>
+          </label>
+        )}
         <label className="checkbox">
           <input
             type="checkbox"

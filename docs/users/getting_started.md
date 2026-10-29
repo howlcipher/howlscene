@@ -12,7 +12,7 @@ A verified public editor address is not available yet. Open the local address pr
 4. Change **Website title** to your name and edit the description.
 5. Use **Background color**, **Text color**, and **Accent color** to adjust the site's colors. If a color combination is hard to read, HowlScene displays a higher-contrast color and explains why.
 6. Select the introduction section, edit its heading, and use the rich-text controls for paragraphs, headings, bold, italic, links, or lists.
-7. Choose **Change section image**, upload a PNG/JPEG/WebP, and describe it with alt text.
+7. Choose **Change section image**, upload a PNG/JPEG/WebP, and describe it with alt text. Choose whether it appears within the content or as scenery, then set its position to the top, center, or bottom.
 8. Choose Projects under **New section type** and select **Add a section**. Edit its content with the available controls.
 9. Move sections up or down, choose layouts, and set **Choose animation style**. Undo and Redo restore supported committed edits.
 10. Switch themes and check your text remains intact. Set **Preview size** to Phone, Tablet, or Desktop.
