@@ -305,13 +305,16 @@ artwork and human accessibility/usability review remain open. Isolation remains
 intact and comparison evidence is maintained; no comparison result or release
 readiness is claimed.
 
-Color controls merged as `41618b6`; PR #8's required hosted run `40943699920`
-passed. The next slice exposes the existing section-image position setting in
-the editor. The first browser test failed because the control was missing; RED
-is preserved in `docs/evidence/image_position_red.txt`. The editor now offers
-top/center/bottom and the test verifies upload, preview CSS, local save/reload,
-and static ZIP HTML. Its complete local Node 24.22.2 gate passes 145 unit and 40
-browser tests, with 89.54% branch coverage, independent package checks and the
-267-package license audit. Fresh logs and local performance evidence are in
-`docs/evidence/image_position_*`; the vulnerability scan reports zero issues.
-Hosted CI remains pending for this slice. No release readiness is claimed.
+Color controls merged as `41618b6`; PR #8's hosted run `40943699920` passed.
+Section image positioning merged as `35a53b0`; PR #9's hosted run `40945088628`
+passed. The current slice exposes section spacing, content alignment, and content
+width controls. Its first browser test failed because the editor did not expose
+these existing model values; the RED is preserved in
+`docs/evidence/layout_controls_red.txt`. The options now share central validated
+definitions, and a browser scenario passes edit, live preview, local reload, and
+ZIP HTML checks. The full Node 24.22.2 gate passes 145 unit and 41 browser tests;
+branch coverage is 89.54%, and the 267-package license audit and separate zero-
+vulnerability scan passed. Performance evidence and exact logs are in
+`docs/evidence/layout_controls_*`. Hosted verification is pending. Repository
+isolation is intact, comparison evidence remains maintained, and no release
+readiness is claimed.

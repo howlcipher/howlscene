@@ -47,6 +47,12 @@ The first manifest-layer increment is implemented. Full presentation metadata, e
 
 Entries contain stable `id`, `title`, plain `body`, optional safe `url`, and optional asset `image`. Default entries render cards, an ordered experience timeline, or gallery figures. The outer renderer owns section landmarks, headings, navigation, section image, rich text, and optional CTA. A custom entry renderer should preserve that shared structure and resolve image references through `assetUrl`. This API overrides supported section types; it does not register arbitrary new schema discriminators.
 
+Section configuration options are exported from `@howlscene/core` as
+`layoutIds`, `sectionSpacings`, `sectionAlignments`, `sectionContentWidths`, and
+`sectionImagePositions`. The version-1 schema and editor derive their supported
+values from these shared lists. They represent finite presentation choices;
+custom CSS classes or arbitrary inline styles cannot be imported through them.
+
 ## Portable rich text
 
 `RichDocument` is a validated array of paragraph, level-2/3 heading, or list blocks. Text spans support text, bold, italic, and optional safe links. Ordered and unordered lists have one level; nested lists, arbitrary HTML, embeds, and custom Lexical nodes are outside this contract. Lexical is an editor implementation detail. Preview and export render the same portable model.

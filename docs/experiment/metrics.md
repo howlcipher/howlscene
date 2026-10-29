@@ -251,3 +251,19 @@ sampled frame p50/p95 16.7 ms; ten-section text-only ZIP 68 ms; runtime 68,879
 bytes (21,330 gzip). Production site JS was 125.66 kB (38.48 kB gzip) in the
 build log. Single-run local measurements do not establish production field
 metrics or animation guarantees.
+
+## Section layout controls snapshot
+
+The full Node 24.22.2 gate passes 145 unit and 41 browser tests, with 95.07%
+statement coverage and 89.54% branch coverage. Core branch coverage is 90.02%,
+configuration 94.59%, and exporter 97.72%. Independent package consumers,
+license/provenance inspection, and the fresh vulnerability audit passed. The
+[gate](../evidence/layout_controls_final_gate.txt) and
+[audit](../evidence/layout_controls_audit.txt) preserve output.
+
+One local observation on Ryzen 5 1600 / Chromium 156 headless / loopback Vite at
+1440×1000 measured 414 ms editor-ready, observed LCP 436 ms and CLS 0.000087,
+frame interval p50 16.7 ms / p95 16.8 ms, and 76.8 ms for ten-section
+text-only export. Runtime was 68,879 bytes / 21,330 gzip. These are lab
+observations, not production or comparative guarantees; see the
+[raw measurement](../evidence/layout_controls_performance.json).

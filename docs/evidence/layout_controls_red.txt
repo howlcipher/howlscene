@@ -1,0 +1,38 @@
+v24.22.2
+
+> howlscene@0.1.0 test:e2e
+> playwright test tests/e2e/layout_controls.spec.ts
+
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/layout_controls.spec.ts:5:1 › EDT-003 section spacing, alignment and width are saved and exported (5.6s)
+
+
+  1) tests/e2e/layout_controls.spec.ts:5:1 › EDT-003 section spacing, alignment and width are saved and exported
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator: getByLabel('Section spacing')
+    Expected: "comfortable"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveValue" getByLabel('Section spacing') with timeout 5000ms
+      - waiting for getByLabel('Section spacing')
+
+
+       7 | }) => {
+       8 |   await page.goto("/editor/");
+    >  9 |   await expect(page.getByLabel("Section spacing")).toHaveValue("comfortable");
+         |                                                    ^
+      10 |   await expect(page.getByLabel("Content alignment")).toHaveValue("center");
+      11 |   await expect(page.getByLabel("Content width")).toHaveValue("normal");
+      12 |
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/layout_controls.spec.ts:9:52
+
+    Error Context: test-results/layout_controls-EDT-003-se-97d60-idth-are-saved-and-exported/error-context.md
+
+  1 failed
+    tests/e2e/layout_controls.spec.ts:5:1 › EDT-003 section spacing, alignment and width are saved and exported

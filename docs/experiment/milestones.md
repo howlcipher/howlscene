@@ -25,10 +25,13 @@ Hosted verification is still required; this does not close the human accessibili
 or usability review or establish release readiness.
 
 The creator color controls merged as `41618b6` after hosted run `40943699920`
-passed. The follow-up image-position editor control passes the full local gate:
-145 unit tests, 40 browser tests, SDK/export consumer checks, and license audit.
-Its hosted verification and merge remain pending; see the
-[`image-position evidence`](../evidence/image_position_final_gate.txt).
+passed. The image-position editor control merged as `35a53b0` after hosted run
+`40945088628` passed; evidence is in
+[`image-position gate`](../evidence/image_position_final_gate.txt). The
+section-spacing/alignment/width editor increment passes the full local gate:
+145 unit and 41 browser tests, package consumers, and license audit. Its hosted
+verification and merge remain pending; see
+[`layout controls evidence`](../evidence/layout_controls_final_gate.txt).
 
 Current branch: `work/theme-layers`. Manifest-driven artwork passes the complete local gate:
 130 unit tests, 34 browser tests, independent package consumption and licenses.

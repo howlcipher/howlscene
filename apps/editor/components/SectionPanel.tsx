@@ -2,6 +2,9 @@ import { EntryControls } from "./EntryControls";
 import {
   sectionDefinitions,
   parseSite,
+  sectionSpacings,
+  sectionAlignments,
+  sectionContentWidths,
   type SiteConfig,
   type SectionConfig,
 } from "../../../packages/core/src/index";
@@ -181,6 +184,59 @@ export function SectionPanel({
           >
             {sectionDefinitions[section.type].layouts.map((layout) => (
               <option key={layout}>{layout}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Section spacing
+          <select
+            value={section.spacing}
+            onChange={(e) =>
+              update({ spacing: e.target.value as SectionConfig["spacing"] })
+            }
+          >
+            {sectionSpacings.map((value) => (
+              <option key={value} value={value}>
+                {value[0]!.toUpperCase() + value.slice(1)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Content alignment
+          <select
+            value={section.alignment}
+            onChange={(e) =>
+              update({
+                alignment: e.target.value as SectionConfig["alignment"],
+              })
+            }
+          >
+            {sectionAlignments.map((value) => (
+              <option key={value} value={value}>
+                {value === "start"
+                  ? "Left edge"
+                  : value === "end"
+                    ? "Right edge"
+                    : "Center"}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Content width
+          <select
+            value={section.contentWidth}
+            onChange={(e) =>
+              update({
+                contentWidth: e.target.value as SectionConfig["contentWidth"],
+              })
+            }
+          >
+            {sectionContentWidths.map((value) => (
+              <option key={value} value={value}>
+                {value[0]!.toUpperCase() + value.slice(1)}
+              </option>
             ))}
           </select>
         </label>
