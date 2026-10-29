@@ -28,9 +28,9 @@ features; unfinished acceptance requirements are tracked in
    profile; physical-device and older-computer review remain open.
 6. Finish security, provenance and release review; prepare and verify optional
    GitHub Pages deployment without changing the original portfolio. The
-   fail-closed workflow and administrator guide are prepared, but require hosted
-   verification plus owner configuration of Pages and an independently reviewed
-   deployment environment before a public deployment can be attempted.
+   fail-closed workflow and administrator guide are prepared, and the artifact
+   check passed hosted PR verification. A public deployment still requires owner
+   configuration of Pages and two distinct protected reviewer environments.
 
 ## After v1
 

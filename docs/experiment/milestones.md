@@ -24,10 +24,17 @@ dependency vulnerabilities; see
 [`pages_preparation_local_gate.txt`](../evidence/pages_preparation_local_gate.txt).
 The workflow builds and tests a Pages artifact, while public deployment is
 disabled unless the manual input, main ref, owner-managed repository variable,
-and both distinct protected reviewer approvals all match. Hosted verification and
-repository-side safeguards are not yet complete. See
+and both distinct protected reviewer approvals all match. PR #20 passed hosted
+Pages artifact/path verification in run
+[`40969895104`](https://github.com/howlcipher/howlscene/actions/runs/40969895104)
+and the full quality gate in run
+[`40969894934`](https://github.com/howlcipher/howlscene/actions/runs/40969894934).
+The approval jobs skipped as expected on the PR. Repository-side Pages and
+reviewer-environment safeguards are still unconfigured. See
 [ADR 012](../architecture/adr_012_github_pages_release_gate.md) and the
 [administrator guide](../developers/github_pages_deployment.md).
+The resulting `main` protection settings are recorded in
+[`pages_branch_protection.md`](../evidence/pages_branch_protection.md).
 
 Creator background/text/accent colors now pass the integrated local gate:
 145 unit tests, 39 browser tests, 89.54% overall branch coverage, production

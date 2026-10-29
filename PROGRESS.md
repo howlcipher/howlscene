@@ -72,12 +72,15 @@ requires distinct reviewers, self-review prevention, and main-only environment
 policies before the variable is set. The [ADR](docs/architecture/adr_012_github_pages_release_gate.md)
 records alternatives and rationale.
 
-Live GitHub evidence before this change showed Pages is not configured, the
-repository has no Actions environments, and `main` has no branch protection
-rule. No Pages enable variable is set. No site URL is live. Local route tests
-are not public-host verification; v1 release remains blocked on owner-controlled
-repository setup, independent approvals and deployment, plus the existing human
-accessibility/usability review. The user requested conventional Track A
+Initial live GitHub evidence showed Pages was not configured, the repository had
+no Actions environments, and `main` had no branch protection. After PR #20, the
+`main` branch now requires pull requests and the up-to-date `verify` check,
+applies that rule to administrators, and blocks force pushes and deletion. The
+rule does not require a human PR approval. No Pages enable variable is set, no
+Actions environments exist, and no site URL is live. Local route tests are not
+public-host verification; v1 release remains blocked on owner-controlled Pages
+setup, two distinct environment approvers and deployment, plus the existing
+human accessibility/usability review. The user requested conventional Track A
 isolation; no other implementation or repository was modified.
 
 The complete pinned Playwright-container gate for this workflow/documentation
@@ -85,8 +88,13 @@ increment passed: 150 unit tests, 50 browser tests, build/prerender, SDK package
 consumers, license audit, and a separate dependency audit reporting zero
 vulnerabilities. Overall branch coverage is 89.54%. Exact output is retained in
 [`pages_preparation_local_gate.txt`](docs/evidence/pages_preparation_local_gate.txt).
-`actionlint` accepted the Pages and existing CI workflows. Hosted verification
-of the new workflow and public deployment remain pending.
+`actionlint` accepted the Pages and existing CI workflows. Hosted PR #20 checks
+passed: Pages artifact/path verification in run
+[`40969895104`](https://github.com/howlcipher/howlscene/actions/runs/40969895104)
+and the full `verify` suite in run
+[`40969894934`](https://github.com/howlcipher/howlscene/actions/runs/40969894934).
+The three approval/deploy jobs were skipped for the pull request. Public
+deployment remains pending owner setup and approvals.
 
 ## Published development checkpoint
 

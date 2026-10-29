@@ -19,6 +19,7 @@
 - End-to-end verification for compatible section layouts across editor preview, local draft reload, phone reflow, and static export.
 - A fail-closed GitHub Pages artifact workflow with project-path production checks and a manual, independently approved deployment gate; Pages remains unconfigured.
 - Administrator instructions and ADR for the Pages approval gate and the required repository safeguards.
+- Protected `main` with pull-request-only updates and the up-to-date `verify` check enforced for admins.
 
 ### Fixed
 
