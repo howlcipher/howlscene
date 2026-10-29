@@ -5,6 +5,7 @@ import {
   sectionSpacings,
   sectionAlignments,
   sectionContentWidths,
+  type BuiltinSectionType,
   type SiteConfig,
   type SectionConfig,
 } from "../../../packages/core/src/index";
@@ -27,8 +28,8 @@ export function SectionPanel({
   section: SectionConfig;
   actions: ProjectActions;
   selection: {
-    newType: SectionConfig["type"];
-    setNewType: (type: SectionConfig["type"]) => void;
+    newType: BuiltinSectionType;
+    setNewType: (type: BuiltinSectionType) => void;
     setSelected: (id: string) => void;
   };
   onImage: (file: File, sectionId: string) => void;
@@ -36,6 +37,8 @@ export function SectionPanel({
   const { commit, perform, setError } = actions;
   const { newType, setNewType, setSelected } = selection;
   const position = site.sections.findIndex((s) => s.id === section.id);
+  const definition =
+    section.type === "custom" ? undefined : sectionDefinitions[section.type];
   function update(patch: Partial<SectionConfig>) {
     commit({
       ...site,
@@ -72,7 +75,7 @@ export function SectionPanel({
         New section type
         <select
           value={newType}
-          onChange={(e) => setNewType(e.target.value as SectionConfig["type"])}
+          onChange={(e) => setNewType(e.target.value as BuiltinSectionType)}
         >
           {Object.entries(sectionDefinitions).map(([id, definition]) => (
             <option key={id} value={id}>
@@ -91,7 +94,10 @@ export function SectionPanel({
         Add a section
       </button>
       <fieldset>
-        <legend>Editing: {sectionDefinitions[section.type].label}</legend>
+        <legend>
+          Editing:{" "}
+          {definition?.label ?? `Custom section (${section.customType})`}
+        </legend>
         <label>
           Edit heading
           <input
@@ -182,7 +188,7 @@ export function SectionPanel({
               update({ layout: e.target.value as SectionConfig["layout"] })
             }
           >
-            {sectionDefinitions[section.type].layouts.map((layout) => (
+            {(definition?.layouts ?? [section.layout]).map((layout) => (
               <option key={layout}>{layout}</option>
             ))}
           </select>

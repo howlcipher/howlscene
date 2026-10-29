@@ -67,7 +67,8 @@ const artworkRegistry=createArtworkRegistry({
   'forest-canopy':{render:()=>createElement('circle',{'data-original-art':'forest-canopy',cx:720,cy:200,r:160})}
 });
 const themeRegistry=createThemeRegistry({forest:{...themes.ink,name:'Forest',background:'#e8efdf',presentation:{bodyLineHeight:2,navigationGapRem:2},layers:[{id:'canopy',artwork:'forest-canopy',depth:.3,opacity:.2}]}},artworkRegistry);
-const site:SiteConfig=parseSite({...starterSite,theme:'forest'},themeRegistry);
+const sectionRegistry=createSectionRegistry({},[{id:'notice',renderer:({section})=>createElement('aside',{'data-custom-section':'notice'},section.body)}]);
+const site:SiteConfig=parseSite({...starterSite,theme:'forest',sections:[{id:'notice',type:'custom' as const,customType:'notice',heading:'Developer section',body:'Portable custom content.'}]},themeRegistry,sectionRegistry);
 `;
   await writeFile(
     join(temporary, "consumer.ts"),
@@ -76,12 +77,12 @@ import {Site,parseSite,starterSite,themes,createArtworkRegistry,createThemeRegis
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 ${extensionFixture}
-const restored=importBackup(serializeBackup(site,themeRegistry),themeRegistry);
+const restored=importBackup(serializeBackup(site,themeRegistry,sectionRegistry),themeRegistry,sectionRegistry);
 if(restored.theme!=='forest'||restored.sections[0]!.heading!==site.sections[0]!.heading)throw new Error('Custom project backup contract failed');
 if(!createSectionRegistry().hero||!resolvePrimitive('fade','calm'))throw new Error('Missing public extension API');
-const html=renderToStaticMarkup(createElement(Site,{site,themeRegistry,artworkRegistry}));
-if(!html.includes('data-theme="forest"')||!html.includes('data-original-art="forest-canopy"')||!html.includes(site.sections[0]!.heading))throw new Error('SDK did not render configured artwork');
-const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry});
+const html=renderToStaticMarkup(createElement(Site,{site,themeRegistry,artworkRegistry,sectionRegistry}));
+if(!html.includes('data-theme="forest"')||!html.includes('data-original-art="forest-canopy"')||!html.includes('data-custom-section="notice"')||!html.includes('Portable custom content.'))throw new Error('SDK did not render configured artwork and section');
+const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry,sectionRegistry});
 if(!bytes.byteLength)throw new Error('Custom theme static export failed');
 console.log('SDK-001 through SDK-005: independent install, declarations, custom artwork render, backup and export passed');
 `,
@@ -125,14 +126,14 @@ console.log('SDK-001 through SDK-005: independent install, declarations, custom 
     `import {exportWebsite} from '@howlscene/export';
 import {createElement} from 'react';
 import {createRoot} from 'react-dom/client';
-import {Site,starterSite,parseSite,createArtworkRegistry,createThemeRegistry,themes,type SiteConfig} from '@howlscene/core';
+import {Site,starterSite,parseSite,createArtworkRegistry,createThemeRegistry,createSectionRegistry,themes,type SiteConfig} from '@howlscene/core';
 import '@howlscene/core/styles.css';
 ${extensionFixture}
-createRoot(document.getElementById('root')!).render(createElement(Site,{site,themeRegistry,artworkRegistry}));
+createRoot(document.getElementById('root')!).render(createElement(Site,{site,themeRegistry,artworkRegistry,sectionRegistry}));
 const button=document.createElement('button');
 button.textContent='Export consumer website';
 button.onclick=async()=>{
- const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry});
+ const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry,sectionRegistry});
  (window as Window & {exportBytes?:number[]}).exportBytes=Array.from(bytes);
  button.textContent='Exported '+bytes.byteLength+' bytes';
 };
@@ -216,9 +217,8 @@ document.body.append(button);`,
     page.on("requestfailed", (request) => errors.push(request.url()));
     const address = server.address();
     await page.goto(`http://127.0.0.1:${address.port}/`);
-    await page
-      .getByRole("heading", { name: "Build something worth sharing" })
-      .waitFor();
+    await page.getByRole("heading", { name: "Developer section" }).waitFor();
+    await page.locator('[data-custom-section="notice"]').waitFor();
     await page.getByRole("button", { name: "Export consumer website" }).click();
     await page.getByRole("button", { name: /Exported [0-9]+ bytes/ }).waitFor();
     const artwork = await page
@@ -234,7 +234,8 @@ document.body.append(button);`,
     if (
       !exportedHTML?.includes('data-theme="forest"') ||
       !exportedHTML.includes('data-original-art="forest-canopy"') ||
-      !exportedHTML.includes("Build something worth sharing")
+      !exportedHTML.includes('data-custom-section="notice"') ||
+      !exportedHTML.includes("Portable custom content.")
     )
       throw Error("Browser ZIP omitted custom theme, artwork or content");
     for (const [name, entry] of Object.entries(archive.files)) {
@@ -270,8 +271,9 @@ document.body.append(button);`,
             if (document?.status() !== 200)
               throw Error("Nested export document failed");
             await published
-              .getByRole("heading", { name: "Build something worth sharing" })
+              .getByRole("heading", { name: "Developer section" })
               .waitFor();
+            await published.locator('[data-custom-section="notice"]').waitFor();
             if (
               (await published
                 .locator('circle[data-original-art="forest-canopy"]')

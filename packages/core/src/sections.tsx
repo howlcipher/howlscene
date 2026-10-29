@@ -3,7 +3,7 @@ import type { ImageAsset } from "./assets.js";
 import type { ComponentType } from "react";
 import { z } from "zod";
 import type { SectionConfig } from "./index.js";
-import { sectionDefinitions } from "./registry.js";
+import { sectionDefinitions, type BuiltinSectionType } from "./registry.js";
 import { safeUrl } from "./rich_text.js";
 
 /** Portable repeated content shared by projects, skills, timelines and galleries. */
@@ -121,16 +121,42 @@ export function SectionEntries({
   );
 }
 
+export interface CustomSectionDefinition {
+  id: string;
+  renderer: ComponentType<SectionRendererProps>;
+}
+export type SectionRendererRegistry = Readonly<
+  Record<string, ComponentType<SectionRendererProps>>
+>;
+
 /** Creates an isolated registry. Custom renderers are trusted application code. */
 export function createSectionRegistry(
   overrides: Partial<
-    Record<SectionConfig["type"], ComponentType<SectionRendererProps>>
+    Record<BuiltinSectionType, ComponentType<SectionRendererProps>>
   > = {},
-): Record<SectionConfig["type"], ComponentType<SectionRendererProps>> {
-  return Object.fromEntries(
+  custom: readonly CustomSectionDefinition[] = [],
+): SectionRendererRegistry {
+  const result: Record<
+    string,
+    ComponentType<SectionRendererProps>
+  > = Object.fromEntries(
     Object.keys(sectionDefinitions).map((type) => [
       type,
-      overrides[type as SectionConfig["type"]] ?? SectionEntries,
+      overrides[type as BuiltinSectionType] ?? SectionEntries,
     ]),
-  ) as Record<SectionConfig["type"], ComponentType<SectionRendererProps>>;
+  );
+  const customIds = new Set<string>();
+  for (const definition of custom) {
+    if (!/^[a-z][a-z0-9-]{0,63}$/.test(definition.id))
+      throw Error("Custom section IDs must be lowercase safe identifiers.");
+    if (Object.hasOwn(sectionDefinitions, definition.id))
+      throw Error("Custom section IDs cannot replace built-in section types.");
+    if (customIds.has(definition.id))
+      throw Error(`Duplicate custom section ID '${definition.id}'.`);
+    if (typeof definition.renderer !== "function")
+      throw Error("A custom section needs a trusted renderer component.");
+    customIds.add(definition.id);
+    result[`custom:${definition.id}`] = definition.renderer;
+  }
+  return result;
 }

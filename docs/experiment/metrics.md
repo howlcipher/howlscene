@@ -267,3 +267,23 @@ frame interval p50 16.7 ms / p95 16.8 ms, and 76.8 ms for ten-section
 text-only export. Runtime was 68,879 bytes / 21,330 gzip. These are lab
 observations, not production or comparative guarantees; see the
 [raw measurement](../evidence/layout_controls_performance.json).
+
+## Custom-section registration snapshot
+
+The full Node 24.22.2 gate passes **149 unit tests across 35 files and 41
+browser tests**. Coverage is 94.83% statements and 89.43% branches overall;
+core branches 89.82%, configuration 92.45%, and exporter 97.72%. Independent
+package consumption now compiles and runs a registered custom section through
+preview, editable backup, and nested static ZIP serving with JavaScript enabled
+and disabled. License/provenance checks pass for 267 packages, and the separate
+vulnerability audit reports zero. See the [gate](../evidence/custom_sections_final_gate.txt)
+and [audit](../evidence/custom_sections_audit.txt).
+
+One local observation using Node 24.22.2 / Chromium 156 headless / Ryzen 5 1600 /
+1440×1000 / loopback Vite measured editor-ready 448 ms, session LCP 448 ms and
+CLS 0.000087, frame interval p50 16.7 ms and p95 16.8 ms, ten-section
+text-only export 67.9 ms, and static-export runtime 68,879 bytes / 21,330 gzip.
+The production site runtime was 127.03 kB / 38.84 kB gzip. The sample is
+single-run, image-free, and is not a field Core Web Vitals or animation
+guarantee. Raw context is in the
+[performance record](../evidence/custom_sections_performance.json).

@@ -30,7 +30,7 @@ flowchart LR
 
 Theme layers are declarative data referencing an immutable artwork registry. The renderer resolves those references instead of branching on a theme ID, so a fourth theme can provide original inline scenery without editing engine code. Cloning a bundled manifest retains its explicit layers; token-only manifests receive Modern defaults, and an explicit empty list produces no artwork. The canonical [theme layer guide](theme_layers.md) describes bounded layer contracts and the working public API.
 
-Factories remain trusted synchronous application code outside project JSON. Render and export receive the same theme/artwork registries; backup reopening requires the compatible theme registry but never deserializes functions. The first layer slice is implemented, while final integrated release verification, broader theme metadata, external resource collection, and general new-section/layout registration remain required. This separation makes references portable without introducing an executable plugin loader or claiming a complete v1 theme system.
+Factories remain trusted synchronous application code outside project JSON. Render and export receive the same theme/artwork/section registries; backup reopening requires compatible registries but never deserializes functions. The first trusted custom-section contract is documented in [custom section authoring](custom_sections.md). Arbitrary custom payload schemas, standard-editor chooser integration, arbitrary layouts, broader theme metadata, and external resource collection remain open; this separation does not introduce an executable plugin loader or claim a complete v1 theme system.
 
 ## Portable content and headings
 

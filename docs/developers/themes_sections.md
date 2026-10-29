@@ -107,7 +107,7 @@ const websiteBytes = await exportWebsite(site, { sectionRegistry });
 
 `Site` owns the outer section, heading, anchor/navigation, rich text, section-level image, and optional CTA. The override renders the repeated content inside that structure. Honor the supplied child heading rank, resolve media through `asset`/`assetUrl`, and use `AssetImage` to retain variants and alt text. Avoid fixed heights that clip long content.
 
-The registry supports `hero`, `about`, `rich_text`, `projects`, `experience`, `skills`, `media`, `gallery`, `contact`, and `cta`. Unspecified entries use the shared fallback: cards, ordered experience timeline, or gallery figures. The registry derives its keys from section definitions to avoid separate capability lists. It overrides those types; adding a new schema discriminator requires coordinated schema, editor metadata, and contract changes.
+The registry supports `hero`, `about`, `rich_text`, `projects`, `experience`, `skills`, `media`, `gallery`, `contact`, and `cta`. Unspecified entries use the shared fallback: cards, ordered experience timeline, or gallery figures. The registry derives its keys from section definitions to avoid separate capability lists. To register a new section kind using the existing portable fields, use the explicit `custom` discriminator in the [custom-section guide](custom_sections.md). Custom payload schemas and editor type choosers remain outside this contract.
 
 ## Static safety and validation
 

@@ -307,14 +307,16 @@ readiness is claimed.
 
 Color controls merged as `41618b6`; PR #8's hosted run `40943699920` passed.
 Section image positioning merged as `35a53b0`; PR #9's hosted run `40945088628`
-passed. The current slice exposes section spacing, content alignment, and content
-width controls. Its first browser test failed because the editor did not expose
-these existing model values; the RED is preserved in
-`docs/evidence/layout_controls_red.txt`. The options now share central validated
-definitions, and a browser scenario passes edit, live preview, local reload, and
-ZIP HTML checks. The full Node 24.22.2 gate passes 145 unit and 41 browser tests;
-branch coverage is 89.54%, and the 267-package license audit and separate zero-
-vulnerability scan passed. Performance evidence and exact logs are in
-`docs/evidence/layout_controls_*`. Hosted verification is pending. Repository
-isolation is intact, comparison evidence remains maintained, and no release
-readiness is claimed.
+passed. Section spacing/alignment/width controls merged as `568c065` after hosted
+run `40946421582` passed. Current work establishes registered custom section
+types using the shared portable fields. The contract test had a genuine RED
+because the schema rejected `customType`; evidence is in
+`docs/evidence/custom_sections_red.txt`. Four unit contract tests and the
+independently packed browser consumer now verify registration, safe IDs,
+preview, backup, and nested static export. Full local Node 24.22.2 gate passes
+149 unit and 41 browser tests; branch coverage is 89.43% overall, 89.82% core,
+92.45% configuration, and 97.72% exporter. The 267-package audit passes and
+`npm audit` reports zero vulnerabilities. Exact logs and local performance data
+are in `docs/evidence/custom_sections_*`. Hosted verification is pending.
+Repository isolation and independent comparison records remain intact; release
+readiness is not claimed.

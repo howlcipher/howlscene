@@ -4,7 +4,7 @@ This describes the current development API, not a stable v1 compatibility guaran
 
 ## Configuration version 1
 
-Use `parseSite(unknown, themeRegistry?)` before accepting external data. Configuration is normalized atomically and unsupported versions fail. Version 1 is the first supported format; there is no historical version migration to demonstrate. Future migrations must be explicit and preserve supported content.
+Use `parseSite(unknown, themeRegistry?, sectionRegistry?)` before accepting external data. Configuration is normalized atomically and unsupported versions fail. Custom section references require the same explicitly supplied registry as rendering and export. Version 1 is the first supported format; there is no historical version migration to demonstrate. Future migrations must be explicit and preserve supported content.
 
 A project contains metadata, theme ID and validated overrides, ordered sections with stable IDs, assets, and a motion preset. Limits include 100 sections, 100 entries per section, 20 images, and 28,000,000 characters for the serialized asset array. This last limit includes base64 overhead and metadata; it is not a promise of 28 MB of original image bytes. Each uploaded/prepared image is limited to 5 MiB, 8192 pixels per side, and 24 million decoded pixels. Backups are limited to 30 MiB of encoded UTF-8 data.
 
@@ -39,13 +39,13 @@ Registry creation validates safe IDs, hex colors, supported font stacks, layer d
 
 `resolveTheme` accepts authoring inputs with defaults, including older token-only typed manifests. Its accent fallback does not establish contrast over arbitrary artwork. The standard editor uses bundled registries. Developer rendering and export support explicit theme, artwork, and supported-section registries; custom artwork must receive the same artwork registry at both boundaries. Backups accept a compatible theme registry as their second argument and serialize no executable code. See [SDK examples](sdk.md).
 
-The first manifest-layer increment is implemented. Full presentation metadata, external artwork collection, multipage themes, and general new-section/layout contracts remain unfinished; this is not a complete v1 theme-contract claim.
+The first manifest-layer increment and a portable custom-section renderer registration contract are implemented. Full presentation metadata, external artwork collection, multipage themes, arbitrary custom payload schemas, editor integration for developer-defined kinds, and arbitrary layout registration remain unfinished; this is not a complete v1 theme-contract claim.
 
 ## Section rendering
 
 `createSectionRegistry(overrides)` supplies shared fallbacks for `hero`, `about`, `rich_text`, `projects`, `experience`, `skills`, `media`, `gallery`, `contact`, and `cta`. Pass the returned registry as `sectionRegistry` to `Site`. An override receives section content, child `headingLevel`, asset lookup, and `assetUrl` and is trusted application code; imported project JSON cannot execute or register components.
 
-Entries contain stable `id`, `title`, plain `body`, optional safe `url`, and optional asset `image`. Default entries render cards, an ordered experience timeline, or gallery figures. The outer renderer owns section landmarks, headings, navigation, section image, rich text, and optional CTA. A custom entry renderer should preserve that shared structure and resolve image references through `assetUrl`. This API overrides supported section types; it does not register arbitrary new schema discriminators.
+Entries contain stable `id`, `title`, plain `body`, optional safe `url`, and optional asset `image`. Default entries render cards, an ordered experience timeline, or gallery figures. The outer renderer owns section landmarks, headings, navigation, section image, rich text, and optional CTA. A custom entry renderer should preserve that shared structure and resolve image references through `assetUrl`. This API overrides built-in types. For a new registered kind using portable section fields, use the explicit `custom` discriminator described in the [custom-section guide](custom_sections.md); arbitrary payload schemas still need coordinated schema, editor metadata, and contract changes.
 
 Section configuration options are exported from `@howlscene/core` as
 `layoutIds`, `sectionSpacings`, `sectionAlignments`, `sectionContentWidths`, and
