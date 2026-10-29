@@ -9,13 +9,13 @@ Phase 0 proved the shared editor-to-static-export approach. Core/schema, rich te
 ## Latest executed milestone
 
 The current Node 24.22.2 local gate passes formatting, lint, strict TypeScript,
-production build/prerender, **150 unit tests in 35 files**, **44 browser tests**,
+production build/prerender, **150 unit tests in 35 files**, **45 browser tests**,
 independent SDK/export tarball consumption and the 267-package license/provenance
 audit. `npm audit --audit-level=moderate` reports zero vulnerabilities. Overall
 coverage is 94.85% statements and 89.54% branches; core branch coverage is
 89.97%, configuration 92.59%, and exporter 97.72%. Executed logs are in the
-[presentation reflow gate](docs/evidence/theme_presentation_zoom_final_gate.txt),
-[audit](docs/evidence/theme_presentation_zoom_audit.txt), and previous
+[layout preset gate](docs/evidence/section_layout_final_gate.txt),
+[audit](docs/evidence/section_layout_audit.txt), and previous
 [performance record](docs/evidence/export_image_visual_performance.json).
 
 Nine deterministic preview screenshots and nine image-rich, long-form static
@@ -23,11 +23,13 @@ export screenshots pass across all three themes at 375, 768, and 1440 px. The
 new export baselines show user-uploaded scenery and card images served with
 JavaScript disabled. Maximum presentation tokens pass automated 200% root text
 sizing at 320 CSS pixels across all three themes, including long text, navigation
-and cards. This does not close actual browser-zoom, assistive-technology, or
+and cards. A new editor workflow verifies compatible section layout choices,
+desktop image/text placement, phone fallback, reload and static export. These
+automated results do not close actual browser-zoom, assistive-technology, or
 nontechnical usability review. PR #13 passed hosted run `40956127243` and merged
-as `6efd87b`; current-branch hosted verification, deployment, and the missing
-reference video remain open. Comparison and v1 release readiness are not
-claimed.
+as `6efd87b`; PR #14 passed and merged as `6e97bab`. Current-branch hosted
+verification, deployment, and the missing reference video remain open.
+Comparison and v1 release readiness are not claimed.
 
 ## Review corrections completed
 
@@ -384,3 +386,15 @@ and [`theme_presentation_zoom_audit.txt`](docs/evidence/theme_presentation_zoom_
 The integrated gate passes 150 unit tests and 44 browser tests with 89.54%
 overall branch coverage. The 200% root-size test is a deterministic text-resize
 stress case, not real browser zoom or human review.
+
+## Current milestone: compatible section layout presets
+
+EDT-012 exercises the editor's registry-derived layout choices with a real
+uploaded image. The wide preview floats the image beside text for the split
+preset; the phone-sized preview stacks it. The selected layout and image alt
+text survive local draft reload and appear in the static website ZIP. The full
+Node 24.22.2 gate passes 150 unit and 45 browser tests, with 89.54% overall
+branch coverage; see [`section_layout_final_gate.txt`](docs/evidence/section_layout_final_gate.txt)
+and [`section_layout_audit.txt`](docs/evidence/section_layout_audit.txt). No
+new performance sample was taken for this test increment. Hosted verification
+is pending.

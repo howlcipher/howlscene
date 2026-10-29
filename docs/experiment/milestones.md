@@ -66,6 +66,15 @@ pass; the latter runs 150 unit and 44 browser tests with 89.54% overall branch
 coverage. See [`theme_presentation_zoom_final_gate.txt`](../evidence/theme_presentation_zoom_final_gate.txt)
 and [`theme_presentation_zoom_audit.txt`](../evidence/theme_presentation_zoom_audit.txt).
 
+EDT-012 now verifies a registry-compatible section layout through the actual
+editor. The image placement responds to the desktop and phone preview widths,
+then survives a local draft reload and appears with its alt text in the exported
+HTML. The full local gate passes 150 unit and 45 browser tests with 89.54%
+overall branch coverage; SDK/export, license and vulnerability checks pass.
+Executed results are in [`section_layout_final_gate.txt`](../evidence/section_layout_final_gate.txt)
+and [`section_layout_audit.txt`](../evidence/section_layout_audit.txt). Hosted
+verification is pending.
+
 Current branch: `work/theme-layers`. Manifest-driven artwork passes the complete local gate:
 130 unit tests, 34 browser tests, independent package consumption and licenses.
 The aggregate asset-preflight regression and cleanup correction pass too. The clean hosted baseline is
