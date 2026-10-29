@@ -1,0 +1,40 @@
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 npx
+npm notice run 'playwright' test tests/e2e/background_readability.spec.ts
+[WebServer] (node:594953) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:594990) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/background_readability.spec.ts:22:1 › A11Y-SCENE-001 user background images have an opaque readable content surface in preview (5.8s)
+
+
+  1) tests/e2e/background_readability.spec.ts:22:1 › A11Y-SCENE-001 user background images have an opaque readable content surface in preview
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'Live website preview' }).locator('.scene').first().locator('[data-readable-surface="solid"]')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'Live website preview' }).locator('.scene').first().locator('[data-readable-surface="solid"]') with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Live website preview' }).locator('.scene').first().locator('[data-readable-surface="solid"]')
+
+
+      48 |     const section = preview.locator(".scene").first();
+      49 |     const surface = section.locator('[data-readable-surface="solid"]');
+    > 50 |     await expect(surface).toBeVisible();
+         |                           ^
+      51 |     const result = await surface.evaluate((element) => {
+      52 |       const style = getComputedStyle(element);
+      53 |       const site = element.closest<HTMLElement>(".howlscene");
+        at ./tests/e2e/background_readability.spec.ts:50:27
+
+    Error Context: test-results/background_readability-A11-67396--content-surface-in-preview/error-context.md
+
+  1 failed
+    tests/e2e/background_readability.spec.ts:22:1 › A11Y-SCENE-001 user background images have an opaque readable content surface in preview

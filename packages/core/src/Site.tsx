@@ -96,6 +96,19 @@ export function Site({
             throw Error(
               `This project uses an unsupported custom section '${s.customType}'. Register it before rendering.`,
             );
+          const hasBackgroundImage =
+            Boolean(s.image) && s.imageTreatment === "background";
+          const image = s.image ? (
+            <AssetImage
+              asset={lookup(s.image)!}
+              source={resolveAsset}
+              className={
+                hasBackgroundImage ? "scene-background-image" : "section-image"
+              }
+              loading={index === 0 ? "eager" : "lazy"}
+              style={{ objectPosition: s.imagePosition }}
+            />
+          ) : null;
           return (
             <section
               key={s.id}
@@ -109,49 +122,45 @@ export function Site({
                 artworkRegistry={artworkRegistry}
               />
               <div className="scene-content">
-                <p className="eyebrow">
-                  {(s.type === "custom" ? s.customType! : s.type).replace(
-                    /[_-]/g,
-                    " ",
+                {hasBackgroundImage && image}
+                <div
+                  className="scene-copy"
+                  data-readable-surface={
+                    hasBackgroundImage ? "solid" : undefined
+                  }
+                >
+                  <p className="eyebrow">
+                    {(s.type === "custom" ? s.customType! : s.type).replace(
+                      /[_-]/g,
+                      " ",
+                    )}
+                  </p>
+                  {index === 0 ? (
+                    <h1>{displayHeading(s.heading)}</h1>
+                  ) : (
+                    <h2>{displayHeading(s.heading)}</h2>
                   )}
-                </p>
-                {index === 0 ? (
-                  <h1>{displayHeading(s.heading)}</h1>
-                ) : (
-                  <h2>{displayHeading(s.heading)}</h2>
-                )}
-                {s.image && (
-                  <AssetImage
-                    asset={lookup(s.image)!}
-                    source={resolveAsset}
-                    className={
-                      s.imageTreatment === "background"
-                        ? "scene-background-image"
-                        : "section-image"
-                    }
-                    loading={index === 0 ? "eager" : "lazy"}
-                    style={{ objectPosition: s.imagePosition }}
-                  />
-                )}{" "}
-                {s.richText.length ? (
-                  <RichText
-                    value={s.richText}
+                  {!hasBackgroundImage && image}
+                  {s.richText.length ? (
+                    <RichText
+                      value={s.richText}
+                      headingLevel={index === 0 ? 2 : 3}
+                    />
+                  ) : (
+                    s.body.split("\n").map((p, i) => <p key={i}>{p}</p>)
+                  )}
+                  <Entries
+                    section={s}
+                    assetUrl={resolveAsset}
+                    asset={lookup}
                     headingLevel={index === 0 ? 2 : 3}
                   />
-                ) : (
-                  s.body.split("\n").map((p, i) => <p key={i}>{p}</p>)
-                )}
-                <Entries
-                  section={s}
-                  assetUrl={resolveAsset}
-                  asset={lookup}
-                  headingLevel={index === 0 ? 2 : 3}
-                />
-                {s.link && (
-                  <a className="scene-cta" href={s.link}>
-                    {s.linkLabel}
-                  </a>
-                )}
+                  {s.link && (
+                    <a className="scene-cta" href={s.link}>
+                      {s.linkLabel}
+                    </a>
+                  )}
+                </div>
               </div>
             </section>
           );

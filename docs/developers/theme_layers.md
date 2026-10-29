@@ -89,6 +89,8 @@ The [presentation decision](../architecture/adr_003_theme_presentation.md) recor
 
 `headingTreatment` accepts `plain`, `accent-rule`, or `accent-rail`. The built-in themes use those values respectively: Modern Professional, Ink Wash, and Cyberpunk. The rule appears below a section heading; the rail appears at its inline start, following the writing direction. Both preserve semantic heading elements and use the resolved theme accent. The treatment is theme-owned and has no separate editor override.
 
+When a section uses an uploaded background image, the shared renderer places its copy on an opaque panel using the resolved theme foreground and background. This protects text against arbitrary image pixels in both preview and static export while leaving the image visible around the panel. This is not an editor switch because a partially transparent surface cannot guarantee contrast. See [ADR 014](../architecture/adr_014_readable_surfaces_for_background_images.md). This behavior does not verify text contrast over theme artwork or replace human accessibility review.
+
 ## Export and verification boundaries
 
 Pass both registries to `Site` and `exportWebsite`. Static export includes the rendered artwork as meaningful SVG markup in its complete HTML, independent of editor code. JavaScript remains optional enhancement for motion. The independent SDK check installs packed packages, renders custom artwork, exports it in the browser, and serves that ZIP under real nested mounts with and without JavaScript.

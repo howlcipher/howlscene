@@ -74,22 +74,22 @@ a {
   font-size: clamp(2rem, 4cqw, 3.5rem);
   line-height: 1.15;
 }
-.howlscene[data-theme-heading-treatment="accent-rule"] .scene-content > h1,
-.howlscene[data-theme-heading-treatment="accent-rule"] .scene-content > h2 {
+.howlscene[data-theme-heading-treatment="accent-rule"] .scene-copy > h1,
+.howlscene[data-theme-heading-treatment="accent-rule"] .scene-copy > h2 {
   border-bottom: 2px solid var(--scene-accent);
   padding-bottom: 0.25em;
 }
-.howlscene[data-theme-heading-treatment="accent-rail"] .scene-content > h1,
-.howlscene[data-theme-heading-treatment="accent-rail"] .scene-content > h2 {
+.howlscene[data-theme-heading-treatment="accent-rail"] .scene-copy > h1,
+.howlscene[data-theme-heading-treatment="accent-rail"] .scene-copy > h2 {
   width: fit-content;
   border-inline-start: 0.25rem solid var(--scene-accent);
   padding-inline-start: 0.6em;
   text-align: start;
 }
-.howlscene[data-theme-heading-treatment="accent-rail"] .scene-content > h2 {
+.howlscene[data-theme-heading-treatment="accent-rail"] .scene-copy > h2 {
   max-width: 100%;
 }
-.layout-centered .scene-content > h2 {
+.layout-centered .scene-copy > h2 {
   margin-inline: auto;
 }
 .scene .rich-heading {
@@ -283,7 +283,7 @@ a {
   position: relative;
   z-index: 1;
 }
-.scene-content > .eyebrow {
+.scene-copy > .eyebrow {
   margin-top: 0;
 }
 .scene-content:has(.scene-background-image) {
@@ -301,6 +301,23 @@ a {
 .scene-content:has(.scene-background-image) > :not(.scene-background-image) {
   position: relative;
   z-index: 1;
+}
+.scene-copy[data-readable-surface="solid"] {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  max-width: 100%;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid color-mix(in srgb, var(--scene-fg) 24%, var(--scene-bg));
+  border-radius: var(--scene-card-radius);
+  background-color: var(--scene-bg);
+  color: var(--scene-fg);
+}
+.layout-centered .scene-copy[data-readable-surface="solid"] {
+  margin-inline: auto;
+}
+.align-end .scene-copy[data-readable-surface="solid"] {
+  margin-inline-start: auto;
 }
 
 @container website (max-width:600px) {
