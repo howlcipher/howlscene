@@ -9,20 +9,20 @@ assistive-technology review, hosted CI and deployment remain release gates.
 
 ## Current scope
 
-| Capability                                                           | Status                                                                   |
-| -------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| Shared renderer, validated configuration, meaningful static HTML/ZIP | Implemented and exercised at root/nested paths, JavaScript on/off        |
-| Lexical rich text and portable formatting                            | Implemented with round-trip and browser coverage                         |
-| Sections, layouts, visibility, ordering, Undo/Redo                   | Implemented and exercised in the complete journey                        |
-| Responsive uploaded images and alt text                              | Implemented, persisted, backed up and exported in browser tests          |
-| IndexedDB drafts and project backups                                 | Implemented; failure feedback, async races and competing tabs covered    |
-| Desktop/tablet/phone previews                                        | Implemented; responsive and screenshot coverage                          |
-| Ink Wash, Cyberpunk, Modern Professional                             | Original layered scenery; automated comparisons, partial visual review   |
-| Motion presets, entry/exit, parallax and reduced motion              | Implemented with lifecycle and browser regression coverage               |
-| Independent core and export packages                                 | Built tarballs installed in a separate typed browser consumer            |
-| William Elias example                                                | Shared-engine consumer with theme switching and public-source provenance |
-| GitHub Pages workflow                                                | Prepared for protected manual deployment; repository setup still pending |
-| Public deployment and v1 release                                     | Not completed; no live deployment claimed                                |
+| Capability                                                           | Status                                                                       |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Shared renderer, validated configuration, meaningful static HTML/ZIP | Implemented and exercised at root/nested paths, JavaScript on/off            |
+| Lexical rich text and portable formatting                            | Implemented with round-trip and browser coverage                             |
+| Sections, layouts, visibility, ordering, Undo/Redo                   | Implemented and exercised in the complete journey                            |
+| Responsive uploaded images and alt text                              | Implemented, persisted, backed up and exported in browser tests              |
+| IndexedDB drafts and project backups                                 | Implemented; failure feedback, async races and competing tabs covered        |
+| Desktop/tablet/phone previews                                        | Implemented; responsive and screenshot coverage                              |
+| Ink Wash, Cyberpunk, Modern Professional                             | Original layered scenery; automated comparisons, partial visual review       |
+| Motion presets, entry/exit, parallax and reduced motion              | Implemented with lifecycle and browser regression coverage                   |
+| Independent core and export packages                                 | Built tarballs installed in a separate typed browser consumer                |
+| William Elias example                                                | Shared-engine consumer with theme switching and public-source provenance     |
+| GitHub Pages workflow                                                | Hosted artifact check passed; Pages and reviewer environments not configured |
+| Public deployment and v1 release                                     | Not completed; no live deployment claimed                                    |
 
 Read [the progress journal](PROGRESS.md) for current work, [acceptance traceability](docs/experiment/acceptance.md), and [measurement scope](docs/experiment/metrics.md). The [experiment baseline](docs/experiment/baseline.md) covers this conventional implementation only; the reference video is missing.
 

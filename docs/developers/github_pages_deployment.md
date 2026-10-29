@@ -14,9 +14,11 @@ for you.
    each environment. Enable **Prevent self-review** and restrict both
    environments to `main`.
 3. Create the `github-pages` deployment environment and restrict it to `main`.
-4. Enable branch protection for `main` and require the successful `verify`
-   quality check before merging. The live repository currently has no branch
-   protection rule, so this is an outstanding administrator action.
+4. Verify that `main` protection requires pull requests and the successful,
+   up-to-date `verify` quality check, applies to administrators, and prohibits
+   force pushes and deletion. This repository rule is configured. It does not
+   require a human pull-request approval; the two environment approvals below
+   are the separate deployment gate.
 5. Only after the preceding controls are in place, add repository variable
    `HOWLSCENE_PAGES_ENABLED` with value `true`.
 
