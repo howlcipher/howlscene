@@ -23,6 +23,7 @@ export const themePresentationSchema = z
     bodyLineHeight: z.number().min(1.5).max(2.2).default(1.8),
     cardGapRem: z.number().min(0.5).max(3).default(1.5),
     cardRadiusRem: z.number().min(0).max(2).default(0.7),
+    cardStyle: z.enum(["outlined", "soft", "glow"]).default("outlined"),
     navigationGapRem: z.number().min(0.5).max(3).default(1.2),
     navigationStyle: z.enum(["plain", "underline", "framed"]).default("plain"),
   })
@@ -100,7 +101,7 @@ export const themes: ThemeRegistry &
       foreground: "#263b36",
       accent: "#496052",
       font: "Georgia, serif",
-      presentation: { navigationStyle: "underline" },
+      presentation: { navigationStyle: "underline", cardStyle: "soft" },
       layers: [
         { id: "sky", artwork: "ink-sky", depth: 0.08 },
         { id: "mountains", artwork: "ink-mountains", depth: 0.2 },
@@ -120,7 +121,10 @@ export const themes: ThemeRegistry &
       foreground: "#f4f3ff",
       accent: "#6ee7ed",
       font: "ui-monospace, monospace",
-      presentation: { navigationStyle: "framed" },
+      presentation: {
+        navigationStyle: "framed",
+        cardStyle: "glow",
+      },
       layers: [
         { id: "horizon", artwork: "cyber-horizon", depth: 0.08 },
         { id: "city-distant", artwork: "cyber-city-distant", depth: 0.22 },

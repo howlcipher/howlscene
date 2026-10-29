@@ -128,3 +128,13 @@ default to `plain`. Ink Wash uses `underline` and Cyberpunk uses `framed`; all
 treatments retain the same semantic links, keyboard focus, responsive wrapping,
 and anchor behavior. These are theme-manifest choices for developers. The
 visual editor does not yet expose them. See [ADR 004](../architecture/adr_004_navigation_treatment.md).
+
+## Shared card treatments
+
+`presentation.cardStyle` selects one of three safe treatments for project cards
+and gallery figures: `outlined`, `soft`, or `glow`. Existing manifests default to
+`outlined`. Modern Professional keeps the outline, Ink Wash uses a soft neutral
+shadow, and Cyberpunk uses an accent border and restrained glow. All treatments
+use the same semantic card markup and responsive grid. Theme accent resolution
+continues to apply before the glow color is drawn. The setting accepts an enum,
+not CSS, and is not yet exposed in the editor.

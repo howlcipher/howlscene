@@ -16,6 +16,7 @@ const defaults = {
   bodyLineHeight: 1.8,
   cardGapRem: 1.5,
   cardRadiusRem: 0.7,
+  cardStyle: "outlined",
   navigationGapRem: 1.2,
   navigationStyle: "plain",
 };
@@ -33,11 +34,28 @@ const custom = {
     bodyLineHeight: 1.6,
     cardGapRem: 2,
     cardRadiusRem: 0.2,
+    cardStyle: "glow" as const,
     navigationGapRem: 2.4,
     navigationStyle: "underline" as const,
   },
 };
 describe("validated theme presentation", () => {
+  it("THM-CARD-001 normalizes safe shared card treatments", () => {
+    expect(themeSchema.parse(legacy).presentation.cardStyle).toBe("outlined");
+    expect(themes.modern.presentation.cardStyle).toBe("outlined");
+    expect(themes.ink.presentation.cardStyle).toBe("soft");
+    expect(themes.cyber.presentation.cardStyle).toBe("glow");
+    expect(
+      themeSchema.parse({
+        ...legacy,
+        presentation: { cardStyle: "glow" },
+      }).presentation.cardStyle,
+    ).toBe("glow");
+    for (const cardStyle of ["arbitrary-css", "url(javascript:alert(1))", ""])
+      expect(() =>
+        themeSchema.parse({ ...legacy, presentation: { cardStyle } }),
+      ).toThrow();
+  });
   it("THM-NAV-001 normalizes safe navigation treatments and keeps them theme-owned", () => {
     expect(themeSchema.parse(legacy).presentation.navigationStyle).toBe(
       "plain",
@@ -162,6 +180,8 @@ describe("validated theme presentation", () => {
     }
     expect(preview).toContain('data-theme-navigation-style="underline"');
     expect(html).toContain('data-theme-navigation-style="underline"');
+    expect(preview).toContain('data-theme-card-style="glow"');
+    expect(html).toContain('data-theme-card-style="glow"');
     expect(html).not.toContain("<script");
     expect(site.sections).toEqual(starterSite.sections);
   });

@@ -66,3 +66,13 @@ The theme navigation update is recorded in `theme_navigation_final_gate.txt` wit
 140 unit tests across 34 files and 36 browser tests. Branch coverage remains
 89.57%; the dependency audit reports zero vulnerabilities. Performance and visual
 baseline evidence are stored beside the gate log.
+
+THM-CARD-001 validates the card-style enum, legacy default, and the three built-in
+theme values. THM-CARD-002 adds a project card in the real editor and verifies
+computed text/background/border/shadow styles plus responsive grid fit at 375,
+768, and 1440 pixels. Visual screenshot baselines remain unchanged because the
+representative screenshot fixture contains no repeated cards.
+
+THM-CARD-002 passes in the integrated gate and verifies all three built-in card
+appearances and responsive fit through the real editor. See
+[`theme_card_final_gate.txt`](../evidence/theme_card_final_gate.txt).

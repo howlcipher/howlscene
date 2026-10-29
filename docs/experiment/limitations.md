@@ -59,5 +59,9 @@ Unfinished required v1 work is not reclassified as excluded scope.
   screen-reader and text-zoom review remains open.
 
 - Navigation treatment is now theme-configurable through a closed manifest enum
-  used by shared CSS. The editor does not expose this setting, and the larger
-  component-styling and responsive manifest contract remains incomplete.
+  used by shared CSS. The editor does not expose navigation or card treatment settings. Broader
+  component styling and responsive manifest rules remain incomplete.
+
+- Card presentation now supports outlined, soft, and accent-glow variants for
+  shared cards and gallery figures. Other section-component styling remains
+  shared and cannot yet be customized by themes.

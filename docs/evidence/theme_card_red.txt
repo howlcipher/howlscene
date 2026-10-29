@@ -1,0 +1,33 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/theme_presentation.test.tsx (6 tests | 1 failed) 114ms
+   ❯ validated theme presentation (6)
+     × THM-CARD-001 normalizes safe shared card treatments 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/theme_presentation.test.tsx > validated theme presentation > THM-CARD-001 normalizes safe shared card treatments
+AssertionError: expected undefined to be 'outlined' // Object.is equality
+
+- Expected:
+"outlined"
+
++ Received:
+undefined
+
+ ❯ tests/theme_presentation.test.tsx:42:62
+     40| describe("validated theme presentation", () => {
+     41|   it("THM-CARD-001 normalizes safe shared card treatments", () => {
+     42|     expect(themeSchema.parse(legacy).presentation.cardStyle).toBe("out…
+       |                                                              ^
+     43|     expect(themes.modern.presentation.cardStyle).toBe("outlined");
+     44|     expect(themes.ink.presentation.cardStyle).toBe("soft");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  15:18:21
+   Duration  1.04s (import 63%, transform 20%, tests 16%, worker 1%)

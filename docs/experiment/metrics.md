@@ -172,3 +172,18 @@ The [audit](../evidence/theme_navigation_audit.txt) found zero vulnerabilities.
 The [performance observation](../evidence/theme_navigation_performance.json) is a
 single local run on the documented Chromium/Node/CPU setup; it is not a field or
 comparative claim.
+
+## Theme card-style integrated snapshot
+
+[`theme_card_final_gate.txt`](../evidence/theme_card_final_gate.txt) records
+141 unit tests across 34 files, 37 browser tests, 89.57% overall branch
+coverage, passing production builds, SDK consumers, visual comparisons, and
+license/provenance checks. The [dependency audit](../evidence/theme_card_audit.txt)
+found zero vulnerabilities.
+
+The [raw performance observation](../evidence/theme_card_performance.json) was
+recorded on Node 24.22.2 / Chromium 156 headless at 1440×1000, on a Ryzen 5 1600
+with loopback Vite and no network/CPU emulation. Editor ready was 504 ms; sampled
+frame p50/p95 was 16.7 ms; ten-section text-only export was 78.6 ms; runtime was
+68,879 bytes (21,330 gzip). These are single-run lab observations, not production
+Core Web Vitals, FPS guarantees, or comparative results.

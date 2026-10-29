@@ -205,6 +205,17 @@ a {
   margin: 0;
   background: var(--scene-bg);
 }
+.howlscene[data-theme-card-style="soft"] .entry-cards article,
+.howlscene[data-theme-card-style="soft"] .entry-gallery figure {
+  border-color: transparent;
+  box-shadow: 0 0.75rem 2rem
+    color-mix(in srgb, var(--scene-fg) 12%, transparent);
+}
+.howlscene[data-theme-card-style="glow"] .entry-cards article,
+.howlscene[data-theme-card-style="glow"] .entry-gallery figure {
+  border-color: var(--scene-accent);
+  box-shadow: 0 0 1rem color-mix(in srgb, var(--scene-accent) 24%, transparent);
+}
 .entry-cards .entry-title,
 .entry-gallery .entry-title,
 .entry-timeline .entry-title {
