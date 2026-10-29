@@ -2,22 +2,22 @@
 
 These measurements are historical, scoped observations reported during implementation. They are not final-tree verification.
 
-| Observation                           | Recorded value          | Scope and limitation                                                                         |
-| ------------------------------------- | ----------------------- | -------------------------------------------------------------------------------------------- |
-| Initial feasibility unit run          | 8 passing               | Phase 0 snapshot                                                                             |
-| Initial feasibility browser run       | 2 passing               | Phase 0 export/editor snapshot                                                               |
-| Later intermediate unit run           | 31 passing              | Before subsequent integration edits                                                          |
-| Later intermediate browser run        | 4 passing               | Included contenteditable warning; not a clean release gate                                   |
-| Standalone motion browser run         | 3 passing               | Motion subsystem snapshot                                                                    |
-| Standalone motion runtime output      | 65.69 kB; 20.44 kB gzip | Reported bundler output units; not an editor bundle or all-site performance measurement      |
-| External package consumption          | Passed separately       | Generated tarball, separate install, TypeScript and rendering; rerun after final integration |
-| Core branch coverage                  | Not established         | Required thresholds remain unverified                                                        |
-| Core Web Vitals and animation FPS     | Not measured            | No claim of meeting targets                                                                  |
-| Manual accessibility/usability review | Not completed           | Automated tests cannot establish WCAG conformance                                            |
+| Observation                           | Recorded value          | Scope and limitation                                                                           |
+| ------------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------------- |
+| Initial feasibility unit run          | 8 passing               | Phase 0 snapshot                                                                               |
+| Initial feasibility browser run       | 2 passing               | Phase 0 export/editor snapshot                                                                 |
+| Later intermediate unit run           | 31 passing              | Before subsequent integration edits                                                            |
+| Later intermediate browser run        | 4 passing               | Included contenteditable warning; not a clean release gate                                     |
+| Standalone motion browser run         | 3 passing               | Motion subsystem snapshot                                                                      |
+| Standalone motion runtime output      | 65.69 kB; 20.44 kB gzip | Reported bundler output units; not an editor bundle or all-site performance measurement        |
+| External package consumption          | Passed separately       | Generated tarball, separate install, TypeScript and rendering; rerun after final integration   |
+| Core / config / exporter branch cover | 89.97 / 92.59 / 97.72%  | Current integrated snapshot; overall branch coverage is 89.54%                                 |
+| Field Core Web Vitals / device FPS    | Not measured            | Browser-lab LCP, CLS and frame intervals are now recorded separately; no field or device claim |
+| Manual accessibility/usability review | Not completed           | Automated tests cannot establish WCAG conformance                                              |
 
-## Latest integrated verification snapshot
+## Earlier integrated verification snapshot
 
-The Node 24.22.2 gate passes 150 unit tests in 35 files, 45 Playwright browser
+The earlier Node 24.22.2 gate passed 150 unit tests in 35 files, 45 Playwright browser
 tests, and 94.85% statement / 89.54% branch coverage. Core branch coverage is
 89.97%, configuration is 92.59%, and export is 97.72%. The separate npm audit
 reports zero vulnerabilities. THM-PRES-005 checks maximum valid presentation
@@ -86,6 +86,38 @@ semantic HTML insertion) on the local Linux x64 / Node 22.22.1 environment took
 This is one uncontrolled warm local observation, including process startup;
 filesystem cache and competing load were not controlled. It is not comparable
 to another platform's isolated build benchmark.
+
+## Production static-export mobile lab sample
+
+`PERF-LAB-001` creates a website in the browser editor, downloads its ZIP and
+serves that exact artifact under `/howlscene/performance/`. A fresh Chromium
+context uses a 390×844 CSS-pixel viewport, DPR 1, 4× CDP CPU throttling, 150 ms
+network latency, 200 KiB/s download and 94 KiB/s upload. On the recorded local
+Linux x64 environment (Node 24.22.1, AMD Ryzen 5 1600, Chromium 156.0.8078.4,
+Playwright image ID
+`sha256:d8e19ba36e1441fcd3f8a6d3d84c1eeb713ed5f1f46476918b9c3c1c6e765ead`), the
+full-gate run observed 528 ms LCP, CLS 0, no long tasks, 16.7 ms p50 and 16.8 ms
+p95 across 60 frame intervals, 771 ms navigation duration, and 30 ms anchor
+navigation. The selected image resource transferred 3,750 bytes. The generated ZIP contained a 68,879
+byte local runtime (21,330 bytes gzip); that excludes HTML, CSS, fonts and
+images. All measured local requests succeeded, the image had alternative text,
+and the heading remained visible after motion was disabled.
+
+This is one automated lab observation, not field Core Web Vitals, physical
+hardware performance, or a 60 FPS guarantee. The 4× CPU and network settings are
+browser emulation on the documented host, not a representative phone model. The
+generated landscape and copy are a single fixture. See the [raw result](../evidence/production_mobile_performance.json)
+and [architecture decision](../architecture/adr_011_production_mobile_export_probe.md).
+The test writes `.artifacts/production_mobile_performance.json`; CI uploads that
+file with its other verification artifacts.
+
+The integrated Node 24.22.1 check with this scenario passes formatting, lint,
+strict typing, production/prerender builds, 150 unit tests, 49 browser tests,
+independent SDK/export consumption, and the 267-package license/provenance audit.
+Coverage is 94.85% statements and 89.54% branches. The separate dependency scan
+reports zero vulnerabilities. Command output is preserved in the [full gate](../evidence/production_mobile_final_gate.txt)
+and [audit log](../evidence/production_mobile_audit.txt). Hosted verification of
+this increment is still required.
 
 ## Node 24 compatibility correction
 
