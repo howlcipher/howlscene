@@ -1,18 +1,5 @@
 import { test, expect } from "@playwright/test";
-
-const fontFamilies = {
-  ink: "HowlScene Test Serif",
-  cyber: "HowlScene Test Mono",
-  modern: "HowlScene Test Sans",
-} as const;
-const testFonts = `
-@font-face{font-family:"HowlScene Test Serif";src:url("/tests/fixtures/fonts/LiberationSerif-Regular.ttf") format("truetype");font-style:normal;font-weight:400;font-display:block;}
-@font-face{font-family:"HowlScene Test Serif";src:url("/tests/fixtures/fonts/LiberationSerif-Bold.ttf") format("truetype");font-style:normal;font-weight:700;font-display:block;}
-@font-face{font-family:"HowlScene Test Mono";src:url("/tests/fixtures/fonts/DejaVuSansMono.ttf") format("truetype");font-style:normal;font-weight:400;font-display:block;}
-@font-face{font-family:"HowlScene Test Mono";src:url("/tests/fixtures/fonts/DejaVuSansMono-Bold.ttf") format("truetype");font-style:normal;font-weight:700;font-display:block;}
-@font-face{font-family:"HowlScene Test Sans";src:url("/tests/fixtures/fonts/NotoSans-Regular.ttf") format("truetype");font-style:normal;font-weight:400;font-display:block;}
-@font-face{font-family:"HowlScene Test Sans";src:url("/tests/fixtures/fonts/NotoSans-Bold.ttf") format("truetype");font-style:normal;font-weight:700;font-display:block;}
-`;
+import { visualFontFamilies, visualFontFaceCss } from "./visual_font_fixture";
 // Tests pin the fonts Chromium used for the reviewed baselines. Production keeps
 // its system font choices; these unmodified licensed fixtures never enter builds.
 // Generate baselines explicitly, review them, and commit only intended appearances.
@@ -37,10 +24,10 @@ for (const width of [375, 768, 1440]) {
       await expect(page.getByRole("status")).toContainText(
         "Saved on this browser",
       );
-      const family = fontFamilies[theme];
+      const family = visualFontFamilies[theme];
       await page.addStyleTag({
         content:
-          testFonts +
+          visualFontFaceCss("/tests/fixtures/fonts") +
           `.preview .howlscene{--scene-font:"${family}" !important;}`,
       });
       const loaded = await page.evaluate(async (family) => {

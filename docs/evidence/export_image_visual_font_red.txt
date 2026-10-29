@@ -1,0 +1,28 @@
+EXP-VISUAL-001 CI regression and correction record
+
+RED evidence
+-----------
+The first hosted run for PR #13 (GitHub Actions run 40954499439) failed at the
+first static-export screenshot: Modern at 375 px. Playwright expected a
+375 x 3677 image and received 375 x 3984; 385,666 pixels (26% of the image)
+differed. The other 42 browser tests passed. The failure artifact is available
+from that run as `verification-evidence`, under
+`test-results/export_image_rich_visual-E-f6176-heme-and-viewport-baselines/`.
+
+Root cause
+----------
+The exported renderer writes `--scene-font` as an inline style on `.howlscene`.
+The visual test added its pinned `--scene-font` in a normal stylesheet rule,
+which cannot override the inline declaration. The test therefore captured each
+host's system font while believing it used its licensed fixture font. Text
+wrapping differed between the local host and GitHub Actions.
+
+Correction and regression coverage
+----------------------------------
+The fixture override now uses `!important`, matching the existing preview
+fixture's precedence. The exported page test also checks that both requested
+font weights load and that the computed site font is the selected fixture. The
+nine baselines were regenerated from that explicitly pinned font setup and
+visually reviewed. The focused visual test passed locally on Node 24.22.2 / the
+installed Chromium after correction. The full local gate and hosted rerun must
+pass before PR #13 is merged.

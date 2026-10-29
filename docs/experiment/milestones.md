@@ -43,7 +43,16 @@ The creator presentation increment adds allowlisted overrides for shared card
 and navigation settings. Its initial schema and editor-control failures are
 preserved in `editor_presentation_red.txt` and
 `editor_presentation_e2e_red.txt`. Focused unit and browser tests pass. The
-complete local and hosted gates remain to be run.
+complete local gate passes 150 unit and 42 browser tests. PR #12 merged as
+`c82bd5b` after hosted run `40952321979` passed; its first hosted formatting
+failure was corrected before the successful run.
+
+EXP-VISUAL-001 captures image-rich, long-form exported content with JavaScript
+disabled for all themes at three viewports. The nine new baseline images and the
+existing nine preview baselines pass. The complete local gate now passes 150
+unit and 43 browser tests; SDK/export and 267-package license/provenance checks
+pass, and the separate vulnerability audit reports zero. Hosted verification
+remains pending.
 
 Current branch: `work/theme-layers`. Manifest-driven artwork passes the complete local gate:
 130 unit tests, 34 browser tests, independent package consumption and licenses.
