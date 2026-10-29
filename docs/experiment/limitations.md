@@ -18,7 +18,8 @@ establish public v1 readiness.
   Public npm publication has not occurred.
 - Hosted CI passed for checkpoint `ce06f23`:
   [executed run](https://github.com/howlcipher/howlscene/actions/runs/40878831459).
-  Subsequent theme-layer changes require a fresh integrated and hosted gate.
+  The theme-layer increment also passed hosted run `40884610329`.
+  Bounded presentation changes pass locally and await their own hosted check.
   GitHub Pages is not configured and no live deployment is claimed.
 - The experiment reference video is unavailable, so reference fidelity cannot be
   scored. No comparison with the independent implementation is claimed.
@@ -27,6 +28,9 @@ establish public v1 readiness.
   collection and broader component/navigation, responsive, motion and accessibility
   manifest contracts remain required v1 work. The integrated
   gate passes after correcting an aggregate asset-validation ordering weakness.
+- Presentation defaults now cover four validated CSS settings. Maximum values
+  at narrow widths and increased text zoom remain a verification gap. Broader
+  responsive/accessibility/motion contracts remain required v1 work.
 - Component registration overrides the ten supported section types. Adding a new
   schema-level section type or arbitrary layout identifier still requires core
   changes; this is narrower than the requested general section-authoring contract.

@@ -8,6 +8,16 @@ import {
 import type { ArtworkRegistry } from "./artwork.js";
 const color = z.string().regex(/^#[0-9a-fA-F]{6}$/);
 export const DEFAULT_THEME_ID = "modern";
+/** Bounded theme styling with fixed units; never arbitrary CSS or layout code. */
+export const themePresentationSchema = z
+  .strictObject({
+    bodyLineHeight: z.number().min(1.5).max(2.2).default(1.8),
+    cardGapRem: z.number().min(0.5).max(3).default(1.5),
+    cardRadiusRem: z.number().min(0).max(2).default(0.7),
+    navigationGapRem: z.number().min(0.5).max(3).default(1.2),
+  })
+  .readonly();
+export type ThemePresentation = z.infer<typeof themePresentationSchema>;
 export const themeSchema = z
   .strictObject({
     version: z
@@ -24,6 +34,7 @@ export const themeSchema = z
       "Georgia, serif",
       "ui-monospace, monospace",
     ]),
+    presentation: themePresentationSchema.prefault({}),
     layers: z
       .array(themeLayerSchema)
       .max(12)

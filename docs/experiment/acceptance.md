@@ -40,3 +40,10 @@ unchanged. `tests/security.test.tsx` now proves aggregate-budget rejection occur
 before decoding and preserves exact limits. These scenarios pass in the
 [130-unit/34-browser integrated gate](../evidence/theme_layers_final_gate.txt).
 Broader v1 theme/section contracts and human review remain open.
+
+`tests/theme_presentation.test.tsx` adds THM-PRE-001–004 for bounded presentation
+settings, defaults, invalid values and shared static rendering. Browser
+THM-PRES-001 verifies actual computed styles and unchanged content in preview and
+nested no-script export. The [integrated gate](../evidence/theme_presentation_final_gate.txt)
+passes 134 unit and 35 browser tests. Nine original screenshot baselines are
+unchanged. Maximum custom values with increased text zoom still require review.

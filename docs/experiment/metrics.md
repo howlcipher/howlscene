@@ -130,3 +130,16 @@ Branches: overall 89.50%, core 89.97%, configuration 94.59%, exporter 97.72%.
 same loopback/dev-server methodology and its limitations. Runtime 68,713 bytes,
 21,275 bytes gzip; ten-section text-only export 67.4 ms. These are single local
 observations, not production or comparative performance claims.
+
+## Bounded presentation integrated snapshot
+
+[Executed gate](../evidence/theme_presentation_final_gate.txt): 134 unit and
+35 browser tests pass on Node 24.22.2; build, strict types, formatting, lint,
+installed package consumers and licenses pass. Branch coverage remains 89.50%
+overall, 89.97% core, 94.59% configuration and 97.72% exporter.
+[Audit](../evidence/theme_presentation_audit.txt): zero vulnerabilities.
+[Raw local observation](../evidence/theme_presentation_performance.json):
+68,713-byte runtime / 21,275 bytes gzip; text-only ten-section export 83.6 ms.
+These values use the documented local development-server methodology, not a
+production performance or comparative benchmark. Prior layer increment hosted
+CI passed in run `40884610329`; current presentation hosted checks remain pending.

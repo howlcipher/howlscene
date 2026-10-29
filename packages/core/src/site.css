@@ -43,7 +43,7 @@ a {
 .site-header nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.2rem;
+  gap: var(--scene-nav-gap);
 }
 .scene {
   max-width: 76rem;
@@ -73,7 +73,7 @@ a {
 }
 .scene p {
   max-width: 65ch;
-  line-height: 1.8;
+  line-height: var(--scene-body-line-height);
   font-size: 1.125rem;
   white-space: pre-wrap;
 }
@@ -151,7 +151,7 @@ a {
   max-width: 65ch;
   margin: 1rem auto;
   text-align: left;
-  line-height: 1.8;
+  line-height: var(--scene-body-line-height);
 }
 .layout-wide {
   max-width: 90rem;
@@ -182,7 +182,7 @@ a {
 .entry-gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-  gap: 1.5rem;
+  gap: var(--scene-card-gap);
   margin: 2rem 0;
   text-align: left;
 }
@@ -190,7 +190,7 @@ a {
 .entry-gallery figure {
   padding: 1.5rem;
   border: 1px solid currentColor;
-  border-radius: 0.7rem;
+  border-radius: var(--scene-card-radius);
   margin: 0;
   background: var(--scene-bg);
 }

@@ -66,7 +66,7 @@ try {
 const artworkRegistry=createArtworkRegistry({
   'forest-canopy':{render:()=>createElement('circle',{'data-original-art':'forest-canopy',cx:720,cy:200,r:160})}
 });
-const themeRegistry=createThemeRegistry({forest:{...themes.ink,name:'Forest',background:'#e8efdf',layers:[{id:'canopy',artwork:'forest-canopy',depth:.3,opacity:.2}]}},artworkRegistry);
+const themeRegistry=createThemeRegistry({forest:{...themes.ink,name:'Forest',background:'#e8efdf',presentation:{bodyLineHeight:2,navigationGapRem:2},layers:[{id:'canopy',artwork:'forest-canopy',depth:.3,opacity:.2}]}},artworkRegistry);
 const site:SiteConfig=parseSite({...starterSite,theme:'forest'},themeRegistry);
 `;
   await writeFile(
@@ -282,12 +282,16 @@ document.body.append(button);`,
               .locator(".howlscene")
               .evaluate((element) => ({
                 background: getComputedStyle(element).backgroundColor,
+                navigationGap: getComputedStyle(
+                  element.querySelector(".site-header nav"),
+                ).gap,
                 headerDisplay: getComputedStyle(
                   element.querySelector(".site-header"),
                 ).display,
               }));
             if (
               presentation.background !== "rgb(232, 239, 223)" ||
+              presentation.navigationGap !== "32px" ||
               presentation.headerDisplay !== "flex"
             )
               throw Error(

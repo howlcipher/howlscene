@@ -38,7 +38,7 @@ const backup = serializeBackup(site, themeRegistry);
 const restored = importBackup(backup, themeRegistry);
 ```
 
-A manifest contains version, description, name, background, foreground, accent, a supported font stack, and ordered validated layers. `themeSchema` supplies version/description defaults when parsing; spreading a bundled manifest keeps the authoring example fully typed. Registry creation validates IDs and exact fields and returns an isolated registry. Six-digit hex colors and supported fonts keep arbitrary CSS out of project controls.
+A manifest contains version, description, name, background, foreground, accent, a supported font stack, ordered validated layers, and bounded presentation settings. `themeSchema` supplies version/description defaults when parsing; spreading a bundled manifest keeps the authoring example fully typed. Registry creation validates IDs and exact fields and returns an isolated registry. Six-digit hex colors, supported fonts, and bounded numeric presentation tokens keep arbitrary CSS out of project controls. The optional `presentation` object controls paragraph/list line height, card/gallery gap and radius, and navigation gap. See [the canonical token table](theme_layers.md#bounded-presentation-tokens) for exact defaults and ranges; omitted settings retain safe defaults, including older token-only authoring inputs.
 
 `resolveTheme` centralizes user accent/font overrides. A low-contrast accent falls back to the readable manifest accent, or its foreground if needed, and produces a human-readable warning. Saved configuration is unchanged. This does not repair an inherently unreadable custom foreground or prove contrast over imagery. Test the actual presentation.
 
