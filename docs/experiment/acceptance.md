@@ -11,7 +11,7 @@ It does not assert that every scenario within a group is complete. See the
 | THM-001–006       | Theme registry/resolution, three original scenery themes; contracts, browser theme preservation, responsive and visual tests | Shared content preserved; nine viewport/theme screenshots; broader visual review open                                                                         |
 | MOT-001–007       | Preset/primitive resolution, enhancer lifecycle, scene tests and `tests/e2e/motion.spec.ts`                                  | Reduced/manual motion, finite entry/exit ownership, cleanup and ordinary scrolling; rapid theme/anchor changes and long-content browser scenarios now covered |
 | TXT-001–005       | Portable model/Lexical bridge, editor history, rich-text and browser tests                                                   | Formatting round trips, inert markup, safe links, undo/redo                                                                                                   |
-| EDT-001–009       | Guided panels, history, storage, files, onboarding; editor/model/browser journey tests                                       | Template, text, sections, theme preservation, images, reload, errors, confirmation, keyboard workflow                                                         |
+| EDT-001–010       | Guided panels, history, storage, files, onboarding; editor/model/browser journey tests                                       | Template, text, sections, theme preservation, images, reload, errors, confirmation, keyboard workflow; EDT-010 color overrides covered below                  |
 | AST-001–006       | Header/decode validation, normalization/srcset, manifest; assets and collision regression tests                              | Upload, restore/backup, image export, path isolation; final ZIP journey uses real images                                                                      |
 | EXP-001–011       | Shared renderer and standalone ZIP, backups, metadata and runtime                                                            | Extracted files served root/nested with JS on/off; malformed input rejected; independent exporter package exercised                                           |
 | SDK-001–005       | Public registries/render/validation/export packages; `scripts/sdk_check.mjs`                                                 | Actual tarballs installed in independent typed consumer, browser render and CSS, no editor imports                                                            |
@@ -108,3 +108,12 @@ browser edits, theme switching, autosave/reload, and checks exported HTML values
 See [`editor_colors_final_gate.txt`](../evidence/editor_colors_final_gate.txt).
 Contrast fallback only checks flat color pairs; scenery and uploaded media need
 human assessment and no WCAG conformance is inferred.
+
+The new `tests/e2e/image_position.spec.ts` browser scenario verifies the
+image-position control appears after an image is uploaded, updates the actual
+preview image, persists after reload, and is included in the exported HTML.
+Its first run failed because the editor did not expose the already-supported
+schema field; that RED is preserved in
+[`image_position_red.txt`](../evidence/image_position_red.txt).
+It passes in the full local gate with 145 unit and 40 browser tests; see
+[`image_position_final_gate.txt`](../evidence/image_position_final_gate.txt).
