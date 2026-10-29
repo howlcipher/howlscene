@@ -33,6 +33,12 @@ section-spacing/alignment/width editor increment passes the full local gate:
 verification and merge remain pending; see
 [`layout controls evidence`](../evidence/layout_controls_final_gate.txt).
 
+The custom-section registration increment now passes 149 unit and 41 browser
+tests, the independent package/browser export check, license audit, and local
+vulnerability audit. Hosted verification remains pending. The portable section
+fields and trusted registry behavior are documented in ADR 009 and the
+[custom-section guide](../developers/custom_sections.md).
+
 Current branch: `work/theme-layers`. Manifest-driven artwork passes the complete local gate:
 130 unit tests, 34 browser tests, independent package consumption and licenses.
 The aggregate asset-preflight regression and cleanup correction pass too. The clean hosted baseline is

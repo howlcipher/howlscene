@@ -14,7 +14,7 @@ It does not assert that every scenario within a group is complete. See the
 | EDT-001–010       | Guided panels, history, storage, files, onboarding; editor/model/browser journey tests                                       | Template, text, sections, theme preservation, images, reload, errors, confirmation, keyboard workflow; EDT-003 layout controls and EDT-010 colors covered below |
 | AST-001–006       | Header/decode validation, normalization/srcset, manifest; assets and collision regression tests                              | Upload, restore/backup, image export, path isolation; final ZIP journey uses real images                                                                        |
 | EXP-001–011       | Shared renderer and standalone ZIP, backups, metadata and runtime                                                            | Extracted files served root/nested with JS on/off; malformed input rejected; independent exporter package exercised                                             |
-| SDK-001–005       | Public registries/render/validation/export packages; `scripts/sdk_check.mjs`                                                 | Actual tarballs installed in independent typed consumer, browser render and CSS, no editor imports                                                              |
+| SDK-001–005       | Public registries/render/validation/export packages; `scripts/sdk_check.mjs`                                                 | Actual tarballs installed in independent typed consumer, including custom-section registration, backup, browser render and nested export; no editor imports     |
 | A11Y-001–007      | Semantics, focus recovery, motion control, keyboard and axe browser tests                                                    | Representative keyboard/viewport/focus checks; human assistive-technology and zoom review open; no WCAG conformance claim                                       |
 | SEC-001–006       | Strict runtime schema, safe URLs, bounded media/imports, controlled paths, inert text                                        | Positive/negative regression tests and vulnerability/provenance audit; not a complete adversarial audit                                                         |
 
@@ -125,3 +125,14 @@ controls; the RED is in `layout_controls_red.txt`. The focused browser test pass
 the full local gate passes 145 unit and 41 browser tests, with 89.54% overall
 branch coverage, independent SDK/export checks, and a clean license audit. See
 [`layout_controls_final_gate.txt`](../evidence/layout_controls_final_gate.txt).
+
+`tests/custom_sections.test.tsx` covers safe custom IDs, duplicate and unknown
+registration rejection, inert text rendering, preview/static parity, and backup
+round-trip. `scripts/sdk_check.mjs` repeats the public path from independently
+installed tarballs, including typed registration and nested static serving with
+JavaScript enabled and disabled. The integrated local gate passes 149 unit and
+41 browser tests; see
+[`custom_sections_final_gate.txt`](../evidence/custom_sections_final_gate.txt).
+A second negative case catches a non-callable registry entry that advertises a
+valid custom ID; its pre-fix failure is retained in
+[`custom_registry_validation_red.txt`](../evidence/custom_registry_validation_red.txt).

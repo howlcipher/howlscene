@@ -21,10 +21,8 @@ import {
   createArtworkRegistry,
   type ArtworkRegistry,
   type ThemeRegistry,
-  type SectionConfig,
-  type SectionRendererProps,
+  type SectionRendererRegistry,
 } from "../../core/src/index.js";
-import type { ComponentType } from "react";
 import css from "../../core/src/site.css?raw";
 const archiveDate = new Date("2000-01-01T00:00:00Z");
 /** Separate asset identity from variant identity to prevent filename collisions. */
@@ -34,10 +32,7 @@ function assetPath(id: string, mime: string, width?: number): string {
 export interface ExportOptions {
   artworkRegistry?: ArtworkRegistry;
   themeRegistry?: ThemeRegistry;
-  sectionRegistry?: Record<
-    SectionConfig["type"],
-    ComponentType<SectionRendererProps>
-  >;
+  sectionRegistry?: SectionRendererRegistry;
 }
 /** Validates before packaging; generated content never depends on the editor. */
 export async function exportWebsite(
@@ -49,7 +44,7 @@ export async function exportWebsite(
     options.themeRegistry ?? themes,
     artworkRegistry,
   );
-  const site = parseSite(input, themeRegistry);
+  const site = parseSite(input, themeRegistry, options.sectionRegistry);
   for (const asset of site.assets)
     for (const image of [asset, ...(asset.variants ?? [])])
       validateEncodedImage(image.data, image.mime);

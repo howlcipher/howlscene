@@ -14,7 +14,7 @@ import {
 } from "./assets.js";
 import { richTextSchema, safeUrl } from "./rich_text.js";
 import { themes, themeOverridesSchema, type ThemeRegistry } from "./themes.js";
-import { entriesSchema } from "./sections.js";
+import { entriesSchema, type SectionRendererRegistry } from "./sections.js";
 const imageFields = {
   mime: z.enum(["image/png", "image/jpeg", "image/webp"]),
   data: z.string().max(7000000),
@@ -78,7 +78,11 @@ const sectionSchema = z.strictObject({
     .string()
     .regex(/^[a-z][a-z0-9-]{0,63}$/)
     .refine((id) => id !== "site-content", "This section ID is reserved"),
-  type: z.enum(sectionTypes),
+  type: z.union([z.enum(sectionTypes), z.literal("custom")]),
+  customType: z
+    .string()
+    .regex(/^[a-z][a-z0-9-]{0,63}$/)
+    .optional(),
   animation: z
     .enum(["inherit", "none", "calm", "cinematic", "dynamic"])
     .default("inherit"),
@@ -139,6 +143,20 @@ export const siteSchema = z
           message: "A referenced image is missing",
           path: ["sections"],
         });
+    for (const [index, section] of site.sections.entries()) {
+      if (section.type === "custom" && !section.customType)
+        ctx.addIssue({
+          code: "custom",
+          message: "A custom section needs a registered custom type ID.",
+          path: ["sections", index, "customType"],
+        });
+      if (section.type !== "custom" && section.customType)
+        ctx.addIssue({
+          code: "custom",
+          message: "Only custom sections can have a custom type ID.",
+          path: ["sections", index, "customType"],
+        });
+    }
     if (new Set(site.sections.map((s) => s.id)).size !== site.sections.length)
       ctx.addIssue({
         code: "custom",
@@ -152,6 +170,7 @@ export type SectionConfig = SiteConfig["sections"][number];
 export function parseSite(
   input: unknown,
   themeRegistry: ThemeRegistry = themes,
+  sectionRegistry?: SectionRendererRegistry,
 ): SiteConfig {
   if (
     typeof input === "object" &&
@@ -167,6 +186,17 @@ export function parseSite(
     throw Error(
       "This project uses an unsupported theme. Register it before rendering.",
     );
+  for (const section of parsed.sections)
+    if (
+      section.type === "custom" &&
+      (!section.customType ||
+        !sectionRegistry ||
+        !Object.hasOwn(sectionRegistry, `custom:${section.customType}`) ||
+        typeof sectionRegistry[`custom:${section.customType}`] !== "function")
+    )
+      throw Error(
+        `This project uses an unsupported custom section${section.customType ? ` '${section.customType}'` : ""}. Register it before rendering.`,
+      );
   return parsed;
 }
 export const starterSite = parseSite({

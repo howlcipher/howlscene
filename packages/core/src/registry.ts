@@ -10,6 +10,7 @@ export const sectionDefinitions = {
   contact: { label: "Contact", layouts: ["centered", "wide"] },
   cta: { label: "Call to action", layouts: ["centered", "split"] },
 } as const;
+export type BuiltinSectionType = keyof typeof sectionDefinitions;
 
 export const layoutIds = [
   "centered",
@@ -25,6 +26,6 @@ export const sectionAlignments = ["start", "center", "end"] as const;
 export const sectionContentWidths = ["narrow", "normal", "wide"] as const;
 export const sectionImagePositions = ["top", "center", "bottom"] as const;
 /** Object keys retain the registry's supported type union. */
-export const sectionTypes = Object.keys(sectionDefinitions) as Array<
-  keyof typeof sectionDefinitions
->;
+export const sectionTypes = Object.keys(
+  sectionDefinitions,
+) as BuiltinSectionType[];

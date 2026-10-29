@@ -6,7 +6,7 @@ import {
   starterSite,
   parseSite,
   type SiteConfig,
-  type SectionConfig,
+  type BuiltinSectionType,
   normalizeImage,
 } from "../../packages/core/src/index";
 import {
@@ -32,7 +32,7 @@ function Editor() {
   const [ready, setReady] = useState(false);
   const [canSave, setCanSave] = useState(false);
   const [store] = useState(() => new IndexedDbDraftStore());
-  const [newType, setNewType] = useState<SectionConfig["type"]>("projects");
+  const [newType, setNewType] = useState<BuiltinSectionType>("projects");
   const [width, setWidth] = useState("100%");
   const [help, setHelp] = useState(false);
   const dirty = useRef(false);

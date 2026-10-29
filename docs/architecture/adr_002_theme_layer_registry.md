@@ -7,7 +7,9 @@ Status: first increment implemented and locally verified; hosted verification pe
 Before this increment, custom token themes worked through rendering, backups and export, but scenery branched on built-in theme IDs. A fourth visual theme needed to declare
 its layers without editing generic rendering or animation code. The master
 specification also requires broader theme metadata and general section/layout
-registration; those contracts remain unfinished.
+registration. Trusted custom section renderers have since received a bounded
+registration contract in [ADR 009](adr_009_custom_section_registration.md);
+arbitrary payload schemas and layout registrations remain unfinished.
 
 ## Options
 
@@ -26,7 +28,7 @@ HTML or unrestricted CSS.
 
 Implemented manifest layer references replace theme-name scenery branches while preserving bundled artwork and styling. Each layer has a stable ID, registered artwork reference, bounded depth and opacity. Registries and descriptors are immutable. A cloned built-in manifest retains its layers; omitting layers on a token-only manifest uses Modern defaults, while an explicit empty list renders no artwork. See the canonical [developer layer guide](../developers/theme_layers.md) for APIs and authoring constraints.
 
-Additional presentation parameters must have small validated contracts rather than arbitrary style objects. Broader theme metadata, external asset collection, and general new-section/layout registration remain required follow-up work.
+Additional presentation parameters must have small validated contracts rather than arbitrary style objects. Broader theme metadata, external asset collection, arbitrary payload schemas, and general layout registration remain follow-up work.
 
 Use immutable per-consumer registries and explicit arguments. Rendering and
 export must receive the same definitions; backups must reject unsupported
@@ -53,6 +55,7 @@ a component that merely points to a remote image does not satisfy static export.
 Focused layer tests, unchanged bundled-theme visual tests, and packaged custom-artwork export acceptance have passed in scoped runs. The integrated Node 24 gate passes 130 unit and 34 browser tests, package consumers and license checks; see [executed evidence](../evidence/theme_layers_final_gate.txt). Hosted verification remains pending. These results do not establish a complete v1 theme contract or release approval.
 
 After this slice, extend metadata/default tokens where they affect actual
-presentation and editor controls, then implement general section/layout
-registration using the same explicit-boundary approach. Reuse portable content
-fields initially; arbitrary custom payloads and a complete CMS are unnecessary.
+presentation and editor controls. The trusted custom section registration
+increment is now tracked in ADR 009; future layout registration should use the
+same explicit boundary. Reuse portable content fields; arbitrary custom payloads
+and a complete CMS are unnecessary.

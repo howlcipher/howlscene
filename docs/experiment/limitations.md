@@ -33,9 +33,11 @@ establish public v1 readiness.
 - Presentation defaults now cover four validated CSS settings. Maximum values
   at narrow widths and increased text zoom remain a verification gap. Broader
   responsive/accessibility/motion contracts remain required v1 work.
-- Component registration overrides the ten supported section types. Adding a new
-  schema-level section type or arbitrary layout identifier still requires core
-  changes; this is narrower than the requested general section-authoring contract.
+- Custom section renderers can now register new safe type IDs while reusing the
+  portable section content fields. Arbitrary custom payload schemas, adding
+  those types to the standard no-code editor chooser, and arbitrary layout-ID
+  registration remain unsupported; the contract is narrower than full plugin
+  or CMS behavior.
 - Rich text supports paragraphs, two heading ranks, bold, italic, links and
   single-level ordered/unordered lists. Arbitrary HTML and nested lists are not
   supported by the portable model.

@@ -3,6 +3,7 @@ import {
   themes,
   type ThemeRegistry,
   type SiteConfig,
+  type SectionRendererRegistry,
 } from "../../core/src/index.js";
 import { validateProjectImages } from "../../core/src/assets.js";
 const MAX_BACKUP = 30 * 1024 * 1024;
@@ -16,11 +17,12 @@ function checkBackupSize(text: string): void {
 export function serializeBackup(
   input: unknown,
   themeRegistry: ThemeRegistry = themes,
+  sectionRegistry?: SectionRendererRegistry,
 ): string {
   const text = JSON.stringify({
     format: "howlscene-project",
     version: 1,
-    site: parseSite(input, themeRegistry),
+    site: parseSite(input, themeRegistry, sectionRegistry),
   });
   checkBackupSize(text);
   return text;
@@ -29,6 +31,7 @@ export function serializeBackup(
 export function importBackup(
   text: string,
   themeRegistry: ThemeRegistry = themes,
+  sectionRegistry?: SectionRendererRegistry,
 ): SiteConfig {
   checkBackupSize(text);
   const value: unknown = JSON.parse(text);
@@ -45,14 +48,15 @@ export function importBackup(
     !("site" in value)
   )
     throw Error("Choose a HowlScene editable project backup.");
-  return parseSite(value.site, themeRegistry);
+  return parseSite(value.site, themeRegistry, sectionRegistry);
 }
 /** Browser import boundary: validate all decoded images before replacing a draft. */
 export async function importValidatedBackup(
   text: string,
   themeRegistry: ThemeRegistry = themes,
+  sectionRegistry?: SectionRendererRegistry,
 ): Promise<SiteConfig> {
-  const site = importBackup(text, themeRegistry);
+  const site = importBackup(text, themeRegistry, sectionRegistry);
   await validateProjectImages(site);
   return site;
 }

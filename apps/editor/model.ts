@@ -1,8 +1,8 @@
 import {
   parseSite,
   sectionDefinitions,
+  type BuiltinSectionType,
   type SiteConfig,
-  type SectionConfig,
 } from "../../packages/core/src/index";
 
 function sectionIndex(site: SiteConfig, id: string): number {
@@ -12,7 +12,7 @@ function sectionIndex(site: SiteConfig, id: string): number {
 }
 export function addSection(
   site: SiteConfig,
-  type: SectionConfig["type"],
+  type: BuiltinSectionType,
   id: string,
 ): SiteConfig {
   return parseSite({

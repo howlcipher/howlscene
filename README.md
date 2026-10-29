@@ -61,4 +61,4 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md). Original
 
 ## Developer guides
 
-See [configuration and extension contracts](docs/developers/contracts.md), [package consumption](docs/developers/sdk.md), and [motion](docs/developers/motion.md). Custom themes and supported-section overrides are trusted developer integrations; they do not require editor internals. Public API and export limitations remain documented development boundaries.
+See [configuration and extension contracts](docs/developers/contracts.md), [custom section registration](docs/developers/custom_sections.md), [package consumption](docs/developers/sdk.md), and [motion](docs/developers/motion.md). Custom themes and section renderers are trusted developer integrations; they do not require editor internals. Public API and export limitations remain documented development boundaries.

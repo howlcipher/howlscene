@@ -7,9 +7,10 @@ features; unfinished acceptance requirements are tracked in
 ## Before v1
 
 1. Make clean hosted CI reproducible, including deterministic visual fixtures.
-2. Complete declarative artwork/layer theme manifests and general section/layout
-   extension contracts; current token registries and supported-section overrides
-   are narrower than the full specification.
+2. Extend the validated custom-section registration contract to cover any
+   remaining layout and editor integration needs. The first developer API now
+   supports trusted custom renderers using portable v1 fields; arbitrary payload
+   schemas and a plugin system remain outside scope.
 3. Complete transition, long-content and image-rich visual acceptance coverage.
 4. Review the complete editor with nontechnical users and assistive technology;
    correct findings before making accessibility or release-readiness claims.

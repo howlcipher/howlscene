@@ -1,4 +1,4 @@
-import type { CSSProperties, ComponentType } from "react";
+import type { CSSProperties } from "react";
 import { AssetImage } from "./media.js";
 import { Scenery } from "./scenery.js";
 import { defaultArtworkRegistry, type ArtworkRegistry } from "./artwork.js";
@@ -6,9 +6,9 @@ import { RichText } from "./rich_text.js";
 import { themes, resolveTheme, type ThemeRegistry } from "./themes.js";
 import {
   createSectionRegistry,
-  type SectionRendererProps,
+  type SectionRendererRegistry,
 } from "./sections.js";
-import type { SiteConfig, SectionConfig } from "./config.js";
+import type { SiteConfig } from "./config.js";
 const defaultSectionRegistry = createSectionRegistry();
 const displayHeading = (heading: string) =>
   heading.trim() ? heading : "Untitled section";
@@ -24,10 +24,7 @@ export function Site({
   assetUrl?: (id: string, width?: number) => string;
   themeRegistry?: ThemeRegistry;
   artworkRegistry?: ArtworkRegistry;
-  sectionRegistry?: Record<
-    SectionConfig["type"],
-    ComponentType<SectionRendererProps>
-  >;
+  sectionRegistry?: SectionRendererRegistry;
 }) {
   const manifest = themeRegistry[site.theme];
   if (!manifest) throw Error("Unsupported theme");
@@ -91,7 +88,13 @@ export function Site({
       </header>
       <main id="site-content">
         {sections.map((s, index) => {
-          const Entries = sectionRegistry[s.type];
+          const rendererId =
+            s.type === "custom" ? `custom:${s.customType}` : s.type;
+          const Entries = sectionRegistry[rendererId];
+          if (!Entries)
+            throw Error(
+              `This project uses an unsupported custom section '${s.customType}'. Register it before rendering.`,
+            );
           return (
             <section
               key={s.id}
@@ -105,7 +108,12 @@ export function Site({
                 artworkRegistry={artworkRegistry}
               />
               <div className="scene-content">
-                <p className="eyebrow">{s.type.replace("_", " ")}</p>
+                <p className="eyebrow">
+                  {(s.type === "custom" ? s.customType! : s.type).replace(
+                    /[_-]/g,
+                    " ",
+                  )}
+                </p>
                 {index === 0 ? (
                   <h1>{displayHeading(s.heading)}</h1>
                 ) : (
