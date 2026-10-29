@@ -131,7 +131,9 @@ ran 151 unit tests and 51 of 52 browser scenarios; WebKit could not launch due t
 missing host libraries. The separate SDK, license and vulnerability checks pass.
 The focused test transcript and incomplete full host run are retained in
 `docs/evidence/background_readability_focused.txt` and
-`docs/evidence/background_readability_host_local_attempt.txt`. Hosted verification remains pending. See
+`docs/evidence/background_readability_host_local_attempt.txt`. Hosted `verify`
+passed in run `40974740672`, and the Pages artifact/path check passed in run
+`40974740693`; the pinned hosted browser matrix verifies WebKit. See
 [ADR 014](../architecture/adr_014_readable_surfaces_for_background_images.md)
 and current evidence in `PROGRESS.md`.
 

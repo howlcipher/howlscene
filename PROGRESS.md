@@ -24,8 +24,12 @@ Chromium and Firefox export checks; local WebKit launch is blocked by missing
 host GTK/media libraries. Docker is installed but this account cannot access its
 socket, so the pinned Playwright container could not be run locally. The focused
 background-readability test and the changed visual exports passed, and nine
-image-rich export baselines were reviewed. Full hosted verification for this
-branch remains pending. Logs are in
+image-rich export baselines were reviewed. Hosted `verify` passed in run
+[`40974740672`](https://github.com/howlcipher/howlscene/actions/runs/40974740672),
+and the Pages artifact/path check passed in run
+[`40974740693`](https://github.com/howlcipher/howlscene/actions/runs/40974740693).
+The hosted browser matrix includes the WebKit scenario unavailable on this host.
+Logs are in
 [`background_readability_host_local_attempt.txt`](docs/evidence/background_readability_host_local_attempt.txt)
 and [`background_readability_local_extras.txt`](docs/evidence/background_readability_local_extras.txt).
 Human zoom, assistive-technology, text-over-scenery, and nontechnical usability
@@ -128,8 +132,10 @@ themes, both in preview and in a nested ZIP served without JavaScript. The local
 export snapshots changed for all themes and three viewports and were visually
 reviewed. Local unit/build/type/lint/format, SDK, license, and vulnerability
 checks pass. Of 52 local browser scenarios, 51 passed; the WebKit export scenario
-could not launch because this host lacks WebKit libraries. Hosted verification
-is pending, and this work does not verify text over the built-in scenery or
+could not launch because this host lacks WebKit libraries. Hosted `verify` passed
+in run `40974740672`, and the Pages artifact/path check passed in run
+`40974740693`; the hosted browser matrix includes the WebKit scenario unavailable
+on this host. This work does not verify text over the built-in scenery or
 establish WCAG conformance. The focused preview and nested no-script export test
 passes in [`background_readability_focused.txt`](docs/evidence/background_readability_focused.txt);
 the incomplete integrated host run is retained separately.
