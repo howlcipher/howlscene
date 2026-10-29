@@ -76,3 +76,14 @@ representative screenshot fixture contains no repeated cards.
 THM-CARD-002 passes in the integrated gate and verifies all three built-in card
 appearances and responsive fit through the real editor. See
 [`theme_card_final_gate.txt`](../evidence/theme_card_final_gate.txt).
+
+THM-RESP-001 validates the `wrap`/`stack` setting and backward-compatible default.
+THM-RESP-002 creates multiple section links in the editor and checks layout,
+visibility, and horizontal overflow for all built-in themes at mobile, tablet,
+and desktop widths.
+
+The THM-RESP-001/002 responsive-navigation slice passes the complete local gate:
+142 unit tests across 34 files and 38 browser tests. The [gate log](../evidence/theme_responsive_final_gate.txt)
+includes exported paths, SDK package checks, all nine visual comparisons and
+license review; the [dependency audit](../evidence/theme_responsive_audit.txt)
+reports zero vulnerabilities.

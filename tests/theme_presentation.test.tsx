@@ -19,6 +19,7 @@ const defaults = {
   cardStyle: "outlined",
   navigationGapRem: 1.2,
   navigationStyle: "plain",
+  mobileNavigationLayout: "wrap",
 };
 // Token-only manifests remain accepted at existing public authoring boundaries.
 const legacy: ThemeManifestInput = {
@@ -37,9 +38,31 @@ const custom = {
     cardStyle: "glow" as const,
     navigationGapRem: 2.4,
     navigationStyle: "underline" as const,
+    mobileNavigationLayout: "wrap" as const,
   },
 };
 describe("validated theme presentation", () => {
+  it("THM-RESP-001 normalizes the mobile navigation layout and preserves legacy themes", () => {
+    expect(themeSchema.parse(legacy).presentation.mobileNavigationLayout).toBe(
+      "wrap",
+    );
+    expect(themes.modern.presentation.mobileNavigationLayout).toBe("wrap");
+    expect(themes.ink.presentation.mobileNavigationLayout).toBe("wrap");
+    expect(themes.cyber.presentation.mobileNavigationLayout).toBe("stack");
+    expect(
+      themeSchema.parse({
+        ...legacy,
+        presentation: { mobileNavigationLayout: "stack" },
+      }).presentation.mobileNavigationLayout,
+    ).toBe("stack");
+    for (const mobileNavigationLayout of ["scroll", "grid", "url(bad)", ""])
+      expect(() =>
+        themeSchema.parse({
+          ...legacy,
+          presentation: { mobileNavigationLayout },
+        }),
+      ).toThrow();
+  });
   it("THM-CARD-001 normalizes safe shared card treatments", () => {
     expect(themeSchema.parse(legacy).presentation.cardStyle).toBe("outlined");
     expect(themes.modern.presentation.cardStyle).toBe("outlined");
@@ -182,6 +205,8 @@ describe("validated theme presentation", () => {
     expect(html).toContain('data-theme-navigation-style="underline"');
     expect(preview).toContain('data-theme-card-style="glow"');
     expect(html).toContain('data-theme-card-style="glow"');
+    expect(preview).toContain('data-theme-mobile-navigation="wrap"');
+    expect(html).toContain('data-theme-mobile-navigation="wrap"');
     expect(html).not.toContain("<script");
     expect(site.sections).toEqual(starterSite.sections);
   });

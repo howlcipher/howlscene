@@ -62,6 +62,7 @@ export function Site({
       style={style}
       data-theme={site.theme}
       data-theme-card-style={theme.presentation.cardStyle}
+      data-theme-mobile-navigation={theme.presentation.mobileNavigationLayout}
       data-theme-navigation-style={theme.presentation.navigationStyle}
       data-motion={site.motion}
       data-motion-intensity={site.motionSettings.intensity}

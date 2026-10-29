@@ -138,3 +138,11 @@ shadow, and Cyberpunk uses an accent border and restrained glow. All treatments
 use the same semantic card markup and responsive grid. Theme accent resolution
 continues to apply before the glow color is drawn. The setting accepts an enum,
 not CSS, and is not yet exposed in the editor.
+
+Themes may also choose `presentation.mobileNavigationLayout`: `wrap` (the legacy
+default) keeps the shared navigation row with wrapping links; `stack` puts links
+on separate lines below the shared 600px breakpoint. Above that width both
+settings use a row. Cyberpunk selects `stack`; the other built-in themes use
+`wrap`. The choice cannot change anchors, ordering, focus behavior, or the
+breakpoint, and does not accept CSS. It is not yet a visual-editor control. See
+[ADR 006](../architecture/adr_006_mobile_navigation.md).
