@@ -59,6 +59,7 @@ export function Site({
       style={style}
       data-theme={site.theme}
       data-theme-card-style={theme.presentation.cardStyle}
+      data-theme-heading-treatment={theme.presentation.headingTreatment}
       data-theme-mobile-navigation={theme.presentation.mobileNavigationLayout}
       data-theme-navigation-style={theme.presentation.navigationStyle}
       data-motion={site.motion}

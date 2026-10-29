@@ -36,6 +36,15 @@ reviewer-environment safeguards are still unconfigured. See
 The resulting `main` protection settings are recorded in
 [`pages_branch_protection.md`](../evidence/pages_branch_protection.md).
 
+The current branch `work/theme-section-headings` adds the theme-owned
+`presentation.headingTreatment` enum: Modern Professional uses `plain`, Ink Wash
+uses `accent-rule`, and Cyberpunk uses `accent-rail`. The focused RED test is
+preserved in [`theme_component_treatment_red.txt`](../evidence/theme_component_treatment_red.txt).
+Unit coverage verifies validation, defaults, and preview/export parity. A browser
+scenario checks computed treatments and content preservation at 375, 768, and
+1440 px, plus a nested no-script ZIP; it passes locally. The six changed preview
+baselines were inspected. Full gate and hosted verification remain pending.
+
 Creator background/text/accent colors now pass the integrated local gate:
 145 unit tests, 39 browser tests, 89.54% overall branch coverage, production
 build/prerender, independent package consumers, and dependency/license audits.
@@ -103,6 +112,15 @@ The next bounded presentation increment passes the complete local gate:
 134 unit tests, 35 browser tests, installed consumers and licenses. Defaults
 preserve all nine screenshots. Broader theme contracts remain required work;
 see ADR 003 and current journal for evidence and limits.
+
+`THM-COMP-001–002` adds a validated `headingTreatment` enum consumed by the
+shared renderer and stylesheet. The full local gate passes 151 unit and 51
+browser tests, including rendered theme differences and nested no-script export;
+overall branch coverage is 89.54%. Six preview and six exported-site screenshots
+for Ink Wash and Cyberpunk were reviewed and updated. The RED log and
+[final gate output](../evidence/theme_heading_final_gate.txt) are retained.
+Hosted verification and human contrast/usability review remain open. See
+[ADR 013](../architecture/adr_013_theme_heading_treatments.md).
 
 Theme motion increment: added bounded per-theme intensity/speed scalars and a
 parallax preference while retaining user-level motion-off and reduced-motion

@@ -41,16 +41,16 @@ establish public v1 readiness.
   variable until those controls and the Pages source are verified.
 - Theme manifests declare validated layers referencing trusted, immutable
   artwork registries. Preview and export share that contract. External image-layer
-  collection and broader component styling remain required. A bounded navigation
-  link treatment is now available; responsive and accessibility manifest controls
-  remain incomplete. The integrated gate passes after correcting an aggregate
-  asset-validation ordering weakness.
-- Presentation defaults now cover four validated CSS settings. Maximum values
-  for line height, card gap/radius and navigation gap pass automated 200% root
-  text-size reflow at 320 CSS px in all three themes with long copy and no tested
-  horizontal overflow. This does not simulate browser zoom fully or replace a
-  human zoom review. Broader responsive/accessibility/motion contracts remain
-  required v1 work.
+  collection and broader component styling remain required. Bounded navigation
+  and section-heading treatments are available; responsive and accessibility
+  manifest controls remain incomplete. The integrated gate passes after
+  correcting an aggregate asset-validation ordering weakness.
+- Theme presentation currently has four bounded numeric CSS settings and a
+  closed section-heading treatment enum. Maximum line-height, card gap/radius,
+  and navigation gap pass automated 200% root text-size reflow at 320 CSS px in
+  all three themes with long copy and no tested horizontal overflow. This does
+  not simulate browser zoom fully or replace a human zoom review. Broader
+  responsive/accessibility/motion contracts remain required v1 work.
 - Custom section renderers can now register new safe type IDs while reusing the
   portable section content fields. Arbitrary custom payload schemas, adding
   those types to the standard no-code editor chooser, and arbitrary layout-ID
@@ -79,12 +79,13 @@ Unfinished required v1 work is not reclassified as excluded scope.
   screen-reader and text-zoom review remains open.
 
 - Navigation and card treatments are available as closed theme defaults and
-  creator overrides, all consumed by shared CSS. Other section-component
-  styling remains shared and cannot yet be customized independently.
+  creator overrides; section headings have a theme-owned closed treatment enum.
+  These settings use shared CSS. Other section-component styling remains shared
+  and cannot yet be customized independently.
 
-- Card presentation now supports outlined, soft, and accent-glow variants for
-  shared cards and gallery figures. Other section-component styling remains
-  shared and cannot yet be customized by themes.
+- Card presentation supports outlined, soft, and accent-glow variants for shared
+  cards and gallery figures. Other section-component styling remains shared and
+  cannot yet be customized by themes.
 
 - The responsive theme contract and creator override offer only `wrap` or
   `stack` at the fixed shared breakpoint. Arbitrary per-theme breakpoints and

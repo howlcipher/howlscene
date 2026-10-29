@@ -19,6 +19,7 @@ const defaults = {
   cardGapRem: 1.5,
   cardRadiusRem: 0.7,
   cardStyle: "outlined",
+  headingTreatment: "plain",
   navigationGapRem: 1.2,
   navigationStyle: "plain",
   mobileNavigationLayout: "wrap",
@@ -38,6 +39,7 @@ const custom = {
     cardGapRem: 2,
     cardRadiusRem: 0.2,
     cardStyle: "glow" as const,
+    headingTreatment: "accent-rule" as const,
     navigationGapRem: 2.4,
     navigationStyle: "underline" as const,
     mobileNavigationLayout: "wrap" as const,
@@ -207,6 +209,54 @@ describe("validated theme presentation", () => {
       expect(() =>
         themeSchema.parse({ ...legacy, presentation: { navigationStyle } }),
       ).toThrow();
+  });
+  it("THM-COMP-001 validates bounded section-heading treatments and shares them with export", async () => {
+    expect(themeSchema.parse(legacy).presentation.headingTreatment).toBe(
+      "plain",
+    );
+    expect(themes.modern.presentation.headingTreatment).toBe("plain");
+    expect(themes.ink.presentation.headingTreatment).toBe("accent-rule");
+    expect(themes.cyber.presentation.headingTreatment).toBe("accent-rail");
+    for (const headingTreatment of [
+      "arbitrary-css",
+      "url(javascript:alert(1))",
+      "",
+    ])
+      expect(() =>
+        themeSchema.parse({
+          ...legacy,
+          presentation: { headingTreatment },
+        }),
+      ).toThrow();
+
+    const registry = createThemeRegistry({
+      "custom-rule": {
+        ...themes.ink,
+        name: "Custom rule",
+        presentation: {
+          ...themes.ink.presentation,
+          headingTreatment: "accent-rule",
+        },
+      },
+    });
+    const site = parseSite(
+      { ...starterSite, theme: "custom-rule", motion: "none" },
+      registry,
+    );
+    const preview = renderToStaticMarkup(
+      <Site site={site} themeRegistry={registry} />,
+    );
+    const archive = await JSZip.loadAsync(
+      await exportWebsite(site, { themeRegistry: registry }),
+    );
+    const html = await archive.file("index.html")!.async("string");
+    const css = await archive.file("site.css")!.async("string");
+    for (const markup of [preview, html])
+      expect(markup).toContain('data-theme-heading-treatment="accent-rule"');
+    expect(css).toContain(
+      '.howlscene[data-theme-heading-treatment="accent-rule"] .scene-content > h2',
+    );
+    expect(site.sections).toEqual(starterSite.sections);
   });
   it("THM-PRE-001 legacy manifests and partial settings normalize immutable, isolated, idempotent defaults", () => {
     const original = JSON.stringify(legacy);

@@ -80,11 +80,14 @@ A manifest can optionally supply a nested `presentation` object. Normalization f
 | `bodyLineHeight`   | `1.8`   | `1.5..2.2`      | Paragraph and list line height        |
 | `cardGapRem`       | `1.5`   | `0.5..3`        | Card and gallery spacing in rem       |
 | `cardRadiusRem`    | `0.7`   | `0..2`          | Card and gallery corner radius in rem |
+| `headingTreatment` | `plain` | Closed enum     | Shared section-heading appearance     |
 | `navigationGapRem` | `1.2`   | `0.5..3`        | Navigation item spacing in rem        |
 
-For example, add `presentation: {bodyLineHeight: 1.9, cardGapRem: 2}` to a theme passed to `createThemeRegistry`; omitted radius and navigation settings keep their defaults. Supply numeric values rather than CSS strings or units. These four settings map to shared renderer CSS variables and affect existing content; they do not introduce arbitrary per-theme stylesheets or stored user content.
+For example, add `presentation: {bodyLineHeight: 1.9, cardGapRem: 2, headingTreatment: "accent-rule"}` to a theme passed to `createThemeRegistry`; omitted radius and navigation settings keep their defaults. Supply numeric values rather than CSS strings or units. Numeric settings map to shared renderer CSS variables; the heading enum maps to a shared renderer data attribute and closed CSS selectors. They affect existing content without introducing arbitrary per-theme stylesheets or stored user content.
 
-The [presentation decision](../architecture/adr_003_theme_presentation.md) records why these four controls were selected. This increment remains subject to its focused unit and browser contracts and the final integrated gate; it does not establish a complete v1 theme system.
+The [presentation decision](../architecture/adr_003_theme_presentation.md) records the bounded numeric controls. [ADR 013](../architecture/adr_013_theme_heading_treatments.md) records the closed heading choices. These contracts do not establish a complete v1 theme system.
+
+`headingTreatment` accepts `plain`, `accent-rule`, or `accent-rail`. The built-in themes use those values respectively: Modern Professional, Ink Wash, and Cyberpunk. The rule appears below a section heading; the rail appears at its inline start, following the writing direction. Both preserve semantic heading elements and use the resolved theme accent. The treatment is theme-owned and has no separate editor override.
 
 ## Export and verification boundaries
 

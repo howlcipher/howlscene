@@ -10,6 +10,11 @@ const color = z.string().regex(/^#[0-9a-fA-F]{6}$/);
 export const DEFAULT_THEME_ID = "modern";
 export const themeCardStyles = ["outlined", "soft", "glow"] as const;
 export const themeNavigationStyles = ["plain", "underline", "framed"] as const;
+export const themeHeadingTreatments = [
+  "plain",
+  "accent-rule",
+  "accent-rail",
+] as const;
 export const themeMobileNavigationLayouts = ["wrap", "stack"] as const;
 const themeMotionSchema = z
   .strictObject({
@@ -27,6 +32,7 @@ export const themePresentationSchema = z
     cardGapRem: z.number().min(0.5).max(3).default(1.5),
     cardRadiusRem: z.number().min(0).max(2).default(0.7),
     cardStyle: z.enum(themeCardStyles).default("outlined"),
+    headingTreatment: z.enum(themeHeadingTreatments).default("plain"),
     navigationGapRem: z.number().min(0.5).max(3).default(1.2),
     navigationStyle: z.enum(themeNavigationStyles).default("plain"),
     mobileNavigationLayout: z
@@ -107,7 +113,11 @@ export const themes: ThemeRegistry &
       foreground: "#263b36",
       accent: "#496052",
       font: "Georgia, serif",
-      presentation: { navigationStyle: "underline", cardStyle: "soft" },
+      presentation: {
+        navigationStyle: "underline",
+        cardStyle: "soft",
+        headingTreatment: "accent-rule",
+      },
       layers: [
         { id: "sky", artwork: "ink-sky", depth: 0.08 },
         { id: "mountains", artwork: "ink-mountains", depth: 0.2 },
@@ -130,6 +140,7 @@ export const themes: ThemeRegistry &
       presentation: {
         navigationStyle: "framed",
         cardStyle: "glow",
+        headingTreatment: "accent-rail",
         mobileNavigationLayout: "stack",
       },
       layers: [

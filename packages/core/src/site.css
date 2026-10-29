@@ -74,6 +74,24 @@ a {
   font-size: clamp(2rem, 4cqw, 3.5rem);
   line-height: 1.15;
 }
+.howlscene[data-theme-heading-treatment="accent-rule"] .scene-content > h1,
+.howlscene[data-theme-heading-treatment="accent-rule"] .scene-content > h2 {
+  border-bottom: 2px solid var(--scene-accent);
+  padding-bottom: 0.25em;
+}
+.howlscene[data-theme-heading-treatment="accent-rail"] .scene-content > h1,
+.howlscene[data-theme-heading-treatment="accent-rail"] .scene-content > h2 {
+  width: fit-content;
+  border-inline-start: 0.25rem solid var(--scene-accent);
+  padding-inline-start: 0.6em;
+  text-align: start;
+}
+.howlscene[data-theme-heading-treatment="accent-rail"] .scene-content > h2 {
+  max-width: 100%;
+}
+.layout-centered .scene-content > h2 {
+  margin-inline: auto;
+}
 .scene .rich-heading {
   font-size: clamp(1.5rem, 3cqw, 2.25rem);
   line-height: 1.3;
