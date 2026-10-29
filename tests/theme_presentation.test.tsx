@@ -1,0 +1,141 @@
+import { describe, it, expect } from "vitest";
+import { renderToStaticMarkup } from "react-dom/server";
+import JSZip from "jszip";
+import {
+  Site,
+  parseSite,
+  starterSite,
+  themeSchema,
+  createThemeRegistry,
+  resolveTheme,
+  type ThemeManifestInput,
+} from "../packages/core/src/index";
+import { exportWebsite } from "../packages/export/src/index";
+const defaults = {
+  bodyLineHeight: 1.8,
+  cardGapRem: 1.5,
+  cardRadiusRem: 0.7,
+  navigationGapRem: 1.2,
+};
+// Token-only manifests remain accepted at existing public authoring boundaries.
+const legacy: ThemeManifestInput = {
+  name: "Legacy custom",
+  background: "#ffffff",
+  foreground: "#111111",
+  accent: "#000000",
+  font: "system-ui, sans-serif",
+};
+const custom = {
+  ...legacy,
+  presentation: {
+    bodyLineHeight: 1.6,
+    cardGapRem: 2,
+    cardRadiusRem: 0.2,
+    navigationGapRem: 2.4,
+  },
+};
+describe("validated theme presentation", () => {
+  it("THM-PRE-001 legacy manifests and partial settings normalize immutable, isolated, idempotent defaults", () => {
+    const original = JSON.stringify(legacy);
+    const normalized = themeSchema.parse(legacy);
+    expect(normalized.presentation).toEqual(defaults);
+    expect(themeSchema.parse(normalized)).toEqual(normalized);
+    expect(JSON.stringify(legacy)).toBe(original);
+    expect(Object.isFrozen(normalized)).toBe(true);
+    expect(Object.isFrozen(normalized.presentation)).toBe(true);
+    const first = themeSchema.parse({
+      ...legacy,
+      presentation: { cardGapRem: 2 },
+    });
+    const second = themeSchema.parse(legacy);
+    expect(first.presentation).toEqual({ ...defaults, cardGapRem: 2 });
+    expect(second.presentation).toEqual(defaults);
+    expect(first.presentation).not.toBe(second.presentation);
+    expect(createThemeRegistry({ legacy }).legacy?.presentation).toEqual(
+      defaults,
+    );
+    expect(resolveTheme(legacy).tokens.presentation).toEqual(defaults);
+  });
+  it("THM-PRE-002 accepts bounded finite numeric values and rejects unsafe or unknown settings", () => {
+    const limits = [
+      ["bodyLineHeight", 1.5, 2.2],
+      ["cardGapRem", 0.5, 3],
+      ["cardRadiusRem", 0, 2],
+      ["navigationGapRem", 0.5, 3],
+    ] as const;
+    for (const [key, min, max] of limits) {
+      for (const value of [min, max])
+        expect(
+          themeSchema.parse({ ...legacy, presentation: { [key]: value } })
+            .presentation[key],
+        ).toBe(value);
+      for (const value of [
+        min - 0.01,
+        max + 0.01,
+        NaN,
+        Infinity,
+        -Infinity,
+        "1rem",
+        null,
+        {},
+      ])
+        expect(
+          () =>
+            themeSchema.parse({ ...legacy, presentation: { [key]: value } }),
+          `${key}: ${String(value)}`,
+        ).toThrow();
+    }
+    for (const presentation of [
+      null,
+      [],
+      { css: "color:red" },
+      { bodyLineHeight: "url(javascript:alert(1))" },
+      { cardGapRem: 1, style: "display:none" },
+    ])
+      expect(() => themeSchema.parse({ ...legacy, presentation })).toThrow();
+  });
+  it("THM-PRE-003 theme and existing user overrides compose without changing content or source settings", () => {
+    const before = JSON.stringify(custom);
+    const registry = createThemeRegistry({ custom });
+    const site = parseSite(
+      {
+        ...starterSite,
+        theme: "custom",
+        overrides: { accent: "#000000", font: "mono" },
+      },
+      registry,
+    );
+    const tokens = resolveTheme(registry.custom!, site.overrides).tokens;
+    expect(tokens.presentation).toEqual(custom.presentation);
+    expect(tokens.font).toBe("ui-monospace, monospace");
+    expect(tokens.accent).toBe("#000000");
+    expect(site.sections).toEqual(starterSite.sections);
+    expect(JSON.stringify(custom)).toBe(before);
+  });
+  it("THM-PRE-004 shared preview and standalone export render the same presentation values and content", async () => {
+    const registry = createThemeRegistry({ custom });
+    const site = parseSite(
+      { ...starterSite, theme: "custom", motion: "none" },
+      registry,
+    );
+    const preview = renderToStaticMarkup(
+      <Site site={site} themeRegistry={registry} />,
+    );
+    const zip = await JSZip.loadAsync(
+      await exportWebsite(site, { themeRegistry: registry }),
+    );
+    const html = await zip.file("index.html")!.async("string");
+    for (const expected of [
+      "--scene-body-line-height:1.6",
+      "--scene-card-gap:2rem",
+      "--scene-card-radius:0.2rem",
+      "--scene-nav-gap:2.4rem",
+      site.sections[0]!.heading,
+    ]) {
+      expect(preview).toContain(expected);
+      expect(html).toContain(expected);
+    }
+    expect(html).not.toContain("<script");
+    expect(site.sections).toEqual(starterSite.sections);
+  });
+});

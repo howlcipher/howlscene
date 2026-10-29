@@ -1,0 +1,108 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/theme_presentation.test.tsx (4 tests | 4 failed) 30ms
+   ❯ validated theme presentation (4)
+     × THM-PRE-001 legacy manifests and partial settings normalize immutable, isolated, idempotent defaults 18ms
+     × THM-PRE-002 accepts bounded finite numeric values and rejects unsafe or unknown settings 5ms
+     × THM-PRE-003 theme and existing user overrides compose without changing content or source settings 3ms
+     × THM-PRE-004 shared preview and standalone export render the same presentation values and content 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/theme_presentation.test.tsx > validated theme presentation > THM-PRE-001 legacy manifests and partial settings normalize immutable, isolated, idempotent defaults
+AssertionError: expected undefined to deeply equal { bodyLineHeight: 1.8, …(3) }
+
+- Expected:
+{
+  "bodyLineHeight": 1.8,
+  "cardGapRem": 1.5,
+  "cardRadiusRem": 0.7,
+  "navigationGapRem": 1.2,
+}
+
++ Received:
+undefined
+
+ ❯ tests/theme_presentation.test.tsx:41:37
+     39|     const original = JSON.stringify(legacy);
+     40|     const normalized = themeSchema.parse(legacy);
+     41|     expect(normalized.presentation).toEqual(defaults);
+       |                                     ^
+     42|     expect(themeSchema.parse(normalized)).toEqual(normalized);
+     43|     expect(JSON.stringify(legacy)).toBe(original);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/theme_presentation.test.tsx > validated theme presentation > THM-PRE-002 accepts bounded finite numeric values and rejects unsafe or unknown settings
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "presentation"
+    ],
+    "path": [],
+    "message": "Unrecognized key: \"presentation\""
+  }
+]
+ ❯ tests/theme_presentation.test.tsx:69:23
+     67|       for (const value of [min, max])
+     68|         expect(
+     69|           themeSchema.parse({ ...legacy, presentation: { [key]: value …
+       |                       ^
+     70|             .presentation[key],
+     71|         ).toBe(value);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/theme_presentation.test.tsx > validated theme presentation > THM-PRE-003 theme and existing user overrides compose without changing content or source settings
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "presentation"
+    ],
+    "path": [],
+    "message": "Unrecognized key: \"presentation\""
+  }
+]
+ ❯ normalizeManifest packages/core/src/themes.ts:48:32
+     46|   available: ReadonlySet<string>,
+     47| ): ThemeManifest {
+     48|   const manifest = themeSchema.parse(input);
+       |                                ^
+     49|   for (const layer of manifest.layers) {
+     50|     if (!available.has(layer.artwork))
+ ❯ createThemeRegistry packages/core/src/themes.ts:120:18
+ ❯ tests/theme_presentation.test.tsx:99:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/theme_presentation.test.tsx > validated theme presentation > THM-PRE-004 shared preview and standalone export render the same presentation values and content
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "presentation"
+    ],
+    "path": [],
+    "message": "Unrecognized key: \"presentation\""
+  }
+]
+ ❯ normalizeManifest packages/core/src/themes.ts:48:32
+     46|   available: ReadonlySet<string>,
+     47| ): ThemeManifest {
+     48|   const manifest = themeSchema.parse(input);
+       |                                ^
+     49|   for (const layer of manifest.layers) {
+     50|     if (!available.has(layer.artwork))
+ ❯ createThemeRegistry packages/core/src/themes.ts:120:18
+ ❯ tests/theme_presentation.test.tsx:116:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  09:48:57
+   Duration  1.14s (import 68%, transform 26%, tests 4%, worker 1%)

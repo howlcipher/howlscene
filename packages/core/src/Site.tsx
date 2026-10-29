@@ -50,6 +50,10 @@ export function Site({
     "--scene-fg": theme.foreground,
     "--scene-accent": theme.accent,
     "--scene-font": theme.font,
+    "--scene-body-line-height": theme.presentation.bodyLineHeight,
+    "--scene-card-gap": `${theme.presentation.cardGapRem}rem`,
+    "--scene-card-radius": `${theme.presentation.cardRadiusRem}rem`,
+    "--scene-nav-gap": `${theme.presentation.navigationGapRem}rem`,
   } as CSSProperties;
   const sections = site.sections.filter((s) => s.visible);
   return (

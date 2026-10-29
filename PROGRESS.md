@@ -169,3 +169,44 @@ section/layout registration, wider visual coverage, human usability/accessibilit
 review, production performance and deployment remain required. The next step is
 reviewable branch publication and fresh hosted CI, followed by broader theme
 metadata. Other repositories remain untouched and comparative evaluation pending.
+
+## Hosted theme-layer verification and next increment
+
+PR https://github.com/howlcipher/howlscene/pull/1 contains commits `a461e72`
+and `a86c7d0`. Its clean hosted quality gate passed:
+https://github.com/howlcipher/howlscene/actions/runs/40884610329.
+It remains a reviewable, unmerged development increment. The next branch,
+`work/theme-presentation`, starts from that verified source and will add bounded
+presentation tokens consumed by the shared renderer/CSS. No production changes
+for that next increment have been made yet. Architecture choices and acceptance
+criteria must precede implementation; preserve existing bundled appearances.
+
+## Verified bounded theme presentation increment
+
+ADR 003 selects four bounded numeric settings consumed by shared CSS: body line
+height, card gap, card radius and navigation gap. Defaults preserve the three
+bundled themes; legacy and partial authoring inputs normalize immutable values.
+No site schema or editor controls changed. Genuine unit/browser RED is preserved
+in `docs/evidence/theme_presentation*_red.txt`. A real browser verifies computed
+styles, unchanged content across theme switches, and the same presentation in an
+extracted ZIP served under a nested path with JavaScript disabled. All nine
+existing visual comparisons pass without baseline changes.
+
+The complete local Node 24.22.2 gate passes **134 unit tests across 33 files and
+35 browser tests**, formatting/lint/types, production builds, actual installed
+package consumers, nested custom-theme export and 267-package license/provenance
+inspection. Branch coverage: overall 89.50%, core 89.97%, configuration 94.59%,
+exporter 97.72%. Fresh dependency audit: zero vulnerabilities. Executed evidence:
+[full gate](docs/evidence/theme_presentation_final_gate.txt),
+[audit](docs/evidence/theme_presentation_audit.txt),
+[local performance](docs/evidence/theme_presentation_performance.json).
+Independent review found no blocking defect. Maximum token combinations at narrow
+widths and increased text zoom remain a verification gap; no blanket AA claim.
+
+Current branch `work/theme-presentation` builds on unmerged PR #1, whose hosted
+CI passed. Next: publish a stacked reviewable PR and obtain fresh hosted checks.
+Then continue required theme responsive/accessibility/motion contracts and
+external asset collection, followed by general section/layout registration.
+Human usability/screen-reader review, broader exported visual coverage,
+production performance and deployment remain open. This is not a v1 release.
+Repository isolation and experiment evidence remain intact.

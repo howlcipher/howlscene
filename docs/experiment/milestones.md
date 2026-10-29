@@ -21,3 +21,8 @@ Current branch: `work/theme-layers`. Manifest-driven artwork passes the complete
 130 unit tests, 34 browser tests, independent package consumption and licenses.
 The aggregate asset-preflight regression and cleanup correction pass too. The clean hosted baseline is
 `ce06f23`, run `40878831459`; this is separate from current-branch verification.
+
+The next bounded presentation increment passes the complete local gate:
+134 unit tests, 35 browser tests, installed consumers and licenses. Defaults
+preserve all nine screenshots. Broader theme contracts remain required work;
+see ADR 003 and current journal for evidence and limits.

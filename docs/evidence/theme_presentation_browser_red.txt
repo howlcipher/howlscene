@@ -1,0 +1,53 @@
+
+Running 1 test using 1 worker
+
+[WebServer] 9:49:14 AM [vite] (client) [Unhandled error] ZodError: [
+[WebServer]   {
+[WebServer]     "code": "unrecognized_keys",
+[WebServer]     "keys": [
+[WebServer]       "presentation"
+[WebServer]     ],
+[WebServer]     "path": [],
+[WebServer]     "message": "Unrecognized key: \"presentation\""
+[WebServer]   }
+[WebServer] ]
+[WebServer]  > normalizeManifest packages/core/src/themes.ts:48:31
+[WebServer]     46 |    available: ReadonlySet<string>,
+[WebServer]     47 |  ): ThemeManifest {
+[WebServer]     48 |    const manifest = themeSchema.parse(input);
+[WebServer]        |                                 ^
+[WebServer]     49 |    for (const layer of manifest.layers) {
+[WebServer]     50 |      if (!available.has(layer.artwork))
+[WebServer]  > createThemeRegistry packages/core/src/themes.ts:120:17
+[WebServer]  > tests/fixtures/presentation.tsx:12:17
+[WebServer]
+  ✘  1 tests/e2e/presentation.spec.ts:30:1 › THM-PRES-001 manifest presentation affects preview and nested no-script export without changing content (5.6s)
+
+
+  1) tests/e2e/presentation.spec.ts:30:1 › THM-PRES-001 manifest presentation affects preview and nested no-script export without changing content
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'A considered portfolio' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'A considered portfolio' }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'A considered portfolio' })
+
+
+      35 |   await expect(
+      36 |     page.getByRole("heading", { name: "A considered portfolio" }),
+    > 37 |   ).toBeVisible();
+         |     ^
+      38 |   expect(await presentation(page)).toEqual(custom);
+      39 |   const words = await page.locator(".howlscene").innerText();
+      40 |   await page.getByLabel("Fixture theme").selectOption("baseline");
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/presentation.spec.ts:37:5
+
+    Error Context: test-results/presentation-THM-PRES-001--d024f-rt-without-changing-content/error-context.md
+
+  1 failed
+    tests/e2e/presentation.spec.ts:30:1 › THM-PRES-001 manifest presentation affects preview and nested no-script export without changing content

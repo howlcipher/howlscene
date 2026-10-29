@@ -71,6 +71,21 @@ Spreading a built-in theme copies its explicit layer list unless you override `l
 
 Projects and backups contain theme identity and content, not artwork callbacks or registry implementations. Reopening a custom-theme project requires the compatible theme registry. Rendering and export additionally require the same artwork registry. Supplying only a custom theme registry cannot recreate missing artwork definitions. The standard editor remains a bundled-registry consumer; this API does not automatically add arbitrary developer code to its theme picker.
 
+## Bounded presentation tokens
+
+A manifest can optionally supply a nested `presentation` object. Normalization fills omitted fields with safe defaults and returns immutable presentation settings. Older authoring inputs can omit the entire object; no site-configuration migration or new editor controls are required.
+
+| Token              | Default | Inclusive range | Rendered responsibility               |
+| ------------------ | ------- | --------------- | ------------------------------------- |
+| `bodyLineHeight`   | `1.8`   | `1.5..2.2`      | Paragraph and list line height        |
+| `cardGapRem`       | `1.5`   | `0.5..3`        | Card and gallery spacing in rem       |
+| `cardRadiusRem`    | `0.7`   | `0..2`          | Card and gallery corner radius in rem |
+| `navigationGapRem` | `1.2`   | `0.5..3`        | Navigation item spacing in rem        |
+
+For example, add `presentation: {bodyLineHeight: 1.9, cardGapRem: 2}` to a theme passed to `createThemeRegistry`; omitted radius and navigation settings keep their defaults. Supply numeric values rather than CSS strings or units. These four settings map to shared renderer CSS variables and affect existing content; they do not introduce arbitrary per-theme stylesheets or stored user content.
+
+The [presentation decision](../architecture/adr_003_theme_presentation.md) records why these four controls were selected. This increment remains subject to its focused unit and browser contracts and the final integrated gate; it does not establish a complete v1 theme system.
+
 ## Export and verification boundaries
 
 Pass both registries to `Site` and `exportWebsite`. Static export includes the rendered artwork as meaningful SVG markup in its complete HTML, independent of editor code. JavaScript remains optional enhancement for motion. The independent SDK check installs packed packages, renders custom artwork, exports it in the browser, and serves that ZIP under real nested mounts with and without JavaScript.
