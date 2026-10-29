@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { sectionTypes, layoutIds } from "./registry.js";
-import { validateEncodedImage, inspectImageDimensions } from "./assets.js";
+import {
+  validateEncodedImage,
+  inspectImageDimensions,
+  assertProjectAssetBudget,
+} from "./assets.js";
 import { richTextSchema, safeUrl } from "./rich_text.js";
 import { themes, themeOverridesSchema, type ThemeRegistry } from "./themes.js";
 import { entriesSchema } from "./sections.js";
@@ -13,41 +17,55 @@ const variantSchema = z.strictObject({
   width: z.number().int().min(1).max(1600),
   height: z.number().int().min(1).max(1600),
 });
-const assetSchema = z
-  .strictObject({
-    id: z.string().regex(/^asset-[a-zA-Z0-9-]{1,80}$/),
-    ...imageFields,
-    alt: z.string().max(500),
-    width: z.number().int().min(1).max(8192).optional(),
-    height: z.number().int().min(1).max(8192).optional(),
-    variants: z.array(variantSchema).max(2).optional(),
-  })
-  .superRefine((asset, ctx) => {
-    try {
-      for (const image of [asset, ...(asset.variants ?? [])]) {
-        const bytes = validateEncodedImage(image.data, image.mime);
-        const actual = inspectImageDimensions(bytes, image.mime);
-        if (
-          (image.width !== undefined && image.width !== actual.width) ||
-          (image.height !== undefined && image.height !== actual.height)
-        )
-          throw Error("Image dimensions do not match the stored dimensions.");
-      }
+const assetMetadataSchema = z.strictObject({
+  id: z.string().regex(/^asset-[a-zA-Z0-9-]{1,80}$/),
+  ...imageFields,
+  alt: z.string().max(500),
+  width: z.number().int().min(1).max(8192).optional(),
+  height: z.number().int().min(1).max(8192).optional(),
+  variants: z.array(variantSchema).max(2).optional(),
+});
+const assetSchema = assetMetadataSchema.superRefine((asset, ctx) => {
+  try {
+    for (const image of [asset, ...(asset.variants ?? [])]) {
+      const bytes = validateEncodedImage(image.data, image.mime);
+      const actual = inspectImageDimensions(bytes, image.mime);
       if (
-        new Set(asset.variants?.map((v) => v.width)).size !==
-        (asset.variants?.length ?? 0)
+        (image.width !== undefined && image.width !== actual.width) ||
+        (image.height !== undefined && image.height !== actual.height)
       )
-        throw Error("Responsive image widths must be unique.");
-      if (asset.variants?.length && !asset.width)
-        throw Error("Responsive images need their full image width.");
+        throw Error("Image dimensions do not match the stored dimensions.");
+    }
+    if (
+      new Set(asset.variants?.map((v) => v.width)).size !==
+      (asset.variants?.length ?? 0)
+    )
+      throw Error("Responsive image widths must be unique.");
+    if (asset.variants?.length && !asset.width)
+      throw Error("Responsive images need their full image width.");
+  } catch (error) {
+    ctx.addIssue({
+      code: "custom",
+      message: error instanceof Error ? error.message : "Invalid image data",
+      path: ["data"],
+    });
+  }
+});
+const assetsSchema = z
+  .array(assetMetadataSchema)
+  .max(20)
+  .superRefine((assets, ctx) => {
+    try {
+      assertProjectAssetBudget(assets);
     } catch (error) {
       ctx.addIssue({
         code: "custom",
-        message: error instanceof Error ? error.message : "Invalid image data",
-        path: ["data"],
+        message:
+          error instanceof Error ? error.message : "Invalid asset budget",
       });
     }
-  });
+  })
+  .pipe(z.array(assetSchema));
 const sectionSchema = z.strictObject({
   id: z
     .string()
@@ -91,7 +109,7 @@ export const siteSchema = z
       .string()
       .regex(/^[a-z][a-z0-9-]{0,63}$/)
       .default("modern"),
-    assets: z.array(assetSchema).max(20).default([]),
+    assets: assetsSchema.default([]),
     overrides: themeOverridesSchema.default({}),
     motionSettings: z
       .strictObject({
@@ -103,11 +121,6 @@ export const siteSchema = z
     sections: z.array(sectionSchema).min(1).max(100),
   })
   .superRefine((site, ctx) => {
-    if (JSON.stringify(site.assets).length > 28000000)
-      ctx.addIssue({
-        code: "custom",
-        message: "Images exceed the 28 MB project limit",
-      });
     if (new Set(site.assets.map((a) => a.id)).size !== site.assets.length)
       ctx.addIssue({ code: "custom", message: "Asset IDs must be unique" });
     for (const section of site.sections)

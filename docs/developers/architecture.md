@@ -26,6 +26,12 @@ flowchart LR
 
 `parseSite` accepts unknown input and produces normalized schema-version-1 content without mutating the caller. Stable IDs survive reordering. Unsupported versions fail explicitly; version 1 is the first supported format, so no historical migration is claimed. The configuration centralizes layout choices, navigation membership, visibility, image treatment, spacing, width, motion, metadata, and references. A hidden section is omitted from rendered content and navigation.
 
+## Manifest layers and trusted artwork
+
+Theme layers are declarative data referencing an immutable artwork registry. The renderer resolves those references instead of branching on a theme ID, so a fourth theme can provide original inline scenery without editing engine code. Cloning a bundled manifest retains its explicit layers; token-only manifests receive Modern defaults, and an explicit empty list produces no artwork. The canonical [theme layer guide](theme_layers.md) describes bounded layer contracts and the working public API.
+
+Factories remain trusted synchronous application code outside project JSON. Render and export receive the same theme/artwork registries; backup reopening requires the compatible theme registry but never deserializes functions. The first layer slice is implemented, while final integrated release verification, broader theme metadata, external resource collection, and general new-section/layout registration remain required. This separation makes references portable without introducing an executable plugin loader or claiming a complete v1 theme system.
+
 ## Portable content and headings
 
 Lexical state is translated into `RichDocument`; it is not the canonical public project format. Blocks are paragraphs, headings with stored level 2 or 3, and single-level ordered/unordered lists. Spans carry plain text, bold, italic, and optional validated links. Unsupported nested lists, arbitrary HTML, and custom editor nodes are outside the current serialization contract.

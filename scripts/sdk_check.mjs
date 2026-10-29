@@ -1,4 +1,6 @@
 import { chromium } from "@playwright/test";
+import JSZip from "jszip";
+import { closeSdkResources } from "./close_sdk_resources.mjs";
 import { createServer } from "node:http";
 import { extname, sep } from "node:path";
 import { mkdtemp, readFile, writeFile, rm, access } from "node:fs/promises";
@@ -60,9 +62,29 @@ try {
     }),
   );
   run("npm", ["install", "--ignore-scripts", "--no-audit", "--no-fund"]);
+  const extensionFixture = `
+const artworkRegistry=createArtworkRegistry({
+  'forest-canopy':{render:()=>createElement('circle',{'data-original-art':'forest-canopy',cx:720,cy:200,r:160})}
+});
+const themeRegistry=createThemeRegistry({forest:{...themes.ink,name:'Forest',background:'#e8efdf',layers:[{id:'canopy',artwork:'forest-canopy',depth:.3,opacity:.2}]}},artworkRegistry);
+const site:SiteConfig=parseSite({...starterSite,theme:'forest'},themeRegistry);
+`;
   await writeFile(
     join(temporary, "consumer.ts"),
-    `import {exportWebsite,serializeBackup,importBackup} from '@howlscene/export';\nimport {Site,parseSite,starterSite,themes,createThemeRegistry,createSectionRegistry,resolvePrimitive,type SiteConfig} from '@howlscene/core';\nimport {createElement} from 'react';\nimport {renderToStaticMarkup} from 'react-dom/server';\nvoid exportWebsite;const restored=importBackup(serializeBackup(starterSite));if(restored.title!==starterSite.title)throw new Error('Export package backup contract failed');\nconst registry=createThemeRegistry({forest:{...themes.ink,name:'Forest',background:'#e8efdf'}});\nconst site: SiteConfig=parseSite({...starterSite,theme:'forest'},registry);\nif(!createSectionRegistry().hero||!resolvePrimitive('fade','calm'))throw new Error('Missing public extension API');\nconst html=renderToStaticMarkup(createElement(Site,{site,themeRegistry:registry}));\nif(!html.includes('data-theme="forest"')||!html.includes(site.sections[0]!.heading)||!themes.ink.name)throw new Error('SDK did not render expected content');\nconsole.log('SDK-001 through SDK-005: independent install, declarations, render and theme selection passed');\n`,
+    `import {exportWebsite,serializeBackup,importBackup} from '@howlscene/export';
+import {Site,parseSite,starterSite,themes,createArtworkRegistry,createThemeRegistry,createSectionRegistry,resolvePrimitive,type SiteConfig} from '@howlscene/core';
+import {createElement} from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+${extensionFixture}
+const restored=importBackup(serializeBackup(site,themeRegistry),themeRegistry);
+if(restored.theme!=='forest'||restored.sections[0]!.heading!==site.sections[0]!.heading)throw new Error('Custom project backup contract failed');
+if(!createSectionRegistry().hero||!resolvePrimitive('fade','calm'))throw new Error('Missing public extension API');
+const html=renderToStaticMarkup(createElement(Site,{site,themeRegistry,artworkRegistry}));
+if(!html.includes('data-theme="forest"')||!html.includes('data-original-art="forest-canopy"')||!html.includes(site.sections[0]!.heading))throw new Error('SDK did not render configured artwork');
+const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry});
+if(!bytes.byteLength)throw new Error('Custom theme static export failed');
+console.log('SDK-001 through SDK-005: independent install, declarations, custom artwork render, backup and export passed');
+`,
   );
   run(join(temporary, "node_modules/.bin/tsc"), [
     "consumer.ts",
@@ -100,13 +122,61 @@ try {
   );
   await writeFile(
     join(temporary, "app.ts"),
-    `import {exportWebsite} from '@howlscene/export';import {createElement} from 'react';import {createRoot} from 'react-dom/client';import {Site,starterSite,parseSite,createThemeRegistry,themes} from '@howlscene/core';import '@howlscene/core/styles.css';const themeRegistry=createThemeRegistry({forest:{...themes.ink,name:'Forest',background:'#e8efdf'}});const site=parseSite({...starterSite,theme:'forest'},themeRegistry);createRoot(document.getElementById('root')!).render(createElement(Site,{site,themeRegistry}));const button=document.createElement('button');button.textContent='Export consumer website';button.onclick=async()=>{const bytes=await exportWebsite(starterSite);button.textContent='Exported '+bytes.byteLength+' bytes';};document.body.append(button);`,
+    `import {exportWebsite} from '@howlscene/export';
+import {createElement} from 'react';
+import {createRoot} from 'react-dom/client';
+import {Site,starterSite,parseSite,createArtworkRegistry,createThemeRegistry,themes,type SiteConfig} from '@howlscene/core';
+import '@howlscene/core/styles.css';
+${extensionFixture}
+createRoot(document.getElementById('root')!).render(createElement(Site,{site,themeRegistry,artworkRegistry}));
+const button=document.createElement('button');
+button.textContent='Export consumer website';
+button.onclick=async()=>{
+ const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry});
+ (window as Window & {exportBytes?:number[]}).exportBytes=Array.from(bytes);
+ button.textContent='Exported '+bytes.byteLength+' bytes';
+};
+document.body.append(button);`,
   );
   run(join(temporary, "node_modules/.bin/vite"), ["build", "--base", "./"]);
   const buildDir = join(temporary, "dist");
+  const publishedFiles = new Map();
+  const mountPrefixes = ["/example-site/", "/howlscene/project/"];
   const server = createServer(async (req, res) => {
     try {
       const url = new URL(req.url ?? "/", "http://localhost");
+      const decodedPath = decodeURIComponent(url.pathname);
+      const mount = mountPrefixes.find((prefix) =>
+        decodedPath.startsWith(prefix),
+      );
+      if (mount) {
+        const relative = decodedPath.slice(mount.length) || "index.html";
+        if (
+          relative.split("/").some((part) => part === ".." || part === ".") ||
+          relative.includes("\\")
+        ) {
+          res.writeHead(403);
+          res.end();
+          return;
+        }
+        const contents = publishedFiles.get(relative);
+        if (!contents) {
+          res.writeHead(404);
+          res.end();
+          return;
+        }
+        res.writeHead(200, {
+          "Content-Type":
+            {
+              ".html": "text/html",
+              ".css": "text/css",
+              ".js": "text/javascript",
+              ".svg": "image/svg+xml",
+            }[extname(relative)] ?? "application/octet-stream",
+        });
+        res.end(contents);
+        return;
+      }
       const path = resolve(
         buildDir,
         "." +
@@ -151,6 +221,108 @@ try {
       .waitFor();
     await page.getByRole("button", { name: "Export consumer website" }).click();
     await page.getByRole("button", { name: /Exported [0-9]+ bytes/ }).waitFor();
+    const artwork = await page
+      .locator('circle[data-original-art="forest-canopy"]')
+      .count();
+    if (!artwork)
+      throw Error("Independent browser consumer omitted custom artwork");
+    const exported = await page.evaluate(() => globalThis.exportBytes);
+    if (!Array.isArray(exported))
+      throw Error("Browser did not return custom export bytes");
+    const archive = await JSZip.loadAsync(new Uint8Array(exported));
+    const exportedHTML = await archive.file("index.html")?.async("string");
+    if (
+      !exportedHTML?.includes('data-theme="forest"') ||
+      !exportedHTML.includes('data-original-art="forest-canopy"') ||
+      !exportedHTML.includes("Build something worth sharing")
+    )
+      throw Error("Browser ZIP omitted custom theme, artwork or content");
+    for (const [name, entry] of Object.entries(archive.files)) {
+      if (entry.dir) continue;
+      if (
+        name.startsWith("/") ||
+        name.split("/").some((part) => part === ".." || part === ".") ||
+        name.includes("\\")
+      )
+        throw Error("Export ZIP contains unsafe paths");
+      publishedFiles.set(name, await entry.async("nodebuffer"));
+    }
+    for (const javaScriptEnabled of [false, true]) {
+      const context = await browser.newContext({ javaScriptEnabled });
+      try {
+        const published = await context.newPage();
+        for (const prefix of mountPrefixes) {
+          const failures = [];
+          const response = (result) => {
+            if (result.status() !== 200)
+              failures.push(`${result.status()} ${result.url()}`);
+          };
+          const request = (result) =>
+            failures.push(`Failed request ${result.url()}`);
+          const pageError = (error) => failures.push(error.message);
+          published.on("response", response);
+          published.on("requestfailed", request);
+          published.on("pageerror", pageError);
+          try {
+            const document = await published.goto(
+              `http://127.0.0.1:${address.port}${prefix}`,
+            );
+            if (document?.status() !== 200)
+              throw Error("Nested export document failed");
+            await published
+              .getByRole("heading", { name: "Build something worth sharing" })
+              .waitFor();
+            if (
+              (await published
+                .locator('circle[data-original-art="forest-canopy"]')
+                .count()) !== 1
+            )
+              throw Error("Nested static export lost custom SVG");
+            const presentation = await published
+              .locator(".howlscene")
+              .evaluate((element) => ({
+                background: getComputedStyle(element).backgroundColor,
+                headerDisplay: getComputedStyle(
+                  element.querySelector(".site-header"),
+                ).display,
+              }));
+            if (
+              presentation.background !== "rgb(232, 239, 223)" ||
+              presentation.headerDisplay !== "flex"
+            )
+              throw Error(
+                "Nested export CSS did not apply: " +
+                  JSON.stringify(presentation),
+              );
+            if (
+              await published
+                .locator('input,textarea,select,[aria-label="Website editor"]')
+                .count()
+            )
+              throw Error("Nested export included editing controls");
+            if (
+              await published
+                .getByRole("button", { name: "Export consumer website" })
+                .count()
+            )
+              throw Error("Consumer export UI leaked into published ZIP");
+            if (failures.length)
+              throw Error(
+                "Nested export failed resources: " + JSON.stringify(failures),
+              );
+          } finally {
+            published.off("response", response);
+            published.off("requestfailed", request);
+            published.off("pageerror", pageError);
+          }
+        }
+      } finally {
+        await context.close();
+      }
+    }
+    console.log(
+      "SDK browser-generated custom ZIP served at two real nested mounts with JavaScript disabled and enabled; content, artwork, CSS and response checks passed.",
+    );
     const color = await page
       .locator(".howlscene")
       .evaluate((el) => getComputedStyle(el).backgroundColor);
@@ -160,11 +332,10 @@ try {
           JSON.stringify({ color, errors }),
       );
     console.log(
-      "SDK clean Vite consumer build, browser rendering, custom theme and CSS loading verified.",
+      "SDK clean Vite consumer build, custom artwork, CSS and actual custom-theme browser ZIP verified.",
     );
   } finally {
-    await browser?.close();
-    await new Promise((resolve) => server.close(resolve));
+    await closeSdkResources(browser, server);
   }
 } catch (error) {
   if (error.stdout) process.stderr.write(error.stdout);

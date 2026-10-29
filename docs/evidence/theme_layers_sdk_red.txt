@@ -1,0 +1,7 @@
+consumer.ts(2,43): error TS2305: Module '"@howlscene/core"' has no exported member 'createArtworkRegistry'.
+consumer.ts(9,168): error TS2554: Expected 0-1 arguments, but got 2.
+consumer.ts(15,72): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Object literal may only specify known properties, and 'artworkRegistry' does not exist in type 'Attributes & { site: { schemaVersion: 1; title: string; description: string; indexable: boolean; theme: string; assets: { alt: string; mime: "image/png" | "image/jpeg" | "image/webp"; ... 4 more ...; variants?: { ...; }[] | undefined; }[]; ... 4 more ...; canonical?: string | undefined; }; assetUrl?: ((id: string, w...'.
+consumer.ts(17,53): error TS2353: Object literal may only specify known properties, and 'artworkRegistry' does not exist in type 'ExportOptions'.
+Command failed: /tmp/howlscene-consumer-I0VdCv/node_modules/.bin/tsc consumer.ts --outDir output --module NodeNext --moduleResolution NodeNext --target ES2022 --strict

@@ -18,6 +18,8 @@ import {
   Site,
   themes,
   createThemeRegistry,
+  createArtworkRegistry,
+  type ArtworkRegistry,
   type ThemeRegistry,
   type SectionConfig,
   type SectionRendererProps,
@@ -30,6 +32,7 @@ function assetPath(id: string, mime: string, width?: number): string {
   return `assets/${id}/${width === undefined ? "original" : `w${width}`}.${mime.split("/")[1]}`;
 }
 export interface ExportOptions {
+  artworkRegistry?: ArtworkRegistry;
   themeRegistry?: ThemeRegistry;
   sectionRegistry?: Record<
     SectionConfig["type"],
@@ -41,9 +44,11 @@ export async function exportWebsite(
   input: unknown,
   options: ExportOptions = {},
 ): Promise<Uint8Array> {
-  const themeRegistry = options.themeRegistry
-    ? createThemeRegistry(options.themeRegistry)
-    : themes;
+  const artworkRegistry = createArtworkRegistry(options.artworkRegistry);
+  const themeRegistry = createThemeRegistry(
+    options.themeRegistry ?? themes,
+    artworkRegistry,
+  );
   const site = parseSite(input, themeRegistry);
   for (const asset of site.assets)
     for (const image of [asset, ...(asset.variants ?? [])])
@@ -77,6 +82,7 @@ export async function exportWebsite(
           <Site
             site={site}
             themeRegistry={themeRegistry}
+            artworkRegistry={artworkRegistry}
             {...(options.sectionRegistry
               ? { sectionRegistry: options.sectionRegistry }
               : {})}

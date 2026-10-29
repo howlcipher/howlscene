@@ -28,3 +28,15 @@ extraction, real nested static hosting, images/navigation and disabling motion.
 files under root and `/howlscene/`, including meaningful no-JavaScript content.
 These local servers establish static deployment compatibility, not an actual
 public-host deployment. Human review of clarity and usability remains required.
+
+## Theme-layer extension increment
+
+`tests/theme_layers.test.tsx` covers immutable registries, bounded manifests,
+legacy authoring compatibility, unsafe IDs/references and property-based
+normalization (seed 23614). The installed-package consumer registers a fourth
+theme with original artwork, restores its backup and serves the browser-generated
+ZIP under two nested mounts, JavaScript on/off. Existing visual baselines remain
+unchanged. `tests/security.test.tsx` now proves aggregate-budget rejection occurs
+before decoding and preserves exact limits. These scenarios pass in the
+[130-unit/34-browser integrated gate](../evidence/theme_layers_final_gate.txt).
+Broader v1 theme/section contracts and human review remain open.

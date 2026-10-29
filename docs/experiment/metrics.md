@@ -102,3 +102,31 @@ origins below editor controls on mobile/tablet. The documented controlled
 experiment and reviewed six-image update isolate theme captures from those
 parent-font metrics; thresholds remain unchanged. Remote confirmation is still
 required.
+
+## Hosted baseline and current validation investigation
+
+The clean Ubuntu GitHub Actions run for `ce06f23` passed:
+https://github.com/howlcipher/howlscene/actions/runs/40878831459.
+This confirms the deterministic font/capture-origin correction on the hosted
+runner; it does not verify later source edits or constitute a live deployment.
+
+On `work/theme-layers`, the first complete Node 24.22.2 check stopped after
+124 unit passes and one existing combined-asset fixture timeout at 5,044 ms.
+One isolated measurement each passed all seven security tests in 3,062 ms with
+coverage and 2,710 ms without. The isolated coverage command's process exit was
+nonzero because a single test file cannot satisfy whole-project thresholds;
+no thresholds were changed. These are diagnostic observations under local load,
+not benchmark claims. The investigation found image decoding precedes aggregate
+budget rejection; a deterministic no-decode regression is being added.
+
+## Theme-layer integrated snapshot
+
+[Full executed Node 24.22.2 gate](../evidence/theme_layers_final_gate.txt):
+130 unit tests, 34 browser tests, all configured builds/checks, independent
+package consumption and 267-package license/provenance inspection pass.
+Branches: overall 89.50%, core 89.97%, configuration 94.59%, exporter 97.72%.
+[Fresh audit](../evidence/theme_layers_audit.txt): zero vulnerabilities.
+[Raw local performance](../evidence/theme_layers_performance.json) records the
+same loopback/dev-server methodology and its limitations. Runtime 68,713 bytes,
+21,275 bytes gzip; ten-section text-only export 67.4 ms. These are single local
+observations, not production or comparative performance claims.

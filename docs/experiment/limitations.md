@@ -16,19 +16,17 @@ establish public v1 readiness.
   it does not establish production field Core Web Vitals or a 60 FPS guarantee.
 - The independent core and export packages install and render from tarballs.
   Public npm publication has not occurred.
-- The verified checkpoint `ce5a57c` is pushed to the standalone GitHub repository.
-  The first clean GitHub Actions run exposed a Node 24 test-isolation assumption;
-  it is reproduced and corrected. The complete local Node 24 gate passes;
-  the second hosted run then exposed seven system-font screenshot differences.
-  Reviewed deterministic font fixtures and unchanged pixel thresholds now pass
-  all nine normal local comparisons. Hosted confirmation remains pending.
+- Hosted CI passed for checkpoint `ce06f23`:
+  [executed run](https://github.com/howlcipher/howlscene/actions/runs/40878831459).
+  Subsequent theme-layer changes require a fresh integrated and hosted gate.
   GitHub Pages is not configured and no live deployment is claimed.
 - The experiment reference video is unavailable, so reference fidelity cannot be
   scored. No comparison with the independent implementation is claimed.
-- Theme manifests currently validate design tokens and metadata; bundled scenery
-  is procedural presentation selected by the renderer. Fully declarative artwork,
-  layer manifests and broader component/navigation styling contracts remain
-  required architecture work before claiming the complete master specification.
+- Theme manifests now declare validated layers referencing trusted, immutable
+  artwork registries. Preview and export share that contract. External image-layer
+  collection and broader component/navigation, responsive, motion and accessibility
+  manifest contracts remain required v1 work. The integrated
+  gate passes after correcting an aggregate asset-validation ordering weakness.
 - Component registration overrides the ten supported section types. Adding a new
   schema-level section type or arbitrary layout identifier still requires core
   changes; this is narrower than the requested general section-authoring contract.

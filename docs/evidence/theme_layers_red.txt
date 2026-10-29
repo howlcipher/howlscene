@@ -1,0 +1,54 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/theme_layers.test.tsx (3 tests | 3 failed) 13ms
+   × THM-EXT-001 a fourth theme declares scenery independently of generic rendering and motion 9ms
+   × THM-EXT-002 layers reject unknown artwork, duplicate IDs, unsafe identifiers and unbounded parameters 1ms
+   × THM-EXT-003 custom layered scenery survives portable backup and standalone static export 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/theme_layers.test.tsx > THM-EXT-001 a fourth theme declares scenery independently of generic rendering and motion
+TypeError: createArtworkRegistry is not a function
+ ❯ artwork tests/theme_layers.test.tsx:19:10
+     17|
+     18| function artwork() {
+     19|   return createArtworkRegistry({
+       |          ^
+     20|     "forest-canopy": {
+     21|       render: () => (
+ ❯ tests/theme_layers.test.tsx:37:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/theme_layers.test.tsx > THM-EXT-002 layers reject unknown artwork, duplicate IDs, unsafe identifiers and unbounded parameters
+TypeError: createArtworkRegistry is not a function
+ ❯ artwork tests/theme_layers.test.tsx:19:10
+     17|
+     18| function artwork() {
+     19|   return createArtworkRegistry({
+       |          ^
+     20|     "forest-canopy": {
+     21|       render: () => (
+ ❯ tests/theme_layers.test.tsx:60:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/theme_layers.test.tsx > THM-EXT-003 custom layered scenery survives portable backup and standalone static export
+TypeError: createArtworkRegistry is not a function
+ ❯ artwork tests/theme_layers.test.tsx:19:10
+     17|
+     18| function artwork() {
+     19|   return createArtworkRegistry({
+       |          ^
+     20|     "forest-canopy": {
+     21|       render: () => (
+ ❯ tests/theme_layers.test.tsx:87:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  09:11:51
+   Duration  893ms (import 68%, transform 28%, tests 2%, worker 1%)

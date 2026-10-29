@@ -1,0 +1,32 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/theme_layers.test.tsx (4 tests | 1 failed) 95ms
+   × THM-EXT-004 token-only legacy themes retain the quiet default scenery 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/theme_layers.test.tsx > THM-EXT-004 token-only legacy themes retain the quiet default scenery
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/theme_layers.test.tsx:129:57
+    127|   expect(html).toContain("scenery-orbit");
+    128|   expect(html).not.toContain("scenery-mountains");
+    129|   expect(Object.isFrozen(themeRegistry.legacy?.layers)).toBe(true);
+       |                                                         ^
+    130|   expect(Object.isFrozen(themeRegistry.legacy?.layers[0])).toBe(true);
+    131| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  09:18:07
+   Duration  946ms (import 65%, transform 17%, tests 16%, worker 2%)
