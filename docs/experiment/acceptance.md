@@ -162,3 +162,13 @@ The browser scenario adds a real project card, switches themes, checks narrow
 navigation layout, reloads local storage, and inspects the website ZIP. Its
 initial missing-control failure is in
 [`editor_presentation_e2e_red.txt`](../evidence/editor_presentation_e2e_red.txt).
+
+EDT-012 additionally opens the actual downloaded section-layout ZIP from a
+nested `/howlscene/layout/` mount with JavaScript disabled. It verifies the
+exported heading and navigation, decoded image dimensions and alt text, split
+image placement at desktop and phone widths, anchor navigation, and absence of
+horizontal document overflow. The full Node 24.22.2 gate passes 150 unit and 45
+browser tests, with 94.85% statement and 89.54% branch coverage; independent SDK
+consumption, license review, and a separate zero-vulnerability audit pass. See
+[`export_layout_static_final_gate.txt`](../evidence/export_layout_static_final_gate.txt)
+and [`export_layout_static_audit.txt`](../evidence/export_layout_static_audit.txt).

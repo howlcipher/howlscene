@@ -338,3 +338,11 @@ ten-section text-only ZIP export in 69.5 ms, and static runtime 68,879 bytes /
 a single local observation, not field performance evidence; the
 [raw measurement](../evidence/export_image_visual_performance.json) records its
 environment and limitations.
+
+The follow-up static-layout integration gate (Node 24.22.2) passes 150 unit and
+45 browser tests at 94.85% statement and 89.54% branch coverage. It does not
+introduce a new performance measurement because the change adds only browser
+acceptance coverage. See
+[`export_layout_static_final_gate.txt`](../evidence/export_layout_static_final_gate.txt)
+and [`export_layout_static_audit.txt`](../evidence/export_layout_static_audit.txt)
+for reproducible commands and output.

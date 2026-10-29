@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import JSZip from "jszip";
+import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 
 test("EDT-003 section spacing, alignment and width are saved and exported", async ({
@@ -38,6 +39,7 @@ test("EDT-003 section spacing, alignment and width are saved and exported", asyn
 
 test("EDT-012 compatible layout presets change composition in preview and export", async ({
   page,
+  browser,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/editor/");
@@ -125,4 +127,84 @@ test("EDT-012 compatible layout presets change composition in preview and export
   expect(html).toContain("layout-split");
   expect(html).toContain("About the field");
   expect(html).toContain('alt="Painted hills"');
+
+  const files = new Map<string, Buffer>();
+  for (const [name, entry] of Object.entries(archive.files))
+    if (!entry.dir) files.set(name, await entry.async("nodebuffer"));
+  const mount = "/howlscene/layout/";
+  const server = createServer((request, response) => {
+    const pathname = new URL(request.url ?? "/", "http://localhost").pathname;
+    const relative = pathname.startsWith(mount)
+      ? decodeURIComponent(pathname.slice(mount.length))
+      : "";
+    const filename = relative === "" ? "index.html" : relative;
+    const file = files.get(filename);
+    const contentType = filename.endsWith(".css")
+      ? "text/css"
+      : filename.endsWith(".png")
+        ? "image/png"
+        : filename.endsWith(".jpg") || filename.endsWith(".jpeg")
+          ? "image/jpeg"
+          : filename.endsWith(".webp")
+            ? "image/webp"
+            : filename.endsWith(".svg")
+              ? "image/svg+xml"
+              : "text/html";
+    response.writeHead(file ? 200 : 404, { "Content-Type": contentType });
+    response.end(file ?? "Not found");
+  });
+  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+  try {
+    const address = server.address();
+    if (!address || typeof address === "string") throw Error("No server");
+    const context = await browser.newContext({ javaScriptEnabled: false });
+    try {
+      const exported = await context.newPage();
+      await exported.setViewportSize({ width: 1280, height: 900 });
+      await exported.goto(`http://127.0.0.1:${address.port}${mount}`);
+      const exportedSection = exported.locator(".scene.layout-split").last();
+      const exportedImage = exportedSection.locator("img.section-image");
+      await expect(
+        exported.getByRole("heading", { name: "About the field" }),
+      ).toBeVisible();
+      await expect(exportedImage).toHaveAttribute("alt", "Painted hills");
+      await expect(exportedImage).toBeVisible();
+      await expect
+        .poll(() =>
+          exportedImage.evaluate(
+            (image) => (image as HTMLImageElement).naturalWidth,
+          ),
+        )
+        .toBe(320);
+      await expect(exportedImage).toHaveCSS("float", "right");
+      await expect(exported.locator("nav a").first()).toBeVisible();
+      expect(
+        await exported
+          .locator("html")
+          .evaluate((element) => element.scrollWidth <= element.clientWidth),
+      ).toBe(true);
+
+      await exported.setViewportSize({ width: 375, height: 812 });
+      await expect(exportedImage).toHaveCSS("float", "none");
+      expect(
+        await exported
+          .locator("html")
+          .evaluate((element) => element.scrollWidth <= element.clientWidth),
+      ).toBe(true);
+      const aboutLink = exported.locator("nav a").nth(1);
+      const aboutAnchor = await aboutLink.getAttribute("href");
+      expect(aboutAnchor).toMatch(/^#/);
+      await aboutLink.click();
+      await expect(exported).toHaveURL(new RegExp(`${aboutAnchor}$`));
+      await expect(
+        exported.locator(".scene.layout-split").last(),
+      ).toBeInViewport();
+    } finally {
+      await context.close();
+    }
+  } finally {
+    await new Promise<void>((resolve, reject) =>
+      server.close((error) => (error ? reject(error) : resolve())),
+    );
+  }
 });
