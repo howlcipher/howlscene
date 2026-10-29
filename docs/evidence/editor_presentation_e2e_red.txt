@@ -1,0 +1,33 @@
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 npx
+npm notice run npm run test:e2e -- tests/e2e/theme_presentation_controls.spec.ts
+npm notice run howlscene@0.1.0 test:e2e
+npm notice run playwright test tests/e2e/theme_presentation_controls.spec.ts
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/theme_presentation_controls.spec.ts:5:1 › EDT-011 creators customize card and mobile navigation styles across themes, reload and export (30.1s)
+
+
+  1) tests/e2e/theme_presentation_controls.spec.ts:5:1 › EDT-011 creators customize card and mobile navigation styles across themes, reload and export
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Card appearance')
+
+
+      14 |   const preview = page.getByRole("region", { name: "Live website preview" });
+      15 |   const site = preview.locator(".howlscene");
+    > 16 |   await page.getByLabel("Card appearance").selectOption("soft");
+         |                                            ^
+      17 |   await page.getByLabel("Navigation link style").selectOption("underline");
+      18 |   await page.getByLabel("Phone navigation layout").selectOption("stack");
+      19 |
+        at /run/host/run/media/system/tallgeese/dev/howlscene/tests/e2e/theme_presentation_controls.spec.ts:16:44
+
+    Error Context: test-results/theme_presentation_control-04e8d-ss-themes-reload-and-export/error-context.md
+
+  1 failed
+    tests/e2e/theme_presentation_controls.spec.ts:5:1 › EDT-011 creators customize card and mobile navigation styles across themes, reload and export

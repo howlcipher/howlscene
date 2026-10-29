@@ -8,6 +8,9 @@ import {
 import type { ArtworkRegistry } from "./artwork.js";
 const color = z.string().regex(/^#[0-9a-fA-F]{6}$/);
 export const DEFAULT_THEME_ID = "modern";
+export const themeCardStyles = ["outlined", "soft", "glow"] as const;
+export const themeNavigationStyles = ["plain", "underline", "framed"] as const;
+export const themeMobileNavigationLayouts = ["wrap", "stack"] as const;
 const themeMotionSchema = z
   .strictObject({
     intensityScale: z.number().min(0).max(1).default(1),
@@ -23,10 +26,12 @@ export const themePresentationSchema = z
     bodyLineHeight: z.number().min(1.5).max(2.2).default(1.8),
     cardGapRem: z.number().min(0.5).max(3).default(1.5),
     cardRadiusRem: z.number().min(0).max(2).default(0.7),
-    cardStyle: z.enum(["outlined", "soft", "glow"]).default("outlined"),
+    cardStyle: z.enum(themeCardStyles).default("outlined"),
     navigationGapRem: z.number().min(0.5).max(3).default(1.2),
-    navigationStyle: z.enum(["plain", "underline", "framed"]).default("plain"),
-    mobileNavigationLayout: z.enum(["wrap", "stack"]).default("wrap"),
+    navigationStyle: z.enum(themeNavigationStyles).default("plain"),
+    mobileNavigationLayout: z
+      .enum(themeMobileNavigationLayouts)
+      .default("wrap"),
   })
   .readonly();
 export type ThemePresentation = z.infer<typeof themePresentationSchema>;
@@ -159,6 +164,9 @@ export const themeOverridesSchema = z.strictObject({
   foreground: color.optional(),
   accent: color.optional(),
   font: z.enum(["system", "serif", "mono"]).optional(),
+  cardStyle: z.enum(themeCardStyles).optional(),
+  navigationStyle: z.enum(themeNavigationStyles).optional(),
+  mobileNavigationLayout: z.enum(themeMobileNavigationLayouts).optional(),
 });
 const fontStacks = {
   system: "system-ui, sans-serif",
@@ -199,6 +207,15 @@ export function resolveTheme(
     foreground: selected.foreground ?? base.foreground,
     font: selected.font ? fontStacks[selected.font] : base.font,
     accent: selected.accent ?? base.accent,
+    presentation: {
+      ...base.presentation,
+      cardStyle: selected.cardStyle ?? base.presentation.cardStyle,
+      navigationStyle:
+        selected.navigationStyle ?? base.presentation.navigationStyle,
+      mobileNavigationLayout:
+        selected.mobileNavigationLayout ??
+        base.presentation.mobileNavigationLayout,
+    },
   };
   const warnings: string[] = [];
   if (contrastRatio(tokens.foreground, tokens.background) < 4.5) {

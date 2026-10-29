@@ -86,6 +86,35 @@ describe("validated theme presentation", () => {
       expect(markup).toContain("--scene-accent:#000000");
     }
   });
+  it("EDT-011 validates and resolves creator presentation overrides for cards and navigation", async () => {
+    const overrides = {
+      cardStyle: "soft",
+      navigationStyle: "underline",
+      mobileNavigationLayout: "wrap",
+    } as const;
+    expect(themeOverridesSchema.parse(overrides)).toEqual(overrides);
+    for (const invalid of [
+      { cardStyle: "arbitrary-css" },
+      { navigationStyle: "url(javascript:alert(1))" },
+      { mobileNavigationLayout: "scroll" },
+      { cardStyle: "soft;display:none" },
+    ])
+      expect(() => themeOverridesSchema.parse(invalid)).toThrow();
+
+    const site = parseSite({ ...starterSite, overrides });
+    const resolved = resolveTheme(themes.cyber, site.overrides).tokens;
+    expect(resolved.presentation).toMatchObject(overrides);
+    expect(site.sections).toEqual(starterSite.sections);
+
+    const preview = renderToStaticMarkup(<Site site={site} />);
+    const zip = await JSZip.loadAsync(await exportWebsite(site));
+    const html = await zip.file("index.html")!.async("string");
+    for (const markup of [preview, html]) {
+      expect(markup).toContain('data-theme-card-style="soft"');
+      expect(markup).toContain('data-theme-navigation-style="underline"');
+      expect(markup).toContain('data-theme-mobile-navigation="wrap"');
+    }
+  });
   it("THM-A11Y-001 resolves low-contrast theme text in preview and static export", async () => {
     const inaccessible = {
       ...legacy,

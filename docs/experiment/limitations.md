@@ -60,17 +60,17 @@ Unfinished required v1 work is not reclassified as excluded scope.
   manifest options, not yet visual-editor controls; human reduced-motion,
   screen-reader and text-zoom review remains open.
 
-- Navigation treatment is now theme-configurable through a closed manifest enum
-  used by shared CSS. The editor does not expose navigation or card treatment settings. Broader
-  component styling and responsive manifest rules remain incomplete.
+- Navigation and card treatments are available as closed theme defaults and
+  creator overrides, all consumed by shared CSS. Other section-component
+  styling remains shared and cannot yet be customized independently.
 
 - Card presentation now supports outlined, soft, and accent-glow variants for
   shared cards and gallery figures. Other section-component styling remains
   shared and cannot yet be customized by themes.
 
-- The responsive theme contract currently offers only one mobile navigation
-  choice at the fixed shared breakpoint. It does not expose arbitrary per-theme
-  breakpoints or broader responsive component rules.
+- The responsive theme contract and creator override offer only `wrap` or
+  `stack` at the fixed shared breakpoint. Arbitrary per-theme breakpoints and
+  broader responsive component rules are not supported.
 
 - Text contrast resolution checks only flat theme foreground/background colors.
   Text over scenery, gradients, uploaded images, and developer artwork still

@@ -308,7 +308,11 @@ readiness is claimed.
 Color controls merged as `41618b6`; PR #8's hosted run `40943699920` passed.
 Section image positioning merged as `35a53b0`; PR #9's hosted run `40945088628`
 passed. Section spacing/alignment/width controls merged as `568c065` after hosted
-run `40946421582` passed. Current work establishes registered custom section
+run `40946421582` passed. Registered custom sections merged as `ba6125f` after
+hosted run `40950249941` passed. Current work adds creator overrides for card,
+navigation-link and phone-navigation presentation with bounded tokens. The unit
+and browser contracts pass locally; the full gate and hosted run remain pending.
+The original custom section work established registered section
 types using the shared portable fields. The contract test had a genuine RED
 because the schema rejected `customType`; evidence is in
 `docs/evidence/custom_sections_red.txt`. Four unit contract tests and the
@@ -317,6 +321,24 @@ preview, backup, and nested static export. Full local Node 24.22.2 gate passes
 149 unit and 41 browser tests; branch coverage is 89.43% overall, 89.82% core,
 92.45% configuration, and 97.72% exporter. The 267-package audit passes and
 `npm audit` reports zero vulnerabilities. Exact logs and local performance data
-are in `docs/evidence/custom_sections_*`. Hosted verification is pending.
+are in `docs/evidence/custom_sections_*`. PR #11 merged as `ba6125f` after hosted
+run `40950249941` passed.
 Repository isolation and independent comparison records remain intact; release
 readiness is not claimed.
+
+## Current milestone: creator theme presentation controls
+
+Creators can now override the theme's shared card appearance, navigation link
+style, and phone navigation layout using closed, validated options. Unset
+choices continue to inherit each selected theme's defaults. The shared theme
+resolver keeps preview and static export consistent, while saved choices survive
+theme changes and draft reload. Unit and real-browser tests were written first;
+their initial failures are preserved in `docs/evidence/editor_presentation_*_red.txt`.
+Focused verification passes: 10 presentation unit tests and one browser test
+covering a real project card, a theme switch, narrow navigation, reload, and
+published ZIP content. The full Node 24.22.2 gate now passes 150 unit tests in 35
+files and 42 browser tests. Overall branch coverage is 89.54%; core is 89.97%,
+configuration 92.59%, and export 97.72%. The 267-package license audit and
+separate zero-vulnerability npm audit passed. Full output and local performance
+data are in `docs/evidence/editor_presentation_*`. Hosted CI is pending. No
+deployment, comparison result, or release readiness is claimed.

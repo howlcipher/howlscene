@@ -1,0 +1,54 @@
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 npx
+npm notice run npm test -- tests/theme_presentation.test.tsx
+npm notice run howlscene@0.1.0 pretest
+npm notice run npm run build:runtime
+npm notice run howlscene@0.1.0 build:runtime
+npm notice run vite build --config vite.runtime.config.ts
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 385 modules transformed.
+rendering chunks...
+computing gzip size...
+packages/export/generated/site.js  68.87 kB │ gzip: 21.52 kB
+
+✓ built in 106ms
+npm notice run howlscene@0.1.0 test
+npm notice run vitest run tests/theme_presentation.test.tsx
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/theme_presentation.test.tsx (10 tests | 1 failed) 88ms
+   ❯ validated theme presentation (10)
+     × EDT-011 validates and resolves creator presentation overrides for cards and navigation 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/theme_presentation.test.tsx > validated theme presentation > EDT-011 validates and resolves creator presentation overrides for cards and navigation
+ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "cardStyle",
+      "navigationStyle",
+      "mobileNavigationLayout"
+    ],
+    "path": [],
+    "message": "Unrecognized keys: \"cardStyle\", \"navigationStyle\", \"mobileNavigationLayout\""
+  }
+]
+ ❯ tests/theme_presentation.test.tsx:95:33
+     93|       mobileNavigationLayout: "wrap",
+     94|     } as const;
+     95|     expect(themeOverridesSchema.parse(overrides)).toEqual(overrides);
+       |                                 ^
+     96|     for (const invalid of [
+     97|       { cardStyle: "arbitrary-css" },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 passed (10)
+   Start at  16:39:31
+   Duration  684ms (import 65%, tests 17%, transform 16%, worker 1%)
