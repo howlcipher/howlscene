@@ -22,6 +22,7 @@ It does not assert that every scenario within a group is complete. See the
 | THM-PRES-005      | `tests/e2e/presentation.spec.ts` and `tests/fixtures/presentation.tsx`                                                                                            | Maximum bounded line-height, card gap/radius and navigation gap reflow with long text at 200% root text sizing and 320 CSS px for Modern, Ink Wash and Cyberpunk; no document, navigation, card or text overflow                                                                                            |
 | VIS-001           | `tests/e2e/export_image_rich_visual.spec.ts` and nine reviewed Playwright baselines                                                                               | Actual ZIP with generated uploaded artwork and long copy, JavaScript disabled, three themes at 375/768/1440 px; all four images load and retain alt text, pinned font weights load, and computed theme font is asserted. Font mismatch correction passed hosted run 40956127243; PR #13 merged as `6efd87b` |
 | EXP-PLATFORM-001  | `tests/e2e/cross_browser_export.spec.ts`, browser-specific Playwright projects                                                                                    | Actual editor-generated ZIP at a nested path with JavaScript disabled; all themes, long text, image decoding/alt text, responsive split layout, anchor navigation and overflow are checked in Chromium, Firefox and WebKit                                                                                  |
+| PERF-LAB-001      | `tests/e2e/production_mobile_performance.spec.ts`                                                                                                                 | Actual editor-generated ZIP under nested static hosting on an emulated 390×844 Chromium profile; records loading, LCP, CLS, long tasks, sampled frame intervals, image/runtime bytes and motion-off content. It is a lab observation, not physical-device or field evidence.                                |
 
 ## Final journey
 
@@ -185,3 +186,9 @@ on this Bazzite host is unavailable without GTK/WebKit system libraries; hosted
 CI is pending. See
 [ADR 010](../architecture/adr_010_target_browser_export_checks.md) and the
 [integrated gate](../evidence/cross_browser_final_gate.txt).
+
+The updated cross-engine check passed the hosted quality gate in run
+[`40963619832`](https://github.com/howlcipher/howlscene/actions/runs/40963619832).
+`PERF-LAB-001` is local lab evidence until the new probe passes hosted CI; the
+first result is preserved in
+[`production_mobile_performance.json`](../evidence/production_mobile_performance.json).

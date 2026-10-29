@@ -13,9 +13,9 @@ commands are preserved in [the executed continuation gate](../evidence/font_fina
 | 5     | William Elias consumer with theme switching and public-source provenance                                                | Production nested-route verification and deployment                                           |
 | 6     | Build, coverage, independent core/export tarball consumers, license audit, zero-vulnerability scan passed               | Hosted baseline passed; current increment verification, review, publication                   |
 
-No hosted deployment or public v1 release is established. The passed snapshot
-contains 114 unit tests and 34 browser tests; subsequent edits require fresh
-verification. Comparison with the independent track remains pending.
+No hosted deployment or public v1 release is established. Later hosted gates
+include cross-engine export run `40963619832`; subsequent edits still require
+fresh verification. Comparison with the independent track remains pending.
 
 Creator background/text/accent colors now pass the integrated local gate:
 145 unit tests, 39 browser tests, 89.54% overall branch coverage, production

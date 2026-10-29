@@ -34,5 +34,6 @@ jobs:
             coverage/
             test-results/
             .artifacts/performance.json
+            .artifacts/production_mobile_performance.json
           if-no-files-found: ignore
           include-hidden-files: true

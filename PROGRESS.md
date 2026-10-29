@@ -423,9 +423,30 @@ path with JavaScript disabled across all three themes, desktop/phone widths,
 long text, image/alt text, anchors and overflow. All three projects pass in the
 version-matched Playwright container. Direct WebKit on Bazzite lacks GTK/WebKit
 libraries, so the container provides the local Linux runtime. CI invokes
-Playwright's dependency installer for all engines; hosted verification remains
-pending. The integrated gate passes 150 unit and 48 browser tests, plus SDK,
+Playwright's dependency installer for all engines. Hosted run
+[`40963619832`](https://github.com/howlcipher/howlscene/actions/runs/40963619832)
+passed. The integrated gate passes 150 unit and 48 browser tests, plus SDK,
 export, license and zero-vulnerability checks. Architecture trade-offs are in
 [`adr_010_target_browser_export_checks.md`](docs/architecture/adr_010_target_browser_export_checks.md).
 Evidence is in [`cross_browser_final_gate.txt`](docs/evidence/cross_browser_final_gate.txt)
 and [`cross_browser_audit.txt`](docs/evidence/cross_browser_audit.txt).
+
+## Current milestone: production export mobile lab observation
+
+`PERF-LAB-001` edits a site through the browser editor, downloads the actual
+static ZIP, and serves it at a nested path under a fresh 390×844 Chromium mobile
+context. CDP applies 4× CPU slowdown, 150 ms latency and bounded network
+throughput. The integrated local gate passes 150 unit tests and 49 browser tests,
+with 94.85% statement and 89.54% branch coverage, plus independent SDK/export
+consumption and license/provenance review. The full-gate observation recorded
+528 ms LCP, CLS 0, no long tasks, 16.7 ms p50 / 16.8 ms p95 across 60
+animation-frame intervals, 3,750 transferred bytes for the selected image
+resource, and a 68,879-byte runtime (21,330 gzip). Motion can be disabled while
+the heading remains visible, and anchor navigation works. This single emulated-
+browser observation is not physical-device performance, field Core Web Vitals,
+or a 60 FPS guarantee. Hosted CI for this addition remains pending. See
+[`ADR 011`](docs/architecture/adr_011_production_mobile_export_probe.md),
+[`raw observation`](docs/evidence/production_mobile_performance.json),
+[`full gate`](docs/evidence/production_mobile_final_gate.txt),
+[`dependency audit`](docs/evidence/production_mobile_audit.txt), and the
+[measurement method and limitations](docs/experiment/metrics.md).

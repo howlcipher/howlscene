@@ -14,8 +14,12 @@ establish public v1 readiness.
   viewports. Representative exported captures have been visually inspected for
   readable text, theme distinction and composition. This does not replace human
   accessibility or user review.
-- A local performance probe exists. It uses a development server and one device;
-  it does not establish production field Core Web Vitals or a 60 FPS guarantee.
+- The editor timing probe uses a development server. `PERF-LAB-001` separately
+  serves an actual static ZIP at a nested path with Chromium CPU/network
+  emulation and records loading, image, motion and runtime observations. Both
+  are lab tests: neither establishes physical-device performance, field Core
+  Web Vitals, or a 60 FPS guarantee. Older hardware, thermal/GPU effects and
+  real-network variability remain unmeasured.
 - The independent core and export packages install and render from tarballs.
   Public npm publication has not occurred.
 - Hosted CI passed for checkpoint `ce06f23`:
@@ -93,5 +97,5 @@ Unfinished required v1 work is not reclassified as excluded scope.
 - The focused static-export compatibility journey passes in Chromium, Firefox
   and WebKit in the pinned Playwright container. Direct WebKit launch on the
   Bazzite host lacks GTK/WebKit libraries, so local validation uses the
-  container. Hosted CI has not yet verified the updated workflow. Cross-engine
+  container. Hosted run `40963619832` verified the updated workflow. Cross-engine
   visual and human platform review remain open.
