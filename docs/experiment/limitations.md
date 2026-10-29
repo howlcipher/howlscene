@@ -77,3 +77,7 @@ Unfinished required v1 work is not reclassified as excluded scope.
 - Foreground contrast fallback checks the flat theme foreground/background pair
   only. Contrast against scenery, gradients, uploaded media, and registered
   artwork still needs review; this is not a WCAG conformance determination.
+
+- The editor's flat background/text/accent color overrides are validated and
+  contrast-resolved, but the contrast check cannot inspect text over scenery,
+  imagery, gradients, or developer artwork. No WCAG conformance claim follows.

@@ -17,6 +17,13 @@ No hosted deployment or public v1 release is established. The passed snapshot
 contains 114 unit tests and 34 browser tests; subsequent edits require fresh
 verification. Comparison with the independent track remains pending.
 
+Creator background/text/accent colors now pass the integrated local gate:
+145 unit tests, 39 browser tests, 89.54% overall branch coverage, production
+build/prerender, independent package consumers, and dependency/license audits.
+See [`editor_colors_final_gate.txt`](../evidence/editor_colors_final_gate.txt).
+Hosted verification is still required; this does not close the human accessibility
+or usability review or establish release readiness.
+
 Current branch: `work/theme-layers`. Manifest-driven artwork passes the complete local gate:
 130 unit tests, 34 browser tests, independent package consumption and licenses.
 The aggregate asset-preflight regression and cleanup correction pass too. The clean hosted baseline is
@@ -73,3 +80,7 @@ Text-contrast fallback passes the integrated Node 24 gate: 143 unit tests across
 34 files, 38 browser tests, 89.47% overall branch coverage, production builds,
 package consumers, and licenses. `npm audit` reports zero vulnerabilities. Flat
 colors are covered; artwork contrast and human accessibility review remain open.
+
+Creator color controls: added editable background and text colors beside accent.
+A real browser journey selects colors, verifies contrast warning/fallback, changes
+the theme, waits for draft save, reloads, and checks exported CSS values.

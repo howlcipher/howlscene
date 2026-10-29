@@ -125,6 +125,34 @@ export function AppearancePanel({
       ))}
       <div className="two-controls">
         <label>
+          Background color
+          <input
+            type="color"
+            value={site.overrides.background ?? themes[site.theme]!.background}
+            onChange={(e) =>
+              commit({
+                ...site,
+                overrides: { ...site.overrides, background: e.target.value },
+              })
+            }
+          />
+        </label>
+        <label>
+          Text color
+          <input
+            type="color"
+            value={site.overrides.foreground ?? themes[site.theme]!.foreground}
+            onChange={(e) =>
+              commit({
+                ...site,
+                overrides: { ...site.overrides, foreground: e.target.value },
+              })
+            }
+          />
+        </label>
+      </div>
+      <div className="two-controls">
+        <label>
           Accent color
           <input
             type="color"

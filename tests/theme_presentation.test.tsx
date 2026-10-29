@@ -6,6 +6,7 @@ import {
   parseSite,
   starterSite,
   themeSchema,
+  themeOverridesSchema,
   createThemeRegistry,
   resolveTheme,
   contrastRatio,
@@ -43,6 +44,48 @@ const custom = {
   },
 };
 describe("validated theme presentation", () => {
+  it("EDT-010 validates editable background and text colors with accent contrast against the selected background", async () => {
+    expect(
+      themeOverridesSchema.parse({
+        background: "#ededed",
+        foreground: "#101010",
+      }),
+    ).toEqual({ background: "#ededed", foreground: "#101010" });
+    for (const invalid of [
+      { background: "url(javascript:bad)" },
+      { foreground: "red" },
+      { background: "#fff" },
+      { css: "body{display:none}" },
+    ])
+      expect(() => themeOverridesSchema.parse(invalid)).toThrow();
+
+    const overrides = {
+      background: "#767676",
+      foreground: "#767676",
+      accent: "#767676",
+    };
+    const result = resolveTheme(themes.modern, overrides);
+    expect(result.tokens.background).toBe("#767676");
+    expect(result.tokens.foreground).toBe("#000000");
+    expect(result.tokens.accent).toBe("#000000");
+    expect(
+      contrastRatio(result.tokens.accent, result.tokens.background),
+    ).toBeGreaterThanOrEqual(4.5);
+    expect(overrides).toEqual({
+      background: "#767676",
+      foreground: "#767676",
+      accent: "#767676",
+    });
+    const site = parseSite({ ...starterSite, overrides });
+    const preview = renderToStaticMarkup(<Site site={site} />);
+    const archive = await JSZip.loadAsync(await exportWebsite(site));
+    const exported = await archive.file("index.html")!.async("string");
+    for (const markup of [preview, exported]) {
+      expect(markup).toContain("--scene-bg:#767676");
+      expect(markup).toContain("--scene-fg:#000000");
+      expect(markup).toContain("--scene-accent:#000000");
+    }
+  });
   it("THM-A11Y-001 resolves low-contrast theme text in preview and static export", async () => {
     const inaccessible = {
       ...legacy,

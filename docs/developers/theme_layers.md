@@ -158,3 +158,15 @@ preview and static export. This threshold follows the ordinary-text minimum in
 only the manifest's flat color pair; it cannot determine contrast over scenery,
 images, uploaded backgrounds, gradients, or trusted developer artwork, and does
 not establish WCAG conformance.
+
+## User color overrides
+
+`themeOverridesSchema` accepts optional six-digit hex `background` and
+`foreground` values along with the existing accent and font selections. The editor
+stores these as project overrides, so they remain selected when the theme changes
+and after a local draft restore. `resolveTheme` and the `Site` renderer apply the
+same values in preview and static export. When the flat foreground/background
+pair falls below 4.5:1, it displays the higher-contrast of black or white and
+returns a warning while preserving the selected colors. Accent contrast uses the
+selected background too. This does not calculate contrast over scenery or
+uploaded artwork.
