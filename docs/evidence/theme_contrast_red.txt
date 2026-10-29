@@ -1,0 +1,30 @@
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+
+ ❯ tests/theme_presentation.test.tsx (8 tests | 1 failed) 130ms
+   ❯ validated theme presentation (8)
+     × THM-A11Y-001 resolves low-contrast theme text before preview or export rendering 20ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/theme_presentation.test.tsx > validated theme presentation > THM-A11Y-001 resolves low-contrast theme text before preview or export rendering
+AssertionError: expected '#aaaaaa' to be '#000000' // Object.is equality
+
+Expected: "#000000"
+Received: "#aaaaaa"
+
+ ❯ tests/theme_presentation.test.tsx:54:38
+     52|     const original = JSON.stringify(inaccessible);
+     53|     const result = resolveTheme(inaccessible);
+     54|     expect(result.tokens.foreground).toBe("#000000");
+       |                                      ^
+     55|     expect(contrastRatio(result.tokens.foreground, result.tokens.backg…
+     56|     expect(result.warnings).toContain(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  15:34:41
+   Duration  1.12s (import 63%, transform 19%, tests 17%, worker 1%)

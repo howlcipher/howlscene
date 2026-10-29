@@ -69,3 +69,11 @@ Unfinished required v1 work is not reclassified as excluded scope.
 - The responsive theme contract currently offers only one mobile navigation
   choice at the fixed shared breakpoint. It does not expose arbitrary per-theme
   breakpoints or broader responsive component rules.
+
+- Text contrast resolution checks only flat theme foreground/background colors.
+  Text over scenery, gradients, uploaded images, and developer artwork still
+  needs contrast review; this check alone does not establish WCAG conformance.
+
+- Foreground contrast fallback checks the flat theme foreground/background pair
+  only. Contrast against scenery, gradients, uploaded media, and registered
+  artwork still needs review; this is not a WCAG conformance determination.

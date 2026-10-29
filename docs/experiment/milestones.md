@@ -63,3 +63,13 @@ Responsive navigation passed the complete local Node 24 gate: 142 unit tests, 38
 browser tests, 89.57% overall branch coverage, SDK/export verification, nine visual
 comparisons, and zero dependency vulnerabilities. Hosted verification remains
 pending.
+
+Theme text-contrast increment: the shared resolver substitutes the higher-contrast
+black/white foreground when a custom theme falls below 4.5:1, while preserving
+saved colors and returning a warning. Unit coverage exercises preview rendering
+and exported HTML; human review for text over artwork remains open.
+
+Text-contrast fallback passes the integrated Node 24 gate: 143 unit tests across
+34 files, 38 browser tests, 89.47% overall branch coverage, production builds,
+package consumers, and licenses. `npm audit` reports zero vulnerabilities. Flat
+colors are covered; artwork contrast and human accessibility review remain open.

@@ -197,6 +197,18 @@ export function resolveTheme(
     accent: selected.accent ?? base.accent,
   };
   const warnings: string[] = [];
+  if (contrastRatio(tokens.foreground, tokens.background) < 4.5) {
+    const black = "#000000";
+    const white = "#ffffff";
+    tokens.foreground =
+      contrastRatio(black, tokens.background) >=
+      contrastRatio(white, tokens.background)
+        ? black
+        : white;
+    warnings.push(
+      "The theme text color is difficult to read against its background. A higher-contrast color is shown; the theme's saved colors are unchanged.",
+    );
+  }
   if (contrastRatio(tokens.accent, base.background) < 4.5) {
     tokens.accent =
       contrastRatio(base.accent, base.background) >= 4.5

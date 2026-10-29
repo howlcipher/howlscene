@@ -146,3 +146,15 @@ settings use a row. Cyberpunk selects `stack`; the other built-in themes use
 `wrap`. The choice cannot change anchors, ordering, focus behavior, or the
 breakpoint, and does not accept CSS. It is not yet a visual-editor control. See
 [ADR 006](../architecture/adr_006_mobile_navigation.md).
+
+## Text contrast fallback
+
+When a registered theme's foreground/background pair is below a 4.5:1 contrast
+ratio, `resolveTheme` displays whichever of black or white has the higher ratio
+against the background and returns a warning. The saved manifest remains
+unchanged. The shared `Site` renderer uses the same resolved foreground in its
+preview and static export. This threshold follows the ordinary-text minimum in
+[WCAG 2.2 SC 1.4.3](https://www.w3.org/TR/WCAG22/#contrast-minimum). It checks
+only the manifest's flat color pair; it cannot determine contrast over scenery,
+images, uploaded backgrounds, gradients, or trusted developer artwork, and does
+not establish WCAG conformance.
