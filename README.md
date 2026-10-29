@@ -21,7 +21,8 @@ assistive-technology review, hosted CI and deployment remain release gates.
 | Motion presets, entry/exit, parallax and reduced motion              | Implemented with lifecycle and browser regression coverage               |
 | Independent core and export packages                                 | Built tarballs installed in a separate typed browser consumer            |
 | William Elias example                                                | Shared-engine consumer with theme switching and public-source provenance |
-| Public deployment and v1 release                                     | Not completed                                                            |
+| GitHub Pages workflow                                                | Prepared for protected manual deployment; repository setup still pending |
+| Public deployment and v1 release                                     | Not completed; no live deployment claimed                                |
 
 Read [the progress journal](PROGRESS.md) for current work, [acceptance traceability](docs/experiment/acceptance.md), and [measurement scope](docs/experiment/metrics.md). The [experiment baseline](docs/experiment/baseline.md) covers this conventional implementation only; the reference video is missing.
 
@@ -54,6 +55,12 @@ The editor attempts to save drafts in this browser and reports save status. Stor
 `packages/core` owns validated configuration and semantic rendering. `packages/export` validates input and creates static output using the same renderer. `apps/editor` owns browser controls. The exporter does not depend on editor state or components.
 
 Read [the static export decision](docs/architecture/adr_001_static_export.md) for alternatives and limitations. The original portfolio remains outside this project and read-only. A verified HowlScene demonstration is still an open release gate.
+
+The repository includes a pull-request artifact build and a manually dispatched
+GitHub Pages workflow. Public deployment is disabled until an administrator
+sets up the two protected reviewer environments, the `github-pages` deployment
+environment, and enables the documented repository variable. See the [Pages deployment guide](docs/developers/github_pages_deployment.md)
+and [deployment decision](docs/architecture/adr_012_github_pages_release_gate.md).
 
 ## Contributing and licensing
 

@@ -58,6 +58,36 @@ The standalone remote is https://github.com/howlcipher/howlscene. No deployment
 or release is established. Repository isolation remains intact. No comparison
 outcome is claimed. The missing reference video remains recorded.
 
+## GitHub Pages deployment preparation
+
+The current increment prepares a custom Pages workflow without enabling the
+repository's Pages service. Pull requests build `dist`, run the existing
+production browser scenario at root and `/howlscene/` with JavaScript on and
+off, and package the artifact. A deployment can only be requested manually for
+`main`, with an explicit publish input, the exact `HOWLSCENE_PAGES_ENABLED=true`
+repository variable, and approvals by protected `github-pages-approval-one`
+and `github-pages-approval-two` environments.
+The separate [administrator guide](docs/developers/github_pages_deployment.md)
+requires distinct reviewers, self-review prevention, and main-only environment
+policies before the variable is set. The [ADR](docs/architecture/adr_012_github_pages_release_gate.md)
+records alternatives and rationale.
+
+Live GitHub evidence before this change showed Pages is not configured, the
+repository has no Actions environments, and `main` has no branch protection
+rule. No Pages enable variable is set. No site URL is live. Local route tests
+are not public-host verification; v1 release remains blocked on owner-controlled
+repository setup, independent approvals and deployment, plus the existing human
+accessibility/usability review. The user requested conventional Track A
+isolation; no other implementation or repository was modified.
+
+The complete pinned Playwright-container gate for this workflow/documentation
+increment passed: 150 unit tests, 50 browser tests, build/prerender, SDK package
+consumers, license audit, and a separate dependency audit reporting zero
+vulnerabilities. Overall branch coverage is 89.54%. Exact output is retained in
+[`pages_preparation_local_gate.txt`](docs/evidence/pages_preparation_local_gate.txt).
+`actionlint` accepted the Pages and existing CI workflows. Hosted verification
+of the new workflow and public deployment remain pending.
+
 ## Published development checkpoint
 
 Commit `ce5a57c` is pushed to the standalone repository's `main` branch.

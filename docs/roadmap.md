@@ -27,7 +27,10 @@ features; unfinished acceptance requirements are tracked in
    `PERF-LAB-001` measures an actual exported ZIP under an emulated mobile
    profile; physical-device and older-computer review remain open.
 6. Finish security, provenance and release review; prepare and verify optional
-   GitHub Pages deployment without changing the original portfolio.
+   GitHub Pages deployment without changing the original portfolio. The
+   fail-closed workflow and administrator guide are prepared, but require hosted
+   verification plus owner configuration of Pages and an independently reviewed
+   deployment environment before a public deployment can be attempted.
 
 ## After v1
 
