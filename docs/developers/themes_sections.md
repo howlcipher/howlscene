@@ -38,11 +38,11 @@ const backup = serializeBackup(site, themeRegistry);
 const restored = importBackup(backup, themeRegistry);
 ```
 
-A manifest contains version, description, name, background, foreground, accent, and one supported font stack. `themeSchema` supplies version/description defaults when parsing; spreading a bundled manifest keeps the authoring example fully typed. Registry creation validates IDs and exact fields and returns an isolated registry. Six-digit hex colors and supported fonts keep arbitrary CSS out of project controls.
+A manifest contains version, description, name, background, foreground, accent, a supported font stack, and ordered validated layers. `themeSchema` supplies version/description defaults when parsing; spreading a bundled manifest keeps the authoring example fully typed. Registry creation validates IDs and exact fields and returns an isolated registry. Six-digit hex colors and supported fonts keep arbitrary CSS out of project controls.
 
 `resolveTheme` centralizes user accent/font overrides. A low-contrast accent falls back to the readable manifest accent, or its foreground if needed, and produces a human-readable warning. Saved configuration is unchanged. This does not repair an inherently unreadable custom foreground or prove contrast over imagery. Test the actual presentation.
 
-Unknown scenery names receive the Modern illustration fallback. Custom themes do not automatically provide custom artwork or editor chooser entries. The standard editor uses bundled registries; custom backups require a consumer that supplies the registry when reopening them. A theme switch changes presentation without owning or replacing content.
+Scenery now resolves declared artwork references rather than branching on theme names. This example spreads Ink Wash, so it retains Ink Wash's layers. A token-only manifest omitting `layers` receives Modern defaults; explicit `layers: []` disables artwork. For original artwork registration and passing both registries to rendering/export, use the canonical [theme layer guide](theme_layers.md). Custom editor chooser entries and external resource discovery are not automatic. Backups serialize no callbacks and require the compatible theme registry when reopened. A theme switch changes presentation without owning or replacing content. Full metadata and general new-section/layout contracts remain open requirements.
 
 ## Override supported section content
 

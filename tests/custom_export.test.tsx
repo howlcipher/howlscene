@@ -35,7 +35,8 @@ it("custom developer themes and trusted section renderers export through the sam
   expect(html).toContain("Custom forest content");
   expect(html).toContain("--scene-accent:#123456");
   expect(html).toContain('data-theme="forest"');
-  expect(html).toContain("scenery-orbit");
+  // Cloning Ink now explicitly inherits its declared artwork layers.
+  expect(html).toContain("scenery-mountains");
   expect(html).not.toContain("<script");
   await expect(exportWebsite(site)).rejects.toThrow(/theme|register/i);
 });

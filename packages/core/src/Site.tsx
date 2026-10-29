@@ -1,6 +1,7 @@
 import type { CSSProperties, ComponentType } from "react";
 import { AssetImage } from "./media.js";
 import { Scenery } from "./scenery.js";
+import { defaultArtworkRegistry, type ArtworkRegistry } from "./artwork.js";
 import { RichText } from "./rich_text.js";
 import { themes, resolveTheme, type ThemeRegistry } from "./themes.js";
 import {
@@ -17,10 +18,12 @@ export function Site({
   assetUrl,
   themeRegistry = themes,
   sectionRegistry = defaultSectionRegistry,
+  artworkRegistry = defaultArtworkRegistry,
 }: {
   site: SiteConfig;
   assetUrl?: (id: string, width?: number) => string;
   themeRegistry?: ThemeRegistry;
+  artworkRegistry?: ArtworkRegistry;
   sectionRegistry?: Record<
     SectionConfig["type"],
     ComponentType<SectionRendererProps>
@@ -86,7 +89,11 @@ export function Site({
               data-scene-motion={s.animation}
               className={`scene layout-${s.layout} spacing-${s.spacing} align-${s.alignment} width-${s.contentWidth}`}
             >
-              <Scenery theme={site.theme} />
+              <Scenery
+                theme={site.theme}
+                themeRegistry={themeRegistry}
+                artworkRegistry={artworkRegistry}
+              />
               <div className="scene-content">
                 <p className="eyebrow">{s.type.replace("_", " ")}</p>
                 {index === 0 ? (

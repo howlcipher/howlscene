@@ -112,3 +112,60 @@ of these updates remains pending.
 The next implementation slice is the tested theme-layer registration contract
 selected in [ADR 002](docs/architecture/adr_002_theme_layer_registry.md), retaining
 shared rendering/export and safe imported references.
+
+## Theme-layer increment and aggregate asset preflight
+
+Hosted CI for `ce06f23` is green:
+https://github.com/howlcipher/howlscene/actions/runs/40878831459.
+The current branch `work/theme-layers` adds immutable validated artwork/layer
+registries shared by preview and exporter, preserving all three bundled visuals.
+Eleven focused tests pass, nine unchanged visual comparisons pass, and actual
+packaged-consumer checks cover custom artwork and nested exported serving with
+JavaScript enabled and disabled. RED evidence is in `docs/evidence/theme_layers*`
+and the focused default/type compatibility logs. Full integration is pending.
+
+The first integrated Node 24 gate passed formatting, lint and production build,
+then reported 124 passing unit tests and one security fixture timeout (5,044 ms).
+Independent isolated measurements passed all seven security tests, taking
+3,062 ms with coverage and 2,710 ms without. Investigation identified a real
+ordering weakness: aggregate-budget rejection follows every image decode.
+A deterministic regression and bounded preflight are being implemented; the
+existing timeout and resource limits remain unchanged. Raw investigation logs
+are in `.artifacts/security-budget-investigation/`. No release readiness is claimed.
+Repository isolation remains intact; comparison evaluation remains pending.
+
+The asset-budget correction has genuine failing decoder-call regressions in
+`docs/evidence/asset_budget_preflight_red.txt`. It now checks bounded metadata,
+raw payload lengths, exact serialized size, then image contents. Twenty-five
+affected tests, TypeScript, lint and formatting pass on Node 24. Invalid inputs
+may report budget/metadata errors before image-format errors; valid input and
+the exact 28,000,000-character limit are unchanged. The next full gate stopped
+at formatting in newly updated journal/experiment prose; those files were
+formatted before proceeding. Independent review additionally found an SDK-harness
+cleanup path that skips server shutdown if browser shutdown rejects; a focused
+regression and lifecycle fix are being added before final verification.
+
+## Verified theme-layer checkpoint
+
+The complete Node 24.22.2 gate now passes: **130 unit tests across 32 files,
+34 browser tests, production builds, independently installed core/export
+packages, custom-artwork nested ZIP serving with JavaScript on/off, formatting,
+lint and license/provenance checks**. Branch coverage is 89.50% overall, 89.97%
+core, 94.59% configuration and 97.72% exporter. The vulnerability scan reports
+zero issues. See [executed output](docs/evidence/theme_layers_final_gate.txt),
+[audit](docs/evidence/theme_layers_audit.txt) and the environment-scoped
+[performance observation](docs/evidence/theme_layers_performance.json).
+
+The earlier coverage gate reported configuration at 89.18%, below 90%; meaningful
+stored-dimension mismatch and missing-responsive-width cases close that gap.
+No threshold was reduced. Cleanup now closes the real test HTTP server even when
+browser shutdown fails; independent review found no blocking defect in that fix
+or the dimension cases. The cleanup RED was observed in agent tool output but
+not preserved as a raw log; its evidence limitation is explicitly documented.
+
+This increment completes the first ADR 002 layer contract, not the full v1 theme
+system. Broader manifest presentation/defaults, external theme assets, general
+section/layout registration, wider visual coverage, human usability/accessibility
+review, production performance and deployment remain required. The next step is
+reviewable branch publication and fresh hosted CI, followed by broader theme
+metadata. Other repositories remain untouched and comparative evaluation pending.

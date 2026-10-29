@@ -1,12 +1,10 @@
 # ADR 002: Manifest layers with trusted artwork registration
 
-Status: selected direction; implementation pending. Existing token themes and
-supported-section overrides continue to work during incremental development.
+Status: first increment implemented and locally verified; hosted verification pending. Existing token themes and supported-section overrides remain compatible. This ADR does not establish v1 release readiness.
 
 ## Problem
 
-Custom token themes work through rendering, backups and export, but scenery still
-branches on built-in theme IDs. A fourth visual theme should be able to declare
+Before this increment, custom token themes worked through rendering, backups and export, but scenery branched on built-in theme IDs. A fourth visual theme needed to declare
 its layers without editing generic rendering or animation code. The master
 specification also requires broader theme metadata and general section/layout
 registration; those contracts remain unfinished.
@@ -26,10 +24,9 @@ HTML or unrestricted CSS.
 
 ## First increment
 
-Replace theme-name scenery branches with manifest layer references. Keep existing
-artwork and styling visually equivalent. Each layer has a stable ID, a trusted
-artwork reference and bounded motion depth. Additional presentation parameters
-must have small validated contracts rather than arbitrary style objects.
+Implemented manifest layer references replace theme-name scenery branches while preserving bundled artwork and styling. Each layer has a stable ID, registered artwork reference, bounded depth and opacity. Registries and descriptors are immutable. A cloned built-in manifest retains its layers; omitting layers on a token-only manifest uses Modern defaults, while an explicit empty list renders no artwork. See the canonical [developer layer guide](../developers/theme_layers.md) for APIs and authoring constraints.
+
+Additional presentation parameters must have small validated contracts rather than arbitrary style objects. Broader theme metadata, external asset collection, and general new-section/layout registration remain required follow-up work.
 
 Use immutable per-consumer registries and explicit arguments. Rendering and
 export must receive the same definitions; backups must reject unsupported
@@ -41,7 +38,7 @@ establish the first contract. Before external image layers are supported, define
 asset provenance, export eligibility, path resolution and collection explicitly;
 a component that merely points to a remote image does not satisfy static export.
 
-## Test-first exit criteria
+## Test-first exit criteria and verification
 
 1. A consumer registers a fourth visibly distinct layered theme without edits to
    renderer or animation modules.
@@ -52,6 +49,8 @@ a component that merely points to a remote image does not satisfy static export.
 4. Existing three-theme contract and visual suites continue to pass.
 5. The packaged external consumer exercises the public extension API rather
    than importing workspace internals.
+
+Focused layer tests, unchanged bundled-theme visual tests, and packaged custom-artwork export acceptance have passed in scoped runs. The integrated Node 24 gate passes 130 unit and 34 browser tests, package consumers and license checks; see [executed evidence](../evidence/theme_layers_final_gate.txt). Hosted verification remains pending. These results do not establish a complete v1 theme contract or release approval.
 
 After this slice, extend metadata/default tokens where they affect actual
 presentation and editor controls, then implement general section/layout
