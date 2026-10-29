@@ -45,6 +45,17 @@ a {
   flex-wrap: wrap;
   gap: var(--scene-nav-gap);
 }
+.howlscene[data-theme-navigation-style="underline"] .site-header nav a {
+  text-decoration-color: var(--scene-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
+}
+.howlscene[data-theme-navigation-style="framed"] .site-header nav a {
+  border: 1px solid var(--scene-accent);
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  text-decoration: none;
+}
 .scene {
   max-width: 76rem;
   margin: auto;

@@ -61,6 +61,7 @@ export function Site({
       className="howlscene"
       style={style}
       data-theme={site.theme}
+      data-theme-navigation-style={theme.presentation.navigationStyle}
       data-motion={site.motion}
       data-motion-intensity={site.motionSettings.intensity}
       data-motion-speed={site.motionSettings.speed}

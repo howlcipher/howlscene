@@ -119,3 +119,12 @@ The [motion contract tests](../../tests/theme_motion.test.tsx) and presentation
 browser scenario cover defaults, bounds, theme switching, reduced motion and
 motionless scenery. These are API-level options rather than editor controls;
 broader accessible theme customization remains open v1 work.
+
+## Navigation treatment
+
+`presentation.navigationStyle` selects a closed, safe visual treatment for the
+shared site navigation: `plain`, `underline`, or `framed`. Existing themes
+default to `plain`. Ink Wash uses `underline` and Cyberpunk uses `framed`; all
+treatments retain the same semantic links, keyboard focus, responsive wrapping,
+and anchor behavior. These are theme-manifest choices for developers. The
+visual editor does not yet expose them. See [ADR 004](../architecture/adr_004_navigation_treatment.md).

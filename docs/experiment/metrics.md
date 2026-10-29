@@ -162,3 +162,13 @@ ten-section text-only export, and a 68,879-byte runtime (21,330 gzip). It is a
 single local observation, not a field Core Web Vitals or animation guarantee.
 The [dependency audit](../evidence/theme_motion_audit.txt) found zero
 vulnerabilities.
+
+## Navigation presentation local integrated snapshot
+
+[`theme_navigation_final_gate.txt`](../evidence/theme_navigation_final_gate.txt)
+records 140 unit tests across 34 files, 36 browser tests, 89.57% overall branch
+coverage, successful package-consumer checks, and all nine screenshot comparisons.
+The [audit](../evidence/theme_navigation_audit.txt) found zero vulnerabilities.
+The [performance observation](../evidence/theme_navigation_performance.json) is a
+single local run on the documented Chromium/Node/CPU setup; it is not a field or
+comparative claim.

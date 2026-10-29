@@ -203,8 +203,9 @@ exporter 97.72%. Fresh dependency audit: zero vulnerabilities. Executed evidence
 Independent review found no blocking defect. Maximum token combinations at narrow
 widths and increased text zoom remain a verification gap; no blanket AA claim.
 
-Current branch `work/theme-presentation` builds on unmerged PR #1, whose hosted
-CI passed. Next: publish a stacked reviewable PR and obtain fresh hosted checks.
+The bounded theme-presentation checkpoint was later merged after hosted CI run
+`40887036736`. Its implementation details and original measurements remain
+recorded here as historical evidence.
 Then continue required theme responsive/accessibility/motion contracts and
 external asset collection, followed by general section/layout registration.
 Human usability/screen-reader review, broader exported visual coverage,
@@ -213,8 +214,8 @@ Repository isolation and experiment evidence remain intact.
 
 ## Theme motion and parallax contract
 
-Current branch: `work/theme-motion-accessibility`, based on merged main at
-`3b1270b`. Added optional immutable theme motion scalars and parallax preference.
+Merged motion branch: `work/theme-motion-accessibility`, merge `7ce0f42`. The
+current navigation branch is `work/theme-navigation-presentation`. Added optional immutable theme motion scalars and parallax preference.
 Scalars are runtime-validated and bounded; theme intensity can reduce the user's
 site setting, while combined speed is clamped. Themes that opt out of parallax do
 not schedule layer movement; site motion-off, manual disable and reduced-motion
@@ -239,3 +240,15 @@ broader responsive/full manifest and section/layout contracts, deployment, and
 release gates remain outstanding. Isolation is intact: no other track or
 William Elias repository has been modified or consulted for implementation.
 Independent comparison evidence continues in `docs/experiment/`.
+
+## Theme navigation presentation
+
+Implemented in `work/theme-navigation-presentation`: a bounded `navigationStyle`
+presentation setting. Existing manifests default to plain; Ink Wash uses an
+accent underline and Cyberpunk uses an accent frame. Shared CSS implements both
+without theme-name conditionals. Contract tests reject arbitrary values;
+Playwright verifies computed styles and wrapping at mobile, tablet, and desktop
+widths. Six reviewed Ink/Cyber screenshot baselines changed intentionally; all
+nine visual comparisons pass. TDD RED is preserved at
+`docs/evidence/theme_navigation_red.txt`. The complete local gate now passes 140
+unit tests and 36 browser tests; hosted CI and merge are the next steps.

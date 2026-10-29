@@ -34,3 +34,13 @@ behavior. Five tests were observed failing before implementation. The local gate
 results are recorded in
 [`theme_motion_final_gate.txt`](../evidence/theme_motion_final_gate.txt). Hosted
 CI and merge status are tracked in the pull request.
+
+Navigation presentation increment: `plain`, `underline`, and `framed` styles are
+validated theme data consumed by shared CSS. Browser checks cover actual styles
+and wrapping at three widths; reviewed visual baselines change only for Ink Wash
+and Cyberpunk.
+
+The navigation-style implementation passes the full local gate: 140 unit tests,
+36 browser tests, nine visual comparisons, SDK/export checks, license audit, and
+zero dependency vulnerabilities. See `theme_navigation_final_gate.txt` and
+`theme_navigation_audit.txt`; hosted CI is still required.
