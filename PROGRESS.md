@@ -398,3 +398,18 @@ branch coverage; see [`section_layout_final_gate.txt`](docs/evidence/section_lay
 and [`section_layout_audit.txt`](docs/evidence/section_layout_audit.txt). No
 new performance sample was taken for this test increment. Hosted verification
 is pending.
+
+## Follow-up: exported layout in a static browser
+
+After merge, EDT-012 was extended to serve its actual generated website ZIP at a
+nested path with JavaScript disabled. The test checks the exported heading and
+navigation, image bytes and alt text, desktop/phone split behavior, anchor
+navigation, and horizontal overflow. The focused scenario passes. The full local
+Node 24.22.2 gate passes 150 unit and 45 browser tests; statement coverage is
+94.85%, branch coverage 89.54%, the independent SDK/export consumer and license
+audit pass, and a separate `npm audit --audit-level=moderate` reports zero
+vulnerabilities. Evidence: [full gate](docs/evidence/export_layout_static_final_gate.txt)
+and [security audit](docs/evidence/export_layout_static_audit.txt). This is a
+test-only addition; the prior layout behavior was already implemented. Hosted
+verification is pending. The local npm bootstrap warns that its host runtime is
+Node 22.22.1; the command explicitly runs the project under Node 24.22.2.

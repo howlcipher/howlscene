@@ -135,3 +135,13 @@ colors are covered; artwork contrast and human accessibility review remain open.
 Creator color controls: added editable background and text colors beside accent.
 A real browser journey selects colors, verifies contrast warning/fallback, changes
 the theme, waits for draft save, reloads, and checks exported CSS values.
+
+Static-layout export verification now loads the generated ZIP itself from a
+nested URL with JavaScript disabled. The browser confirms the image bytes load,
+alt text remains present, the split image floats right on desktop and stacks on
+phone, anchor navigation works, and the document has no horizontal overflow.
+The complete local Node 24.22.2 gate passes 150 unit and 45 browser tests at
+94.85% statement / 89.54% branch coverage. The separate dependency audit reports
+zero vulnerabilities; hosted CI remains the merge gate. Evidence is in
+[`export_layout_static_final_gate.txt`](../evidence/export_layout_static_final_gate.txt)
+and [`export_layout_static_audit.txt`](../evidence/export_layout_static_audit.txt).
