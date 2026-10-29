@@ -14,8 +14,10 @@ features; unfinished acceptance requirements are tracked in
    supports trusted custom renderers using portable v1 fields, and creators can
    override the shared card/navigation presentation choices. Arbitrary payload
    schemas, custom editor forms, and a plugin system remain outside scope.
-3. Review transition, long-content and image-rich exported baselines on target
-   platforms, then expand the fixtures if those reviews identify gaps.
+3. Functional static-export coverage now exercises image-rich long content in
+   Chromium, Firefox and WebKit under nested hosting with JavaScript disabled.
+   Complete the pending hosted WebKit pass; human cross-platform visual and
+   transition review remains open, and fixtures should grow if it finds gaps.
 4. Review the complete editor with nontechnical users and assistive technology;
    correct findings before making accessibility or release-readiness claims.
 5. Measure representative production loading and motion on mobile/older hardware.

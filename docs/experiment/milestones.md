@@ -145,3 +145,13 @@ The complete local Node 24.22.2 gate passes 150 unit and 45 browser tests at
 zero vulnerabilities; hosted CI remains the merge gate. Evidence is in
 [`export_layout_static_final_gate.txt`](../evidence/export_layout_static_final_gate.txt)
 and [`export_layout_static_audit.txt`](../evidence/export_layout_static_audit.txt).
+
+Target-engine static-export review adds one focused scenario across Chromium,
+Firefox and WebKit. All three themes are loaded from actual no-script ZIPs at
+nested paths at desktop and phone sizes, with long text, image decoding,
+navigation and overflow checks. All three projects pass in the pinned
+Playwright container; direct WebKit launch on this Bazzite host needs GTK/WebKit
+libraries that are not installed. The full editor and screenshot suites remain
+Chromium-only by design; hosted CI is pending. See
+[ADR 010](../architecture/adr_010_target_browser_export_checks.md) and the
+[full gate log](../evidence/cross_browser_final_gate.txt).
