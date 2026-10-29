@@ -59,6 +59,28 @@ for (const width of [375, 768, 1440]) {
       await expect(
         preview.getByRole("heading", { name: "Alex builds useful things" }),
       ).toBeVisible();
+      // Mobile/tablet controls have OS-dependent line metrics. Keep the live
+      // preview's measured size, but paint this theme fixture at an integer
+      // viewport origin so editor layout cannot alter glyph rasterization.
+      const originalBox = await preview.boundingBox();
+      if (!originalBox)
+        throw new Error("The preview has no measurable layout.");
+      await preview.evaluate((element, measuredWidth) => {
+        Object.assign(element.style, {
+          position: "fixed",
+          top: "0px",
+          left: "0px",
+          width: `${measuredWidth}px`,
+          zIndex: "9999",
+        });
+      }, originalBox.width);
+      const captureBox = await preview.boundingBox();
+      expect(captureBox).toEqual({
+        x: 0,
+        y: 0,
+        width: originalBox.width,
+        height: originalBox.height,
+      });
       await expect(preview).toHaveScreenshot(`preview-${theme}-${width}.png`, {
         animations: "disabled",
         caret: "hide",

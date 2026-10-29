@@ -30,3 +30,7 @@ bb033fae52dcbf67a55494a08829aaa788324624d72a195af7f93da3061c928f  LiberationSeri
 1df075a380fc7cb898acf64c1f7b3b4dd780de3caa860178bf929de35817a913  NotoSans-Bold.ttf
 478c558ea716033cd60c03438f628dfa75694dcf6b5f6d505a2f05fd2b4f3823  NotoSans-Regular.ttf
 ```
+
+## Screenshot origin
+
+Pinned fonts are only one part of the visual fixture. At mobile/tablet widths the editor controls appear above the preview; OS-dependent control typography can place the preview at a fractional document coordinate. Outward screenshot rounding then adds a row and changes glyph rasterization. The visual test preserves the live preview's measured width and natural height while placing its capture at fixed integer viewport origin `(0, 0)`, with explicit geometry assertions. This affects theme snapshots only, not product layout. A local default-system-font versus Arial-parent-font experiment produced pixel-identical fixed-origin captures; see `docs/evidence/font_fixture_review.md` for measurements and review evidence.

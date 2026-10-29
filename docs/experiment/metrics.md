@@ -92,3 +92,13 @@ is unchanged. Test-only font fixtures are documented with hashes/licenses and
 [reviewed baseline rationale](../evidence/font_fixture_review.md). No screenshot
 threshold was relaxed. This local result does not itself prove remote Ubuntu
 rendering; the clean-runner result is tracked separately.
+
+## Capture-origin correction
+
+The [origin-corrected full gate](../evidence/origin_final_gate.txt) passes 114 unit
+and 34 browser tests on local Node 24.22.2, with package consumers and licenses.
+The preceding hosted run passed desktop snapshots but exposed fractional crop
+origins below editor controls on mobile/tablet. The documented controlled
+experiment and reviewed six-image update isolate theme captures from those
+parent-font metrics; thresholds remain unchanged. Remote confirmation is still
+required.

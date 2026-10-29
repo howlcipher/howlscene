@@ -89,3 +89,26 @@ normal screenshot comparisons and independent package consumption.
 [Executed final output](docs/evidence/font_final_gate.txt). Hosted verification
 of the font correction remains pending. General theme artwork/layer manifests
 and section/layout extension contracts remain required v1 work; see limitations.
+
+## Fractional capture origin correction
+
+Hosted run `40800029407` passed all functional browser tests and all three desktop
+screenshots but failed six mobile/tablet images. The visual fixture was below
+editor controls whose host-font metrics put its origin on fractional pixels.
+Controlled layouts measured document origins 3393.625 and 3167.875 pixels.
+Preserving the live preview dimensions and capturing at fixed `(0, 0)` made the
+two parent-font experiments pixel-identical. Only six reviewed mobile/tablet
+baselines changed, removing the extra fractional-crop pixel; desktop baselines
+and thresholds are unchanged. Normal comparisons and the complete local Node
+24.22.2 gate pass: **114 unit tests, 34 browser tests**, SDKs and licenses.
+[Executed output](docs/evidence/origin_final_gate.txt).
+
+CI actions are updated to live-verified releases and pinned commit SHAs:
+checkout v7.0.1, setup-node v7.1.0, upload-artifact v7.0.2. This addresses the
+runner's Node 20 action deprecation warning. CI now preserves the explicitly
+selected performance report alongside coverage/browser results. Hosted execution
+of these updates remains pending.
+
+The next implementation slice is the tested theme-layer registration contract
+selected in [ADR 002](docs/architecture/adr_002_theme_layer_registry.md), retaining
+shared rendering/export and safe imported references.
