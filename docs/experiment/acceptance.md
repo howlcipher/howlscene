@@ -87,3 +87,11 @@ The THM-RESP-001/002 responsive-navigation slice passes the complete local gate:
 includes exported paths, SDK package checks, all nine visual comparisons and
 license review; the [dependency audit](../evidence/theme_responsive_audit.txt)
 reports zero vulnerabilities.
+
+THM-A11Y-001 covers a custom theme with low foreground/background contrast. It
+checks the displayed color reaches at least 4.5:1, reports a warning without
+mutating saved theme data, and carries the same fallback into exported HTML.
+
+THM-A11Y-001 passes in the complete local gate: 143 unit tests and 38 browser
+tests. It checks a low-contrast custom theme, warning and immutability, resolved
+contrast of at least 4.5:1, and the same foreground in preview and ZIP HTML.

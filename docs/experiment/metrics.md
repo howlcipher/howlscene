@@ -198,3 +198,16 @@ was one Node 24.22.2 / Chromium 156 headless run on the Ryzen 5 1600 at 1440×10
 using loopback Vite and no network/CPU emulation: editor ready 444 ms, sampled
 frame p50/p95 16.7 ms, text-only export 69.4 ms, runtime 68,879 bytes / 21,330
 gzip. This is not a field or comparative result.
+
+## Theme text-contrast integrated snapshot
+
+The [Node 24 gate](../evidence/theme_contrast_final_gate.txt) records 143 unit
+tests across 34 files and 38 browser tests. Overall branch coverage is 89.47%;
+core/config/export modules retain their separately reported coverage in the log.
+The [dependency scan](../evidence/theme_contrast_audit.txt) found zero
+vulnerabilities. The [performance record](../evidence/theme_contrast_performance.json)
+was captured on Node 24.22.2, Chromium 156 headless, Ryzen 5 1600, 1440×1000,
+loopback Vite, without network or CPU emulation. Editor ready was 407 ms; sampled
+frame p50/p95 was 16.7 ms; text-only export 73.2 ms; runtime 68,879 bytes /
+21,330 gzip. These are single-run lab observations, not production or comparative
+claims.

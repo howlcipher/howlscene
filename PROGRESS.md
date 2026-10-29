@@ -265,3 +265,16 @@ failed before implementation and its RED is preserved at
 the real editor test creates multiple section links and checks visibility and
 overflow at 375, 768 and 1440 pixels. The full gate passes 142 unit and 38
 browser tests with 89.57% branch coverage. Hosted verification is pending.
+
+## Theme text contrast resolution
+
+Current branch: `fix/theme-text-contrast`, based on main at `55070ad`. Added a
+regression for a custom theme whose foreground contrast is below the WCAG 2.2
+ordinary-text minimum. `resolveTheme` should pick the higher-contrast opaque black
+or white foreground, warn, leave saved data unchanged, and flow the same result
+through `Site` and static export. The first unit run reproduced the issue; RED is
+preserved at `docs/evidence/theme_contrast_red.txt`. The complete local gate passes 143 unit and 38 browser tests; overall branch
+coverage is 89.47%, and dependency audit reports zero vulnerabilities. Executed
+logs are in `docs/evidence/theme_contrast_*`. Hosted verification is pending. This
+checks flat color pairs only; artwork-overlay contrast and human WCAG review remain
+open.

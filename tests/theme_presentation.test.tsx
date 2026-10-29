@@ -8,6 +8,7 @@ import {
   themeSchema,
   createThemeRegistry,
   resolveTheme,
+  contrastRatio,
   type ThemeManifestInput,
   themes,
 } from "../packages/core/src/index";
@@ -42,6 +43,40 @@ const custom = {
   },
 };
 describe("validated theme presentation", () => {
+  it("THM-A11Y-001 resolves low-contrast theme text in preview and static export", async () => {
+    const inaccessible = {
+      ...legacy,
+      background: "#b0b0b0",
+      foreground: "#aaaaaa",
+    };
+    const original = JSON.stringify(inaccessible);
+    const result = resolveTheme(inaccessible);
+    expect(result.tokens.foreground).toBe("#000000");
+    expect(
+      contrastRatio(result.tokens.foreground, result.tokens.background),
+    ).toBeGreaterThanOrEqual(4.5);
+    expect(result.warnings).toContain(
+      "The theme text color is difficult to read against its background. A higher-contrast color is shown; the theme's saved colors are unchanged.",
+    );
+    expect(JSON.stringify(inaccessible)).toBe(original);
+
+    const registry = createThemeRegistry({ inaccessible });
+    const site = parseSite({ ...starterSite, theme: "inaccessible" }, registry);
+    const html = renderToStaticMarkup(
+      <Site site={site} themeRegistry={registry} />,
+    );
+    expect(html).toContain("--scene-fg:#000000");
+    const archive = await JSZip.loadAsync(
+      await exportWebsite(site, { themeRegistry: registry }),
+    );
+    const exported = await archive.file("index.html")!.async("string");
+    expect(exported).toContain("--scene-fg:#000000");
+    expect(exported).toContain(starterSite.sections[0]!.heading);
+    expect(themes.modern.foreground).toBe("#162439");
+    expect(
+      contrastRatio(themes.modern.foreground, themes.modern.background),
+    ).toBeGreaterThanOrEqual(4.5);
+  });
   it("THM-RESP-001 normalizes the mobile navigation layout and preserves legacy themes", () => {
     expect(themeSchema.parse(legacy).presentation.mobileNavigationLayout).toBe(
       "wrap",
