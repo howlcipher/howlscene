@@ -1,5 +1,12 @@
 import { z } from "zod";
-import { sectionTypes, layoutIds } from "./registry.js";
+import {
+  sectionTypes,
+  layoutIds,
+  sectionSpacings,
+  sectionAlignments,
+  sectionContentWidths,
+  sectionImagePositions,
+} from "./registry.js";
 import {
   validateEncodedImage,
   inspectImageDimensions,
@@ -81,12 +88,10 @@ const sectionSchema = z.strictObject({
   image: z.string().optional(),
   imageTreatment: z.enum(["inline", "background"]).default("inline"),
   inNavigation: z.boolean().default(true),
-  spacing: z
-    .enum(["compact", "comfortable", "spacious"])
-    .default("comfortable"),
-  alignment: z.enum(["start", "center", "end"]).default("center"),
-  contentWidth: z.enum(["narrow", "normal", "wide"]).default("normal"),
-  imagePosition: z.enum(["top", "center", "bottom"]).default("center"),
+  spacing: z.enum(sectionSpacings).default("comfortable"),
+  alignment: z.enum(sectionAlignments).default("center"),
+  contentWidth: z.enum(sectionContentWidths).default("normal"),
+  imagePosition: z.enum(sectionImagePositions).default("center"),
   heading: z.string().max(300),
   richText: richTextSchema.default([]),
   body: z.string().max(30000).default(""),

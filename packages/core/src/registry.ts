@@ -18,6 +18,12 @@ export const layoutIds = [
   "cards",
   "timeline",
 ] as const;
+
+/** Safe layout adjustments shared by project validation and editor controls. */
+export const sectionSpacings = ["compact", "comfortable", "spacious"] as const;
+export const sectionAlignments = ["start", "center", "end"] as const;
+export const sectionContentWidths = ["narrow", "normal", "wide"] as const;
+export const sectionImagePositions = ["top", "center", "bottom"] as const;
 /** Object keys retain the registry's supported type union. */
 export const sectionTypes = Object.keys(sectionDefinitions) as Array<
   keyof typeof sectionDefinitions
