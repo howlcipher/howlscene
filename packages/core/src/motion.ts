@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { animate } from "motion/mini";
 import { cinematicTransitions } from "./registry.js";
 export const motionPresets = {
   none: { duration: 0, distance: 0, scale: 1 },
@@ -27,11 +28,7 @@ export function resolveMotion(
       };
 }
 export type CinematicTransition = (typeof cinematicTransitions)[number];
-export interface SceneTransitionKeyframes {
-  opacity: [number, number];
-  transform?: [string, string];
-  filter?: [string, string];
-}
+export type SceneTransitionKeyframes = Parameters<typeof animate>[1];
 /** Finite, declarative scene entrances shared by editor preview and exports. */
 export function resolveSceneTransition(
   transition: CinematicTransition,

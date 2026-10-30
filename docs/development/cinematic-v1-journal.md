@@ -8,7 +8,8 @@
 - Current committed test-first checkpoint: `e19f0b6cf24d41d9edd101c7b383efbc303e19e6`
 - Feature commit: `8f8fde351581e94bd45729adedc7b3edfb252143` (`feat(cinematic): add shared configurable story mode`)
 - Current implementation checkpoint: `7b08c0750a8221d738ac1249af9dd4262ea23bbe`
-- Working tree: only journal/readiness report updates remain before documentation commit
+- Latest changes: hosted TypeScript fix in progress; documentation checkpoint `975cdc6773699d5c33bfcd9b4b83ee37ab0b49ec`
+- Pull request: [#34](https://github.com/howlcipher/howlscene/pull/34), draft
 - Active milestone: shared cinematic configuration, rendering, and editor integration
 
 ## Safety policy
@@ -25,12 +26,20 @@
 - No safety rule has been violated.
 - Local lightweight Prettier formatting and `git diff --check` were used; no
   compilation or tests were run locally.
-- No GitHub-hosted run exists for the new test-first checkpoint. The
-  repository's Git credential helper references a missing `gh` executable and
-  `ksshaskpass` is unavailable. The connected GitHub integration returned 403
-  when asked to create the feature branch. No PR could be opened and no RED or
-  GREEN result was observed.
-- Tests remain pending remote execution.
+- The first push attempt failed because the repository-local URL-specific Git
+  helper pointed to missing `/home/linuxbrew/.linuxbrew/bin/gh`. The owner
+  remained authenticated through `/usr/bin/gh` with `repo` scope. The local
+  helper was corrected; no credential value was read or printed.
+- GitHub MCP branch creation independently returned 403 because that
+  integration lacks write access. This did not prevent Git CLI push or PR
+  creation after the local helper correction.
+- Branch `work/cinematic-v1` is pushed and draft PR #34 is open.
+- Quality gates run [41128567497](https://github.com/howlcipher/howlscene/actions/runs/41128567497)
+  and Pages build run [41128567426](https://github.com/howlcipher/howlscene/actions/runs/41128567426)
+  both failed at the strict TypeScript check for the custom scene keyframe type.
+  This is an implementation failure, not behavioral RED evidence.
+- A fix now derives the exported keyframe type from Motion's public `animate`
+  API. It is unverified pending the next hosted run.
 - Host-side testing was not requested and will not be used for this mission.
 
 ## Initial audit
@@ -63,8 +72,8 @@ smallest route to portable cinematic output.
 - The Pages workflow runs its artifact build and browser verification on
   `ubuntu-latest`. Deployment is manual-dispatch-only on `main`, with explicit
   publish input, repository safeguard variable, and two approval environments.
-- No focused test workflow is present. A PR is required to obtain RED/GREEN
-  evidence for feature-branch changes.
+- No focused test workflow is present. PR #34 now triggers the hosted quality
+  checks for this feature branch.
 
 ## Architecture decisions
 
@@ -77,8 +86,8 @@ See [ADR 0001](../architecture/adr/0001-cinematic-config-contract.md).
 - Commit `e19f0b6` adds config/render/export contract tests for the new
   cinematic `experience` field, bounded transition IDs, older-project
   defaults, and static output.
-- The commit was not pushed because GitHub write authentication failed. The
-  expected RED behavior was not executed remotely.
+- The test-first commit was pushed as part of PR #34. Its expected RED behavior
+  was not executed at the test-only checkpoint.
 
 ### Implementation checkpoint `8f8fde3`
 
@@ -99,15 +108,24 @@ See [ADR 0001](../architecture/adr/0001-cinematic-config-contract.md).
   backup preservation, deterministic property normalization, editor selection,
   and interruption/reentry lifecycle.
 - Updated user/developer documentation, acceptance traceability, and ADR 0001.
-- The implementation commit is local and unpushed. It has not been compiled,
-  tested, or run in a browser. No RED/GREEN or package artifact evidence is
-  claimed.
+- The implementation commit is pushed in PR #34. No local compile, test, or
+  browser run was performed. The first hosted checks failed on a keyframe type
+  mismatch; no RED/GREEN or package artifact result is claimed yet.
 
 ### Rendering follow-up `7b08c07`
 
 - Camera transitions target the background image element when present so its
   containing scene continues to define full-viewport bounds.
 - Added lifecycle source coverage for artwork targeting. It remains unexecuted.
+
+### Hosted CI type correction (pending verification)
+
+- Quality gates run `41128567497` and Pages build run `41128567426`, both on
+  GitHub-hosted Ubuntu runners, failed because `SceneTransitionKeyframes`
+  lacked Motion's CSS custom-property index signature.
+- The keyframe alias now derives from `Parameters<typeof animate>[1]` in
+  `motion/mini`, keeping the resolver aligned with Motion's accepted keyframe
+  contract. No local compilation or test was run to check this change.
 
 Historical evidence in `PROGRESS.md` and existing review documents predates
 this mission and is not evidence for new changes.
@@ -125,9 +143,8 @@ this mission and is not evidence for new changes.
 
 ## Handoff
 
-- Next task: restore GitHub write authentication, push `work/cinematic-v1`,
-  open a draft PR for hosted RED/GREEN, fix any CI findings, then migrate the
-  existing Ink Wash demo to consume the shared capability.
-- Pull requests: none. PR creation is blocked by missing local GitHub
-  credentials and GitHub integration write access (403).
+- Next task: commit and push the keyframe type correction, inspect hosted
+  verification, then
+  migrate the existing Ink Wash demo to consume the shared capability.
+- Pull requests: draft [#34](https://github.com/howlcipher/howlscene/pull/34).
 - Decisions needed: none identified.

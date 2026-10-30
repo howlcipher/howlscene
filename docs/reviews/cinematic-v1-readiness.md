@@ -29,9 +29,7 @@ and transition logic.
   (`feat(cinematic): add shared configurable story mode`).
 - Ending code commit: `7b08c0750a8221d738ac1249af9dd4262ea23bbe`
   (`fix(cinematic): animate full scene artwork bounds`).
-- The journal and readiness report are being committed in a documentation
-  follow-up; this does not add verification evidence.
-- Pull request: none; remote write access is blocked.
+- Draft PR: [#34](https://github.com/howlcipher/howlscene/pull/34).
 
 ## 3. Architectural audit
 
@@ -90,9 +88,10 @@ implementation commit. Additional source tests cover transition recipes,
 reduced motion, themes, backup round trips, deterministic normalization, editor
 journey, and interrupted/reentered scene lifecycle.
 
-No RED result was observed. The test commit could not be pushed to create a PR,
-and no hosted GREEN result exists. TDD execution evidence is pending; source
-ordering alone is not represented as a passing TDD cycle.
+No RED result was observed at the test-only checkpoint. The test-first commit
+and implementation are now in draft PR #34. Hosted checks had not appeared in
+the latest poll, so no RED/GREEN result is claimed. TDD execution evidence is
+pending; source ordering alone is not represented as a passing TDD cycle.
 
 ## 7. Acceptance matrix
 
@@ -135,17 +134,27 @@ It does not deploy. No focused test workflow exists. The Pages workflow builds
 PR artifacts on `ubuntu-latest`; deployment is manual on `main` with a publish
 input, repository safeguard, and two approval environments.
 
-No workflow was triggered. Push failed because Git's configured credential
-helper requires an unavailable `gh` executable and `ksshaskpass` could not be
-started. The connected GitHub integration returned HTTP 403 for branch
-creation. No PR, run ID, or remote artifact exists for the changes.
+Draft PR #34 was opened and triggered the inspected workflows.
+The first Git push failed because the repository-local URL-specific helper
+pointed to missing `/home/linuxbrew/.linuxbrew/bin/gh`, while the authenticated
+system CLI was `/usr/bin/gh`. The local helper was corrected and the branch was
+pushed. The connected GitHub integration independently returned HTTP 403 for
+branch creation because it lacks write access. The hosted quality-gates run
+[41128567497](https://github.com/howlcipher/howlscene/actions/runs/41128567497)
+and Pages build run
+[41128567426](https://github.com/howlcipher/howlscene/actions/runs/41128567426)
+both failed at strict TypeScript compilation because the custom cinematic
+keyframe interface lacked Motion's CSS-variable index signature. A type
+correction deriving the keyframe type from Motion's public `animate` API is
+being prepared; it has not yet been verified remotely.
 
 ## 9. Unit and integration results
 
 Tests added: `tests/cinematic.test.tsx`,
 `tests/e2e/cinematic-editor.spec.ts`, and a lifecycle case in
-`tests/scene_lifecycle.test.ts`. No test command, TypeScript compilation, or
-build ran locally or remotely. Pass counts and coverage are unavailable.
+`tests/scene_lifecycle.test.ts`. The hosted TypeScript check failed before
+tests ran. No test command, TypeScript compilation, or build ran locally. Pass
+counts and coverage are unavailable.
 
 ## 10. Browser, export, SDK, visual, accessibility, and performance results
 
@@ -177,7 +186,7 @@ cover Cinematic Story.
 ## 13. Host-safety compliance
 
 - Local heavy workload executed: **No**.
-- Verification on GitHub-hosted infrastructure for this change: **None**.
+- Verification on GitHub-hosted infrastructure for this change: **Runs 41128567497 and 41128567426 failed at TypeScript compilation**.
 - Tests not executed: all new and regression tests, type check, build, SDK,
   browser/export, accessibility, visual, performance, security, and licensing
   checks.
@@ -190,18 +199,19 @@ cover Cinematic Story.
 
 ## 14. Remaining human acceptance and deployment
 
-Restore GitHub write access and hosted CI first. After automated verification,
-real nontechnical users, assistive-technology review, physical mobile use, and
-human visual review remain required. No deployment was requested or performed.
-The existing Pages approval controls were not changed.
+After hosted type/build verification, real nontechnical users,
+assistive-technology review, physical mobile use, and human visual review
+remain required. No deployment was requested or performed. The existing Pages
+approval controls were not changed.
 
 ## 15. Known limitations and final verdict
 
 The Ink Wash example still uses example-specific code and has not been
 migrated. Transition-cover artwork, exact scene-to-scene camera passage,
 dedicated cinematic nested export and visual tests, new SDK consumer tests, and
-full acceptance coverage remain. All newly written tests are unexecuted, and
-there is no PR or hosted evidence.
+full acceptance coverage remain. The newly written tests are still unexecuted;
+the draft PR exists, and the first hosted runs failed during TypeScript
+compilation.
 
 **NOT READY** — implementation-critical verification is blocked, demo migration
 is incomplete, and the ultimate acceptance criterion is not met. This verdict
