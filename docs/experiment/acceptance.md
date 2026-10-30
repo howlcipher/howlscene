@@ -29,6 +29,12 @@ It does not assert that every scenario within a group is complete. See the
 | A11Y-SCENE-001    | `tests/e2e/background_readability.spec.ts`, ADR 014                                                                                                               | Uploaded-background copy measures at least 4.5:1 foreground and accent contrast in preview across all built-in themes and in the nested no-script Ink Wash export.                                                                                                                                          |
 | A11Y-SCENE-002    | `packages/core/src/Site.tsx`, `tests/e2e/background_readability.spec.ts`, ADR 015                                                                                 | Native scenery stays behind an opaque resolved theme surface. Foreground and accent text contrast measures at least 4.5:1 for all three themes in preview and in each nested static ZIP with JavaScript disabled. Artwork remains visible around the panels.                                                |
 
+The `A11Y-007` export scenario also serves each theme ZIP with JavaScript
+disabled at 320 CSS px and 200% root text sizing. Its long-copy and project-card
+fixture remains visible without horizontal overflow in the document,
+navigation, copy panels, entry grid, or card. This checks root text sizing, not
+browser zoom; manual zoom review remains open.
+
 ## Final journey
 
 `tests/e2e/journey.spec.ts` performs the portfolio workflow: template/theme,
