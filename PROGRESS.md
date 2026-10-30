@@ -8,14 +8,22 @@ Phase 0 proved the shared editor-to-static-export approach. Core/schema, rich te
 
 ## Latest executed milestone
 
-The latest merged increment is PR #24, merged as `0ad3124`. It adds a skippable,
-reopenable five-step first-use guide. Hosted `verify` passed in run
-[`40976918226`](https://github.com/howlcipher/howlscene/actions/runs/40976918226),
+The latest merged increment is PR #25, merged as `6ba4e7f` (source commit
+`18e4f69`). It adds `A11Y-SCENE-002`: standard section introductions, timelines,
+and call-to-action links use opaque resolved theme surfaces over native scenery;
+existing project, skill, and gallery cards retain their surfaces and layout.
+Hosted `verify` passed in run
+[`40980058221`](https://github.com/howlcipher/howlscene/actions/runs/40980058221),
 and the Pages artifact/path check passed in run
-[`40976918558`](https://github.com/howlcipher/howlscene/actions/runs/40976918558).
-The current branch, `work/native-scenery-readability`, extends the existing
-opaque-copy treatment to native theme scenery and tests preview plus nested,
-JavaScript-disabled exports for all three bundled themes.
+[`40980058139`](https://github.com/howlcipher/howlscene/actions/runs/40980058139).
+All three themes are measured in preview and nested JavaScript-disabled ZIPs.
+
+The local Node 22.22.1 gate passed 152 unit tests and 53 of 54 browser scenarios;
+the single unavailable local WebKit run passed in pinned hosted CI. The final
+preview and image-rich export screenshot comparisons passed, as did the
+independent SDK consumer, license audit and zero-vulnerability audit. Human
+zoom, assistive-technology and nontechnical usability review remain open. No
+comparison result, WCAG conformance or v1 readiness is claimed.
 
 For PR #24's onboarding commit on Node 22.22.1/npm 12.0.2, formatting, lint,
 strict TypeScript, production build/prerender, and all **151 unit tests** passed.
@@ -156,7 +164,7 @@ and the accessibility scan passes with the guide visible. Hosted `verify` passed
 in run `40976488810`; the Pages artifact/path check passed in run
 `40976488802`.
 
-## Current increment: native scenery readability
+## Latest merged increment: native scenery readability
 
 `A11Y-SCENE-002` extends the opaque resolved theme surface to all standard
 section copy so decorative scenery does not sit directly behind semantic text.
@@ -181,9 +189,22 @@ comparisons pass. Separate SDK tarball checks, the 267-package license audit,
 and `npm audit --audit-level=moderate` pass with zero vulnerabilities. Full local
 attempt details are in
 [`native_scenery_readability_host_local_attempt.txt`](docs/evidence/native_scenery_readability_host_local_attempt.txt).
-Hosted `verify` and Pages artifact/path checks remain pending. ADR 015 records
-the visual/accessibility trade-off; human zoom, assistive-technology, and
+PR #25 merged as `6ba4e7f` after hosted `verify` passed in run `40980058221` and
+the Pages artifact/path check passed in run `40980058139`. ADR 015 records the
+visual/accessibility trade-off; human zoom, assistive-technology, and
 composition review remain open.
+
+## Current increment: production export performance remeasurement
+
+After PR #25, `PERF-LAB-001` was rerun against an actual editor-generated ZIP
+with image upload, Ink Wash scenery and cinematic motion. On Node 22.22.1 and
+Chromium 156.0.8078.4 with the existing 390×844, 4× CPU and 150 ms network
+emulation, it measured a 68,879-byte runtime (21,349 bytes gzip), 10,540-byte
+CSS transfer, 544 ms LCP, CLS 0, no long tasks, and 16.7 ms p95 across 60
+animation-frame intervals. This is one local lab sample, not field or physical
+device evidence and is not directly comparable to the earlier Node 24 sample.
+Raw output: [`production_mobile_performance_scene_surface.json`](docs/evidence/production_mobile_performance_scene_surface.json).
+Human testing on older hardware remains open.
 
 ## Published development checkpoint
 

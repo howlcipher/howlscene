@@ -127,23 +127,25 @@ open. See [ADR 013](../architecture/adr_013_theme_heading_treatments.md).
 sections with uploaded background images. It checks all three themes in preview
 and Ink Wash in a nested no-script export. Hosted `verify` passed in run
 `40974740672`, and the Pages artifact/path check passed in run `40974740693`.
-The current `work/native-scenery-readability` increment extends this surface to
-all standard section copy, closing the native-scenery contrast gap. Preview and
-nested no-script export checks measure both foreground and accent contrast in
-all three themes. The six 1440-pixel theme previews were inspected: the surfaces
-conceal art behind text but leave the layered scenery visible around the panels.
-Section introductions, timelines, and calls to action use opaque surfaces;
-project/gallery cards retain their existing backgrounds. The local gate passes
-formatting, lint, types, build/prerender, 152 unit tests and 53 of 54 browser
-scenarios; WebKit cannot launch on this host because GTK/media libraries are
-missing. All visual comparisons pass. Separate SDK package, 267-package license
-and zero-vulnerability checks pass. Hosted `verify` and Pages artifact/path
-checks remain pending. Results are in
-[`native_scenery_readability_host_local_attempt.txt`](../evidence/native_scenery_readability_host_local_attempt.txt).
-See
-[ADR 014](../architecture/adr_014_readable_surfaces_for_background_images.md),
+PR #25 merged `A11Y-SCENE-002` as `6ba4e7f`: standard section introductions,
+timelines, and CTA links use an opaque resolved-theme surface over native
+scenery, while project, skill and gallery cards retain their own backgrounds.
+Preview and nested no-script export checks measure foreground and accent
+contrast in all three themes. Six 1440-pixel theme previews were inspected; art
+remains visible around the surfaces. Hosted `verify` passed in run `40980058221`
+and the Pages artifact/path check passed in run `40980058139`. Local evidence is
+in [`native_scenery_readability_host_local_attempt.txt`](../evidence/native_scenery_readability_host_local_attempt.txt).
+See [ADR 014](../architecture/adr_014_readable_surfaces_for_background_images.md),
 [ADR 015](../architecture/adr_015_readable_surfaces_over_theme_scenery.md), and
 the current evidence in `PROGRESS.md`.
+
+The post-merge `PERF-LAB-001` run measures the updated actual export under the
+existing constrained Chromium profile. It observed 544 ms LCP, CLS 0, no long
+tasks, 16.7 ms p95 across 60 animation-frame intervals, 10,540 encoded CSS
+bytes, and 21,349 gzip bytes of site runtime. Environment and run limitations
+are in [`production_mobile_performance_scene_surface.json`](../evidence/production_mobile_performance_scene_surface.json).
+This Node 22.22.1 sample is not directly comparable to the prior Node 24 sample;
+real older-device review remains open.
 
 PR #24 merged as `0ad3124` and adds `EDT-ONBOARD-001`. Its five-step
 guide supports back/next navigation, skip, finish, reopen, and keyboard
