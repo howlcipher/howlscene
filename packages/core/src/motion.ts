@@ -1,4 +1,6 @@
 import { z } from "zod";
+import type { animate } from "motion/mini";
+import { cinematicTransitions } from "./registry.js";
 export const motionPresets = {
   none: { duration: 0, distance: 0, scale: 1 },
   calm: { duration: 0.6, distance: 12, scale: 1 },
@@ -24,6 +26,46 @@ export function resolveMotion(
         distance: base.distance * intensity,
         scale: 1 + (base.scale - 1) * intensity,
       };
+}
+export type CinematicTransition = (typeof cinematicTransitions)[number];
+export type SceneTransitionKeyframes = Parameters<typeof animate>[1];
+/** Finite, declarative scene entrances shared by editor preview and exports. */
+export function resolveSceneTransition(
+  transition: CinematicTransition,
+  preset: keyof typeof motionPresets,
+  intensity = 1,
+  speed = 1,
+  reduced = false,
+): { duration: number; keyframes: SceneTransitionKeyframes } {
+  z.enum(cinematicTransitions).parse(transition);
+  const motion = resolveMotion(preset, intensity, speed, reduced);
+  if (transition === "none" || motion.duration === 0)
+    return { duration: 0, keyframes: { opacity: [1, 1] } };
+  const distance = motion.distance;
+  const keyframes: Record<CinematicTransition, SceneTransitionKeyframes> = {
+    none: { opacity: [1, 1] },
+    fade: { opacity: [0, 1] },
+    "camera-push": {
+      opacity: [0.45, 1],
+      transform: [`scale(${1 + motion.scale * 0.04})`, "scale(1)"],
+    },
+    "camera-pan": {
+      opacity: [0.55, 1],
+      transform: [`translate3d(${distance}px, 0, 0)`, "translate3d(0, 0, 0)"],
+    },
+    "mist-reveal": {
+      opacity: [0.2, 1],
+      filter: [`blur(${12 * intensity}px)`, "blur(0px)"],
+    },
+    "layered-parallax": {
+      opacity: [0.55, 1],
+      transform: [`translate3d(0, ${distance}px, 0) scale(0.98)`, "none"],
+    },
+  };
+  return {
+    duration: motion.duration,
+    keyframes: keyframes[transition],
+  };
 }
 export const motionPrimitives = [
   "fade",

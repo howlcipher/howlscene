@@ -37,6 +37,7 @@ class Node extends EventTarget {
   attributes = new Map<string, string>();
   content: Node | undefined;
   scenery: Node | undefined;
+  background: Node | undefined;
   scene: Node | undefined;
   setAttribute(name: string, value: string) {
     this.attributes.set(name, value);
@@ -44,9 +45,11 @@ class Node extends EventTarget {
   querySelector(selector: string) {
     return selector === ".scenery"
       ? this.scenery
-      : selector === ".scene-content"
-        ? this.content
-        : undefined;
+      : selector === ".scene-background-image"
+        ? this.background
+        : selector === ".scene-content"
+          ? this.content
+          : undefined;
   }
   closest() {
     return this.scene;
@@ -55,19 +58,28 @@ class Node extends EventTarget {
     return { top: 0, bottom: 1000, height: 1000 };
   }
 }
-function fixture(preset = "cinematic", override?: string) {
+function fixture(
+  preset = "cinematic",
+  override?: string,
+  experience = "standard",
+  transition = "fade",
+  hasBackground = false,
+) {
   const scene = new Node();
   if (override !== undefined) scene.dataset.sceneMotion = override;
+  scene.dataset.transition = transition;
   const content = new Node();
   const scenery = new Node();
   const layer = new Node();
   const button = new Node();
   scene.content = content;
   scene.scenery = scenery;
+  if (hasBackground) scene.background = new Node();
   layer.scene = scene;
   layer.dataset.depth = ".5";
   const root = new Node();
   root.dataset.motion = preset;
+  root.dataset.experience = experience;
   root.querySelector = (selector: string) =>
     selector === "button[data-motion-toggle]" ? button : undefined;
   const rootDom = Object.assign(root, {
@@ -128,6 +140,7 @@ function fixture(preset = "cinematic", override?: string) {
     root,
     scene,
     content,
+    background: scene.background,
     scenery,
     layer,
     button,
@@ -177,6 +190,25 @@ it("MOT-004 MOT-005 entry, exit, offscreen cancellation and reentry preserve per
   animation.effects.at(-1)!.finish();
   expect(f.scene.dataset.sceneState).toBe("active");
   expect(f.content.textContent).toBe("Essential readable content");
+  f.dispose();
+});
+
+it("CIN-007 CIN-016 CIN-023 replays the selected cinematic entrance after interruption", () => {
+  const f = fixture("cinematic", undefined, "cinematic", "camera-pan", true);
+  f.intersect(0.8);
+  expect(animation.effects[0]?.target).toBe(f.background);
+  expect(animation.effects[0]?.keyframes).toEqual({
+    opacity: [0.55, 1],
+    transform: ["translate3d(32px, 0, 0)", "translate3d(0, 0, 0)"],
+  });
+  const firstEntrance = animation.effects[0]!;
+  f.intersect(0);
+  expect(firstEntrance.cancel).toHaveBeenCalledOnce();
+  f.intersect(0.8);
+  expect(
+    animation.effects.filter((effect) => effect.target === f.background),
+  ).toHaveLength(2);
+  expect(firstEntrance.cancel).toHaveBeenCalledOnce();
   f.dispose();
 });
 

@@ -5,6 +5,7 @@ import {
   sectionSpacings,
   sectionAlignments,
   sectionContentWidths,
+  cinematicTransitions,
   type BuiltinSectionType,
   type SiteConfig,
   type SectionConfig,
@@ -193,6 +194,30 @@ export function SectionPanel({
             ))}
           </select>
         </label>
+        {site.experience === "cinematic" && (
+          <label>
+            Transition style
+            <select
+              value={section.transition}
+              onChange={(e) =>
+                update({
+                  transition: e.target.value as SectionConfig["transition"],
+                })
+              }
+            >
+              {cinematicTransitions.map((transition) => (
+                <option key={transition} value={transition}>
+                  {transition === "none"
+                    ? "None"
+                    : transition
+                        .split("-")
+                        .map((word) => word[0]!.toUpperCase() + word.slice(1))
+                        .join(" ")}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         <label>
           Section spacing
           <select
@@ -254,6 +279,18 @@ export function SectionPanel({
           />
           Include in navigation
         </label>
+        {section.inNavigation && (
+          <label>
+            Navigation label
+            <input
+              maxLength={100}
+              value={section.navigationLabel ?? ""}
+              onChange={(e) =>
+                update({ navigationLabel: e.target.value || undefined })
+              }
+            />
+          </label>
+        )}
         <label>
           Image treatment
           <select
@@ -296,7 +333,9 @@ export function SectionPanel({
           Show this section
         </label>
         <label>
-          Change section image
+          {site.experience === "cinematic"
+            ? "Change scenery"
+            : "Change section image"}
           <input
             type="file"
             accept="image/png,image/jpeg,image/webp"

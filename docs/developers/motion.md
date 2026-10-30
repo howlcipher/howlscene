@@ -11,18 +11,22 @@ keyframes and a duration. The supported recipe names are `fade`, `slide`, `scale
 `reveal`, `crossfade`, `parallax`, `layer_drift`, `pan_zoom`, and `ambient`.
 
 Reveal uses opacity and translation. Ambient is a small, finite entry movement.
-The default enhancement slides content once on first entry and crossfades
-decorative scenery on entry and exit. Intersection changes update each scene
-state; leaving the viewport cancels its owned effects. Reentry restores scenery
-without replaying the content entrance. Replaced effects cannot complete a stale
-transition. No recipe runs an infinite loop or controls ordinary navigation.
-Applications may apply other recipes using their own ownership and cleanup.
+The standard experience slides content once on first entry and crossfades
+decorative scenery on entry and exit. In the cinematic experience, a section's
+validated `transition` selects a finite fade, camera push, camera pan, mist
+blur/reveal, or layered-parallax entry recipe. The `none` option skips scene
+entry motion. Intersection changes update each scene state; leaving the viewport
+cancels its owned effects. Reentry can play the selected cinematic entry again.
+Replaced effects cannot complete a stale transition. No recipe runs an
+infinite loop or controls ordinary navigation. Applications may apply other
+recipes using their own ownership and cleanup.
 
-The root accepts `data-motion`, `data-motion-intensity`, and `data-motion-speed`.
-The shared renderer derives these attributes from `site.motion` and
-`site.motionSettings`; the editor exposes intensity and speed sliders. Speed
-changes finite entry duration; scroll depth tracks position and does not run on
-a timer.
+The root accepts `data-experience`, `data-motion`, `data-motion-intensity`, and
+`data-motion-speed`. The shared renderer derives these attributes from the
+validated site config; cinematic sections expose their transition ID as
+`data-transition`. The editor exposes intensity and speed sliders and a
+transition selector for cinematic sites. Speed changes finite entry duration;
+scroll depth tracks position and does not run on a timer.
 Missing or invalid settings default safely. Each `.scenery-layer[data-depth]`
 inside a `.scene` receives a bounded scroll-driven vertical offset. Depth is
 clamped to -1 through 1; invalid depth becomes zero. Set a baseline transform on

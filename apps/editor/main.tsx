@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import {
   Site,
   starterSite,
+  cinematicStarterSite,
   parseSite,
   type SiteConfig,
   type BuiltinSectionType,
@@ -29,7 +30,7 @@ const onboardingSteps = [
   {
     title: "Pick a starting point",
     description:
-      "Choose a portfolio template, then choose Ink Wash, Cyberpunk, or Modern Professional.",
+      "Choose a portfolio or Cinematic Story template, then choose Ink Wash, Cyberpunk, or Modern Professional.",
   },
   {
     title: "Make the words yours",
@@ -327,19 +328,21 @@ function Editor() {
                 )
               ) {
                 const content =
-                  e.target.value === "story"
-                    ? {
-                        ...starterSite,
-                        title: "My story",
-                        sections: [
-                          {
-                            ...starterSite.sections[0]!,
-                            heading: "Every story starts somewhere",
-                            type: "rich_text" as const,
-                          },
-                        ],
-                      }
-                    : starterSite;
+                  e.target.value === "cinematic"
+                    ? cinematicStarterSite
+                    : e.target.value === "story"
+                      ? {
+                          ...starterSite,
+                          title: "My story",
+                          sections: [
+                            {
+                              ...starterSite.sections[0]!,
+                              heading: "Every story starts somewhere",
+                              type: "rich_text" as const,
+                            },
+                          ],
+                        }
+                      : starterSite;
                 uploadRequests.current.clear();
                 commit(content);
                 setSelected(content.sections[0]!.id);
@@ -350,6 +353,7 @@ function Editor() {
             <option value="">Choose a starter</option>
             <option value="portfolio">Personal portfolio</option>
             <option value="story">Story / article</option>
+            <option value="cinematic">Cinematic Story</option>
           </select>
         </label>
         <AppearancePanel site={site} actions={actions} />

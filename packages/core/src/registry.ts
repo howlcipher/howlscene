@@ -25,6 +25,14 @@ export const sectionSpacings = ["compact", "comfortable", "spacious"] as const;
 export const sectionAlignments = ["start", "center", "end"] as const;
 export const sectionContentWidths = ["narrow", "normal", "wide"] as const;
 export const sectionImagePositions = ["top", "center", "bottom"] as const;
+export const cinematicTransitions = [
+  "none",
+  "fade",
+  "camera-push",
+  "camera-pan",
+  "mist-reveal",
+  "layered-parallax",
+] as const;
 /** Object keys retain the registry's supported type union. */
 export const sectionTypes = Object.keys(
   sectionDefinitions,
