@@ -23,6 +23,35 @@ import { SectionPanel } from "./components/SectionPanel";
 import { ProjectFiles, saveFile } from "./components/ProjectFiles";
 import "../../packages/core/src/site.css";
 import "./editor.css";
+
+const onboardingSteps = [
+  {
+    title: "Pick a starting point",
+    description:
+      "Choose a portfolio template, then choose Ink Wash, Cyberpunk, or Modern Professional.",
+  },
+  {
+    title: "Make the words yours",
+    description:
+      "Change the website title and introduction. Use the text buttons to add headings, bold or italic words, links, and lists.",
+  },
+  {
+    title: "Add pictures and sections",
+    description:
+      "Upload a picture and describe it. Add a Projects section, then move sections to arrange your story.",
+  },
+  {
+    title: "Try a phone preview",
+    description:
+      "Preview on a phone, tablet, or desktop. Try an animation style; your device's reduced-motion setting is respected.",
+  },
+  {
+    title: "Save and publish",
+    description:
+      "Your draft is saved in this browser, not in the cloud. Download an editable project backup to keep another copy. Download the separate website ZIP to publish, then follow the publishing guide.",
+  },
+] as const;
+
 function Editor() {
   const [history, setHistory] = useState(() => createHistory(starterSite));
   const site = history.present;
@@ -35,6 +64,7 @@ function Editor() {
   const [newType, setNewType] = useState<BuiltinSectionType>("projects");
   const [width, setWidth] = useState("100%");
   const [help, setHelp] = useState(false);
+  const [helpStep, setHelpStep] = useState(0);
   const dirty = useRef(false);
   const saveSequence = useRef(0);
   const uploadRequests = useRef(new Map<string, symbol>());
@@ -190,6 +220,14 @@ function Editor() {
     commit(imported);
   }
   const actions = { commit, perform, setError };
+  function openGettingStarted() {
+    setHelpStep(0);
+    setHelp(true);
+  }
+  function closeGettingStarted() {
+    setHelpStep(0);
+    setHelp(false);
+  }
   if (!ready)
     return (
       <main className="loading">
@@ -205,19 +243,52 @@ function Editor() {
         </p>
         <h1>Make a little scene.</h1>
         <p>Choose a mood. Tell your story. Take your website with you.</p>
-        <button onClick={() => setHelp(!help)} aria-expanded={help}>
+        <button
+          onClick={() => (help ? closeGettingStarted() : openGettingStarted())}
+          aria-expanded={help}
+        >
           Getting started
         </button>
         {help && (
-          <div className="notice">
-            <h2>Your first website</h2>
-            <p>
-              Choose a template, edit the title and sections, then preview on a
-              phone. Changes save in this browser, not the cloud. Save a project
-              backup to edit later. Download your website to publish it.
-            </p>
-            <button onClick={() => setHelp(false)}>Close help</button>
-          </div>
+          <section className="notice" aria-label="Getting started guide">
+            <div aria-live="polite" aria-atomic="true">
+              <p>
+                Optional guide · Step {helpStep + 1} of {onboardingSteps.length}
+              </p>
+              <h2>{onboardingSteps[helpStep]!.title}</h2>
+              <p>{onboardingSteps[helpStep]!.description}</p>
+            </div>
+            <div className="button-row">
+              <button
+                type="button"
+                aria-label="Previous step"
+                disabled={helpStep === 0}
+                onClick={() => setHelpStep((step) => Math.max(0, step - 1))}
+              >
+                Back
+              </button>
+              <button type="button" onClick={closeGettingStarted}>
+                Skip guide
+              </button>
+              {helpStep < onboardingSteps.length - 1 ? (
+                <button
+                  type="button"
+                  aria-label="Next step"
+                  onClick={() =>
+                    setHelpStep((step) =>
+                      Math.min(onboardingSteps.length - 1, step + 1),
+                    )
+                  }
+                >
+                  Next
+                </button>
+              ) : (
+                <button type="button" onClick={closeGettingStarted}>
+                  Finish guide
+                </button>
+              )}
+            </div>
+          </section>
         )}
         <label>
           Start from a template

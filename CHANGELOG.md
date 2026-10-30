@@ -22,6 +22,7 @@
 - Protected `main` with pull-request-only updates and the up-to-date `verify` check enforced for admins.
 - Added a validated theme-owned section-heading treatment enum with shared preview/export rendering and reviewed visual updates for Ink Wash and Cyberpunk.
 - Added an opaque theme-colored copy surface for sections with uploaded background images, with preview and nested no-script export contrast coverage.
+- Added a five-step beginner guide with back/next controls, skip and reopen actions, and clear local-save, backup, and publishing explanations.
 
 ### Fixed
 

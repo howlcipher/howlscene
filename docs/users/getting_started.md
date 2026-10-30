@@ -6,7 +6,7 @@ HowlScene is under active development. The controls below are implemented and th
 
 A verified public editor address is not available yet. Open the local address provided by the person running the editor. Developers can follow the project README.
 
-1. Open the editor and optionally open **Getting started** for guidance.
+1. Open the editor. On a new project, the optional five-step guide opens after local draft setup. Use **Back** and **Next** to move through it, **Skip guide** to close it, and **Getting started** to reopen it at any time.
 2. Choose a personal portfolio starter under **Start from a template**. Replacing the current project asks for confirmation.
 3. Pick Ink Wash, Cyberpunk, or Modern Professional under **Visual theme**.
 4. Change **Website title** to your name and edit the description.
