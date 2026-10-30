@@ -123,28 +123,36 @@ PR #22 merged as `e4239ed` after hosted `verify` run `40972904183` and Pages
 artifact/path run `40972904198` passed. Human contrast/usability review remains
 open. See [ADR 013](../architecture/adr_013_theme_heading_treatments.md).
 
-The current `A11Y-SCENE-001` increment places semantic copy on an opaque,
-theme-colored surface for sections with uploaded background images. The local
-preview/nested no-script export test passes against all built-in theme tokens at
-4.5:1 or better, and nine image-rich baselines were visually reviewed. The host
-ran 151 unit tests and 51 of 52 browser scenarios; WebKit could not launch due to
-missing host libraries. The separate SDK, license and vulnerability checks pass.
-The focused test transcript and incomplete full host run are retained in
-`docs/evidence/background_readability_focused.txt` and
-`docs/evidence/background_readability_host_local_attempt.txt`. Hosted `verify`
-passed in run `40974740672`, and the Pages artifact/path check passed in run
-`40974740693`; the pinned hosted browser matrix verifies WebKit. See
-[ADR 014](../architecture/adr_014_readable_surfaces_for_background_images.md)
-and current evidence in `PROGRESS.md`.
+`A11Y-SCENE-001` places semantic copy on an opaque, theme-colored surface for
+sections with uploaded background images. It checks all three themes in preview
+and Ink Wash in a nested no-script export. Hosted `verify` passed in run
+`40974740672`, and the Pages artifact/path check passed in run `40974740693`.
+The current `work/native-scenery-readability` increment extends this surface to
+all standard section copy, closing the native-scenery contrast gap. Preview and
+nested no-script export checks measure both foreground and accent contrast in
+all three themes. The six 1440-pixel theme previews were inspected: the surfaces
+conceal art behind text but leave the layered scenery visible around the panels.
+Section introductions, timelines, and calls to action use opaque surfaces;
+project/gallery cards retain their existing backgrounds. The local gate passes
+formatting, lint, types, build/prerender, 152 unit tests and 53 of 54 browser
+scenarios; WebKit cannot launch on this host because GTK/media libraries are
+missing. All visual comparisons pass. Separate SDK package, 267-package license
+and zero-vulnerability checks pass. Hosted `verify` and Pages artifact/path
+checks remain pending. Results are in
+[`native_scenery_readability_host_local_attempt.txt`](../evidence/native_scenery_readability_host_local_attempt.txt).
+See
+[ADR 014](../architecture/adr_014_readable_surfaces_for_background_images.md),
+[ADR 015](../architecture/adr_015_readable_surfaces_over_theme_scenery.md), and
+the current evidence in `PROGRESS.md`.
 
-The current editor onboarding increment adds `EDT-ONBOARD-001`. Its five-step
+PR #24 merged as `0ad3124` and adds `EDT-ONBOARD-001`. Its five-step
 guide supports back/next navigation, skip, finish, reopen, and keyboard
 activation. The browser regression passes against a new draft and checks that
 the save, backup and published ZIP explanations stay distinct. The local run
 passed 151 unit tests and 52 of 53 browser scenarios; WebKit could not launch on
 this host because system libraries are missing. SDK, license and dependency
-audits also pass locally. Hosted `verify` passed in run `40976488810`, and the
-Pages artifact/path check passed in run `40976488802`; hosted CI covers WebKit.
+audits also pass locally. Hosted `verify` passed in run `40976918226`, and the
+Pages artifact/path check passed in run `40976918558`; hosted CI covers WebKit.
 See the current run journal, `docs/evidence/editor_onboarding_red.txt`, and the
 focused run transcript at `docs/evidence/editor_onboarding_focused.txt`.
 

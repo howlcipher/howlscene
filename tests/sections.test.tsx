@@ -54,6 +54,7 @@ it("timeline and gallery choose meaningful shared structures", () => {
   );
   expect(timeline).toContain("<ol");
   expect(timeline).toContain("<li");
+  expect(timeline).toContain('data-readable-surface="solid"');
   const gallery = renderToStaticMarkup(
     <SectionEntries
       section={{ ...section, type: "gallery", entries: [entry] }}
@@ -62,6 +63,17 @@ it("timeline and gallery choose meaningful shared structures", () => {
   );
   expect(gallery).toContain("<figure");
   expect(gallery).toContain("<figcaption");
+});
+it("does not render empty entry layouts or leave decorative spacing", () => {
+  for (const type of ["projects", "experience", "gallery"] as const) {
+    const html = renderToStaticMarkup(
+      <SectionEntries
+        section={{ ...section, type, entries: [] }}
+        assetUrl={() => "./unused.png"}
+      />,
+    );
+    expect(html).toBe("");
+  }
 });
 it("all section types have defaults and custom registrations remain isolated", () => {
   const defaults = createSectionRegistry();

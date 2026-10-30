@@ -1,0 +1,31 @@
+Native scenery readability local verification
+
+Environment: Node v22.22.1, npm 12.0.2. npm printed its compatibility warning
+because this npm release requires Node 22.22.2 or newer. The repository's hosted
+quality gate uses its pinned runtime and remains authoritative for WebKit.
+
+Executed `npm run check` after the final implementation, test, and screenshot
+updates:
+
+- Formatting check, lint, strict TypeScript, production build, and prerender passed.
+- 152 unit tests passed across 35 files. Coverage was 94.88% statements and
+  89.68% branches.
+- 53 of 54 browser scenarios passed. Chromium and Firefox exported-site checks,
+  readability checks, all nine preview comparisons, and all nine image-rich
+  export comparisons passed.
+- The only failing scenario was the WebKit export launch. Playwright reported
+  missing host libraries including `libgtk-4.so.1`, `libgraphene-1.0.so.0`, and
+  GStreamer/media libraries. This host cannot run the pinned browser container
+  because its account cannot access the Docker socket.
+
+The `check` script stopped at the environment-blocked WebKit scenario, so its
+later package and audit steps were run separately:
+
+- `npm run sdk:check` passed. The independent tarball consumer built and rendered
+  the custom theme and served its browser-generated ZIP at nested paths with
+  JavaScript both enabled and disabled.
+- `npm run licenses` inspected 267 locked packages; all passed the allowlist.
+- `npm audit --audit-level=moderate` reported zero vulnerabilities.
+
+Hosted verification and the Pages artifact/path check are still required for
+this increment. No WCAG conformance or release readiness is claimed.

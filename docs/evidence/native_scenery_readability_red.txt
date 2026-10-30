@@ -1,0 +1,30 @@
+RED phase for A11Y-SCENE-002
+
+Command:
+npx playwright test tests/e2e/background_readability.spec.ts -g 'A11Y-SCENE-00[12]'
+
+Observed before changing the shared renderer:
+2 tests failed. Both failed at `toBeVisible()` because
+`getByRole('region', { name: 'Live website preview' }).locator('.scene').first()`
+contained no `[data-readable-surface="solid"]` element. The first check had no
+uploaded image; the second check used native scenery in the Modern theme. This
+was the intended failure for the missing opaque surface, rather than a test
+setup or selector error.
+
+After the renderer marked all standard scene copy with the existing solid
+surface contract, both focused tests passed. The test also verifies computed
+foreground and accent contrast against the resolved panel colors.
+
+A later full browser run showed that applying one panel to the whole section
+also wrapped existing project cards. The reviewed export screenshot failed
+because the card grid narrowed and gained unnecessary outer padding. The
+renderer was split so section introductions, timelines, and call-to-action
+links use readable surfaces while project/gallery cards keep their existing
+surfaces. Image-rich screenshot baselines were regenerated and reviewed after
+that correction.
+
+The empty-entry spacing regression was reproduced in
+`npx vitest run tests/sections.test.tsx -t 'does not render empty entry layouts'`:
+the empty projects renderer returned `<div class="entry-cards"></div>` instead
+of empty output. `SectionEntries` now returns `null` for empty entries, and the
+new regression covers project, experience, and gallery layouts.

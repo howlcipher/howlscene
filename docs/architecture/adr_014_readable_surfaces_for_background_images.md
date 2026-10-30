@@ -4,7 +4,8 @@
 
 Accepted for uploaded section background images. The shared renderer applies an
 opaque theme-colored surface to section copy in preview and static export. This
-does not establish contrast over decorative scenery or WCAG conformance.
+policy was extended to native theme scenery by
+[ADR 015](adr_015_readable_surfaces_over_theme_scenery.md).
 
 ## Context
 

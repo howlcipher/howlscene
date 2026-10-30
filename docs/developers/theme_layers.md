@@ -89,7 +89,7 @@ The [presentation decision](../architecture/adr_003_theme_presentation.md) recor
 
 `headingTreatment` accepts `plain`, `accent-rule`, or `accent-rail`. The built-in themes use those values respectively: Modern Professional, Ink Wash, and Cyberpunk. The rule appears below a section heading; the rail appears at its inline start, following the writing direction. Both preserve semantic heading elements and use the resolved theme accent. The treatment is theme-owned and has no separate editor override.
 
-When a section uses an uploaded background image, the shared renderer places its copy on an opaque panel using the resolved theme foreground and background. This protects text against arbitrary image pixels in both preview and static export while leaving the image visible around the panel. This is not an editor switch because a partially transparent surface cannot guarantee contrast. See [ADR 014](../architecture/adr_014_readable_surfaces_for_background_images.md). This behavior does not verify text contrast over theme artwork or replace human accessibility review.
+The shared renderer gives section introductions an opaque panel using the resolved theme foreground and background. Project, skill, and gallery cards retain their own opaque theme-colored backgrounds; timeline lists and call-to-action links also use the resolved pair. This protects text from arbitrary uploaded-image pixels and layered theme scenery in both preview and static export without nesting a section panel around existing cards. Artwork remains visible around the surfaces, while detail directly behind text is concealed. These are not editor switches because a partially transparent surface cannot guarantee contrast. [ADR 014](../architecture/adr_014_readable_surfaces_for_background_images.md) records the original uploaded-image case; [ADR 015](../architecture/adr_015_readable_surfaces_over_theme_scenery.md) extends it to native theme scenery. Automated checks measure the resolved foreground and accent colors against the flat surface. This does not replace human accessibility review or establish WCAG conformance.
 
 ## Export and verification boundaries
 
@@ -160,9 +160,10 @@ against the background and returns a warning. The saved manifest remains
 unchanged. The shared `Site` renderer uses the same resolved foreground in its
 preview and static export. This threshold follows the ordinary-text minimum in
 [WCAG 2.2 SC 1.4.3](https://www.w3.org/TR/WCAG22/#contrast-minimum). It checks
-only the manifest's flat color pair; it cannot determine contrast over scenery,
-images, uploaded backgrounds, gradients, or trusted developer artwork, and does
-not establish WCAG conformance.
+only the manifest's flat color pair. Standard rendered section copy uses that
+pair on an opaque surface; custom developer renderers and content outside the
+shared `Site` renderer remain the developer's responsibility. This does not
+establish WCAG conformance.
 
 ## User color overrides
 
@@ -173,5 +174,6 @@ and after a local draft restore. `resolveTheme` and the `Site` renderer apply th
 same values in preview and static export. When the flat foreground/background
 pair falls below 4.5:1, it displays the higher-contrast of black or white and
 returns a warning while preserving the selected colors. Accent contrast uses the
-selected background too. This does not calculate contrast over scenery or
-uploaded artwork.
+selected background too. Standard section copy is placed on the resolved opaque
+surface, so scenery and media beneath it do not affect the foreground contrast.
+Trusted custom rendering remains the developer's responsibility.
