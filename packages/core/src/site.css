@@ -302,7 +302,7 @@ a {
   position: relative;
   z-index: 1;
 }
-.scene-copy[data-readable-surface="solid"] {
+[data-readable-surface="solid"] {
   position: relative;
   z-index: 1;
   width: fit-content;
@@ -317,6 +317,15 @@ a {
   margin-inline: auto;
 }
 .align-end .scene-copy[data-readable-surface="solid"] {
+  margin-inline-start: auto;
+}
+.entry-timeline[data-readable-surface="solid"] {
+  padding-inline-start: 3.5rem;
+}
+.layout-centered .entry-timeline[data-readable-surface="solid"] {
+  margin-inline: auto;
+}
+.align-end .entry-timeline[data-readable-surface="solid"] {
   margin-inline-start: auto;
 }
 

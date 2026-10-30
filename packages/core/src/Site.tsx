@@ -123,12 +123,7 @@ export function Site({
               />
               <div className="scene-content">
                 {hasBackgroundImage && image}
-                <div
-                  className="scene-copy"
-                  data-readable-surface={
-                    hasBackgroundImage ? "solid" : undefined
-                  }
-                >
+                <div className="scene-copy" data-readable-surface="solid">
                   <p className="eyebrow">
                     {(s.type === "custom" ? s.customType! : s.type).replace(
                       /[_-]/g,
@@ -149,18 +144,22 @@ export function Site({
                   ) : (
                     s.body.split("\n").map((p, i) => <p key={i}>{p}</p>)
                   )}
-                  <Entries
-                    section={s}
-                    assetUrl={resolveAsset}
-                    asset={lookup}
-                    headingLevel={index === 0 ? 2 : 3}
-                  />
-                  {s.link && (
-                    <a className="scene-cta" href={s.link}>
-                      {s.linkLabel}
-                    </a>
-                  )}
                 </div>
+                <Entries
+                  section={s}
+                  assetUrl={resolveAsset}
+                  asset={lookup}
+                  headingLevel={index === 0 ? 2 : 3}
+                />
+                {s.link && (
+                  <a
+                    className="scene-cta"
+                    data-readable-surface="solid"
+                    href={s.link}
+                  >
+                    {s.linkLabel}
+                  </a>
+                )}
               </div>
             </section>
           );

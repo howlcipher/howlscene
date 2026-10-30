@@ -8,30 +8,31 @@ Phase 0 proved the shared editor-to-static-export approach. Core/schema, rich te
 
 ## Latest executed milestone
 
-The latest merged increment is PR #23, which adds opaque theme-colored copy
-surfaces for sections with uploaded background images. Hosted `verify` passed
-in run [`40975173306`](https://github.com/howlcipher/howlscene/actions/runs/40975173306),
+The latest merged increment is PR #24, merged as `0ad3124`. It adds a skippable,
+reopenable five-step first-use guide. Hosted `verify` passed in run
+[`40976918226`](https://github.com/howlcipher/howlscene/actions/runs/40976918226),
 and the Pages artifact/path check passed in run
-[`40975173287`](https://github.com/howlcipher/howlscene/actions/runs/40975173287).
-The current branch, `work/editor-onboarding-guide`, extends the existing first-use
-help panel into a skippable, reopenable five-step workflow.
+[`40976918558`](https://github.com/howlcipher/howlscene/actions/runs/40976918558).
+The current branch, `work/native-scenery-readability`, extends the existing
+opaque-copy treatment to native theme scenery and tests preview plus nested,
+JavaScript-disabled exports for all three bundled themes.
 
-On Node 22.22.1/npm 12.0.2, formatting, lint, strict TypeScript, production
-build/prerender, and all **151 unit tests** pass. Coverage is 94.87% statements
-and 89.68% branches. The browser suite ran 53 scenarios: 52 passed, including
-the onboarding flow and Chromium/Firefox exports; local WebKit launch is blocked
-by missing host GTK/media libraries. Docker is installed but this account cannot
-access its socket, so the pinned Playwright container could not run locally.
-Separate SDK tarball checks, the 267-package license audit, and the zero-
-vulnerability audit pass. Hosted `verify` passed in run
+For PR #24's onboarding commit on Node 22.22.1/npm 12.0.2, formatting, lint,
+strict TypeScript, production build/prerender, and all **151 unit tests** passed.
+Coverage was 94.87% statements and 89.68% branches. Its browser suite ran 53
+scenarios: 52 passed, including onboarding and Chromium/Firefox exports; local
+WebKit launch was blocked by missing host GTK/media libraries. Docker is
+installed but this account cannot access its socket, so the pinned Playwright
+container could not run locally. Separate SDK tarball checks, the 267-package
+license audit, and the zero-vulnerability audit passed. Hosted `verify` passed in run
 [`40976488810`](https://github.com/howlcipher/howlscene/actions/runs/40976488810);
 the Pages artifact/path check passed in run
 [`40976488802`](https://github.com/howlcipher/howlscene/actions/runs/40976488802),
 including the WebKit scenario unavailable on this host. Logs are in
 [`editor_onboarding_host_local_attempt.txt`](docs/evidence/editor_onboarding_host_local_attempt.txt)
 and [`editor_onboarding_local_extras.txt`](docs/evidence/editor_onboarding_local_extras.txt).
-Human zoom, assistive-technology, text-over-scenery, and nontechnical usability
-review remain open. No comparison result or v1 readiness is claimed.
+Human zoom, assistive-technology, and nontechnical usability review remain open.
+No comparison result or v1 readiness is claimed.
 
 ## Review corrections completed
 
@@ -119,14 +120,15 @@ Six preview and six exported-site baselines changed for Ink Wash and Cyberpunk;
 the revised screenshots were inspected. PR #22 merged as `e4239ed`; hosted
 verification passed in runs `40972904183` and `40972904198`.
 
-## Last merged increment: readable surfaces over uploaded backgrounds
+## Earlier merged increment: readable surfaces over uploaded backgrounds
 
 `A11Y-SCENE-001` adds a shared opaque panel using the resolved theme colors for
 semantic copy when a section uses an uploaded background image. The original
 browser failure is retained in
 [`background_readability_red.txt`](docs/evidence/background_readability_red.txt).
-The focused browser test checks at least 4.5:1 contrast in all three built-in
-themes, both in preview and in a nested ZIP served without JavaScript. The local
+The focused browser test checks at least 4.5:1 foreground and accent contrast
+for all three built-in themes in preview and for Ink Wash in a nested ZIP served
+without JavaScript. The local
 export snapshots changed for all themes and three viewports and were visually
 reviewed. Local unit/build/type/lint/format, SDK, license, and vulnerability
 checks pass. Of 52 local browser scenarios, 51 passed; the WebKit export scenario
@@ -138,7 +140,7 @@ establish WCAG conformance. The focused preview and nested no-script export test
 passes in [`background_readability_focused.txt`](docs/evidence/background_readability_focused.txt);
 the incomplete integrated host run is retained separately.
 
-## Current increment: beginner onboarding guide
+## Last merged increment: beginner onboarding guide
 
 `EDT-ONBOARD-001` expands the existing first-use help into five short steps for
 templates/themes, text editing, images/sections, responsive preview/motion, and
@@ -153,6 +155,35 @@ focused workflow passes in
 and the accessibility scan passes with the guide visible. Hosted `verify` passed
 in run `40976488810`; the Pages artifact/path check passed in run
 `40976488802`.
+
+## Current increment: native scenery readability
+
+`A11Y-SCENE-002` extends the opaque resolved theme surface to all standard
+section copy so decorative scenery does not sit directly behind semantic text.
+The focused browser test was observed failing before the renderer change because
+the preview had no readable-surface marker. The implementation uses resolved
+theme colors for section introductions, timeline lists, and call-to-action links;
+project, skill, and gallery cards retain their existing opaque backgrounds.
+Empty entry lists now render no layout container, avoiding blank vertical space.
+No schema or dependency changed. Tests measure foreground and accent contrast in
+preview and nested no-script ZIPs for all three themes. All nine preview and nine
+image-rich export screenshot comparisons pass with reviewed updates. Desktop and
+phone captures confirm that scenery remains visible around surfaces and project
+cards retain their original grid. See
+[`native_scenery_readability_red.txt`](docs/evidence/native_scenery_readability_red.txt)
+for observed RED runs and the screenshot correction.
+
+The full local `npm run check` exits at the WebKit export scenario because this
+host lacks GTK/media libraries: 152 unit tests pass (94.88% statement, 89.68%
+branch coverage), and 53 of 54 browser scenarios pass. Formatting, lint, strict
+TypeScript, production build/prerender, Chromium/Firefox exports and all visual
+comparisons pass. Separate SDK tarball checks, the 267-package license audit,
+and `npm audit --audit-level=moderate` pass with zero vulnerabilities. Full local
+attempt details are in
+[`native_scenery_readability_host_local_attempt.txt`](docs/evidence/native_scenery_readability_host_local_attempt.txt).
+Hosted `verify` and Pages artifact/path checks remain pending. ADR 015 records
+the visual/accessibility trade-off; human zoom, assistive-technology, and
+composition review remain open.
 
 ## Published development checkpoint
 

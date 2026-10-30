@@ -45,6 +45,7 @@ export function SectionEntries({
 }: EntryRendererProps) {
   const Heading = headingLevel === 2 ? "h2" : "h3";
   const entries = entriesSchema.parse(section.entries ?? []);
+  if (entries.length === 0) return null;
   const content = (entry: SectionEntry) => (
     <>
       {entry.image && (
@@ -70,7 +71,7 @@ export function SectionEntries({
   );
   if (section.type === "experience")
     return (
-      <ol className="entry-timeline">
+      <ol className="entry-timeline" data-readable-surface="solid">
         {entries.map((entry) => (
           <li key={entry.id}>
             <article>{content(entry)}</article>

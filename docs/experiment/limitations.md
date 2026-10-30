@@ -51,11 +51,12 @@ establish public v1 readiness.
   all three themes with long copy and no tested horizontal overflow. This does
   not simulate browser zoom fully or replace a human zoom review. Broader
   responsive/accessibility/motion contracts remain required v1 work.
-- Uploaded background-image sections now place copy on an opaque panel using
-  the resolved theme colors, so the contrast check applies to a flat surface in
-  preview and export. Theme scenery behind text without an uploaded image,
-  gradients, and developer artwork are still not sampled or contrast-verified;
-  human review remains required.
+- Standard section introductions use opaque panels with the resolved theme
+  colors; repeated cards keep their own theme-colored backgrounds, and timelines
+  and call-to-action links have flat surfaces. This keeps layered scenery and
+  uploaded images from affecting text contrast in preview and static export.
+  Artwork is concealed beneath text surfaces, and automated checks do not replace
+  human review of contrast, composition, zoom, or assistive-technology behavior.
 - Custom section renderers can now register new safe type IDs while reusing the
   portable section content fields. Arbitrary custom payload schemas, adding
   those types to the standard no-code editor chooser, and arbitrary layout-ID
@@ -96,17 +97,20 @@ Unfinished required v1 work is not reclassified as excluded scope.
   `stack` at the fixed shared breakpoint. Arbitrary per-theme breakpoints and
   broader responsive component rules are not supported.
 
-- Text contrast resolution checks only flat theme foreground/background colors.
-  Text over scenery, gradients, and developer artwork still needs contrast
-  review; this check alone does not establish WCAG conformance.
+- Text contrast resolution checks flat theme foreground/background and accent
+  colors. Standard scene content uses the resolved colors on a flat surface;
+  trusted developer renderers can change that presentation and must be reviewed
+  independently. This check alone does not establish WCAG conformance.
 
 - Foreground contrast fallback checks the flat theme foreground/background pair
-  only. Contrast against scenery, gradients, uploaded media, and registered
-  artwork still needs review; this is not a WCAG conformance determination.
+  only. Standard section copy is isolated from underlying scenery and media by
+  the opaque surface. Custom renderer behavior still needs review; this is not a
+  WCAG conformance determination.
 
 - The editor's flat background/text/accent color overrides are validated and
-  contrast-resolved, but the contrast check cannot inspect text over scenery,
-  imagery, gradients, or developer artwork. No WCAG conformance claim follows.
+  contrast-resolved. Standard section copy uses those resolved colors on an
+  opaque surface; custom developer-rendered content is outside that guarantee.
+  No WCAG conformance claim follows.
 
 - The focused static-export compatibility journey passes in Chromium, Firefox
   and WebKit in the pinned Playwright container. Direct WebKit launch on the
