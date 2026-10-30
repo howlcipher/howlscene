@@ -8,7 +8,8 @@
 - Current committed test-first checkpoint: `e19f0b6cf24d41d9edd101c7b383efbc303e19e6`
 - Feature commit: `8f8fde351581e94bd45729adedc7b3edfb252143` (`feat(cinematic): add shared configurable story mode`)
 - Current implementation checkpoint: `7b08c0750a8221d738ac1249af9dd4262ea23bbe`
-- Latest changes: hosted TypeScript fix in progress; documentation checkpoint `975cdc6773699d5c33bfcd9b4b83ee37ab0b49ec`
+- Current code commit: `05c8dc4d50ad0b2b50b88e128f775a7621f09983`
+- Working tree: journal and readiness report need this verification update
 - Pull request: [#34](https://github.com/howlcipher/howlscene/pull/34), draft
 - Active milestone: shared cinematic configuration, rendering, and editor integration
 
@@ -109,8 +110,8 @@ See [ADR 0001](../architecture/adr/0001-cinematic-config-contract.md).
   and interruption/reentry lifecycle.
 - Updated user/developer documentation, acceptance traceability, and ADR 0001.
 - The implementation commit is pushed in PR #34. No local compile, test, or
-  browser run was performed. The first hosted checks failed on a keyframe type
-  mismatch; no RED/GREEN or package artifact result is claimed yet.
+  browser run was performed. The first hosted checks found a keyframe type
+  mismatch, fixed in the subsequent type correction.
 
 ### Rendering follow-up `7b08c07`
 
@@ -118,7 +119,7 @@ See [ADR 0001](../architecture/adr/0001-cinematic-config-contract.md).
   containing scene continues to define full-viewport bounds.
 - Added lifecycle source coverage for artwork targeting. It remains unexecuted.
 
-### Hosted CI type correction (pending verification)
+### Hosted CI type correction and verification
 
 - Quality gates run `41128567497` and Pages build run `41128567426`, both on
   GitHub-hosted Ubuntu runners, failed because `SceneTransitionKeyframes`
@@ -129,10 +130,22 @@ See [ADR 0001](../architecture/adr/0001-cinematic-config-contract.md).
   The unit test job then reported one lifecycle assertion failure: it expected
   a cinematic entrance to target text after the implementation had correctly
   moved it to the background image. The repeated-entry assertion now checks
-  the background target. This correction remains unverified.
+  the background target.
 - Pages run [41128843374](https://github.com/howlcipher/howlscene/actions/runs/41128843374)
   passed the production build, root/project Pages browser check, and artifact
   packaging on GitHub-hosted Ubuntu. Approval and publish jobs were skipped.
+- Test correction commit `05c8dc4d50ad0b2b50b88e128f775a7621f09983` changed the
+  interrupted cinematic reentry assertion to check the background target.
+- Quality gates run [41129125151](https://github.com/howlcipher/howlscene/actions/runs/41129125151)
+  passed: format, lint, strict TypeScript, 166 unit tests, production build,
+  full Playwright E2E, SDK checks, licenses, and dependency audit.
+- Pages run [41129125122](https://github.com/howlcipher/howlscene/actions/runs/41129125122)
+  passed build, root/project Pages browser verification, and artifact
+  packaging. Approval and publish steps were skipped.
+- No publish or deployment occurred. The quality workflow passed on commit
+  `05c8dc4`; Pages artifact verification passed on the same commit.
+- Current working-tree changes are limited to this journal and the readiness
+  report.
 
 Historical evidence in `PROGRESS.md` and existing review documents predates
 this mission and is not evidence for new changes.
@@ -150,8 +163,7 @@ this mission and is not evidence for new changes.
 
 ## Handoff
 
-- Next task: commit and push the lifecycle assertion correction, inspect hosted
-  verification, then
-  migrate the existing Ink Wash demo to consume the shared capability.
+- Next task: migrate the existing Ink Wash demo to consume the shared
+  capability, then add focused remote acceptance for export and SDK scenarios.
 - Pull requests: draft [#34](https://github.com/howlcipher/howlscene/pull/34).
 - Decisions needed: none identified.

@@ -3,9 +3,10 @@
 **Verdict: NOT READY**
 
 This branch contains an initial shared cinematic configuration, renderer,
-editor, and test increment. It has not been pushed or verified on GitHub-hosted
-Actions. The original Ink Wash demonstration has not yet been migrated. The
-ultimate v1 acceptance criterion is not met.
+editor, and test increment. Quality gates and Pages artifact verification pass
+on GitHub-hosted Actions. The original Ink Wash demonstration has not yet been
+migrated, and dedicated cinematic export, human, accessibility, and visual
+acceptance remain. The ultimate v1 acceptance criterion is not met.
 
 ## 1. Executive summary
 
@@ -16,10 +17,11 @@ editor starter, a scene transition control, and focused source tests. Existing
 section editing, image handling, themes, history, storage, backups, previews,
 and ZIP export remain the shared paths.
 
-This is an incomplete and unverified increment. No hosted RED/GREEN evidence,
-visual review, SDK run for the new contract, or export-browser verification is
-available. The five-scene demo still contains its separate hardcoded rendering
-and transition logic.
+The shared implementation increment has passing hosted checks. The planned
+test-only RED phase was not observed. Visual review, SDK consumer use of the
+new contract, and cinematic ZIP browser verification remain outstanding. The
+five-scene demo still contains its separate hardcoded rendering and transition
+logic.
 
 ## 2. Commits
 
@@ -27,8 +29,11 @@ and transition logic.
 - Test-first commit: `e19f0b6cf24d41d9edd101c7b383efbc303e19e6`
 - Feature commit: `8f8fde351581e94bd45729adedc7b3edfb252143`
   (`feat(cinematic): add shared configurable story mode`).
-- Ending code commit: `7b08c0750a8221d738ac1249af9dd4262ea23bbe`
+- Rendering follow-up: `7b08c0750a8221d738ac1249af9dd4262ea23bbe`
   (`fix(cinematic): animate full scene artwork bounds`).
+- Type correction: `73e4dcb1e7aefaa3855e25a92b3b4b11214617b0`.
+- Current code commit: `05c8dc4d50ad0b2b50b88e128f775a7621f09983`
+  (`test(cinematic): assert background transition replay`).
 - Draft PR: [#34](https://github.com/howlcipher/howlscene/pull/34).
 
 ## 3. Architectural audit
@@ -88,38 +93,39 @@ implementation commit. Additional source tests cover transition recipes,
 reduced motion, themes, backup round trips, deterministic normalization, editor
 journey, and interrupted/reentered scene lifecycle.
 
-No RED result was observed at the test-only checkpoint. The test-first commit
-and implementation are now in draft PR #34. Hosted checks had not appeared in
-the latest poll, so no RED/GREEN result is claimed. TDD execution evidence is
-pending; source ordering alone is not represented as a passing TDD cycle.
+No RED result was observed at the test-only checkpoint. Run `41128843188`
+reported one lifecycle assertion failure after the implementation changed the
+target to the full-size background image; the assertion was corrected. Quality
+run `41129125151` passed all 166 unit tests. This is subsequent GREEN evidence,
+not the planned test-only RED phase; that RED evidence remains unavailable.
 
 ## 7. Acceptance matrix
 
-| ID          | Source coverage / state                                                              | Verification                         |
-| ----------- | ------------------------------------------------------------------------------------ | ------------------------------------ |
-| CIN-001     | Starter and editor test added                                                        | Pending hosted CI                    |
-| CIN-002     | Reuses rich-text editor; not specifically extended                                   | Pending hosted CI                    |
-| CIN-003     | Reuses image upload control                                                          | Pending hosted CI                    |
-| CIN-004–005 | Reuses add/duplicate/remove/reorder operations                                       | Pending hosted CI                    |
-| CIN-006     | Reuses existing layout controls                                                      | Pending hosted CI                    |
-| CIN-007     | Bounded transition schema, resolver, distinction tests                               | Pending hosted CI                    |
-| CIN-008     | Config backup and theme round-trip test added                                        | Pending hosted CI                    |
-| CIN-009     | Three-theme content preservation test added                                          | Pending hosted CI                    |
-| CIN-010–011 | Existing storage and backup paths consume `parseSite`; cinematic regressions not run | Pending hosted CI                    |
-| CIN-012     | Shared renderer/export contract test added                                           | Pending hosted CI                    |
-| CIN-013     | No new cinematic nested-hosting test                                                 | Pending                              |
-| CIN-014     | Shared semantic HTML path; test added, not executed                                  | Pending hosted CI                    |
-| CIN-015     | Existing reduced-motion gate reused; resolver test added                             | Pending hosted CI                    |
-| CIN-016     | Lifecycle interruption/reentry test added                                            | Pending hosted CI                    |
-| CIN-017     | Invalid transition test added                                                        | Pending hosted CI                    |
-| CIN-018     | Original demo not migrated or reverified                                             | Not complete                         |
-| CIN-019     | Public package surfaces re-export core config/motion; new SDK consumer not tested    | Pending                              |
-| CIN-020     | Existing 1–100 section limit; generic add/remove reused                              | Partially covered; pending hosted CI |
-| CIN-021     | No preview/export equivalence browser test                                           | Pending                              |
-| CIN-022     | No transition-cover asset contract exists in the new mode                            | Not implemented                      |
-| CIN-023     | Existing cleanup reused; new reentry lifecycle test added                            | Pending hosted CI                    |
-| CIN-024     | Theme switching preservation test added                                              | Pending hosted CI                    |
-| CIN-025     | Shared components consume config, but full unrelated-site test not added             | Pending                              |
+| ID          | Source coverage / state                                                            | Verification                                           |
+| ----------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| CIN-001     | Starter and editor test added                                                      | CI passed; focused journey incomplete                  |
+| CIN-002     | Reuses rich-text editor; not specifically extended                                 | CI passed; focused edit coverage partial               |
+| CIN-003     | Reuses image upload control                                                        | CI passed; focused artwork journey incomplete          |
+| CIN-004–005 | Reuses add/duplicate/remove/reorder operations                                     | CI passed; focused scene lifecycle coverage incomplete |
+| CIN-006     | Reuses existing layout controls                                                    | CI passed; dedicated cinematic tests absent            |
+| CIN-007     | Bounded transition schema, resolver, distinction and lifecycle tests               | Unit and lifecycle tests passed                        |
+| CIN-008     | Config backup and theme round-trip test added                                      | Unit tests passed                                      |
+| CIN-009     | Three-theme content preservation test added                                        | Unit tests passed                                      |
+| CIN-010–011 | Existing storage and backup paths consume `parseSite`; backup roundtrip test added | CI passed; dedicated cinematic local-save test absent  |
+| CIN-012     | Shared renderer/export contract test added                                         | Unit/build passed; ZIP browser test absent             |
+| CIN-013     | No new cinematic nested-hosting test                                               | Pending                                                |
+| CIN-014     | Shared semantic HTML path and static markup test                                   | Unit tests passed; no-JS browser test absent           |
+| CIN-015     | Existing reduced-motion gate reused; resolver test added                           | Unit tests passed; export browser test absent          |
+| CIN-016     | Lifecycle interruption/reentry test added                                          | Lifecycle tests passed                                 |
+| CIN-017     | Invalid transition test added                                                      | Unit tests passed                                      |
+| CIN-018     | Original demo not migrated or reverified                                           | Not complete                                           |
+| CIN-019     | Public package surfaces re-export core config/motion; new SDK consumer not tested  | Pending                                                |
+| CIN-020     | Existing 1–100 section limit; generic add/remove reused                            | Partially covered; pending hosted CI                   |
+| CIN-021     | No preview/export equivalence browser test                                         | Pending                                                |
+| CIN-022     | No transition-cover asset contract exists in the new mode                          | Not implemented                                        |
+| CIN-023     | Existing cleanup reused; new reentry lifecycle test added                          | Lifecycle tests passed                                 |
+| CIN-024     | Theme switching preservation test added                                            | Unit tests passed                                      |
+| CIN-025     | Shared components consume config, but full unrelated-site test not added           | Pending                                                |
 
 ## 8. GitHub Actions and verification
 
@@ -150,8 +156,8 @@ The type correction was pushed in commit
 [41128843188](https://github.com/howlcipher/howlscene/actions/runs/41128843188)
 passed format, lint, and TypeScript, then failed one lifecycle assertion. That
 assertion expected a repeated cinematic entrance to target text, but the
-entrance correctly targets the full-size background image. The test assertion
-has been corrected and awaits another hosted run.
+entrance correctly targets the full-size background image. The assertion was
+corrected and passed in the later full hosted quality run.
 
 Pages run
 [41128843374](https://github.com/howlcipher/howlscene/actions/runs/41128843374)
@@ -159,18 +165,30 @@ passed the production build, root/project Pages browser checks, and artifact
 packaging on commit `73e4dcb1e7aefaa3855e25a92b3b4b11214617b0`. The approval
 and publish jobs were skipped as expected for a pull request.
 
+On the corrected commit `05c8dc4d50ad0b2b50b88e128f775a7621f09983`, hosted
+quality run
+[41129125151](https://github.com/howlcipher/howlscene/actions/runs/41129125151)
+passed formatting, lint, strict TypeScript, all 166 unit tests, build, the full
+Playwright E2E suite, SDK checks, license review, and dependency audit. Pages
+run
+[41129125122](https://github.com/howlcipher/howlscene/actions/runs/41129125122)
+passed production build, root and project path browser verification, and
+artifact packaging. Approval and publishing steps were skipped.
+
 ## 9. Unit and integration results
 
 Tests added: `tests/cinematic.test.tsx`,
 `tests/e2e/cinematic-editor.spec.ts`, and a lifecycle case in
 `tests/scene_lifecycle.test.ts`. On run `41128843188`, 165 of 166 unit tests
 passed; one assertion used the text target instead of the background image
-target. The corrected assertion has not run yet. No test command, TypeScript
-compilation, or build ran locally. Coverage is unavailable.
+target. The correction passed in quality run `41129125151`; all 166 unit tests
+passed. No test command, TypeScript compilation, or build ran locally.
 
 ## 10. Browser, export, SDK, visual, accessibility, and performance results
 
-- Browser tests: not run.
+- Browser tests: the repository's full Playwright E2E suite passed in run
+  `41129125151`; the Pages production root/project path checks passed in run
+  `41129125122`. Dedicated cinematic export/browser coverage remains absent.
 - ZIP extraction and root/nested static hosting: not run for cinematic output.
 - SDK consumer verification: not run for cinematic configuration.
 - Visual regression/screenshots: not captured or reviewed.
@@ -186,8 +204,9 @@ These are unverified items, not successful results.
 
 The new transition input is a closed enum; no user-provided scripts, HTML,
 stylesheets, or URL references are introduced. Existing safe rich text and
-asset validation remain in force. Security tests, dependency audit, and
-third-party license review have not been run on these changes.
+asset validation remain in force. The hosted security test suite, dependency
+audit, and license workflow passed in run `41129125151`. No separate manual
+third-party licensing assessment was performed.
 
 ## 12. Simulated-user outcomes
 
@@ -198,20 +217,23 @@ cover Cinematic Story.
 ## 13. Host-safety compliance
 
 - Local heavy workload executed: **No**.
-- Verification on GitHub-hosted infrastructure for this change: **TypeScript passed; run 41128843188 failed one lifecycle assertion after 165/166 tests passed**.
-- Tests not executed: all new and regression tests, type check, build, SDK,
-  browser/export, accessibility, visual, performance, security, and licensing
-  checks.
+- Verification on GitHub-hosted infrastructure for this change: **Quality gates run 41129125151 and Pages run 41129125122 passed on commit `05c8dc4d50ad0b2b50b88e128f775a7621f09983`**.
+- Tests not executed: dedicated cinematic ZIP round-trip/browser scenarios,
+  visual regression, accessibility scans, physical performance, and persona
+  acceptance checks.
 - Unexpected background process started: **No**.
 - Safety rule violated: **No**.
 - Further host-side testing requested: **No**.
 - Local work was limited to source/document inspection and edits, Git status and
   small diff review, and bounded Prettier formatting. No package installation,
   compilation, test, browser, container, or background workload was run.
+- A short-lived foreground `gh run watch` command polled hosted workflow status
+  and exited after the workflow completed. No unexpected background process
+  was started.
 
 ## 14. Remaining human acceptance and deployment
 
-After hosted type/build verification, real nontechnical users,
+After the remaining automated cinematic acceptance work, real nontechnical users,
 assistive-technology review, physical mobile use, and human visual review
 remain required. No deployment was requested or performed. The existing Pages
 approval controls were not changed.
@@ -221,11 +243,9 @@ approval controls were not changed.
 The Ink Wash example still uses example-specific code and has not been
 migrated. Transition-cover artwork, exact scene-to-scene camera passage,
 dedicated cinematic nested export and visual tests, new SDK consumer tests, and
-full acceptance coverage remain. The newly written tests are still unexecuted;
-the draft PR exists, and the first hosted runs failed during TypeScript
-compilation.
+full acceptance coverage remain. Existing new unit and E2E tests pass remotely,
+but they do not cover all listed acceptance requirements.
 
-**NOT READY** — implementation-critical verification is blocked, demo migration
-is incomplete, and the ultimate acceptance criterion is not met. This verdict
-must be reevaluated only after hosted CI and the remaining engineering and human
-gates have actual evidence.
+**NOT READY** — demo migration, dedicated cinematic export and SDK consumer
+coverage, full automated acceptance, and human review remain. Reevaluate after
+those gates have actual evidence.
