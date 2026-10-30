@@ -90,6 +90,10 @@ describe("portable website export", () => {
     expect(html).not.toContain("<script");
     expect(zip.file("site.css")).not.toBeNull();
     expect(zip.file("PUBLISH.txt")).not.toBeNull();
+    const publishing = await zip.file("PUBLISH.txt")!.async("string");
+    expect(publishing).toContain("Cloudflare Pages");
+    expect(publishing).toContain("GitHub Pages");
+    expect(publishing).toContain("No code or build step is required");
   });
   it("EXP-011 rejects invalid data before producing output", async () => {
     await expect(

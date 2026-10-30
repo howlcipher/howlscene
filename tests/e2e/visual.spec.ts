@@ -15,7 +15,7 @@ for (const width of [375, 768, 1440]) {
         .fill("A place for thoughtful work");
       await page.getByLabel("Edit heading").fill("Alex builds useful things");
       await page
-        .getByRole("textbox", { name: "Rich text introduction" })
+        .getByRole("textbox", { name: "Section text" })
         .fill(
           "Software, ideas, and small experiments. This portfolio brings them together in one readable place.",
         );

@@ -38,9 +38,7 @@ test("EXP-PLATFORM-001 A11Y-009 image exports retain layout and keyboard focus w
       10,
     ) +
     "AnUnbrokenWordThatMustStillFitTheAvailableViewportWithoutHorizontalOverflow";
-  await page
-    .getByRole("textbox", { name: "Rich text introduction" })
-    .fill(longCopy);
+  await page.getByRole("textbox", { name: "Section text" }).fill(longCopy);
 
   const imageData = await page.evaluate(() => {
     const canvas = document.createElement("canvas");

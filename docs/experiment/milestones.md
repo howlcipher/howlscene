@@ -307,3 +307,12 @@ libraries that are not installed. The full editor and screenshot suites remain
 Chromium-only by design; hosted CI is pending. See
 [ADR 010](../architecture/adr_010_target_browser_export_checks.md) and the
 [full gate log](../evidence/cross_browser_final_gate.txt).
+
+# Simulated-user acceptance increment — 2026-10-29
+
+- Five isolated persona journeys were performed against the visible local editor before source inspection; baseline screenshots/traces and findings were preserved.
+- Two confirmed P2 usability issues were fixed using regression tests: publishing instructions were inaccessible from the final onboarding step and incomplete in the website ZIP; new rich-text fields lacked a visible label.
+- All five journeys were repeated in fresh browser contexts, plus an unrelated Harborlight Books site. Six downloaded ZIPs were extracted and served at root and nested paths with JavaScript enabled; essential content was also checked without JavaScript.
+- Pinned Playwright `npm run check` passed: 156 unit tests and 55 browser tests, including Chromium, Firefox, and WebKit static-export checks. Coverage was 94.58% statements / 89.87% branches. SDK consumer and 267-package license review passed.
+- Review: [`../reviews/simulated-user-acceptance.md`](../reviews/simulated-user-acceptance.md). Local performance evidence: [`../evidence/simulated_user_performance.json`](../evidence/simulated_user_performance.json).
+- Release remains subject to real-user acceptance, actual assistive-technology/device review, and hosted CI on the review branch. No deployment or merge was performed.

@@ -1,0 +1,1 @@
+Upload all extracted files to a static website host. Keep index.html at the top level. No build step required. Preview using an HTTP server; file:// is not supported. This published website is not an editable project backup.

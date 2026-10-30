@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useId } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
@@ -120,6 +120,7 @@ export function RichEditor({
   onChange: (doc: RichDocument) => void;
   onError: (message: string) => void;
 }) {
+  const textLabelId = useId();
   return (
     <LexicalComposer
       initialConfig={{
@@ -132,11 +133,14 @@ export function RichEditor({
       }}
     >
       <Toolbar />
+      <p id={textLabelId} className="rich-editor-label">
+        Section text
+      </p>
       <RichTextPlugin
         contentEditable={
           <ContentEditable
             className="rich-editor"
-            aria-label="Rich text introduction"
+            aria-labelledby={textLabelId}
           />
         }
         ErrorBoundary={LexicalErrorBoundary}

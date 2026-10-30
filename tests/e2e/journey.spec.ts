@@ -18,7 +18,7 @@ test("v1 acceptance: create, restore, back up, export and serve a complete portf
   await page.getByLabel("Website title").fill("Sam Taylor — selected work");
   await page.getByLabel("Edit heading").fill("Sam Taylor");
   const introduction = page.getByRole("textbox", {
-    name: "Rich text introduction",
+    name: "Section text",
   });
   await introduction.fill("I make useful software and thoughtful experiences.");
   await introduction.press("ControlOrMeta+a");

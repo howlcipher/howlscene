@@ -240,3 +240,5 @@ are available, and no horizontal overflow or serious/critical axe violations
 are present. Keyboard-only navigation to the skip link and main content is
 checked on the phone layout. This automated evidence does not substitute for
 screen-reader, zoom, color-over-artwork, or nontechnical-user review.
+
+The 2026-10-29 simulated-user acceptance pass adds UX-001 (publishing guidance discoverable from onboarding and included in website ZIP) and UX-002 (visible label on new rich-text fields). Both were regression-tested and closed at P2. The five persona journeys, Harborlight Books, and extracted-site matrix are reported in [`../reviews/simulated-user-acceptance.md`](../reviews/simulated-user-acceptance.md). This is automated simulation only; human acceptance and assistive-technology review remain open.

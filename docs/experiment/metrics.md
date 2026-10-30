@@ -1,5 +1,11 @@
 # Measurement record
 
+## 2026-10-29 simulated-user acceptance
+
+Pinned verification used `podman run --rm --network host --security-opt label=disable -v "$PWD:/work" -w /work mcr.microsoft.com/playwright:v1.64.1-noble sh -lc 'node --version && npm --version && npm run check'` from the HowlScene repository. Container Node 24.22.1 / npm 11.19.1; all 55 browser tests passed, including Chromium, Firefox, and WebKit, alongside 156 unit tests. Coverage: 94.58% statements, 89.87% branches. SDK-001–006 and 267-package license/provenance audit passed. Review report: [`../reviews/simulated-user-acceptance.md`](../reviews/simulated-user-acceptance.md).
+
+Reproducible local observation details and values (machine, viewport, browser, unthrottled mode, and methodology) are recorded in [`../evidence/simulated_user_performance.json`](../evidence/simulated_user_performance.json). Those samples are lab observations, not field vitals, human task times, physical-device animation performance, or a like-for-like cross-implementation benchmark. Build timing is approximate; it is not a controlled repeated benchmark.
+
 These measurements are historical, scoped observations reported during implementation. They are not final-tree verification.
 
 | Observation                           | Recorded value          | Scope and limitation                                                                           |

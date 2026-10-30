@@ -1,0 +1,57 @@
+{
+  "recordedAt": "2026-10-29",
+  "environment": {
+    "node": "v22.22.1",
+    "npm": "12.0.2",
+    "platform": "Linux 7.2.11-ogc4.1.fc44.x86_64",
+    "cpu": "AMD Ryzen 5 1600 Six-Core Processor",
+    "browser": "Chromium 156.0.8078.4, headless",
+    "viewport": "1365x900 CSS pixels",
+    "deviceScaleFactor": 1,
+    "server": "Vite preview serving the production build on loopback",
+    "networkAndCpuThrottling": "None"
+  },
+  "editorLoad": {
+    "samples": 3,
+    "navigationDurationMs": [83.9, 86.0, 102.4],
+    "domContentLoadedMs": [83.8, 86.0, 102.4],
+    "largestContentfulPaintMs": [200, 172, 192],
+    "layoutShift": [0, 0, 0],
+    "initialScriptResources": [
+      {
+        "file": "editor-CHF57irP.js",
+        "transferBytes": 98331,
+        "decodedBytes": 315471,
+        "buildGzipBytes": 99170
+      },
+      {
+        "file": "site-ht-eCoAp.js",
+        "transferBytes": 39728,
+        "decodedBytes": 130520,
+        "buildGzipBytes": 39800
+      },
+      {
+        "file": "jsx-runtime-B-3DLZV4.js",
+        "transferBytes": 68547,
+        "decodedBytes": 220354,
+        "buildGzipBytes": 68950
+      }
+    ],
+    "initialScriptBuildGzipTotalBytes": 207920,
+    "observedHeapBytes": 10000000
+  },
+  "export": {
+    "productionBuildWallSeconds": 7.55,
+    "blankMotionExportGenerationMs": 248.8,
+    "cyberpunkCinematicExportGenerationMs": 190.9,
+    "cinematicRuntimeBytes": 68879,
+    "cinematicRuntimeGzipBytes": 21280,
+    "editorCodeInWebsiteZip": false
+  },
+  "limitations": [
+    "Three local, unthrottled editor loads and one export per configuration; these are not human task times or field Core Web Vitals.",
+    "The heap value is one Chromium performance.memory observation and is not a cross-browser memory guarantee.",
+    "The export timing includes the automated browser download event, not ZIP extraction or hosting-provider upload time.",
+    "No physical mobile hardware, real network, or field animation frame-rate measurement was used."
+  ]
+}

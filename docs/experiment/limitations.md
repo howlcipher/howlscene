@@ -122,3 +122,7 @@ Unfinished required v1 work is not reclassified as excluded scope.
   Bazzite host lacks GTK/WebKit libraries, so local validation uses the
   container. Hosted run `40963619832` verified the updated workflow. Cross-engine
   visual and human platform review remain open.
+
+## Simulated-user review limitations (2026-10-29)
+
+The browser sessions use automated Playwright interactions, not people. The phone persona uses touch emulation and scripted keyboard entry, not a physical handset. No screen reader was available. Browser zoom at 200%/400%, controlled storage exhaustion, and an interrupted local image-preparation case were not exercised. The reference video was unavailable in the repository. Local performance observations are unthrottled lab samples, not field Core Web Vitals or physical-device FPS measurements. Hosted GitHub Actions has not run for this review branch. These limits and remaining human checks are listed in [`../reviews/simulated-user-acceptance.md`](../reviews/simulated-user-acceptance.md).

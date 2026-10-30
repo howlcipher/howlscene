@@ -26,6 +26,8 @@ import {
   collectLayoutStyles,
 } from "../../core/src/index.js";
 import css from "../../core/src/site.css?raw";
+import { formatPublishingInstructions } from "./publishing.js";
+export { publishingOptions } from "./publishing.js";
 const archiveDate = new Date("2000-01-01T00:00:00Z");
 /** Separate asset identity from variant identity to prevent filename collisions. */
 function assetPath(id: string, mime: string, width?: number): string {
@@ -130,8 +132,7 @@ export async function exportWebsite(
       sceneryCss +
       "\n" +
       css.replace(/@import\s+["']\.\/scenery\.css["'];?\s*/g, ""),
-    "PUBLISH.txt":
-      "Upload all extracted files to a static website host. Keep index.html at the top level. No build step required. Preview using an HTTP server; file:// is not supported. This published website is not an editable project backup.",
+    "PUBLISH.txt": formatPublishingInstructions(),
   };
   for (const [path, contents] of Object.entries(files))
     zip.file(path, contents, { date: archiveDate });

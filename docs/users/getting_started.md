@@ -17,8 +17,8 @@ A verified public editor address is not available yet. Open the local address pr
 9. Move sections up or down, choose a layout, adjust section spacing, alignment, and content width, and set **Choose animation style**. Undo and Redo restore supported committed edits.
 10. Switch themes and check your text remains intact. Set **Preview size** to Phone, Tablet, or Desktop.
 11. Check the save message, then select **Save project backup** to keep an editable copy outside this browser.
-12. Select **Download my website** to download the separate published website ZIP.
-13. Follow [the publishing guide](publishing.md), then visit the hosted site and check text, images, navigation, and disabling animation.
+12. Select **Download my website** to download the separate published website ZIP. Open its included `PUBLISH.txt` for browser-based hosting steps.
+13. The editor's final **Getting started** step also has expandable hosting instructions. You can follow [the publishing guide](publishing.md) for more detail, then visit the hosted site and check text, images, navigation, and disabling animation.
 
 The three themes include original layered scenery and optional motion. Phone-width browser tests and visual comparisons check representative layouts; they do not guarantee every layout on every real device.
 

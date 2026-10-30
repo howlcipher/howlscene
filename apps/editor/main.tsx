@@ -21,6 +21,7 @@ import { enhanceSite } from "../../packages/core/src/enhance";
 import { AppearancePanel } from "./components/AppearancePanel";
 import { SectionPanel } from "./components/SectionPanel";
 import { ProjectFiles, saveFile } from "./components/ProjectFiles";
+import { publishingOptions } from "../../packages/export/src/publishing";
 import "../../packages/core/src/site.css";
 import "./editor.css";
 
@@ -48,7 +49,7 @@ const onboardingSteps = [
   {
     title: "Save and publish",
     description:
-      "Your draft is saved in this browser, not in the cloud. Download an editable project backup to keep another copy. Download the separate website ZIP to publish, then follow the publishing guide.",
+      "Your draft is saved in this browser, not in the cloud. Download an editable project backup to keep another copy. Download the separate website ZIP to publish, then open its PUBLISH.txt for steps.",
   },
 ] as const;
 
@@ -257,6 +258,30 @@ function Editor() {
               </p>
               <h2>{onboardingSteps[helpStep]!.title}</h2>
               <p>{onboardingSteps[helpStep]!.description}</p>
+              {helpStep === onboardingSteps.length - 1 && (
+                <details className="publishing-help">
+                  <summary>Show step-by-step publishing options</summary>
+                  {publishingOptions.map((option) => (
+                    <section key={option.name}>
+                      <h3>{option.name}</h3>
+                      <p>{option.summary}</p>
+                      <ol>
+                        {option.steps.map((step) => (
+                          <li key={step}>{step}</li>
+                        ))}
+                      </ol>
+                      {"note" in option && <p>{option.note}</p>}
+                      <a
+                        href={option.guideUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {option.guideLabel}
+                      </a>
+                    </section>
+                  ))}
+                </details>
+              )}
             </div>
             <div className="button-row">
               <button
