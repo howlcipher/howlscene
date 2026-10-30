@@ -21,6 +21,9 @@ a {
   outline: 3px solid #b94e00;
   outline-offset: 5px;
 }
+.howlscene :focus-visible {
+  outline-color: var(--scene-accent);
+}
 .howlscene {
   container: website / inline-size;
   background: var(--scene-bg);

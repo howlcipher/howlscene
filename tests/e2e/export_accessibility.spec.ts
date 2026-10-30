@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Locator, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import JSZip from "jszip";
 import { createServer } from "node:http";
@@ -15,12 +15,71 @@ const types: Record<string, string> = {
   webp: "image/webp",
 };
 
-test("A11Y-007 A11Y-008 exported themes reflow with large text and retain accessibility under reduced motion", async ({
+async function focusIndicatorContrast(page: Page, site: Locator) {
+  await site.locator(".skip-link").focus();
+  await page.keyboard.press("Tab");
+  const navigationLink = site.locator(".site-header nav a").first();
+  await expect(navigationLink).toBeFocused();
+  return navigationLink.evaluate((element) => {
+    const style = getComputedStyle(element);
+    const container = element.closest<HTMLElement>(".howlscene");
+    if (!container) throw Error("Missing theme container");
+    const colors = [
+      style.outlineColor,
+      getComputedStyle(container).backgroundColor,
+    ].map((color) => {
+      const channels = color.match(/[\d.]+/g)?.slice(0, 3);
+      if (!channels || channels.length !== 3)
+        throw Error(`Unsupported computed color: ${color}`);
+      return channels.map(Number);
+    });
+    const luminance = (channels: number[]) => {
+      const linear = (value: number) => {
+        const channel = value / 255;
+        return channel <= 0.04045
+          ? channel / 12.92
+          : ((channel + 0.055) / 1.055) ** 2.4;
+      };
+      return (
+        0.2126 * linear(channels[0]!) +
+        0.7152 * linear(channels[1]!) +
+        0.0722 * linear(channels[2]!)
+      );
+    };
+    const [ring, background] = colors.map(luminance);
+    return {
+      color: style.outlineColor,
+      width: style.outlineWidth,
+      style: style.outlineStyle,
+      contrast:
+        (Math.max(ring!, background!) + 0.05) /
+        (Math.min(ring!, background!) + 0.05),
+    };
+  });
+}
+
+test("A11Y-007 A11Y-008 A11Y-009 exported themes reflow with large text and retain accessible focus under reduced motion", async ({
   page,
   browser,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/editor/");
+  for (const [label, value] of [
+    ["Background color", "#767676"],
+    ["Text color", "#767676"],
+    ["Accent color", "#767676"],
+  ] as const) {
+    await page.getByLabel(label, { exact: true }).evaluate((element, color) => {
+      const input = element as HTMLInputElement;
+      const setValue = Object.getOwnPropertyDescriptor(
+        HTMLInputElement.prototype,
+        "value",
+      )?.set;
+      setValue?.call(input, color);
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    }, value);
+  }
   await page.getByLabel("Website title").fill("Accessible Field Notes");
   await page.getByLabel("Edit heading").fill("A shared landscape");
   const imageData = await page.evaluate(() => {
@@ -110,6 +169,18 @@ test("A11Y-007 A11Y-008 exported themes reflow with large text and retain access
     for (const theme of themes) {
       activeTheme = theme;
       await page.getByLabel("Visual theme").selectOption(theme);
+      const previewFocus = await focusIndicatorContrast(
+        page,
+        page
+          .getByRole("region", { name: "Live website preview" })
+          .locator(".howlscene"),
+      );
+      expect(previewFocus.width).toBe("3px");
+      expect(previewFocus.style).toBe("solid");
+      expect(
+        previewFocus.contrast,
+        `${theme} preview focus outline ${previewFocus.color} against custom background`,
+      ).toBeGreaterThanOrEqual(3);
       const downloadEvent = page.waitForEvent("download");
       await page.getByRole("button", { name: "Download my website" }).click();
       const downloadPath = await (await downloadEvent).path();
@@ -159,6 +230,18 @@ test("A11Y-007 A11Y-008 exported themes reflow with large text and retain access
           await expect(skipLink).toBeVisible();
           await exported.keyboard.press("Enter");
           await expect(exported).toHaveURL(/#site-content$/);
+        }
+        if (width === 1440) {
+          const focusIndicator = await focusIndicatorContrast(
+            exported,
+            exported.locator(".howlscene"),
+          );
+          expect(focusIndicator.width).toBe("3px");
+          expect(focusIndicator.style).toBe("solid");
+          expect(
+            focusIndicator.contrast,
+            `${theme} focus outline ${focusIndicator.color} against theme background`,
+          ).toBeGreaterThanOrEqual(3);
         }
         const results = await new AxeBuilder({ page: exported })
           .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])

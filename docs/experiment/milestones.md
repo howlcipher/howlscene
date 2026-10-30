@@ -31,6 +31,26 @@ the host due missing system libraries. Separate SDK, license and vulnerability
 checks passed. Raw results are in the linked evidence from `PROGRESS.md`; hosted
 verification is pending.
 
+PR #27 merged this `A11Y-007` coverage as `b21f26c` after hosted `verify` passed
+in run `40982131106`.
+
+## Current theme focus indicator increment
+
+`A11Y-009` reproduced a 1.1133:1 keyboard-outline contrast against the valid
+creator-selected `#767676` website background. The renderer now uses the
+contrast-resolved theme accent for its 3px website focus outline. Browser
+coverage measures at least 3:1 in preview and in actual ZIPs for all three
+themes, with a low-contrast saved accent forcing the fallback. Focused Chromium
+verification passes. The full local check passed formatting, lint, strict
+types, build/prerender and 152 unit tests (94.88% statements and 89.68% branch
+coverage); 53 of 54 browser scenarios passed, with host WebKit startup blocked
+by missing system libraries. Separate SDK, 267-package license and zero-
+vulnerability checks passed. Hosted verification remains pending. The original
+failure is preserved in
+[`theme_focus_indicator_red.txt`](../evidence/theme_focus_indicator_red.txt);
+local evidence is linked in `PROGRESS.md`. See
+[ADR 016](../architecture/adr_016_theme_aware_focus_indicators.md).
+
 GitHub Pages preparation is implemented on `build/github-pages-preparation`.
 The local full gate passes with 150 unit tests, 50 browser tests, 89.54% overall
 branch coverage, independent package consumers, license review and zero

@@ -59,6 +59,9 @@ establish public v1 readiness.
   uploaded images from affecting text contrast in preview and static export.
   Artwork is concealed beneath text surfaces, and automated checks do not replace
   human review of contrast, composition, zoom, or assistive-technology behavior.
+- Website keyboard-focus outlines use the resolved accent and are tested at 3:1
+  against the flat site background. Custom developer-rendered controls placed
+  over other surfaces need separate review; this is not a WCAG conformance claim.
 - Custom section renderers can now register new safe type IDs while reusing the
   portable section content fields. Arbitrary custom payload schemas, adding
   those types to the standard no-code editor chooser, and arbitrary layout-ID
