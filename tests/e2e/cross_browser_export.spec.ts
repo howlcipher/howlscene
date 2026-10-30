@@ -2,16 +2,33 @@ import { test, expect } from "@playwright/test";
 import JSZip from "jszip";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
+import { focusIndicatorContrast } from "./support/focus_indicator";
 
 const themes = ["modern", "ink", "cyber"] as const;
 const mount = "/howlscene/platform-review/";
 
-test("EXP-PLATFORM-001 image exports retain content and responsive layout without JavaScript", async ({
+test("EXP-PLATFORM-001 A11Y-009 image exports retain layout and keyboard focus without JavaScript", async ({
   page,
   browser,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/editor/");
+  for (const [label, value] of [
+    ["Background color", "#767676"],
+    ["Text color", "#767676"],
+    ["Accent color", "#767676"],
+  ] as const) {
+    await page.getByLabel(label, { exact: true }).evaluate((element, color) => {
+      const input = element as HTMLInputElement;
+      const setValue = Object.getOwnPropertyDescriptor(
+        HTMLInputElement.prototype,
+        "value",
+      )?.set;
+      setValue?.call(input, color);
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    }, value);
+  }
   await page.getByLabel("Website title").fill("Field Notes Across Browsers");
   await page.getByLabel("New section type").selectOption("about");
   await page.getByRole("button", { name: "Add a section" }).click();
@@ -133,6 +150,18 @@ test("EXP-PLATFORM-001 image exports retain content and responsive layout withou
             .locator("html")
             .evaluate((element) => element.scrollWidth <= element.clientWidth),
         ).toBe(true);
+        if (width === 1280) {
+          const focusIndicator = await focusIndicatorContrast(
+            exported,
+            exported.locator(".howlscene"),
+          );
+          expect(focusIndicator.width).toBe("3px");
+          expect(focusIndicator.style).toBe("solid");
+          expect(
+            focusIndicator.contrast,
+            `${theme} exported focus outline ${focusIndicator.color}`,
+          ).toBeGreaterThanOrEqual(3);
+        }
         const sectionLink = exported.locator("nav a").nth(1);
         const anchor = await sectionLink.getAttribute("href");
         expect(anchor).toMatch(/^#/);

@@ -34,7 +34,7 @@ verification is pending.
 PR #27 merged this `A11Y-007` coverage as `b21f26c` after hosted `verify` passed
 in run `40982131106`.
 
-## Current theme focus indicator increment
+## Merged theme focus indicator increment
 
 `A11Y-009` reproduced a 1.1133:1 keyboard-outline contrast against the valid
 creator-selected `#767676` website background. The renderer now uses the
@@ -45,11 +45,30 @@ verification passes. The full local check passed formatting, lint, strict
 types, build/prerender and 152 unit tests (94.88% statements and 89.68% branch
 coverage); 53 of 54 browser scenarios passed, with host WebKit startup blocked
 by missing system libraries. Separate SDK, 267-package license and zero-
-vulnerability checks passed. Hosted verification remains pending. The original
-failure is preserved in
+vulnerability checks passed. PR #28 merged as `7ac2522` after hosted `verify`
+passed in run `40983837315` and the deployable-site artifact build passed in
+run `40983837406`. The original failure is preserved in
 [`theme_focus_indicator_red.txt`](../evidence/theme_focus_indicator_red.txt);
 local evidence is linked in `PROGRESS.md`. See
 [ADR 016](../architecture/adr_016_theme_aware_focus_indicators.md).
+Current focus contrast measurement is exercised in Chromium; browser-engine
+coverage for this particular custom-color case is being extended in the current
+increment.
+
+## Current cross-engine focus indicator coverage
+
+The `EXP-PLATFORM-001` exported ZIP browser matrix now also checks `A11Y-009`
+with a low-contrast creator color selection. In each engine, the test uses the
+keyboard skip link, then measures the 3px solid outline against the resolved
+site background in a JavaScript-disabled ZIP for all three themes. The shared
+measurement helper is also used by the editor-preview/export accessibility
+scenario. Local Chromium and Firefox runs pass; WebKit could not launch on the
+host because GTK/WebKit/media dependencies are missing. The full local gate
+passes format, lint, strict types, production build, and 152 unit tests (94.88%
+statements, 89.68% branches); its browser suite passes 53 of 54 scenarios, with
+WebKit as the only launch failure. Separate SDK, license, and vulnerability
+checks pass. See the focused, full-gate and supplemental evidence files linked
+in `PROGRESS.md`. Hosted WebKit verification is pending.
 
 GitHub Pages preparation is implemented on `build/github-pages-preparation`.
 The local full gate passes with 150 unit tests, 50 browser tests, 89.54% overall

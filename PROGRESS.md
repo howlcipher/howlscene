@@ -8,14 +8,16 @@ Phase 0 proved the shared editor-to-static-export approach. Core/schema, rich te
 
 ## Latest executed milestone
 
-The latest merged increment is PR #27, merged as `b21f26c` (source commit
-`4ab38ec`). It adds `A11Y-007` coverage for 200% root text sizing at 320 CSS px
-in the actual no-JavaScript exports for all three themes, with long copy and a
-project card. Hosted `verify` passed in run
-[`40982131106`](https://github.com/howlcipher/howlscene/actions/runs/40982131106).
-The previous product behavior increment, PR #25, adds `A11Y-SCENE-002` for
-native scenery readability; it passed hosted `verify` and Pages artifact/path
-checks in runs `40980058221` and `40980058139`.
+The latest merged increment is PR #28, merged as `7ac2522` (source commit
+`9c60cd7`). It adds `A11Y-009`: website keyboard focus outlines use the
+contrast-resolved theme accent, fixing a measured 1.1133:1 ring on a valid
+custom background. Hosted `verify` passed in run
+[`40983837315`](https://github.com/howlcipher/howlscene/actions/runs/40983837315),
+and the deployable-site artifact build passed in run
+[`40983837406`](https://github.com/howlcipher/howlscene/actions/runs/40983837406).
+PR #27 added `A11Y-007` coverage for 200% root text sizing at 320 CSS px in
+actual no-JavaScript exports for all themes, with long copy and a project card;
+hosted `verify` passed in run `40982131106`.
 
 The local Node 22.22.1 gate passed 152 unit tests and 53 of 54 browser scenarios;
 the single unavailable local WebKit run passed in pinned hosted CI. The final
@@ -226,7 +228,7 @@ Browser zoom, human screen reader, and nontechnical usability reviews remain
 open. PR #27 merged as `b21f26c` after hosted `verify` passed in run
 `40982131106`.
 
-## Current increment: theme-aware keyboard focus
+## Merged increment: theme-aware keyboard focus
 
 `A11Y-009` adds a measured focus-indicator check for creator-selected site
 colors. The new test reproduced the fixed orange outline at 1.1133:1 against a
@@ -242,8 +244,27 @@ license checks, and the zero-vulnerability audit passed. See
 [`theme_focus_indicator_focused.txt`](docs/evidence/theme_focus_indicator_focused.txt),
 [`theme_focus_indicator_host_local_attempt.txt`](docs/evidence/theme_focus_indicator_host_local_attempt.txt),
 and [`theme_focus_indicator_local_extras.txt`](docs/evidence/theme_focus_indicator_local_extras.txt).
-Hosted verification is pending. This does not cover custom-renderer surfaces
-or replace human review.
+PR #28 merged as `7ac2522` after hosted `verify` and deployable-site artifact
+checks passed. This does not cover custom-renderer surfaces or replace human
+review.
+
+## Current increment: cross-engine theme focus coverage
+
+The existing exported-site browser matrix now also measures the keyboard focus
+outline for all three themes after saving a low-contrast custom background,
+text, and accent. It serves the actual ZIP with JavaScript disabled, tabs from
+the skip link to the first navigation link, and checks the 3px solid ring is at
+least 3:1 against the resolved site background. A shared helper keeps this
+measurement consistent with the preview/export accessibility scenario.
+Chromium and Firefox pass locally for all three themes; the full local browser
+run passed 53 of 54 scenarios, with WebKit unable to launch due missing host
+GTK/WebKit/media libraries. Formatting, lint, strict types, build/prerender and
+152 unit tests pass at 94.88% statement and 89.68% branch coverage. Separate
+SDK consumer, 267-package license, and zero-vulnerability checks pass. Hosted
+verification is pending. See
+[`theme_focus_cross_browser_focused.txt`](docs/evidence/theme_focus_cross_browser_focused.txt),
+[`theme_focus_cross_browser_host_local_attempt.txt`](docs/evidence/theme_focus_cross_browser_host_local_attempt.txt),
+and [`theme_focus_cross_browser_local_extras.txt`](docs/evidence/theme_focus_cross_browser_local_extras.txt).
 
 ## Published development checkpoint
 

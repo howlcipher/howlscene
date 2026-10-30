@@ -38,9 +38,13 @@ browser zoom; manual zoom review remains open.
 `A11Y-009` keyboard-focus coverage measures the shared 3px solid outline against
 the selected flat background in preview and all three exported themes. A custom
 gray background and low-contrast saved accent exercise the resolver's fallback;
-the measured focus indicator must reach at least 3:1. See
+the measured focus indicator must reach at least 3:1. The cross-browser export
+scenario repeats this check in Chromium, Firefox, and WebKit against actual
+JavaScript-disabled ZIPs. Local Chromium and Firefox passed; WebKit is covered
+by hosted CI because this host lacks its required system libraries. See
 [`theme_focus_indicator_red.txt`](../evidence/theme_focus_indicator_red.txt)
-and [ADR 016](../architecture/adr_016_theme_aware_focus_indicators.md).
+and [ADR 016](../architecture/adr_016_theme_aware_focus_indicators.md), plus
+[`theme_focus_cross_browser_focused.txt`](../evidence/theme_focus_cross_browser_focused.txt).
 
 ## Final journey
 
