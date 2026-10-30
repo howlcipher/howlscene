@@ -39,7 +39,7 @@
   both failed at the strict TypeScript check for the custom scene keyframe type.
   This is an implementation failure, not behavioral RED evidence.
 - A fix now derives the exported keyframe type from Motion's public `animate`
-  API. It is unverified pending the next hosted run.
+  API. It is included in commit `73e4dcb1e7aefaa3855e25a92b3b4b11214617b0`.
 - Host-side testing was not requested and will not be used for this mission.
 
 ## Initial audit
@@ -125,7 +125,14 @@ See [ADR 0001](../architecture/adr/0001-cinematic-config-contract.md).
   lacked Motion's CSS custom-property index signature.
 - The keyframe alias now derives from `Parameters<typeof animate>[1]` in
   `motion/mini`, keeping the resolver aligned with Motion's accepted keyframe
-  contract. No local compilation or test was run to check this change.
+  contract. Hosted run `41128843188` passed format, lint, and strict TypeScript.
+  The unit test job then reported one lifecycle assertion failure: it expected
+  a cinematic entrance to target text after the implementation had correctly
+  moved it to the background image. The repeated-entry assertion now checks
+  the background target. This correction remains unverified.
+- Pages run [41128843374](https://github.com/howlcipher/howlscene/actions/runs/41128843374)
+  passed the production build, root/project Pages browser check, and artifact
+  packaging on GitHub-hosted Ubuntu. Approval and publish jobs were skipped.
 
 Historical evidence in `PROGRESS.md` and existing review documents predates
 this mission and is not evidence for new changes.
@@ -143,7 +150,7 @@ this mission and is not evidence for new changes.
 
 ## Handoff
 
-- Next task: commit and push the keyframe type correction, inspect hosted
+- Next task: commit and push the lifecycle assertion correction, inspect hosted
   verification, then
   migrate the existing Ink Wash demo to consume the shared capability.
 - Pull requests: draft [#34](https://github.com/howlcipher/howlscene/pull/34).

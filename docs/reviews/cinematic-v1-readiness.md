@@ -143,18 +143,30 @@ branch creation because it lacks write access. The hosted quality-gates run
 [41128567497](https://github.com/howlcipher/howlscene/actions/runs/41128567497)
 and Pages build run
 [41128567426](https://github.com/howlcipher/howlscene/actions/runs/41128567426)
-both failed at strict TypeScript compilation because the custom cinematic
-keyframe interface lacked Motion's CSS-variable index signature. A type
-correction deriving the keyframe type from Motion's public `animate` API is
-being prepared; it has not yet been verified remotely.
+both initially failed at strict TypeScript compilation because the custom
+cinematic keyframe interface lacked Motion's CSS-variable index signature.
+The type correction was pushed in commit
+`73e4dcb1e7aefaa3855e25a92b3b4b11214617b0`. Hosted quality run
+[41128843188](https://github.com/howlcipher/howlscene/actions/runs/41128843188)
+passed format, lint, and TypeScript, then failed one lifecycle assertion. That
+assertion expected a repeated cinematic entrance to target text, but the
+entrance correctly targets the full-size background image. The test assertion
+has been corrected and awaits another hosted run.
+
+Pages run
+[41128843374](https://github.com/howlcipher/howlscene/actions/runs/41128843374)
+passed the production build, root/project Pages browser checks, and artifact
+packaging on commit `73e4dcb1e7aefaa3855e25a92b3b4b11214617b0`. The approval
+and publish jobs were skipped as expected for a pull request.
 
 ## 9. Unit and integration results
 
 Tests added: `tests/cinematic.test.tsx`,
 `tests/e2e/cinematic-editor.spec.ts`, and a lifecycle case in
-`tests/scene_lifecycle.test.ts`. The hosted TypeScript check failed before
-tests ran. No test command, TypeScript compilation, or build ran locally. Pass
-counts and coverage are unavailable.
+`tests/scene_lifecycle.test.ts`. On run `41128843188`, 165 of 166 unit tests
+passed; one assertion used the text target instead of the background image
+target. The corrected assertion has not run yet. No test command, TypeScript
+compilation, or build ran locally. Coverage is unavailable.
 
 ## 10. Browser, export, SDK, visual, accessibility, and performance results
 
@@ -186,7 +198,7 @@ cover Cinematic Story.
 ## 13. Host-safety compliance
 
 - Local heavy workload executed: **No**.
-- Verification on GitHub-hosted infrastructure for this change: **Runs 41128567497 and 41128567426 failed at TypeScript compilation**.
+- Verification on GitHub-hosted infrastructure for this change: **TypeScript passed; run 41128843188 failed one lifecycle assertion after 165/166 tests passed**.
 - Tests not executed: all new and regression tests, type check, build, SDK,
   browser/export, accessibility, visual, performance, security, and licensing
   checks.

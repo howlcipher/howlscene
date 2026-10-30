@@ -206,7 +206,7 @@ it("CIN-007 CIN-016 CIN-023 replays the selected cinematic entrance after interr
   expect(firstEntrance.cancel).toHaveBeenCalledOnce();
   f.intersect(0.8);
   expect(
-    animation.effects.filter((effect) => effect.target === f.content),
+    animation.effects.filter((effect) => effect.target === f.background),
   ).toHaveLength(2);
   expect(firstEntrance.cancel).toHaveBeenCalledOnce();
   f.dispose();
