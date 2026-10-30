@@ -9,6 +9,11 @@ import {
   type SectionRendererRegistry,
 } from "./sections.js";
 import type { SiteConfig } from "./config.js";
+import {
+  collectLayoutStyles,
+  defaultLayoutRegistry,
+  type LayoutRegistry,
+} from "./layouts.js";
 const defaultSectionRegistry = createSectionRegistry();
 const displayHeading = (heading: string) =>
   heading.trim() ? heading : "Untitled section";
@@ -18,6 +23,8 @@ export function Site({
   assetUrl,
   themeRegistry = themes,
   sectionRegistry = defaultSectionRegistry,
+  layoutRegistry = defaultLayoutRegistry,
+  includeLayoutStyles = true,
   artworkRegistry = defaultArtworkRegistry,
 }: {
   site: SiteConfig;
@@ -25,6 +32,8 @@ export function Site({
   themeRegistry?: ThemeRegistry;
   artworkRegistry?: ArtworkRegistry;
   sectionRegistry?: SectionRendererRegistry;
+  layoutRegistry?: LayoutRegistry;
+  includeLayoutStyles?: boolean;
 }) {
   const manifest = themeRegistry[site.theme];
   if (!manifest) throw Error("Unsupported theme");
@@ -53,6 +62,7 @@ export function Site({
     "--scene-nav-gap": `${theme.presentation.navigationGapRem}rem`,
   } as CSSProperties;
   const sections = site.sections.filter((s) => s.visible);
+  const layoutStyles = collectLayoutStyles(site, layoutRegistry);
   return (
     <div
       className="howlscene"
@@ -69,6 +79,9 @@ export function Site({
       data-theme-motion-speed={theme.motion.speedScale}
       data-theme-parallax={theme.accessibility.parallax}
     >
+      {includeLayoutStyles && layoutStyles.length > 0 && (
+        <style data-howls-layout-styles>{layoutStyles.join("\n")}</style>
+      )}
       <a className="skip-link" href="#site-content">
         Skip to content
       </a>
@@ -96,6 +109,14 @@ export function Site({
             throw Error(
               `This project uses an unsupported custom section '${s.customType}'. Register it before rendering.`,
             );
+          const definition = layoutRegistry[s.layout];
+          if (!definition || !Object.hasOwn(layoutRegistry, s.layout))
+            throw Error(`Unregistered layout '${s.layout}'.`);
+          if (!definition.sectionTypes.includes(s.type))
+            throw Error(
+              `Layout '${s.layout}' is not supported for section type '${s.type}'.`,
+            );
+          const Layout = definition.renderer;
           const hasBackgroundImage =
             Boolean(s.image) && s.imageTreatment === "background";
           const image = s.image ? (
@@ -109,6 +130,47 @@ export function Site({
               style={{ objectPosition: s.imagePosition }}
             />
           ) : null;
+          const intro = (
+            <>
+              <p className="eyebrow">
+                {(s.type === "custom" ? s.customType! : s.type).replace(
+                  /[_-]/g,
+                  " ",
+                )}
+              </p>
+              {index === 0 ? (
+                <h1>{displayHeading(s.heading)}</h1>
+              ) : (
+                <h2>{displayHeading(s.heading)}</h2>
+              )}
+            </>
+          );
+          const body = s.richText.length ? (
+            <RichText value={s.richText} headingLevel={index === 0 ? 2 : 3} />
+          ) : (
+            s.body
+              .split("\n")
+              .map((paragraph, paragraphIndex) => (
+                <p key={paragraphIndex}>{paragraph}</p>
+              ))
+          );
+          const entries = (
+            <Entries
+              section={s}
+              assetUrl={resolveAsset}
+              asset={lookup}
+              headingLevel={index === 0 ? 2 : 3}
+            />
+          );
+          const cta = s.link ? (
+            <a
+              className="scene-cta"
+              data-readable-surface="solid"
+              href={s.link}
+            >
+              {s.linkLabel}
+            </a>
+          ) : null;
           return (
             <section
               key={s.id}
@@ -121,46 +183,14 @@ export function Site({
                 themeRegistry={themeRegistry}
                 artworkRegistry={artworkRegistry}
               />
-              <div className="scene-content">
-                {hasBackgroundImage && image}
-                <div className="scene-copy" data-readable-surface="solid">
-                  <p className="eyebrow">
-                    {(s.type === "custom" ? s.customType! : s.type).replace(
-                      /[_-]/g,
-                      " ",
-                    )}
-                  </p>
-                  {index === 0 ? (
-                    <h1>{displayHeading(s.heading)}</h1>
-                  ) : (
-                    <h2>{displayHeading(s.heading)}</h2>
-                  )}
-                  {!hasBackgroundImage && image}
-                  {s.richText.length ? (
-                    <RichText
-                      value={s.richText}
-                      headingLevel={index === 0 ? 2 : 3}
-                    />
-                  ) : (
-                    s.body.split("\n").map((p, i) => <p key={i}>{p}</p>)
-                  )}
-                </div>
-                <Entries
-                  section={s}
-                  assetUrl={resolveAsset}
-                  asset={lookup}
-                  headingLevel={index === 0 ? 2 : 3}
-                />
-                {s.link && (
-                  <a
-                    className="scene-cta"
-                    data-readable-surface="solid"
-                    href={s.link}
-                  >
-                    {s.linkLabel}
-                  </a>
-                )}
-              </div>
+              <Layout
+                section={s}
+                intro={intro}
+                image={image}
+                body={body}
+                entries={entries}
+                cta={cta}
+              />
             </section>
           );
         })}

@@ -68,23 +68,24 @@ const artworkRegistry=createArtworkRegistry({
 });
 const themeRegistry=createThemeRegistry({forest:{...themes.ink,name:'Forest',background:'#e8efdf',presentation:{bodyLineHeight:2,navigationGapRem:2},layers:[{id:'canopy',artwork:'forest-canopy',depth:.3,opacity:.2}]}},artworkRegistry);
 const sectionRegistry=createSectionRegistry({},[{id:'notice',renderer:({section})=>createElement('aside',{'data-custom-section':'notice'},section.body)}]);
-const site:SiteConfig=parseSite({...starterSite,theme:'forest',sections:[{id:'notice',type:'custom' as const,customType:'notice',heading:'Developer section',body:'Portable custom content.'}]},themeRegistry,sectionRegistry);
+const layoutRegistry=createLayoutRegistry([{id:'feature-frame',sectionTypes:['custom'],styles:'.layout-feature-frame [data-custom-layout] { display:grid; grid-template-columns:1fr 1fr; }',renderer:({section,intro,image,body,entries,cta})=>createElement('article',{'data-custom-layout':section.id},intro,image,body,entries,cta)}]);
+const site:SiteConfig=parseSite({...starterSite,theme:'forest',sections:[{id:'notice',type:'custom' as const,customType:'notice',layout:'feature-frame',heading:'Developer section',body:'Portable custom content.'}]},themeRegistry,sectionRegistry,layoutRegistry);
 `;
   await writeFile(
     join(temporary, "consumer.ts"),
     `import {exportWebsite,serializeBackup,importBackup} from '@howlscene/export';
-import {Site,parseSite,starterSite,themes,createArtworkRegistry,createThemeRegistry,createSectionRegistry,resolvePrimitive,type SiteConfig} from '@howlscene/core';
+import {Site,parseSite,starterSite,themes,createArtworkRegistry,createThemeRegistry,createSectionRegistry,createLayoutRegistry,resolvePrimitive,type SiteConfig} from '@howlscene/core';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 ${extensionFixture}
-const restored=importBackup(serializeBackup(site,themeRegistry,sectionRegistry),themeRegistry,sectionRegistry);
+const restored=importBackup(serializeBackup(site,themeRegistry,sectionRegistry,layoutRegistry),themeRegistry,sectionRegistry,layoutRegistry);
 if(restored.theme!=='forest'||restored.sections[0]!.heading!==site.sections[0]!.heading)throw new Error('Custom project backup contract failed');
 if(!createSectionRegistry().hero||!resolvePrimitive('fade','calm'))throw new Error('Missing public extension API');
-const html=renderToStaticMarkup(createElement(Site,{site,themeRegistry,artworkRegistry,sectionRegistry}));
-if(!html.includes('data-theme="forest"')||!html.includes('data-original-art="forest-canopy"')||!html.includes('data-custom-section="notice"')||!html.includes('Portable custom content.'))throw new Error('SDK did not render configured artwork and section');
-const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry,sectionRegistry});
+const html=renderToStaticMarkup(createElement(Site,{site,themeRegistry,artworkRegistry,sectionRegistry,layoutRegistry}));
+if(!html.includes('data-theme="forest"')||!html.includes('data-original-art="forest-canopy"')||!html.includes('data-custom-section="notice"')||!html.includes('data-custom-layout="notice"')||!html.includes('grid-template-columns:1fr 1fr')||!html.includes('Portable custom content.'))throw new Error('SDK did not render configured artwork, section and layout');
+const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry,sectionRegistry,layoutRegistry});
 if(!bytes.byteLength)throw new Error('Custom theme static export failed');
-console.log('SDK-001 through SDK-005: independent install, declarations, custom artwork render, backup and export passed');
+console.log('SDK-001 through SDK-006: independent install, declarations, custom artwork, section and layout render, backup and export passed');
 `,
   );
   run(join(temporary, "node_modules/.bin/tsc"), [
@@ -126,14 +127,14 @@ console.log('SDK-001 through SDK-005: independent install, declarations, custom 
     `import {exportWebsite} from '@howlscene/export';
 import {createElement} from 'react';
 import {createRoot} from 'react-dom/client';
-import {Site,starterSite,parseSite,createArtworkRegistry,createThemeRegistry,createSectionRegistry,themes,type SiteConfig} from '@howlscene/core';
+import {Site,starterSite,parseSite,createArtworkRegistry,createThemeRegistry,createSectionRegistry,createLayoutRegistry,themes,type SiteConfig} from '@howlscene/core';
 import '@howlscene/core/styles.css';
 ${extensionFixture}
-createRoot(document.getElementById('root')!).render(createElement(Site,{site,themeRegistry,artworkRegistry,sectionRegistry}));
+createRoot(document.getElementById('root')!).render(createElement(Site,{site,themeRegistry,artworkRegistry,sectionRegistry,layoutRegistry}));
 const button=document.createElement('button');
 button.textContent='Export consumer website';
 button.onclick=async()=>{
- const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry,sectionRegistry});
+ const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry,sectionRegistry,layoutRegistry});
  (window as Window & {exportBytes?:number[]}).exportBytes=Array.from(bytes);
  button.textContent='Exported '+bytes.byteLength+' bytes';
 };
@@ -219,6 +220,13 @@ document.body.append(button);`,
     await page.goto(`http://127.0.0.1:${address.port}/`);
     await page.getByRole("heading", { name: "Developer section" }).waitFor();
     await page.locator('[data-custom-section="notice"]').waitFor();
+    await page.locator('[data-custom-layout="notice"]').waitFor();
+    if (
+      (await page
+        .locator('[data-custom-layout="notice"]')
+        .evaluate((element) => getComputedStyle(element).display)) !== "grid"
+    )
+      throw Error("Independent browser consumer omitted custom layout CSS");
     await page.getByRole("button", { name: "Export consumer website" }).click();
     await page.getByRole("button", { name: /Exported [0-9]+ bytes/ }).waitFor();
     const artwork = await page
@@ -235,6 +243,8 @@ document.body.append(button);`,
       !exportedHTML?.includes('data-theme="forest"') ||
       !exportedHTML.includes('data-original-art="forest-canopy"') ||
       !exportedHTML.includes('data-custom-section="notice"') ||
+      !exportedHTML.includes('data-custom-layout="notice"') ||
+      !exportedHTML.includes("grid-template-columns:1fr 1fr") ||
       !exportedHTML.includes("Portable custom content.")
     )
       throw Error("Browser ZIP omitted custom theme, artwork or content");
@@ -274,6 +284,7 @@ document.body.append(button);`,
               .getByRole("heading", { name: "Developer section" })
               .waitFor();
             await published.locator('[data-custom-section="notice"]').waitFor();
+            await published.locator('[data-custom-layout="notice"]').waitFor();
             if (
               (await published
                 .locator('circle[data-original-art="forest-canopy"]')
@@ -290,11 +301,15 @@ document.body.append(button);`,
                 headerDisplay: getComputedStyle(
                   element.querySelector(".site-header"),
                 ).display,
+                customLayoutDisplay: getComputedStyle(
+                  element.querySelector('[data-custom-layout="notice"]'),
+                ).display,
               }));
             if (
               presentation.background !== "rgb(232, 239, 223)" ||
               presentation.navigationGap !== "32px" ||
-              presentation.headerDisplay !== "flex"
+              presentation.headerDisplay !== "flex" ||
+              presentation.customLayoutDisplay !== "grid"
             )
               throw Error(
                 "Nested export CSS did not apply: " +

@@ -14,7 +14,7 @@ It does not assert that every scenario within a group is complete. See the
 | EDT-001–010       | Guided panels, history, storage, files, onboarding; editor/model/browser journey tests                                                                            | Template, text, sections, theme preservation, images, reload, errors, confirmation, keyboard workflow; EDT-003 layout controls and EDT-010 colors covered below                                                                                                                                             |
 | AST-001–006       | Header/decode validation, normalization/srcset, manifest; assets and collision regression tests                                                                   | Upload, restore/backup, image export, path isolation; final ZIP journey uses real images                                                                                                                                                                                                                    |
 | EXP-001–011       | Shared renderer and standalone ZIP, backups, metadata and runtime                                                                                                 | Extracted files served root/nested with JS on/off; malformed input rejected; independent exporter package exercised                                                                                                                                                                                         |
-| SDK-001–005       | Public registries/render/validation/export packages; `scripts/sdk_check.mjs`                                                                                      | Actual tarballs installed in independent typed consumer, including custom-section registration, backup, browser render and nested export; no editor imports                                                                                                                                                 |
+| SDK-001–006       | Public registries/render/validation/export packages; `scripts/sdk_check.mjs`                                                                                      | Actual tarballs installed in independent typed consumer, including custom section and layout registration, backup, browser render and nested export; no editor imports                                                                                                                                      |
 | A11Y-001–009      | Semantics, focus recovery, motion control, keyboard and axe browser tests, including actual exported ZIPs                                                         | Automated 200% root text-size and 320 CSS-pixel reflow pass with maximum valid presentation tokens in all themes; exported theme ZIPs have serious/critical axe scans, reduced-motion behavior, skip-link keyboard access and mobile/desktop overflow checks; human review remains open; no WCAG claim      |
 | SEC-001–006       | Strict runtime schema, safe URLs, bounded media/imports, controlled paths, inert text                                                                             | Positive/negative regression tests and vulnerability/provenance audit; not a complete adversarial audit                                                                                                                                                                                                     |
 | EDT-011           | Theme presentation overrides, `AppearancePanel`, shared resolver and export; `tests/theme_presentation.test.tsx`, `tests/e2e/theme_presentation_controls.spec.ts` | Card appearance, navigation treatment and phone link layout are selectable, validated, retained across theme changes/reload and exported with the same values                                                                                                                                               |
@@ -29,6 +29,16 @@ It does not assert that every scenario within a group is complete. See the
 | A11Y-SCENE-001    | `tests/e2e/background_readability.spec.ts`, ADR 014                                                                                                               | Uploaded-background copy measures at least 4.5:1 foreground and accent contrast in preview across all built-in themes and in the nested no-script Ink Wash export.                                                                                                                                          |
 | A11Y-SCENE-002    | `packages/core/src/Site.tsx`, `tests/e2e/background_readability.spec.ts`, ADR 015                                                                                 | Native scenery stays behind an opaque resolved theme surface. Foreground and accent text contrast measures at least 4.5:1 for all three themes in preview and in each nested static ZIP with JavaScript disabled. Artwork remains visible around the panels.                                                |
 
+`CFG-LAYOUT-001–004` covers safe custom layout IDs, section-type compatibility,
+trusted renderer slots, bounded self-contained CSS, preview/static ZIP parity,
+backup round-trip, rejection without the compatible registry, and preservation
+of all built-in section/layout pairs accepted by the v1 schema. The independent
+SDK consumer checks typed package installation and nested serving with
+JavaScript on and off. See
+[`layout_registry_red.txt`](../evidence/layout_registry_red.txt),
+[ADR 017](../architecture/adr_017_trusted_layout_renderers.md), and the
+[custom layout guide](../developers/custom_layouts.md).
+
 The `A11Y-007` export scenario also serves each theme ZIP with JavaScript
 disabled at 320 CSS px and 200% root text sizing. Its long-copy and project-card
 fixture remains visible without horizontal overflow in the document,
@@ -40,8 +50,8 @@ the selected flat background in preview and all three exported themes. A custom
 gray background and low-contrast saved accent exercise the resolver's fallback;
 the measured focus indicator must reach at least 3:1. The cross-browser export
 scenario repeats this check in Chromium, Firefox, and WebKit against actual
-JavaScript-disabled ZIPs. Local Chromium and Firefox passed; WebKit is covered
-by hosted CI because this host lacks its required system libraries. See
+JavaScript-disabled ZIPs. Local Chromium and Firefox passed; hosted `verify`
+passed all three engines in run `40985012399`. See
 [`theme_focus_indicator_red.txt`](../evidence/theme_focus_indicator_red.txt)
 and [ADR 016](../architecture/adr_016_theme_aware_focus_indicators.md), plus
 [`theme_focus_cross_browser_focused.txt`](../evidence/theme_focus_cross_browser_focused.txt).

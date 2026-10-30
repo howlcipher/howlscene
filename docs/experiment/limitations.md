@@ -62,11 +62,11 @@ establish public v1 readiness.
 - Website keyboard-focus outlines use the resolved accent and are tested at 3:1
   against the flat site background. Custom developer-rendered controls placed
   over other surfaces need separate review; this is not a WCAG conformance claim.
-- Custom section renderers can now register new safe type IDs while reusing the
-  portable section content fields. Arbitrary custom payload schemas, adding
-  those types to the standard no-code editor chooser, and arbitrary layout-ID
-  registration remain unsupported; the contract is narrower than full plugin
-  or CMS behavior.
+- Custom section renderers can register safe type IDs over portable section
+  fields, and compatible developer apps can register trusted layout renderers.
+  Arbitrary custom payload schemas and adding developer-defined section/layout
+  controls to the standard no-code editor remain unsupported; this is not a
+  plugin system or CMS.
 - Rich text supports paragraphs, two heading ranks, bold, italic, links and
   single-level ordered/unordered lists. Arbitrary HTML and nested lists are not
   supported by the portable model.

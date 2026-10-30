@@ -6,18 +6,41 @@ Track A is the conventional TypeScript/React implementation in this repository. 
 
 Phase 0 proved the shared editor-to-static-export approach. Core/schema, rich text, assets, storage, history, guided editor controls, backups, SDK packaging, and motion work have since been added. Integration and regression fixes are active. These source features do not establish complete v1 acceptance.
 
+## Current milestone: trusted custom layout registration
+
+The current branch adds an immutable public layout registry with safe identifiers,
+section compatibility, developer-trusted React renderers, shared semantic content
+slots, bounded self-contained CSS, preview/static export parity, and backup
+round-tripping. Imported projects store only the registered layout ID; developer
+CSS stays in the trusted package configuration and is emitted in the exported
+HTML head. Existing built-in section/layout combinations remain accepted.
+
+The focused suite passes 4/4 tests. The full local check on Node 22.22.1 passes
+formatting, lint, typecheck/build/prerender and 156 unit tests (94.50% statements,
+89.84% branches); 53/54 browser tests pass, with WebKit blocked at launch by
+missing host GTK/media libraries. Chromium and Firefox cross-engine ZIP checks
+pass. Separately, SDK-001–006 pass against generated packages and a clean Vite
+consumer, the 267-package license/provenance audit passes, and npm audit reports
+zero vulnerabilities. The npm 12.0.2 / Node 22.22.1 compatibility warning is
+recorded. Hosted verification and review are pending; this is not release-ready.
+Raw local output and RED evidence are in
+[`docs/evidence/layout_registry_host_local_attempt.txt`](docs/evidence/layout_registry_host_local_attempt.txt)
+and [`docs/evidence/layout_registry_red.txt`](docs/evidence/layout_registry_red.txt).
+See [ADR 017](docs/architecture/adr_017_trusted_layout_renderers.md) and the
+[developer guide](docs/developers/custom_layouts.md).
+
 ## Latest executed milestone
 
-The latest merged increment is PR #28, merged as `7ac2522` (source commit
-`9c60cd7`). It adds `A11Y-009`: website keyboard focus outlines use the
-contrast-resolved theme accent, fixing a measured 1.1133:1 ring on a valid
-custom background. Hosted `verify` passed in run
-[`40983837315`](https://github.com/howlcipher/howlscene/actions/runs/40983837315),
-and the deployable-site artifact build passed in run
-[`40983837406`](https://github.com/howlcipher/howlscene/actions/runs/40983837406).
-PR #27 added `A11Y-007` coverage for 200% root text sizing at 320 CSS px in
-actual no-JavaScript exports for all themes, with long copy and a project card;
-hosted `verify` passed in run `40982131106`.
+The latest merged increment is PR #29, merged as `78a6327` (source commit
+`bb04fad`). It extends `A11Y-009` to the exported-site browser matrix: Chromium,
+Firefox and WebKit use keyboard navigation on actual no-JavaScript ZIPs and
+measure custom-color focus contrast for all three themes. Hosted `verify`
+passed in run
+[`40985012399`](https://github.com/howlcipher/howlscene/actions/runs/40985012399).
+PR #28 added the contrast-resolved site focus ring after measuring the old
+fixed-orange ring at 1.1133:1 against a valid custom background; its hosted
+quality and deployable-site checks passed in runs `40983837315` and
+`40983837406`.
 
 The local Node 22.22.1 gate passed 152 unit tests and 53 of 54 browser scenarios;
 the single unavailable local WebKit run passed in pinned hosted CI. The final
@@ -248,7 +271,7 @@ PR #28 merged as `7ac2522` after hosted `verify` and deployable-site artifact
 checks passed. This does not cover custom-renderer surfaces or replace human
 review.
 
-## Current increment: cross-engine theme focus coverage
+## Merged increment: cross-engine theme focus coverage
 
 The existing exported-site browser matrix now also measures the keyboard focus
 outline for all three themes after saving a low-contrast custom background,
@@ -260,11 +283,29 @@ Chromium and Firefox pass locally for all three themes; the full local browser
 run passed 53 of 54 scenarios, with WebKit unable to launch due missing host
 GTK/WebKit/media libraries. Formatting, lint, strict types, build/prerender and
 152 unit tests pass at 94.88% statement and 89.68% branch coverage. Separate
-SDK consumer, 267-package license, and zero-vulnerability checks pass. Hosted
-verification is pending. See
+SDK consumer, 267-package license, and zero-vulnerability checks pass. PR #29
+merged as `78a6327` after hosted `verify` passed in run `40985012399`, including
+WebKit. See
 [`theme_focus_cross_browser_focused.txt`](docs/evidence/theme_focus_cross_browser_focused.txt),
 [`theme_focus_cross_browser_host_local_attempt.txt`](docs/evidence/theme_focus_cross_browser_host_local_attempt.txt),
 and [`theme_focus_cross_browser_local_extras.txt`](docs/evidence/theme_focus_cross_browser_local_extras.txt).
+
+## Current increment: trusted custom layout registration
+
+The developer engine now has an isolated `createLayoutRegistry` contract for
+trusted React renderers. Registered layouts declare compatible section types
+and receive core-owned intro, image, body, entries, and CTA slots. Bounded
+self-contained CSS is included for layouts referenced by the site, and the
+same registry is required for parse, preview, export, and backup restore. The
+standard editor retains its built-in choices. `CFG-LAYOUT-001–003` cover the
+API, ZIP and backup behavior, malformed registrations, immutability, and compatibility with
+all previously accepted built-in section/layout pairs. An installed package
+consumer also renders, backs up and serves a custom layout at nested paths with
+JavaScript on and off. Focused unit/build/SDK checks pass; full integration and
+hosted verification remain to be recorded. RED and compatibility evidence is
+in [`layout_registry_red.txt`](docs/evidence/layout_registry_red.txt); see
+[ADR 017](docs/architecture/adr_017_trusted_layout_renderers.md) and the
+[custom layout guide](docs/developers/custom_layouts.md).
 
 ## Published development checkpoint
 
