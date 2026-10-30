@@ -11,6 +11,10 @@ export default defineConfig({
           import.meta.dirname,
           "examples/william-elias/index.html",
         ),
+        inkStory: resolve(
+          import.meta.dirname,
+          "examples/ink-wash-story/index.html",
+        ),
       },
     },
   },

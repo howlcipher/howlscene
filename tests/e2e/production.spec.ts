@@ -22,6 +22,7 @@ test("production files work at root and GitHub Pages paths with and without Java
     ".woff2": "font/woff2",
     ".woff": "font/woff",
     ".ico": "image/x-icon",
+    ".txt": "text/plain; charset=utf-8",
   };
   const server = createServer((request, response) => {
     void (async () => {
@@ -136,7 +137,70 @@ test("production files work at root and GitHub Pages paths with and without Java
             ).toBeVisible();
           }
           await page
-            .getByRole("link", { name: "Explore the portfolio example" })
+            .getByRole("link", { name: "Explore the cinematic sample" })
+            .click();
+          await expect(page).toHaveURL(
+            origin + base + "examples/ink-wash-story/",
+          );
+          await expect(
+            page.getByRole("heading", {
+              name: "Lorem ipsum dolor sit amet",
+              exact: true,
+            }),
+          ).toBeVisible();
+          await expect(page.locator(".story-demo .scene")).toHaveCount(5);
+          const creditsUrl = await page
+            .getByRole("link", { name: "Artwork notes" })
+            .getAttribute("href");
+          expect(creditsUrl).toBeTruthy();
+          const creditsResponse = await page.request.get(
+            new URL(creditsUrl!, page.url()).href,
+          );
+          expect(creditsResponse.status()).toBe(200);
+          expect(await creditsResponse.text()).toContain(
+            "five original landscape illustrations",
+          );
+          for (const sceneId of [
+            "scene-1",
+            "scene-2",
+            "scene-3",
+            "scene-4",
+            "scene-5",
+          ]) {
+            const scene = page.locator(`#${sceneId}`);
+            await scene.scrollIntoViewIfNeeded();
+            await expect
+              .poll(() =>
+                scene
+                  .locator(".story-art")
+                  .evaluate((image: HTMLImageElement) => image.naturalWidth),
+              )
+              .toBeGreaterThan(0);
+          }
+          await page
+            .getByRole("link", {
+              name: "02, Scene 2: Consectetur adipiscing elit",
+            })
+            .click();
+          await expect(page).toHaveURL(/#scene-2$/);
+          await expect(
+            page.getByRole("heading", {
+              name: "Consectetur adipiscing elit",
+              exact: true,
+            }),
+          ).toBeVisible();
+          if (javaScriptEnabled)
+            await expect(
+              page.getByRole("link", {
+                name: "02, Scene 2: Consectetur adipiscing elit",
+              }),
+            ).toHaveAttribute("aria-current", "location");
+
+          await page.goto(origin + base);
+          await page
+            .getByRole("link", {
+              name: "Explore the developer portfolio example",
+            })
             .click();
           await expect(page).toHaveURL(
             origin + base + "examples/william-elias/",

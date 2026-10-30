@@ -1,12 +1,16 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { Landing } from "../apps/showcase/Landing";
 import { Example } from "../examples/william_elias/Example";
+import { StoryExample } from "../examples/ink-wash-story/StoryExample";
 /** Shared page components supply both browser and static production semantics. */
 export function renderLanding(): string {
   return renderToStaticMarkup(<Landing />);
 }
 export function renderExample(): string {
   return renderToStaticMarkup(<Example />);
+}
+export function renderStory(): string {
+  return renderToStaticMarkup(<StoryExample />);
 }
 export function injectRoot(shell: string, content: string): string {
   const marker = '<div id="root"></div>';

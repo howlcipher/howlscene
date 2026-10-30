@@ -38,6 +38,8 @@ Lexical state is translated into `RichDocument`; it is not the canonical public 
 
 Heading levels express relative document structure. The first visible section owns an `h1`; later sections own `h2`. `Site` passes child `headingLevel` 2 or 3 into rich text and entry rendering. A stored rich heading level 2 therefore renders as `h2` or `h3` according to context, and stored level 3 renders one level deeper. Standalone `RichText` defaults to level 2; standalone entries default to level 3. Custom renderers should honor the supplied child rank. Empty or whitespace-only section headings display the accessible fallback “Untitled section.”
 
+`Site` also accepts an optional trusted `sceneBackdrop(section, index)` renderer and `showScenery={false}` for consumers with their own local artwork. This keeps decorative image files in the consumer's static asset pipeline instead of embedding them in the portable user-content model. The callback is trusted application code; imported project configuration cannot provide it.
+
 ## Drafts, history, and backups
 
 The editor's `DraftStore` boundary exposes `load`, `save`, and `close`; `IndexedDbDraftStore` accepts an injected factory and database name for testing. It writes one validated project record in an atomic transaction. Save success is reported on transaction completion. Database errors reject rather than silently claiming persistence, and connections close on disposal/version change.

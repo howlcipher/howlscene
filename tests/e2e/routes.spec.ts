@@ -13,4 +13,8 @@ test("product routes lead to a real editor and consumer example", async ({
   await expect(
     page.getByRole("heading", { name: "William Elias", exact: true }),
   ).toBeVisible();
+  await page.goto("/examples/ink-wash-story/");
+  await expect(
+    page.getByRole("heading", { name: "Lorem ipsum dolor sit amet" }),
+  ).toBeVisible();
 });

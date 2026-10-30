@@ -5,7 +5,7 @@ export function Landing() {
         <a href="./" className="wordmark">
           HowlScene<span aria-hidden="true"> / </span>
         </a>
-        <a href="./examples/william-elias/">See a real example ↗</a>
+        <a href="./examples/ink-wash-story/">View the cinematic sample ↗</a>
       </header>
       <main>
         <section className="product-hero">
@@ -23,8 +23,11 @@ export function Landing() {
             <a className="primary-link" href="./editor/">
               Open the editor <span aria-hidden="true">↗</span>
             </a>
+            <a href="./examples/ink-wash-story/">
+              Explore the cinematic sample
+            </a>
             <a href="./examples/william-elias/">
-              Explore the portfolio example
+              Explore the developer portfolio example
             </a>
           </div>
           <p className="product-note">

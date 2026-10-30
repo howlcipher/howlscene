@@ -1,5 +1,13 @@
 # Implementation milestones
 
+## Video-matched visual sample — 2026-10-30
+
+- Reviewed the user-supplied 44.2-second reference video and recorded its full-screen ink-wash scenes, alternating editorial copy, numbered scene selector, and slow atmospheric camera motion.
+- Added `/examples/ink-wash-story/`, a five-scene Lorem Ipsum consumer of the shared `Site` API with five original locally bundled WebP landscapes (1.3 MB total), persistent scene links, full-height sections, pan/zoom and mist drift, and a visible motion control.
+- Added the optional trusted `sceneBackdrop` and `showScenery` renderer props for consumers that ship decorative local scene artwork.
+- Browser coverage checks the root and nested production paths, scene links, five decoded images, mobile overflow, manual motion disable, reduced-motion navigation, and serious/critical axe results. Full workflow verification is pending for this increment.
+- Review and screenshots: [`../reviews/video-reference-match.md`](../reviews/video-reference-match.md), [`../reviews/artifacts/video-match/`](../reviews/artifacts/video-match/).
+
 The current resumption record is [PROGRESS.md](../../PROGRESS.md). Detailed
 commands are preserved in [the executed continuation gate](../evidence/font_final_gate.txt).
 

@@ -33,8 +33,11 @@ establish public v1 readiness.
   run `40889458958`; image-rich export visuals and corrected pinned-font fixtures
   passed hosted run `40956127243` after PR #13 merged as `6efd87b`. GitHub Pages
   is not configured and no live deployment is claimed.
-- The experiment reference video is unavailable, so reference fidelity cannot be
-  scored. No comparison with the independent implementation is claimed.
+- At the initial baseline the reference video was unavailable, so that review did
+  not score fidelity. A user-supplied clip was subsequently reviewed on
+  2026-10-30; a five-scene Lorem Ipsum sample was added from those observations.
+  See [the video reference review](../reviews/video-reference-match.md). No
+  comparison with the independent implementation is claimed.
 - GitHub Pages is not configured and no Actions environments or repository
   enable variable exist. `main` now requires pull requests and the up-to-date
   `verify` check, with the rule enforced for admins. The artifact workflow passed
