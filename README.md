@@ -48,7 +48,7 @@ This runs the checks currently defined in the package scripts. Full release veri
 
 Change the title, heading, and introduction. Select a theme, then choose **Download my website**. Extract the ZIP and upload all extracted files to a static host. See [getting started](docs/users/getting_started.md) and [publishing](docs/users/publishing.md).
 
-The editor offers a five-step beginner guide that can be skipped or reopened from **Getting started**. Drafts are saved in this browser and the editor reports save status. Storage can fail or be cleared. Use **Save project backup** to keep an editable copy. **Download my website** creates a separate published artifact.
+The editor offers a five-step beginner guide that can be skipped or reopened from **Getting started**. Drafts are saved in this browser and the editor reports save status. Storage can fail or be cleared. Use **Save project backup** to keep an editable copy. **Download my website** creates a separate published artifact. The **Cinematic Story** starter uses the shared site configuration and renderer; see [the cinematic story guide](docs/users/cinematic_story.md).
 
 See the [cinematic Lorem Ipsum sample](./examples/ink-wash-story/) for a five-scene ink-wash story with original artwork, scene navigation, scroll-driven landscape crossfades and camera movement, and reduced-motion support. The user-supplied reference clip informed this sample's composition; the clip itself is not included in the repository. See the [video reference review](docs/reviews/video-reference-match.md) for the observed traits and verification notes.
 

@@ -66,6 +66,18 @@ a {
   min-height: 60vh;
   scroll-margin-top: 1rem;
 }
+.howlscene[data-experience="cinematic"] .scene {
+  display: grid;
+  align-content: center;
+  min-height: 100svh;
+  max-width: none;
+  padding: clamp(4rem, 10svh, 8rem) clamp(1.25rem, 8vw, 8rem);
+  isolation: isolate;
+}
+.howlscene[data-experience="cinematic"] .scene-content {
+  width: min(100%, 76rem);
+  margin-inline: auto;
+}
 .scene h1 {
   font-size: clamp(2.5rem, 6cqw, 5.5rem);
   letter-spacing: -0.05em;
@@ -301,6 +313,15 @@ a {
   opacity: 0.16;
   z-index: -1;
 }
+.howlscene[data-experience="cinematic"] .scene-background-image {
+  opacity: 0.54;
+  filter: saturate(0.88);
+}
+.howlscene[data-experience="cinematic"]
+  .scene-copy[data-readable-surface="solid"] {
+  background-color: color-mix(in srgb, var(--scene-bg) 86%, transparent);
+  backdrop-filter: blur(0.35rem);
+}
 .scene-content:has(.scene-background-image) > :not(.scene-background-image) {
   position: relative;
   z-index: 1;
@@ -340,6 +361,10 @@ a {
   }
   .scene {
     padding: 3rem 1.5rem;
+  }
+  .howlscene[data-experience="cinematic"] .scene {
+    min-height: 90svh;
+    padding: 5rem 1.25rem;
   }
   .site-header nav {
     font-size: 0.9rem;

@@ -5,6 +5,7 @@ import {
   sectionAlignments,
   sectionContentWidths,
   sectionImagePositions,
+  cinematicTransitions,
 } from "./registry.js";
 import {
   validateEncodedImage,
@@ -86,10 +87,12 @@ const sectionSchema = z.strictObject({
   animation: z
     .enum(["inherit", "none", "calm", "cinematic", "dynamic"])
     .default("inherit"),
+  transition: z.enum(cinematicTransitions).default("fade"),
   entries: entriesSchema.default([]),
   link: safeUrl.optional(),
   linkLabel: z.string().max(100).default("Learn more"),
   image: z.string().optional(),
+  navigationLabel: z.string().max(100).optional(),
   imageTreatment: z.enum(["inline", "background"]).default("inline"),
   inNavigation: z.boolean().default(true),
   spacing: z.enum(sectionSpacings).default("comfortable"),
@@ -117,6 +120,7 @@ export const siteSchema = z
       )
       .optional(),
     indexable: z.boolean().default(true),
+    experience: z.enum(["standard", "cinematic"]).default("standard"),
     theme: z
       .string()
       .regex(/^[a-z][a-z0-9-]{0,63}$/)
@@ -226,4 +230,33 @@ export const starterSite = parseSite({
       body: "Your ideas deserve a place of their own. Start with a few words, then make this space yours.",
     },
   ],
+});
+
+/** A five-scene starting composition; the validated project remains variable. */
+export const cinematicStarterSite = parseSite({
+  ...starterSite,
+  title: "My cinematic story",
+  description: "A story made of scenes, words, and scenery.",
+  theme: "ink",
+  experience: "cinematic",
+  motion: "cinematic",
+  motionSettings: { intensity: 0.8, speed: 0.9 },
+  sections: [
+    "The beginning",
+    "A new perspective",
+    "The journey",
+    "A turning point",
+    "The ending",
+  ].map((heading, index) => ({
+    id: `scene-${index + 1}`,
+    type: "rich_text",
+    heading,
+    body: "Add your words here, then choose Change scenery to add artwork.",
+    layout: "wide",
+    spacing: "spacious",
+    alignment: index % 2 === 0 ? "start" : "end",
+    contentWidth: "wide",
+    animation: "cinematic",
+    transition: index === 0 ? "fade" : "camera-push",
+  })),
 });

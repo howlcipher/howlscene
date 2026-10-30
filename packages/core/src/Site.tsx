@@ -74,6 +74,7 @@ export function Site({
       className="howlscene"
       style={style}
       data-theme={site.theme}
+      data-experience={site.experience}
       data-theme-card-style={theme.presentation.cardStyle}
       data-theme-heading-treatment={theme.presentation.headingTreatment}
       data-theme-mobile-navigation={theme.presentation.mobileNavigationLayout}
@@ -98,7 +99,7 @@ export function Site({
             .filter((s) => s.inNavigation)
             .map((s) => (
               <a key={s.id} href={`#${s.id}`}>
-                {displayHeading(s.heading)}
+                {displayHeading(s.navigationLabel?.trim() || s.heading)}
               </a>
             ))}
         </nav>
@@ -182,6 +183,7 @@ export function Site({
               key={s.id}
               id={s.id}
               data-scene-motion={s.animation}
+              data-transition={s.transition}
               className={`scene layout-${s.layout} spacing-${s.spacing} align-${s.alignment} width-${s.contentWidth}`}
             >
               {sceneBackdrop?.(s, index)}

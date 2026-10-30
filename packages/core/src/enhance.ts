@@ -3,6 +3,7 @@ import {
   readMotionSettings,
   readThemeParallax,
   resolveMotion,
+  resolveSceneTransition,
   resolveSceneMotion,
   resolvePrimitive,
   type motionPresets,
@@ -140,6 +141,9 @@ export function enhanceSite(root: HTMLElement): () => void {
                 continue;
               }
               const first = !seen.has(scene);
+              const entering =
+                first ||
+                (root.dataset.experience === "cinematic" && previous === 0);
               if (
                 !first &&
                 Math.abs(previous - entry.intersectionRatio) < 0.001
@@ -153,20 +157,48 @@ export function enhanceSite(root: HTMLElement): () => void {
                 settings.intensity,
                 settings.speed,
               );
-              if (first) {
+              if (entering) {
                 seen.add(scene);
-                const entryParams = resolvePrimitive(
-                  "slide",
-                  scenePreset,
-                  settings.intensity,
-                  settings.speed,
-                );
-                play(
-                  scene,
-                  scene.querySelector<HTMLElement>(".scene-content") ?? scene,
-                  entryParams.keyframes,
-                  entryParams.duration,
-                );
+                const target =
+                  scene.querySelector<HTMLElement>(".scene-content") ?? scene;
+                if (root.dataset.experience === "cinematic") {
+                  const candidate = scene.dataset.transition;
+                  const transition =
+                    candidate === "none" ||
+                    candidate === "fade" ||
+                    candidate === "camera-push" ||
+                    candidate === "camera-pan" ||
+                    candidate === "mist-reveal" ||
+                    candidate === "layered-parallax"
+                      ? candidate
+                      : "fade";
+                  const entryParams = resolveSceneTransition(
+                    transition,
+                    scenePreset,
+                    settings.intensity,
+                    settings.speed,
+                  );
+                  if (entryParams.duration)
+                    play(
+                      scene,
+                      target,
+                      entryParams.keyframes,
+                      entryParams.duration,
+                    );
+                } else {
+                  const entryParams = resolvePrimitive(
+                    "slide",
+                    scenePreset,
+                    settings.intensity,
+                    settings.speed,
+                  );
+                  play(
+                    scene,
+                    target,
+                    entryParams.keyframes,
+                    entryParams.duration,
+                  );
+                }
               }
               if (scenery) {
                 scenery.style.opacity = exiting ? "0.7" : "1";

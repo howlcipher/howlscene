@@ -55,9 +55,15 @@ class Node extends EventTarget {
     return { top: 0, bottom: 1000, height: 1000 };
   }
 }
-function fixture(preset = "cinematic", override?: string) {
+function fixture(
+  preset = "cinematic",
+  override?: string,
+  experience = "standard",
+  transition = "fade",
+) {
   const scene = new Node();
   if (override !== undefined) scene.dataset.sceneMotion = override;
+  scene.dataset.transition = transition;
   const content = new Node();
   const scenery = new Node();
   const layer = new Node();
@@ -68,6 +74,7 @@ function fixture(preset = "cinematic", override?: string) {
   layer.dataset.depth = ".5";
   const root = new Node();
   root.dataset.motion = preset;
+  root.dataset.experience = experience;
   root.querySelector = (selector: string) =>
     selector === "button[data-motion-toggle]" ? button : undefined;
   const rootDom = Object.assign(root, {
@@ -177,6 +184,24 @@ it("MOT-004 MOT-005 entry, exit, offscreen cancellation and reentry preserve per
   animation.effects.at(-1)!.finish();
   expect(f.scene.dataset.sceneState).toBe("active");
   expect(f.content.textContent).toBe("Essential readable content");
+  f.dispose();
+});
+
+it("CIN-007 CIN-016 CIN-023 replays the selected cinematic entrance after interruption", () => {
+  const f = fixture("cinematic", undefined, "cinematic", "camera-pan");
+  f.intersect(0.8);
+  expect(animation.effects[0]?.keyframes).toEqual({
+    opacity: [0.55, 1],
+    transform: ["translate3d(32px, 0, 0)", "translate3d(0, 0, 0)"],
+  });
+  const firstEntrance = animation.effects[0]!;
+  f.intersect(0);
+  expect(firstEntrance.cancel).toHaveBeenCalledOnce();
+  f.intersect(0.8);
+  expect(
+    animation.effects.filter((effect) => effect.target === f.content),
+  ).toHaveLength(2);
+  expect(firstEntrance.cancel).toHaveBeenCalledOnce();
   f.dispose();
 });
 
