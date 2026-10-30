@@ -41,9 +41,10 @@ test("the ink-wash sample is a complete navigable Lorem Ipsum story", async ({
       name: "02, Scene 2: Consectetur adipiscing elit",
     }),
   ).toHaveAttribute("aria-current", "location");
-  const beforeDisable = await page
-    .locator("#scene-2 .story-art")
-    .evaluate((image: HTMLImageElement) => getComputedStyle(image).transform);
+  const sceneTwoArt = page.locator(".story-canvas .story-art").nth(1);
+  const beforeDisable = await sceneTwoArt.evaluate(
+    (image: HTMLImageElement) => getComputedStyle(image).transform,
+  );
   expect(beforeDisable).not.toBe("none");
 
   await page.getByRole("button", { name: "Disable animation" }).click();
@@ -56,11 +57,9 @@ test("the ink-wash sample is a complete navigable Lorem Ipsum story", async ({
   );
   await expect
     .poll(() =>
-      page
-        .locator("#scene-2 .story-art")
-        .evaluate(
-          (image: HTMLImageElement) => getComputedStyle(image).transform,
-        ),
+      sceneTwoArt.evaluate(
+        (image: HTMLImageElement) => getComputedStyle(image).transform,
+      ),
     )
     .toBe("none");
 
@@ -90,6 +89,74 @@ test("the story stays readable at a phone width", async ({ page }) => {
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
+});
+
+test("scrolling blends between pinned landscape scenes", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/examples/ink-wash-story/");
+  await page.evaluate(() =>
+    window.scrollTo({ top: window.innerHeight * 0.45, behavior: "instant" }),
+  );
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY))
+    .toBeGreaterThan(300);
+  const scrollPosition = await page.evaluate(() => window.scrollY);
+  expect(scrollPosition).toBeLessThan(500);
+
+  const stage = page.locator(".story-canvas");
+  await expect(stage).toBeVisible();
+  const geometry = await stage.evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return {
+      position: getComputedStyle(element).position,
+      top: Math.round(rect.top),
+      height: Math.round(rect.height),
+      viewport: window.innerHeight,
+    };
+  });
+  expect(geometry.position).toBe("fixed");
+  expect(geometry.top).toBe(0);
+  expect(geometry.height).toBe(geometry.viewport);
+
+  await expect
+    .poll(() =>
+      page
+        .locator(".story-canvas .story-art")
+        .first()
+        .evaluate((image) =>
+          Number(getComputedStyle(image.parentElement!).opacity),
+        ),
+    )
+    .toBeLessThan(0.9);
+  const [firstOpacity, secondOpacity] = await page
+    .locator(".story-canvas .story-art")
+    .evaluateAll((images) =>
+      images
+        .slice(0, 2)
+        .map((image) => Number(getComputedStyle(image.parentElement!).opacity)),
+    );
+  expect(firstOpacity).toBeGreaterThan(0.1);
+  expect(firstOpacity).toBeLessThan(0.9);
+  expect(secondOpacity).toBeGreaterThan(0.1);
+  expect(secondOpacity).toBeLessThan(0.9);
+
+  const copyPanels = page.locator(".story-copy-panel");
+  const [firstCopyOpacity, secondCopyOpacity] = await copyPanels.evaluateAll(
+    (panels) =>
+      panels
+        .slice(0, 2)
+        .map((panel) => Number(getComputedStyle(panel).opacity)),
+  );
+  expect(firstCopyOpacity).toBeGreaterThan(0.1);
+  expect(firstCopyOpacity).toBeLessThan(0.9);
+  expect(secondCopyOpacity).toBeGreaterThan(0.1);
+  expect(secondCopyOpacity).toBeLessThan(0.9);
+  const copyGeometry = await copyPanels.first().evaluate((panel) => {
+    const rect = panel.getBoundingClientRect();
+    return { top: rect.top, bottom: rect.bottom, viewport: innerHeight };
+  });
+  expect(copyGeometry.top).toBeGreaterThan(0);
+  expect(copyGeometry.bottom).toBeLessThan(copyGeometry.viewport);
 });
 
 test("reduced motion keeps the scene static and content navigable", async ({

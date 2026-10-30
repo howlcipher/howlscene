@@ -4,23 +4,157 @@
 
 html:has(.story-demo) {
   scroll-behavior: smooth;
-  scroll-snap-type: y proximity;
 }
 
 .story-demo {
   --story-paper: #f2eddf;
   --story-ink: #282b25;
   --story-red: #a34c40;
+  position: relative;
+  isolation: isolate;
   color: var(--story-ink);
   background: var(--story-paper);
 }
 
 .story-demo .howlscene {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   min-height: 100svh;
-  background: var(--story-paper);
+  background: transparent;
   color: var(--story-ink);
   font-family: Georgia, "Times New Roman", serif;
+}
+
+.story-canvas {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  background: #d9d6ca;
+  pointer-events: none;
+}
+
+.story-canvas::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgb(242 237 223 / 86%) 0%,
+      rgb(242 237 223 / 75%) 24%,
+      rgb(242 237 223 / 42%) 43%,
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(242 237 223 / 42%),
+      transparent 24%,
+      transparent 76%,
+      rgb(36 39 34 / 23%)
+    );
+  content: "";
+}
+
+.story-canvas::before {
+  position: absolute;
+  z-index: 3;
+  inset: -6%;
+  background:
+    radial-gradient(
+      ellipse at 69% 43%,
+      rgb(250 248 238 / 38%),
+      transparent 38%
+    ),
+    radial-gradient(ellipse at 43% 88%, rgb(250 248 238 / 27%), transparent 42%);
+  content: "";
+  opacity: 0.42;
+  filter: blur(18px);
+  transform: translate3d(0, 0, 0);
+  transition: opacity 700ms ease;
+}
+
+.story-copy-stage {
+  position: fixed;
+  z-index: 2;
+  inset: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.story-demo.is-enhanced .story-copy-stage {
+  visibility: visible;
+}
+
+.story-demo.is-enhanced .howlscene > main .scene-content {
+  opacity: 0 !important;
+  transform: none !important;
+  pointer-events: none;
+}
+
+.story-copy-panel {
+  position: absolute;
+  top: 50%;
+  left: clamp(1.25rem, 9vw, 9rem);
+  width: min(33rem, 45vw);
+  max-width: calc(100% - 8rem);
+  margin: 0;
+  padding: clamp(1.25rem, 3.2vw, 3.2rem);
+  border: 0;
+  border-inline-start: 1px solid rgb(68 65 55 / 44%);
+  border-radius: 0;
+  background: rgb(246 242 230 / 82%);
+  box-shadow: none;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  color: #292b25;
+  opacity: 0;
+  text-align: left;
+  transform: translate3d(0, calc(-50% + var(--story-panel-offset, 0px)), 0);
+  transition: opacity 90ms linear;
+}
+
+.story-copy-panel:first-child {
+  opacity: 1;
+}
+
+.story-copy-panel.align-end {
+  right: clamp(2.7rem, 9vw, 9rem);
+  left: auto;
+  border-inline-start: 0;
+  border-inline-end: 1px solid rgb(68 65 55 / 44%);
+  text-align: right;
+}
+
+.story-copy-panel .eyebrow {
+  margin: 0 0 1.1rem;
+  color: #735e4c;
+  font:
+    0.65rem system-ui,
+    sans-serif;
+  letter-spacing: 0.2em;
+}
+
+.story-copy-panel h1,
+.story-copy-panel h2 {
+  max-width: 10ch;
+  margin: 0 0 1.2rem;
+  font-size: clamp(2.25rem, 4.1vw, 4.5rem);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  line-height: 0.99;
+}
+
+.story-copy-panel p:not(.eyebrow) {
+  max-width: 41ch;
+  margin: 0 0 0.95rem;
+  font-size: clamp(0.92rem, 1.05vw, 1.05rem);
+  line-height: 1.72;
+}
+
+.story-copy-panel p:last-child {
+  margin-bottom: 0;
 }
 
 .story-demo .site-header {
@@ -92,10 +226,6 @@ html:has(.story-demo) {
   color: #6e322c;
 }
 
-.story-demo .howlscene > main {
-  scroll-snap-type: y proximity;
-}
-
 .story-demo .scene {
   display: flex;
   align-items: center;
@@ -106,89 +236,37 @@ html:has(.story-demo) {
   margin: 0;
   padding: clamp(6.5rem, 13vh, 9rem) clamp(1.25rem, 9vw, 9rem);
   scroll-margin: 0;
-  scroll-snap-align: start;
   isolation: isolate;
 }
 
 .story-demo .story-backdrop {
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   inset: 0;
   overflow: hidden;
-  background: #d9d6ca;
+  opacity: 0;
+  transition: opacity 90ms linear;
+  will-change: opacity;
 }
 
-.story-demo .story-backdrop::after {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      rgb(242 237 223 / 86%) 0%,
-      rgb(242 237 223 / 75%) 24%,
-      rgb(242 237 223 / 42%) 43%,
-      transparent 70%
-    ),
-    linear-gradient(
-      180deg,
-      rgb(242 237 223 / 42%),
-      transparent 24%,
-      transparent 76%,
-      rgb(36 39 34 / 23%)
-    );
-  content: "";
-}
-
-.story-demo .story-backdrop::before {
-  position: absolute;
-  z-index: 1;
-  inset: -6%;
-  background:
-    radial-gradient(
-      ellipse at 69% 43%,
-      rgb(250 248 238 / 38%),
-      transparent 38%
-    ),
-    radial-gradient(ellipse at 43% 88%, rgb(250 248 238 / 27%), transparent 42%);
-  content: "";
-  opacity: 0.28;
-  filter: blur(18px);
-  transform: translate3d(1.2%, 0, 0);
-  transition:
-    opacity 1.5s ease,
-    transform 16s ease-out;
-  pointer-events: none;
+.story-demo .story-backdrop:first-child {
+  opacity: 1;
 }
 
 .story-demo .story-art {
-  position: relative;
+  position: absolute;
   z-index: 0;
   display: block;
+  inset: -4%;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  opacity: 0.68;
-  transform: scale(1.09) translate3d(0.45%, 0, 0);
-  transition:
-    opacity 1.1s ease,
-    filter 1.1s ease,
-    transform 14s cubic-bezier(0.2, 0.55, 0.25, 1);
-  filter: saturate(0.83) contrast(0.96);
-}
-
-.story-demo .scene[data-scene-state="entering"] .story-art,
-.story-demo .scene[data-scene-state="active"] .story-art {
   opacity: 1;
-  transform: scale(1.015) translate3d(-0.35%, 0, 0);
-  filter: saturate(0.94) contrast(1);
-}
-
-.story-demo .scene[data-scene-state="entering"] .story-backdrop::before,
-.story-demo .scene[data-scene-state="active"] .story-backdrop::before {
-  opacity: 0.55;
-  transform: translate3d(-1%, 0, 0);
+  transform: scale(1.08);
+  transition: filter 500ms ease;
+  filter: saturate(0.83) contrast(0.96);
+  will-change: transform;
 }
 
 .story-demo .scene-content {
@@ -383,7 +461,7 @@ html:has(.story-demo) {
     padding: 6.4rem 2.7rem 5.5rem 1rem;
   }
 
-  .story-demo .story-backdrop::after {
+  .story-canvas::after {
     background:
       linear-gradient(
         90deg,
@@ -398,6 +476,30 @@ html:has(.story-demo) {
     width: 100%;
     padding: 1.2rem 1rem;
     background: rgb(246 242 230 / 79%);
+  }
+
+  .story-copy-panel,
+  .story-copy-panel.align-end {
+    right: 2.7rem;
+    left: 1rem;
+    width: auto;
+    max-width: none;
+    padding: 1.2rem 1rem;
+    border-inline-start: 1px solid rgb(68 65 55 / 44%);
+    border-inline-end: 0;
+    background: rgb(246 242 230 / 88%);
+    text-align: left;
+  }
+
+  .story-copy-panel h1,
+  .story-copy-panel h2 {
+    max-width: 9ch;
+    font-size: clamp(2.25rem, 11vw, 3.35rem);
+  }
+
+  .story-copy-panel p:not(.eyebrow) {
+    font-size: 0.9rem;
+    line-height: 1.62;
   }
 
   .story-demo .scene h1,
@@ -490,23 +592,13 @@ html:has(.story-demo) {
     transform: none;
   }
 
-  .story-demo .story-backdrop::before {
-    transform: none;
+  .story-copy-panel {
+    transform: translateY(-50%);
   }
 }
 
-.story-demo .howlscene[data-motion-enabled="false"] .story-art {
-  transform: none;
-  transition: none;
-}
-
-.story-demo .howlscene[data-motion-enabled="false"] .story-backdrop::before {
-  transform: none;
-  transition: none;
-}
-
 @media (forced-colors: active) {
-  .story-demo .story-backdrop {
+  .story-canvas {
     display: none;
   }
 

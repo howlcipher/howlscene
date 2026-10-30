@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Site, enhanceSite } from "../../packages/core/src/index";
-import type { SectionConfig } from "../../packages/core/src/config";
 import { storyArtwork, storySite } from "./site";
 import type { StorySceneId } from "./site";
 
@@ -13,89 +12,191 @@ const artworkUrls: Record<StorySceneId, string> = {
 };
 const creditsUrl = "./assets/CREDITS.txt";
 
-function SceneBackdrop({
-  section,
-  index,
-}: {
-  section: SectionConfig;
-  index: number;
-}) {
-  const id = section.id as StorySceneId;
-  const artworkKey = storyArtwork[id];
-  if (!artworkKey) return null;
+function StoryCanvas() {
   return (
-    <div className="story-backdrop" aria-hidden="true">
-      <img
-        className="story-art"
-        src={artworkUrls[id]}
-        alt=""
-        loading={index === 0 ? "eager" : "lazy"}
-        fetchPriority={index === 0 ? "high" : "auto"}
-        decoding="async"
-      />
+    <div className="story-canvas" aria-hidden="true">
+      {storySite.sections.map((section, index) => {
+        const id = section.id as StorySceneId;
+        if (!storyArtwork[id]) return null;
+        return (
+          <div className="story-backdrop" data-story-scene={id} key={id}>
+            <img
+              className="story-art"
+              src={artworkUrls[id]}
+              alt=""
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchPriority={index === 0 ? "high" : "auto"}
+              decoding="async"
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function StoryCopyStage() {
+  return (
+    <div className="story-copy-stage" aria-hidden="true">
+      {storySite.sections.map((section, index) => {
+        const Heading = index === 0 ? "h1" : "h2";
+        return (
+          <section
+            className={`scene-copy story-copy-panel align-${section.alignment}`}
+            data-story-copy-scene={section.id}
+            key={section.id}
+          >
+            <p className="eyebrow">{section.type.replace(/[_-]/g, " ")}</p>
+            <Heading>{section.heading}</Heading>
+            {section.body.split("\n").map((paragraph, paragraphIndex) => (
+              <p key={paragraphIndex}>{paragraph}</p>
+            ))}
+          </section>
+        );
+      })}
     </div>
   );
 }
 
 export function StoryExample() {
   const host = useRef<HTMLDivElement>(null);
-  const [activeId, setActiveId] = useState<StorySceneId | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const root = host.current?.querySelector<HTMLElement>(".howlscene");
-    if (!root) return;
+    const canvas = host.current?.querySelector<HTMLElement>(".story-canvas");
+    const copyStage =
+      host.current?.querySelector<HTMLElement>(".story-copy-stage");
+    if (!root || !canvas || !copyStage) return;
 
     const disposeMotion = enhanceSite(root);
+    host.current?.classList.add("is-enhanced");
     const scenes = Array.from(root.querySelectorAll<HTMLElement>(".scene"));
-    if (typeof IntersectionObserver === "undefined") return disposeMotion;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort(
-            (left, right) => right.intersectionRatio - left.intersectionRatio,
-          )
-          .at(0)?.target as HTMLElement | undefined;
-        const nextId = visible?.id;
-        if (nextId && Object.hasOwn(storyArtwork, nextId))
-          setActiveId(nextId as StorySceneId);
-      },
-      { threshold: [0.35, 0.55, 0.75] },
+    const layers = Array.from(
+      canvas.querySelectorAll<HTMLElement>(".story-backdrop"),
     );
-    scenes.forEach((scene) => observer.observe(scene));
+    const images = layers.map((layer) =>
+      layer.querySelector<HTMLElement>(".story-art"),
+    );
+    const copyLayers = Array.from(
+      copyStage.querySelectorAll<HTMLElement>(".story-copy-panel"),
+    );
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+
+    const updateFromScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        if (!scenes.length || !layers.length) return;
+
+        let segmentIndex = scenes.length - 1;
+        let progress = 0;
+        for (let index = 0; index < scenes.length - 1; index += 1) {
+          const currentTop = scenes[index]!.getBoundingClientRect().top;
+          const nextTop = scenes[index + 1]!.getBoundingClientRect().top;
+          if (currentTop <= 0 && nextTop >= 0) {
+            segmentIndex = index;
+            progress = Math.min(
+              1,
+              Math.max(0, -currentTop / Math.max(1, nextTop - currentTop)),
+            );
+            break;
+          }
+          if (currentTop > 0) {
+            segmentIndex = index;
+            progress = 0;
+            break;
+          }
+        }
+
+        const motionDisabled =
+          root.dataset.motionEnabled === "false" || reducedMotion.matches;
+        const blend = motionDisabled ? (progress < 0.5 ? 0 : 1) : progress;
+        layers.forEach((layer, index) => {
+          const opacity =
+            index === segmentIndex
+              ? 1 - blend
+              : index === segmentIndex + 1
+                ? blend
+                : segmentIndex === scenes.length - 1 && index === segmentIndex
+                  ? 1
+                  : 0;
+          layer.style.opacity = String(opacity);
+          const image = images[index];
+          if (!image) return;
+          const imageProgress =
+            index < segmentIndex ? 1 : index === segmentIndex ? progress : 0;
+          image.style.transform = motionDisabled
+            ? "none"
+            : `translate3d(0, ${-2.4 * imageProgress}vh, 0) scale(${1.08 - 0.06 * imageProgress})`;
+        });
+        copyLayers.forEach((panel, index) => {
+          const opacity =
+            index === segmentIndex
+              ? 1 - blend
+              : index === segmentIndex + 1
+                ? blend
+                : segmentIndex === scenes.length - 1 && index === segmentIndex
+                  ? 1
+                  : 0;
+          panel.style.opacity = String(opacity);
+          const panelProgress =
+            index === segmentIndex ? progress : 1 - progress;
+          const direction = index === segmentIndex ? -1 : 1;
+          panel.style.setProperty(
+            "--story-panel-offset",
+            motionDisabled ? "0px" : `${direction * panelProgress * 12}px`,
+          );
+        });
+
+        const nextIndex = Math.min(
+          scenes.length - 1,
+          segmentIndex + (blend >= 0.5 ? 1 : 0),
+        );
+        setActiveIndex((current) =>
+          current === nextIndex ? current : nextIndex,
+        );
+      });
+    };
+
+    const motionObserver = new MutationObserver(updateFromScroll);
+    motionObserver.observe(root, {
+      attributes: true,
+      attributeFilter: ["data-motion-enabled"],
+    });
+    window.addEventListener("scroll", updateFromScroll, { passive: true });
+    window.addEventListener("resize", updateFromScroll);
+    reducedMotion.addEventListener("change", updateFromScroll);
+    updateFromScroll();
 
     return () => {
-      observer.disconnect();
+      host.current?.classList.remove("is-enhanced");
+      window.removeEventListener("scroll", updateFromScroll);
+      window.removeEventListener("resize", updateFromScroll);
+      reducedMotion.removeEventListener("change", updateFromScroll);
+      motionObserver.disconnect();
+      if (frame) window.cancelAnimationFrame(frame);
       disposeMotion();
     };
   }, []);
 
-  const selectedIndex = storySite.sections.findIndex(
-    (section) => section.id === activeId,
-  );
-  const activeIndex = Math.max(0, selectedIndex);
-
   return (
     <div className="story-demo" ref={host}>
+      <StoryCanvas />
+      <StoryCopyStage />
       <div className="story-footer-links">
         <a href="../../">← HowlScene</a>
         <a href={creditsUrl}>Artwork notes</a>
       </div>
-      <Site
-        site={storySite}
-        showScenery={false}
-        sceneBackdrop={(section, index) => (
-          <SceneBackdrop section={section} index={index} />
-        )}
-      />
+      <Site site={storySite} showScenery={false} />
       <nav className="story-index" aria-label="Story scenes">
         {storySite.sections.map((section, index) => (
           <a
             key={section.id}
             href={`#${section.id}`}
             aria-label={`${String(index + 1).padStart(2, "0")}, Scene ${index + 1}: ${section.heading}`}
-            aria-current={activeId === section.id ? "location" : undefined}
+            aria-current={activeIndex === index ? "location" : undefined}
           >
             <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
           </a>
