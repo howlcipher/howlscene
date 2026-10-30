@@ -17,6 +17,20 @@ No hosted deployment or public v1 release is established. Later hosted gates
 include cross-engine export run `40963619832`; subsequent edits still require
 fresh verification. Comparison with the independent track remains pending.
 
+## Current accessibility export reflow increment
+
+The `A11Y-007` scenario extends 200% root text sizing at a 320 CSS-pixel
+viewport to the actual no-JavaScript static ZIPs for Modern Professional, Ink
+Wash, and Cyberpunk. Its fixture includes long section copy and a project card;
+the test checks the document, navigation, copy panels and card layout for
+horizontal overflow, and confirms headings and body copy remain visible. This
+behavior already passed, so the increment adds coverage without production CSS
+changes or a claimed RED phase. The focused test passed. The full local check
+passed 152 unit tests and 53 of 54 browser scenarios; WebKit could not launch on
+the host due missing system libraries. Separate SDK, license and vulnerability
+checks passed. Raw results are in the linked evidence from `PROGRESS.md`; hosted
+verification is pending.
+
 GitHub Pages preparation is implemented on `build/github-pages-preparation`.
 The local full gate passes with 150 unit tests, 50 browser tests, 89.54% overall
 branch coverage, independent package consumers, license review and zero

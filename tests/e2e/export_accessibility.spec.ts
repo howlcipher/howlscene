@@ -15,7 +15,7 @@ const types: Record<string, string> = {
   webp: "image/webp",
 };
 
-test("A11Y-008 exported themes retain keyboard and automated accessibility under reduced motion", async ({
+test("A11Y-007 A11Y-008 exported themes reflow with large text and retain accessibility under reduced motion", async ({
   page,
   browser,
 }) => {
@@ -56,7 +56,25 @@ test("A11Y-008 exported themes retain keyboard and automated accessibility under
   await page.getByLabel("Edit heading").last().fill("More about this work");
   await page
     .getByRole("textbox", { name: "Rich text introduction" })
-    .fill("A short description remains useful with movement reduced.");
+    .fill(
+      "A thoughtful portfolio makes its work easy to explore on every screen. ".repeat(
+        5,
+      ),
+    );
+  await page.getByLabel("New section type").selectOption("projects");
+  await page.getByRole("button", { name: "Add a section" }).click();
+  await page.getByLabel("Edit heading").last().fill("Selected work");
+  await page.getByRole("button", { name: "Add item", exact: true }).click();
+  await page
+    .getByLabel("Item title")
+    .fill("A carefully documented responsive project");
+  await page
+    .getByLabel("Item description")
+    .fill(
+      "A long description helps people understand the project without relying on decorative motion. ".repeat(
+        3,
+      ),
+    );
 
   const files = new Map<string, Buffer>();
   let activeTheme: (typeof themes)[number] = themes[0];
@@ -85,6 +103,7 @@ test("A11Y-008 exported themes retain keyboard and automated accessibility under
   );
 
   let context: Awaited<ReturnType<typeof browser.newContext>> | undefined;
+  let zoomContext: Awaited<ReturnType<typeof browser.newContext>> | undefined;
   try {
     const address = server.address();
     if (!address || typeof address === "string") throw Error("No server");
@@ -106,7 +125,12 @@ test("A11Y-008 exported themes retain keyboard and automated accessibility under
       reducedMotion: "reduce",
       javaScriptEnabled: true,
     });
+    zoomContext = await browser.newContext({
+      reducedMotion: "reduce",
+      javaScriptEnabled: false,
+    });
     const exported = await context.newPage();
+    const zoomed = await zoomContext.newPage();
     const origin = `http://127.0.0.1:${address.port}`;
     for (const theme of themes) {
       activeTheme = theme;
@@ -153,9 +177,69 @@ test("A11Y-008 exported themes retain keyboard and automated accessibility under
           `${theme} exported site at ${width}px must not overflow horizontally`,
         ).toBe(true);
       }
+
+      await zoomed.setViewportSize({ width: 320, height: 900 });
+      await zoomed.goto(`${origin}${mount}${theme}/`);
+      await zoomed.evaluate(() => {
+        document.documentElement.style.fontSize = "200%";
+      });
+      await expect(
+        zoomed.getByRole("heading", { name: "A shared landscape" }),
+      ).toBeVisible();
+      await expect(
+        zoomed.getByRole("heading", { name: "Selected work" }),
+      ).toBeVisible();
+      await expect(
+        zoomed.getByRole("heading", {
+          name: "A carefully documented responsive project",
+        }),
+      ).toBeVisible();
+      await expect(
+        zoomed.locator(".scene-copy").filter({
+          hasText: "A thoughtful portfolio makes its work easy to explore",
+        }),
+      ).toBeVisible();
+      const overflow = await zoomed.evaluate(() => {
+        const selectors = [
+          "html",
+          "body",
+          ".howlscene",
+          ".site-header",
+          ".site-header nav",
+          ".scene",
+          ".scene-copy",
+          ".entry-cards",
+          ".entry-cards article",
+        ];
+        return Object.fromEntries(
+          selectors.map((selector) => {
+            const element = document.querySelector<HTMLElement>(selector);
+            return [
+              selector,
+              element ? element.scrollWidth <= element.clientWidth + 1 : false,
+            ];
+          }),
+        );
+      });
+      expect(overflow, `${theme} export at 200% text and 320px`).toEqual(
+        Object.fromEntries(
+          [
+            "html",
+            "body",
+            ".howlscene",
+            ".site-header",
+            ".site-header nav",
+            ".scene",
+            ".scene-copy",
+            ".entry-cards",
+            ".entry-cards article",
+          ].map((selector) => [selector, true]),
+        ),
+      );
     }
   } finally {
     await context?.close();
+    await zoomContext?.close();
     await new Promise<void>((resolveClose, reject) =>
       server.close((error) => (error ? reject(error) : resolveClose())),
     );

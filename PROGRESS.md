@@ -206,6 +206,26 @@ device evidence and is not directly comparable to the earlier Node 24 sample.
 Raw output: [`production_mobile_performance_scene_surface.json`](docs/evidence/production_mobile_performance_scene_surface.json).
 Human testing on older hardware remains open.
 
+## Current increment: exported text reflow coverage
+
+`A11Y-007` now exercises the actual static ZIPs for Modern Professional, Ink
+Wash, and Cyberpunk at a 320 CSS-pixel viewport with 200% root text sizing and
+JavaScript disabled. The fixture includes long section copy and a project card;
+the browser verifies content remains visible and that the document, navigation,
+copy panels, card grid, and card do not overflow horizontally. The behavior was
+already supported, so this coverage-only addition has no fabricated RED-phase
+claim and no production CSS change. Focused Chromium verification passed. The
+full local check passed formatting, lint, strict types, build/prerender and all
+152 unit tests (94.88% statements, 89.68% branches); 53 of 54 browser scenarios
+passed. The unavailable local WebKit launch was the only failure and hosted CI
+is required to cover it. Independent SDK checks, all 267 license checks, and
+the zero-vulnerability audit passed separately. See
+[`export_text_reflow_host_local_attempt.txt`](docs/evidence/export_text_reflow_host_local_attempt.txt),
+[`export_text_reflow_focused.txt`](docs/evidence/export_text_reflow_focused.txt),
+and [`export_text_reflow_local_extras.txt`](docs/evidence/export_text_reflow_local_extras.txt).
+Browser zoom, human screen reader, and nontechnical usability reviews remain
+open. Hosted checks are pending.
+
 ## Published development checkpoint
 
 Commit `ce5a57c` is pushed to the standalone repository's `main` branch.

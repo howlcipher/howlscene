@@ -1,0 +1,26 @@
+Exported 200% text reflow supplemental local checks
+
+Environment: Node v22.22.1, npm 12.0.2, Linux x64. npm emitted its runtime
+compatibility warning because npm 12 expects Node 22.22.2 or newer.
+
+The focused browser scenario passed in Chromium for Modern Professional, Ink
+Wash, and Cyberpunk. Its actual exported ZIPs were served at a nested path with
+JavaScript disabled. It checked long copy and project-card visibility, 320 CSS
+pixels, 200% root text sizing, and horizontal overflow in the document,
+navigation, section copy, entry grid, and card.
+
+`npm run sdk:check` passed, including independent package installation and the
+custom-theme browser-generated ZIP checks with JavaScript enabled and disabled.
+`npm run licenses` inspected 267 locked packages and passed the configured
+allowlist. `npm audit --audit-level=moderate` found zero vulnerabilities.
+
+The integrated `npm run check` passed formatting, lint, strict TypeScript,
+production build/prerender and all 152 unit tests (94.88% statement, 89.68%
+branch coverage). Of 54 browser scenarios, 53 passed. The sole failure was the
+WebKit browser launch because this host lacks Playwright's GTK/WebKit/media
+libraries; the pinned hosted verification is required for that engine. The full
+captured output is in `export_text_reflow_host_local_attempt.txt`.
+
+No production behavior changed in this increment. The existing implementation
+already met this exported reflow scenario, so no RED-phase failure is claimed.
+Browser zoom, assistive-technology and nontechnical user review remain open.

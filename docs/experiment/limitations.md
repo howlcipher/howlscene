@@ -9,8 +9,10 @@ establish public v1 readiness.
 - Browser automation covers the complete create/edit/restore/backup/export/static
   serving journey, keyboard editing, reduced motion, save failures, competing
   tabs, and serious/critical automated accessibility checks on actual exported
-  theme ZIPs at phone and desktop widths. It does not replace nontechnical
-  usability, screen-reader, browser-zoom or text-over-artwork review.
+  theme ZIPs at phone and desktop widths. Exported long text and project cards
+  also reflow at 200% root text sizing and 320 CSS pixels with JavaScript
+  disabled. This does not simulate browser zoom or replace nontechnical
+  usability, screen-reader, or human composition review.
 - Nine deterministic preview screenshots and nine image-rich/long-form exported
   screenshots pass comparisons across the three themes and 375/768/1440 px
   viewports. Representative exported captures have been visually inspected for

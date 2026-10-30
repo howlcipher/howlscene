@@ -1,0 +1,13 @@
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 npx
+npm notice run 'playwright' test tests/e2e/export_accessibility.spec.ts --grep A11Y-007
+[WebServer] (node:873905) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:874078) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/export_accessibility.spec.ts:18:1 › A11Y-007 A11Y-008 exported themes reflow with large text and retain accessibility under reduced motion (6.1s)
+
+  1 passed (9.2s)
