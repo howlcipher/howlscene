@@ -74,7 +74,11 @@ const backup = serializeBackup(site, themeRegistry);
 const restored = importBackup(backup, themeRegistry);
 ```
 
-`exportWebsite` returns ZIP bytes. Your application owns download UI and any object URL cleanup. Its export options use the same trusted registries as preview; rendering custom components on a static export must not depend on browser-only globals or effects. Unknown scenery names receive the Modern illustration fallback. External resources or custom CSS introduced by developer components are the developer's responsibility; the exporter does not discover and bundle arbitrary module assets.
+`exportWebsite` returns ZIP bytes. Your application owns download UI and any object URL cleanup. Its export options use the same trusted registries as preview; rendering custom components on a static export must not depend on browser-only globals or effects. Unknown scenery names receive the Modern illustration fallback. Registered custom-layout CSS is included with the renderer. External resources, arbitrary component CSS, and module assets are not discovered or bundled automatically.
+
+For a custom layout component, pass one `createLayoutRegistry` result to
+`parseSite`, `Site`, `exportWebsite`, and backup serialization/import. See the
+[custom layout guide](custom_layouts.md) for a complete typed example.
 
 Without an explicit registry, export and backup functions support bundled themes. A backup records theme identity and content, not executable component code or a registry implementation. Reopening a custom-theme backup therefore requires the same compatible registry. The standard editor uses built-in registries and safely rejects unsupported themes.
 

@@ -28,7 +28,7 @@ HTML or unrestricted CSS.
 
 Implemented manifest layer references replace theme-name scenery branches while preserving bundled artwork and styling. Each layer has a stable ID, registered artwork reference, bounded depth and opacity. Registries and descriptors are immutable. A cloned built-in manifest retains its layers; omitting layers on a token-only manifest uses Modern defaults, while an explicit empty list renders no artwork. See the canonical [developer layer guide](../developers/theme_layers.md) for APIs and authoring constraints.
 
-Additional presentation parameters must have small validated contracts rather than arbitrary style objects. Broader theme metadata, external asset collection, arbitrary payload schemas, and general layout registration remain follow-up work.
+Additional presentation parameters must have small validated contracts rather than arbitrary style objects. Broader theme metadata, external asset collection, and arbitrary payload schemas remain follow-up work. Trusted layout registration is implemented separately in [ADR 017](adr_017_trusted_layout_renderers.md).
 
 Use immutable per-consumer registries and explicit arguments. Rendering and
 export must receive the same definitions; backups must reject unsupported

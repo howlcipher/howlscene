@@ -9,11 +9,11 @@ features; unfinished acceptance requirements are tracked in
 1. Keep hosted CI reproducible as acceptance grows. The image-rich exported
    visual fixtures, with explicitly pinned fonts, passed hosted run
    `40956127243`; future baseline changes still require a reviewed hosted pass.
-2. Extend the validated custom-section registration contract to cover any
-   remaining layout and editor integration needs. The first developer API now
-   supports trusted custom renderers using portable v1 fields, and creators can
-   override the shared card/navigation presentation choices. Arbitrary payload
-   schemas, custom editor forms, and a plugin system remain outside scope.
+2. Extend the validated section/layout contracts where v1 consumers need them.
+   Trusted custom section and layout renderers now use portable fields and
+   shared semantic slots; creators can override shared card/navigation
+   presentation choices. Custom renderer controls in the standard editor,
+   arbitrary payload schemas, and a plugin system remain outside scope.
 3. Functional static-export coverage now exercises image-rich long content in
    Chromium, Firefox and WebKit under nested hosting with JavaScript disabled.
    Hosted run `40963619832` passed all three engines; human cross-platform visual

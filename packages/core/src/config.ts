@@ -1,7 +1,6 @@
 import { z } from "zod";
 import {
   sectionTypes,
-  layoutIds,
   sectionSpacings,
   sectionAlignments,
   sectionContentWidths,
@@ -15,6 +14,7 @@ import {
 import { richTextSchema, safeUrl } from "./rich_text.js";
 import { themes, themeOverridesSchema, type ThemeRegistry } from "./themes.js";
 import { entriesSchema, type SectionRendererRegistry } from "./sections.js";
+import { defaultLayoutRegistry, type LayoutRegistry } from "./layouts.js";
 const imageFields = {
   mime: z.enum(["image/png", "image/jpeg", "image/webp"]),
   data: z.string().max(7000000),
@@ -100,7 +100,10 @@ const sectionSchema = z.strictObject({
   richText: richTextSchema.default([]),
   body: z.string().max(30000).default(""),
   visible: z.boolean().default(true),
-  layout: z.enum(layoutIds).default("centered"),
+  layout: z
+    .string()
+    .regex(/^[a-z][a-z0-9-]{0,63}$/)
+    .default("centered"),
 });
 export const siteSchema = z
   .strictObject({
@@ -171,6 +174,7 @@ export function parseSite(
   input: unknown,
   themeRegistry: ThemeRegistry = themes,
   sectionRegistry?: SectionRendererRegistry,
+  layoutRegistry: LayoutRegistry = defaultLayoutRegistry,
 ): SiteConfig {
   if (
     typeof input === "object" &&
@@ -197,6 +201,17 @@ export function parseSite(
       throw Error(
         `This project uses an unsupported custom section${section.customType ? ` '${section.customType}'` : ""}. Register it before rendering.`,
       );
+  for (const section of parsed.sections) {
+    const definition = layoutRegistry[section.layout];
+    if (!definition || !Object.hasOwn(layoutRegistry, section.layout))
+      throw Error(
+        `This project uses an unsupported layout '${section.layout}'. Register it before rendering.`,
+      );
+    if (!definition.sectionTypes.includes(section.type))
+      throw Error(
+        `Layout '${section.layout}' is not supported for section type '${section.type}'.`,
+      );
+  }
   return parsed;
 }
 export const starterSite = parseSite({

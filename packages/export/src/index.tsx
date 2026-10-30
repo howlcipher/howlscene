@@ -22,6 +22,8 @@ import {
   type ArtworkRegistry,
   type ThemeRegistry,
   type SectionRendererRegistry,
+  type LayoutRegistry,
+  collectLayoutStyles,
 } from "../../core/src/index.js";
 import css from "../../core/src/site.css?raw";
 const archiveDate = new Date("2000-01-01T00:00:00Z");
@@ -33,6 +35,7 @@ export interface ExportOptions {
   artworkRegistry?: ArtworkRegistry;
   themeRegistry?: ThemeRegistry;
   sectionRegistry?: SectionRendererRegistry;
+  layoutRegistry?: LayoutRegistry;
 }
 /** Validates before packaging; generated content never depends on the editor. */
 export async function exportWebsite(
@@ -44,7 +47,13 @@ export async function exportWebsite(
     options.themeRegistry ?? themes,
     artworkRegistry,
   );
-  const site = parseSite(input, themeRegistry, options.sectionRegistry);
+  const site = parseSite(
+    input,
+    themeRegistry,
+    options.sectionRegistry,
+    options.layoutRegistry,
+  );
+  const layoutStyles = collectLayoutStyles(site, options.layoutRegistry);
   for (const asset of site.assets)
     for (const image of [asset, ...(asset.variants ?? [])])
       validateEncodedImage(image.data, image.mime);
@@ -72,14 +81,21 @@ export async function exportWebsite(
           )}
           <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
           <link rel="stylesheet" href="./site.css" />
+          {layoutStyles.length > 0 && (
+            <style data-howls-layout-styles>{layoutStyles.join("\n")}</style>
+          )}
         </head>
         <body>
           <Site
             site={site}
             themeRegistry={themeRegistry}
             artworkRegistry={artworkRegistry}
+            includeLayoutStyles={false}
             {...(options.sectionRegistry
               ? { sectionRegistry: options.sectionRegistry }
+              : {})}
+            {...(options.layoutRegistry
+              ? { layoutRegistry: options.layoutRegistry }
               : {})}
             assetUrl={(id, width) => {
               const asset = site.assets.find((a) => a.id === id)!;

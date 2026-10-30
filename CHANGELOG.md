@@ -26,6 +26,7 @@
 - Placed all standard section copy on resolved theme-colored surfaces so layered scenery and uploaded backgrounds cannot reduce measured text contrast in preview or static export.
 - Use the resolved theme accent for website focus outlines so creator-selected colors retain a visible keyboard indicator in preview and exported sites.
 - Check exported-site keyboard focus contrast in Chromium, Firefox, and WebKit with JavaScript disabled.
+- Register trusted custom layout renderers with validated section compatibility, shared preview/export slots, and portable backup references.
 
 ### Fixed
 

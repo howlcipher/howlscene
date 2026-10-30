@@ -4,6 +4,7 @@ export { enhanceSite } from "./enhance.js";
 export { Scenery } from "./scenery.js";
 export * from "./assets.js";
 export * from "./registry.js";
+export * from "./layouts.js";
 export * from "./rich_text.js";
 export * from "./motion.js";
 export * from "./themes.js";

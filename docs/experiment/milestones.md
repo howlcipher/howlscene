@@ -3,15 +3,15 @@
 The current resumption record is [PROGRESS.md](../../PROGRESS.md). Detailed
 commands are preserved in [the executed continuation gate](../evidence/font_final_gate.txt).
 
-| Phase | Implemented and verified in that snapshot                                                                               | Remaining work                                                                                |
-| ----- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| 0     | Shared React preview/static HTML, browser ZIP export, root and nested static serving with JavaScript disabled           | Preserve through final gates                                                                  |
-| 1     | Versioned schema, ten sections, registries, portable text, safe URLs, motion, public API; unit/property/contract suites | Layer registry increment locally verified; broader theme and general section/layout contracts |
-| 2     | Guided editor, Lexical, responsive images, IndexedDB, undo/redo, backups, previews, competing-tab protection            | Human usability review                                                                        |
-| 3     | Standalone HTML/CSS/runtime/assets ZIP and editable backup; complete browser journey                                    | Public deployment verification (collision regression passes)                                  |
-| 4     | Three procedural layered themes; reduced motion, entry/exit effects, parallax; nine visual comparisons                  | Complete visual/manual accessibility review; missing reference video                          |
-| 5     | William Elias consumer with theme switching and public-source provenance                                                | Production nested-route verification and deployment                                           |
-| 6     | Build, coverage, independent core/export tarball consumers, license audit, zero-vulnerability scan passed               | Hosted baseline passed; current increment verification, review, publication                   |
+| Phase | Implemented and verified in that snapshot                                                                                                     | Remaining work                                                              |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| 0     | Shared React preview/static HTML, browser ZIP export, root and nested static serving with JavaScript disabled                                 | Preserve through final gates                                                |
+| 1     | Versioned schema, ten sections, custom section/layout registries, portable text, safe URLs, motion, public API; unit/property/contract suites | Broader theme and section/layout contracts                                  |
+| 2     | Guided editor, Lexical, responsive images, IndexedDB, undo/redo, backups, previews, competing-tab protection                                  | Human usability review                                                      |
+| 3     | Standalone HTML/CSS/runtime/assets ZIP and editable backup; complete browser journey                                                          | Public deployment verification (collision regression passes)                |
+| 4     | Three procedural layered themes; reduced motion, entry/exit effects, parallax; nine visual comparisons                                        | Complete visual/manual accessibility review; missing reference video        |
+| 5     | William Elias consumer with theme switching and public-source provenance                                                                      | Production nested-route verification and deployment                         |
+| 6     | Build, coverage, independent core/export tarball consumers, license audit, zero-vulnerability scan passed                                     | Hosted baseline passed; current increment verification, review, publication |
 
 No hosted deployment or public v1 release is established. Later hosted gates
 include cross-engine export run `40963619832`; subsequent edits still require
@@ -55,7 +55,7 @@ Current focus contrast measurement is exercised in Chromium; browser-engine
 coverage for this particular custom-color case is being extended in the current
 increment.
 
-## Current cross-engine focus indicator coverage
+## Merged cross-engine focus indicator coverage
 
 The `EXP-PLATFORM-001` exported ZIP browser matrix now also checks `A11Y-009`
 with a low-contrast creator color selection. In each engine, the test uses the
@@ -67,8 +67,29 @@ host because GTK/WebKit/media dependencies are missing. The full local gate
 passes format, lint, strict types, production build, and 152 unit tests (94.88%
 statements, 89.68% branches); its browser suite passes 53 of 54 scenarios, with
 WebKit as the only launch failure. Separate SDK, license, and vulnerability
-checks pass. See the focused, full-gate and supplemental evidence files linked
-in `PROGRESS.md`. Hosted WebKit verification is pending.
+checks pass. PR #29 merged as `78a6327` after hosted `verify` passed in run
+`40985012399`, including WebKit. See the focused, full-gate and supplemental
+evidence files linked in `PROGRESS.md`.
+
+## Current trusted custom layout increment
+
+`CFG-LAYOUT-001–004` adds an immutable per-consumer `createLayoutRegistry` with
+safe IDs, section compatibility, trusted React renderers, semantic content
+slots and bounded self-contained CSS. `parseSite`, `Site`, ZIP export and backup
+operations all receive the same registry; imported projects store only a layout
+ID. Existing built-in section/layout pairs remain accepted. The standard editor
+continues to offer its built-in layout choices. Focused tests pass preview,
+static ZIP, backup round-trip and invalid registration behavior. The full local
+check passes formatting, lint, typecheck/build/prerender and 156 unit tests at
+94.50% statement / 89.84% branch coverage. Browser tests pass 53/54; the only
+failure is local WebKit launch due to missing host GTK/media libraries, while
+Chromium and Firefox cross-engine ZIP checks pass. SDK-001–006 pass with actual
+generated packages and a clean Vite consumer; 267-package license review passes
+and `npm audit` reports zero vulnerabilities. Hosted verification is pending.
+The focused suite passes 4/4. RED and compatibility evidence is recorded in
+[`layout_registry_red.txt`](../evidence/layout_registry_red.txt); see
+[ADR 017](../architecture/adr_017_trusted_layout_renderers.md) and the
+[developer guide](../developers/custom_layouts.md).
 
 GitHub Pages preparation is implemented on `build/github-pages-preparation`.
 The local full gate passes with 150 unit tests, 50 browser tests, 89.54% overall

@@ -1,0 +1,21 @@
+RED evidence for custom layout registration
+
+The new `CFG-LAYOUT-001` contract initially failed because the public core API
+did not export `createLayoutRegistry`:
+
+`npx vitest run tests/layout_registry.test.tsx`
+
+Observed: `TypeError: createLayoutRegistry is not a function` while creating the
+custom layout fixture.
+
+The first implementation also derived built-in compatibility from editor
+suggestions. `CFG-LAYOUT-003` then reproduced a version-1 compatibility
+regression:
+
+`npx vitest run tests/layout_registry.test.tsx -t CFG-LAYOUT-003`
+
+Observed failure: `Layout 'cards' is not supported for section type 'hero'.`
+The existing schema accepted all built-in layout IDs for every section, even
+though the editor suggests only preferred combinations. Built-in registry
+entries were corrected to preserve that behavior; compatibility restrictions
+apply only to newly registered layouts. The same focused test then passed.

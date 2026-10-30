@@ -4,6 +4,8 @@ import {
   type ThemeRegistry,
   type SiteConfig,
   type SectionRendererRegistry,
+  defaultLayoutRegistry,
+  type LayoutRegistry,
 } from "../../core/src/index.js";
 import { validateProjectImages } from "../../core/src/assets.js";
 const MAX_BACKUP = 30 * 1024 * 1024;
@@ -18,11 +20,12 @@ export function serializeBackup(
   input: unknown,
   themeRegistry: ThemeRegistry = themes,
   sectionRegistry?: SectionRendererRegistry,
+  layoutRegistry: LayoutRegistry = defaultLayoutRegistry,
 ): string {
   const text = JSON.stringify({
     format: "howlscene-project",
     version: 1,
-    site: parseSite(input, themeRegistry, sectionRegistry),
+    site: parseSite(input, themeRegistry, sectionRegistry, layoutRegistry),
   });
   checkBackupSize(text);
   return text;
@@ -32,6 +35,7 @@ export function importBackup(
   text: string,
   themeRegistry: ThemeRegistry = themes,
   sectionRegistry?: SectionRendererRegistry,
+  layoutRegistry: LayoutRegistry = defaultLayoutRegistry,
 ): SiteConfig {
   checkBackupSize(text);
   const value: unknown = JSON.parse(text);
@@ -48,15 +52,21 @@ export function importBackup(
     !("site" in value)
   )
     throw Error("Choose a HowlScene editable project backup.");
-  return parseSite(value.site, themeRegistry, sectionRegistry);
+  return parseSite(value.site, themeRegistry, sectionRegistry, layoutRegistry);
 }
 /** Browser import boundary: validate all decoded images before replacing a draft. */
 export async function importValidatedBackup(
   text: string,
   themeRegistry: ThemeRegistry = themes,
   sectionRegistry?: SectionRendererRegistry,
+  layoutRegistry: LayoutRegistry = defaultLayoutRegistry,
 ): Promise<SiteConfig> {
-  const site = importBackup(text, themeRegistry, sectionRegistry);
+  const site = importBackup(
+    text,
+    themeRegistry,
+    sectionRegistry,
+    layoutRegistry,
+  );
   await validateProjectImages(site);
   return site;
 }

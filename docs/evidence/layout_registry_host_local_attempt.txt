@@ -1,0 +1,231 @@
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 check
+npm notice run npm run format:check && npm run lint && npm run build && npm test -- --coverage && npm run test:e2e && npm run sdk:check && npm run licenses
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 format:check
+npm notice run prettier --check .
+Checking formatting...
+All matched files use Prettier code style!
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 lint
+npm notice run eslint .
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 build
+npm notice run npm run build:runtime && tsc --noEmit && vite build && vite build --config vite.prerender.config.ts && node scripts/prerender.mjs
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 build:runtime
+npm notice run vite build --config vite.runtime.config.ts
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 385 modules transformed.
+rendering chunks...
+computing gzip size...
+packages/export/generated/site.js  68.87 kB │ gzip: 21.52 kB
+
+✓ built in 107ms
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 485 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/editor/index.html                    0.64 kB │ gzip:   0.32 kB
+dist/index.html                           0.66 kB │ gzip:   0.39 kB
+dist/examples/william-elias/index.html    0.82 kB │ gzip:   0.41 kB
+dist/assets/editor-CwHyVkFq.css           2.44 kB │ gzip:   0.89 kB
+dist/assets/styles-etigoAFB.css           4.31 kB │ gzip:   1.47 kB
+dist/assets/site-Ds-yMVEN.css             8.67 kB │ gzip:   2.52 kB
+dist/assets/landing-Ce95X-tl.js           3.53 kB │ gzip:   1.19 kB
+dist/assets/example-YNp0ccGD.js           4.14 kB │ gzip:   1.93 kB
+dist/assets/site-ht-eCoAp.js            130.52 kB │ gzip:  39.80 kB
+dist/assets/jsx-runtime-B-3DLZV4.js     220.35 kB │ gzip:  68.95 kB
+dist/assets/editor-BgP05nZ6.js          312.60 kB │ gzip:  98.10 kB
+dist/assets/src-gauqIx4k.js             386.81 kB │ gzip: 116.23 kB
+
+✓ built in 377ms
+vite v8.3.5 building ssr environment for production...
+transforming...
+✓ 20 modules transformed.
+rendering chunks...
+computing gzip size...
+.artifacts/prerender/prerender.mjs  65.32 kB │ gzip: 18.95 kB
+
+✓ built in 55ms
+Prerendered index.html: 2164 bytes of semantic HTML.
+Prerendered examples/william-elias/index.html: 15890 bytes of semantic HTML.
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 pretest
+npm notice run npm run build:runtime
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 build:runtime
+npm notice run vite build --config vite.runtime.config.ts
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 385 modules transformed.
+rendering chunks...
+computing gzip size...
+packages/export/generated/site.js  68.87 kB │ gzip: 21.52 kB
+
+✓ built in 111ms
+npm notice run howlscene@0.1.0 test
+npm notice run vitest run --coverage
+
+ RUN  v5.0.5 /run/host/run/media/system/tallgeese/dev/howlscene
+      Coverage enabled with v8
+
+
+ Test Files  36 passed (36)
+      Tests  156 passed (156)
+   Start at  21:47:56
+   Duration  7.71s (import 62%, tests 29%, worker 7%, transform 2%)
+
+    Isolate  36 workers spawned · ~291ms startup each (spawn + environment, per file)
+             at least ~2.32s faster with isolate: false — reuses workers across files instead of one per file
+
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+-------------------|---------|----------|---------|---------|-------------------
+All files          |    94.5 |    89.84 |   95.48 |   96.29 |
+ apps/editor       |    92.8 |     82.5 |   86.95 |   94.48 |
+  document.ts      |   94.44 |    82.35 |     100 |   96.87 | 74
+  model.ts         |   93.61 |    91.66 |   94.11 |   95.12 | 84,124
+  storage.ts       |   91.07 |    72.72 |   77.27 |   92.59 | 31,33,68,72
+ packages/core/src |    94.6 |    90.17 |   98.27 |   96.56 |
+  Site.tsx         |   80.43 |       84 |    90.9 |   84.61 | 48-50,109,114,116
+  artwork.tsx      |     100 |      100 |     100 |     100 |
+  ...k_contract.ts |     100 |      100 |     100 |     100 |
+  assets.ts        |   91.56 |    90.32 |     100 |   96.64 | ...03,188,218,224
+  config.ts        |   98.24 |    93.44 |     100 |   98.14 | 157
+  enhance.ts       |   96.89 |    83.72 |     100 |   97.54 | 147,179-180
+  index.tsx        |       0 |        0 |       0 |       0 |
+  layouts.tsx      |   89.47 |     92.1 |      90 |   88.88 | 75-77,108
+  media.tsx        |     100 |    86.66 |     100 |     100 | 17,19
+  motion.ts        |     100 |    96.77 |     100 |     100 | 68
+  registry.ts      |     100 |      100 |     100 |     100 |
+  rich_text.tsx    |     100 |      100 |     100 |     100 |
+  runtime.ts       |     100 |      100 |     100 |     100 |
+  scenery.tsx      |      90 |    81.25 |     100 |     100 | 19-26
+  sections.tsx     |   97.14 |    90.24 |     100 |   96.96 | 158
+  themes.ts        |     100 |    96.66 |     100 |     100 | 236
+ ...ges/export/src |      98 |    98.03 |     100 |   97.82 |
+  backup.ts        |     100 |      100 |     100 |     100 |
+  index.tsx        |   97.14 |    96.77 |     100 |   96.77 | 61
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 94.5% ( 774/819 )
+Branches     : 89.84% ( 593/660 )
+Functions    : 95.48% ( 169/177 )
+Lines        : 96.29% ( 728/756 )
+================================================================================
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 test:e2e
+npm notice run playwright test
+[WebServer] (node:1437410) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 54 tests using 1 worker
+
+(node:1437443) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/accessibility.spec.ts:16:1 › A11Y-001 EDT-009 keyboard-only editing, section creation and backup download (2.0s)
+  ✓   2 tests/e2e/accessibility.spec.ts:64:1 › A11Y-005 A11Y-007 editor and preview have no serious automated violations or horizontal overflow (8.3s)
+  ✓   3 tests/e2e/accessibility.spec.ts:94:1 › THM-001 example theme switching preserves all section content (577ms)
+  ✓   4 tests/e2e/background_readability.spec.ts:73:1 › A11Y-SCENE-001 user background images have an opaque readable content surface in preview (1.1s)
+  ✓   5 tests/e2e/background_readability.spec.ts:172:1 › A11Y-SCENE-002 native theme scenery stays behind opaque copy surfaces (2.0s)
+  ✓   6 tests/e2e/backup.spec.ts:3:1 › AST-002 AST-004 browser backup validation decodes images before accepting imports (482ms)
+  ✓   7 tests/e2e/destructive.spec.ts:2:1 › EDT-008 A11Y-006 item deletion confirms and restores useful keyboard focus (696ms)
+  ✓   8 tests/e2e/editor.spec.ts:3:1 › EDT-001 EDT-003 EDT-004 EDT-006 guided editing survives history themes and reload (1.9s)
+  ✓   9 tests/e2e/editor.spec.ts:40:1 › TXT-001 EDT-002 formatting edits update preview without HTML (595ms)
+  ✓  10 tests/e2e/editor.spec.ts:55:1 › EDT-007 warns about edits even when browser storage is unavailable (452ms)
+  ✓  11 tests/e2e/editor.spec.ts:71:1 › AST-001 EDT-005 delayed image preparation preserves newer edits (530ms)
+  ✓  12 tests/e2e/editor.spec.ts:118:1 › EDT-002 website title can be replaced using ordinary keyboard editing (676ms)
+  ✓  13 tests/e2e/editor.spec.ts:135:1 › EDT-009 phone preview responds to its own width on a desktop screen (535ms)
+  ✓  14 tests/e2e/export_accessibility.spec.ts:19:1 › A11Y-007 A11Y-008 A11Y-009 exported themes reflow with large text and retain accessible focus under reduced motion (6.3s)
+  ✓  15 tests/e2e/export_image_rich_visual.spec.ts:21:1 › EXP-VISUAL-001 image-rich, long-form exports match reviewed theme and viewport baselines (11.0s)
+  ✓  16 tests/e2e/export.spec.ts:7:1 › Phase 0: edit, download, extract and serve at root and nested paths without JS (3.6s)
+  ✓  17 tests/e2e/export.spec.ts:89:1 › editor prevents introduction overflow before export (480ms)
+  ✓  18 tests/e2e/image_position.spec.ts:5:1 › EDT-005 uploaded section image position is editable, saved and exported (1.7s)
+  ✓  19 tests/e2e/journey.spec.ts:9:1 › v1 acceptance: create, restore, back up, export and serve a complete portfolio (10.7s)
+  ✓  20 tests/e2e/layout_controls.spec.ts:6:1 › EDT-003 section spacing, alignment and width are saved and exported (1.8s)
+  ✓  21 tests/e2e/layout_controls.spec.ts:40:1 › EDT-012 compatible layout presets change composition in preview and export (2.3s)
+  ✓  22 tests/e2e/long_content.spec.ts:3:1 › MOT-007 long cinematic content grows naturally and remains reachable with ordinary document scrolling (10.7s)
+  ✓  23 tests/e2e/motion.spec.ts:20:1 › MOT-002 A11Y-003 reduced motion cancels entry effects immediately (393ms)
+  ✓  24 tests/e2e/motion.spec.ts:36:1 › MOT-002 MOT-005 scenery follows ordinary scroll and resets when motion stops (589ms)
+  ✓  25 tests/e2e/motion.spec.ts:61:1 › MOT-003 A11Y-004 manual motion choice persists and anchors work (385ms)
+  ✓  26 tests/e2e/motion.spec.ts:82:1 › MOT-005 cleanup cancels work and detaches controls (326ms)
+  ✓  27 tests/e2e/motion.spec.ts:95:1 › MOT-004 scene exits crossfade scenery and cancel offscreen work (2.6s)
+  ✓  28 tests/e2e/onboarding.spec.ts:3:1 › EDT-ONBOARD-001 the optional beginner guide can be skipped, reopened and completed (1.5s)
+  ✓  29 tests/e2e/performance.spec.ts:7:1 › controlled local editor, export and animation timing observations (3.1s)
+  ✓  30 tests/e2e/presentation.spec.ts:33:1 › THM-PRES-001 manifest presentation affects preview and nested no-script export without changing content (1.4s)
+  ✓  31 tests/e2e/presentation.spec.ts:128:1 › THM-PRES-005 maximum theme spacing reflows at 200% text size and 320 CSS pixels (724ms)
+  ✓  32 tests/e2e/production_mobile_performance.spec.ts:20:1 › PERF-LAB-001 measure an image-rich production export on a constrained mobile profile (4.8s)
+  ✓  33 tests/e2e/production.spec.ts:6:1 › production files work at root and GitHub Pages paths with and without JavaScript (2.9s)
+  ✓  34 tests/e2e/routes.spec.ts:2:1 › product routes lead to a real editor and consumer example (1.7s)
+  ✓  35 tests/e2e/tabs.spec.ts:3:1 › EDT-006 competing editor tabs cannot silently overwrite the owning local draft (3.6s)
+  ✓  36 tests/e2e/theme_cards.spec.ts:3:1 › THM-CARD-002 built-in card treatments preserve readability and responsive grids (1.4s)
+  ✓  37 tests/e2e/theme_colors.spec.ts:22:1 › EDT-010 creators can change text and background colors, switch themes, reload and export (2.1s)
+  ✓  38 tests/e2e/theme_heading_treatments.spec.ts:37:1 › THM-COMP-002 heading treatments stay distinct in preview and nested no-script export (1.2s)
+  ✓  39 tests/e2e/theme_navigation.spec.ts:3:1 › THM-NAV-002 built-in navigation treatments stay distinct, visible and responsive (1.1s)
+  ✓  40 tests/e2e/theme_presentation_controls.spec.ts:5:1 › EDT-011 creators customize card and mobile navigation styles across themes, reload and export (2.1s)
+  ✓  41 tests/e2e/theme_responsive_navigation.spec.ts:3:1 › THM-RESP-002 theme mobile navigation layouts remain readable and overflow-free (1.3s)
+  ✓  42 tests/e2e/transitions.spec.ts:3:1 › MOT-004 MOT-006 rapid theme and anchor changes dispose prior transitions without changing content (2.3s)
+  ✓  43 tests/e2e/visual.spec.ts:9:5 › visual preview ink 375px (1.7s)
+  ✓  44 tests/e2e/visual.spec.ts:9:5 › visual preview cyber 375px (1.7s)
+  ✓  45 tests/e2e/visual.spec.ts:9:5 › visual preview modern 375px (1.6s)
+  ✓  46 tests/e2e/visual.spec.ts:9:5 › visual preview ink 768px (1.8s)
+  ✓  47 tests/e2e/visual.spec.ts:9:5 › visual preview cyber 768px (1.7s)
+  ✓  48 tests/e2e/visual.spec.ts:9:5 › visual preview modern 768px (1.6s)
+  ✓  49 tests/e2e/visual.spec.ts:9:5 › visual preview ink 1440px (1.8s)
+  ✓  50 tests/e2e/visual.spec.ts:9:5 › visual preview cyber 1440px (1.8s)
+  ✓  51 tests/e2e/visual.spec.ts:9:5 › visual preview modern 1440px (1.7s)
+(node:1465048) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  52 [chromium-export] › tests/e2e/cross_browser_export.spec.ts:10:1 › EXP-PLATFORM-001 A11Y-009 image exports retain layout and keyboard focus without JavaScript (2.8s)
+(node:1466677) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  53 [firefox-export] › tests/e2e/cross_browser_export.spec.ts:10:1 › EXP-PLATFORM-001 A11Y-009 image exports retain layout and keyboard focus without JavaScript (8.3s)
+(node:1468706) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  54 [webkit-export] › tests/e2e/cross_browser_export.spec.ts:10:1 › EXP-PLATFORM-001 A11Y-009 image exports retain layout and keyboard focus without JavaScript (5ms)
+
+
+  1) [webkit-export] › tests/e2e/cross_browser_export.spec.ts:10:1 › EXP-PLATFORM-001 A11Y-009 image exports retain layout and keyboard focus without JavaScript
+
+    Error: browserType.launch:
+    ╔══════════════════════════════════════════════════════╗
+    ║ Host system is missing dependencies to run browsers. ║
+    ║ Missing libraries:                                   ║
+    ║     libgtk-4.so.1                                    ║
+    ║     libgraphene-1.0.so.0                             ║
+    ║     libevent-2.1.so.7                                ║
+    ║     libopus.so.0                                     ║
+    ║     libgstgl-1.0.so.0                                ║
+    ║     libgstcodecparsers-1.0.so.0                      ║
+    ║     libflite.so.1                                    ║
+    ║     libflite_usenglish.so.1                          ║
+    ║     libflite_cmu_grapheme_lang.so.1                  ║
+    ║     libflite_cmu_grapheme_lex.so.1                   ║
+    ║     libflite_cmu_indic_lang.so.1                     ║
+    ║     libflite_cmu_indic_lex.so.1                      ║
+    ║     libflite_cmulex.so.1                             ║
+    ║     libflite_cmu_time_awb.so.1                       ║
+    ║     libflite_cmu_us_awb.so.1                         ║
+    ║     libflite_cmu_us_kal16.so.1                       ║
+    ║     libflite_cmu_us_kal.so.1                         ║
+    ║     libflite_cmu_us_rms.so.1                         ║
+    ║     libflite_cmu_us_slt.so.1                         ║
+    ║     libavif.so.16                                    ║
+    ║     libsoup-3.0.so.0                                 ║
+    ║     libwayland-server.so.0                           ║
+    ║     libmanette-0.2.so.0                              ║
+    ║     libenchant-2.so.2                                ║
+    ║     libGLESv2.so.2                                   ║
+    ║     libx264.so                                       ║
+    ╚══════════════════════════════════════════════════════╝
+
+    Error Context: test-results/cross_browser_export-EXP-P-8790b-rd-focus-without-JavaScript-webkit-export/error-context.md
+
+  1 failed
+    [webkit-export] › tests/e2e/cross_browser_export.spec.ts:10:1 › EXP-PLATFORM-001 A11Y-009 image exports retain layout and keyboard focus without JavaScript
+  53 passed (2.3m)

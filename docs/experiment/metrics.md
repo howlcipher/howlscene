@@ -432,3 +432,23 @@ podman run --rm --network host --security-opt label=disable \
   -v "$PWD:/work" -w /work mcr.microsoft.com/playwright:v1.64.1-noble \
   sh -lc 'node --version && npm audit --audit-level=moderate'
 ```
+
+## Custom layout registration local validation
+
+The trusted-layout increment's local full check on 2026-10-29 used Node 22.22.1
+and npm 12.0.2 on the local Linux environment. Formatting, lint, strict
+TypeScript/build/prerender, and 156 unit tests passed; unit coverage was 94.50%
+statements and 89.84% branches. Playwright passed 53 of 54 scenarios. The sole
+local failure is WebKit startup because the host lacks GTK and media libraries;
+Chromium and Firefox passed their exported-ZIP scenarios. Separate generated
+package checks SDK-001–006 passed, as did the 267-package license/provenance
+audit and `npm audit --audit-level=moderate` (zero vulnerabilities).
+
+No new runtime or performance measurement was taken for this registry feature.
+The npm CLI warned that its installed Node version was below its declared
+`22.22.2` minimum; this did not prevent the listed checks from running. The
+complete local attempt is recorded in
+[`layout_registry_host_local_attempt.txt`](../evidence/layout_registry_host_local_attempt.txt),
+and separate package/security results are in
+[`layout_registry_sdk.txt`](../evidence/layout_registry_sdk.txt) and
+[`layout_registry_local_extras.txt`](../evidence/layout_registry_local_extras.txt).
