@@ -8,22 +8,27 @@ Phase 0 proved the shared editor-to-static-export approach. Core/schema, rich te
 
 ## Current milestone: trusted custom layout registration
 
-The current branch adds an immutable public layout registry with safe identifiers,
-section compatibility, developer-trusted React renderers, shared semantic content
-slots, bounded self-contained CSS, preview/static export parity, and backup
-round-tripping. Imported projects store only the registered layout ID; developer
-CSS stays in the trusted package configuration and is emitted in the exported
-HTML head. Existing built-in section/layout combinations remain accepted.
+PR #30 merged as `ccb9f49`. It adds an immutable public layout registry with
+safe identifiers, section compatibility, developer-trusted React renderers,
+shared semantic content slots, bounded self-contained CSS, preview/static export
+parity, and backup round-tripping. Imported projects store only the registered
+layout ID; developer CSS stays in trusted package configuration and is emitted
+in the exported HTML head. Existing built-in section/layout combinations remain
+accepted.
 
 The focused suite passes 4/4 tests. The full local check on Node 22.22.1 passes
 formatting, lint, typecheck/build/prerender and 156 unit tests (94.50% statements,
 89.84% branches); 53/54 browser tests pass, with WebKit blocked at launch by
 missing host GTK/media libraries. Chromium and Firefox cross-engine ZIP checks
-pass. Separately, SDK-001–006 pass against generated packages and a clean Vite
-consumer, the 267-package license/provenance audit passes, and npm audit reports
-zero vulnerabilities. The npm 12.0.2 / Node 22.22.1 compatibility warning is
-recorded. Hosted verification and review are pending; this is not release-ready.
-Raw local output and RED evidence are in
+pass. Hosted `verify` passed, including WebKit, in run
+[`40988283799`](https://github.com/howlcipher/howlscene/actions/runs/40988283799).
+The hosted Pages artifact/path build passed in run
+[`40988283769`](https://github.com/howlcipher/howlscene/actions/runs/40988283769);
+publish approval jobs skipped as expected. Separately, SDK-001–006 pass against
+generated packages and a clean Vite consumer, the 267-package license/provenance
+audit passes, and npm audit reports zero vulnerabilities. The npm 12.0.2 / Node
+22.22.1 compatibility warning is recorded. No public release or deployment is
+established. Raw local output and RED evidence are in
 [`docs/evidence/layout_registry_host_local_attempt.txt`](docs/evidence/layout_registry_host_local_attempt.txt)
 and [`docs/evidence/layout_registry_red.txt`](docs/evidence/layout_registry_red.txt).
 See [ADR 017](docs/architecture/adr_017_trusted_layout_renderers.md) and the
@@ -31,8 +36,11 @@ See [ADR 017](docs/architecture/adr_017_trusted_layout_renderers.md) and the
 
 ## Latest executed milestone
 
-The latest merged increment is PR #29, merged as `78a6327` (source commit
-`bb04fad`). It extends `A11Y-009` to the exported-site browser matrix: Chromium,
+The latest merged increment is PR #30, merged as `ccb9f49`; its hosted `verify`
+run `40988283799` passed, including WebKit. The deployable-site build passed in
+run `40988283769`. PR #30 adds the trusted custom layout registry described
+above. Before it, PR #29 merged as `78a6327` (source commit `bb04fad`) and
+extended `A11Y-009` to the exported-site browser matrix: Chromium,
 Firefox and WebKit use keyboard navigation on actual no-JavaScript ZIPs and
 measure custom-color focus contrast for all three themes. Hosted `verify`
 passed in run

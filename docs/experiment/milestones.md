@@ -85,8 +85,13 @@ check passes formatting, lint, typecheck/build/prerender and 156 unit tests at
 failure is local WebKit launch due to missing host GTK/media libraries, while
 Chromium and Firefox cross-engine ZIP checks pass. SDK-001–006 pass with actual
 generated packages and a clean Vite consumer; 267-package license review passes
-and `npm audit` reports zero vulnerabilities. Hosted verification is pending.
-The focused suite passes 4/4. RED and compatibility evidence is recorded in
+and `npm audit` reports zero vulnerabilities. The focused suite passes 4/4.
+PR #30 merged as `ccb9f49`; hosted `verify` passed in run
+[`40988283799`](https://github.com/howlcipher/howlscene/actions/runs/40988283799),
+including WebKit. The deployable-site build passed in run
+[`40988283769`](https://github.com/howlcipher/howlscene/actions/runs/40988283769);
+publish approval jobs skipped because no deployment was requested. RED and
+compatibility evidence is recorded in
 [`layout_registry_red.txt`](../evidence/layout_registry_red.txt); see
 [ADR 017](../architecture/adr_017_trusted_layout_renderers.md) and the
 [developer guide](../developers/custom_layouts.md).
