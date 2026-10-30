@@ -160,7 +160,13 @@ export function enhanceSite(root: HTMLElement): () => void {
               if (entering) {
                 seen.add(scene);
                 const target =
-                  scene.querySelector<HTMLElement>(".scene-content") ?? scene;
+                  (root.dataset.experience === "cinematic"
+                    ? scene.querySelector<HTMLElement>(
+                        ".scene-background-image",
+                      )
+                    : null) ??
+                  scene.querySelector<HTMLElement>(".scene-content") ??
+                  scene;
                 if (root.dataset.experience === "cinematic") {
                   const candidate = scene.dataset.transition;
                   const transition =
