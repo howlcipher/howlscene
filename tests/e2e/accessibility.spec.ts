@@ -35,7 +35,7 @@ test("A11Y-001 EDT-009 keyboard-only editing, section creation and backup downlo
   await tabTo(page, heading);
   await page.keyboard.press("ControlOrMeta+a");
   await page.keyboard.insertText("Keyboard project");
-  const text = page.getByRole("textbox", { name: "Rich text introduction" });
+  const text = page.getByRole("textbox", { name: "Section text" });
   await tabTo(page, text);
   await page.keyboard.press("ControlOrMeta+a");
   await page.keyboard.insertText("Created using the keyboard.");

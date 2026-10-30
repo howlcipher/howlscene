@@ -39,6 +39,22 @@ test("EDT-ONBOARD-001 the optional beginner guide can be skipped, reopened and c
   await expect(guide).toContainText("saved in this browser, not in the cloud");
   await expect(guide).toContainText("editable project backup");
   await expect(guide).toContainText("website ZIP");
+  const publishingHelp = guide.getByText(
+    "Show step-by-step publishing options",
+    {
+      exact: true,
+    },
+  );
+  await expect(publishingHelp).toBeVisible();
+  await publishingHelp.click();
+  await expect(guide).toContainText("Cloudflare Pages");
+  await expect(guide).toContainText("GitHub Pages");
+  await expect(
+    guide.getByRole("link", { name: "Official Cloudflare upload guide" }),
+  ).toHaveAttribute(
+    "href",
+    "https://developers.cloudflare.com/pages/get-started/direct-upload/",
+  );
   await page.getByRole("button", { name: "Finish guide" }).click();
   await expect(guide).toBeHidden();
 

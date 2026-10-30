@@ -41,7 +41,7 @@ test("TXT-001 EDT-002 formatting edits update preview without HTML", async ({
   page,
 }) => {
   await page.goto("/editor/");
-  const textbox = page.getByRole("textbox", { name: "Rich text introduction" });
+  const textbox = page.getByRole("textbox", { name: "Section text" });
   await textbox.fill("A thoughtfully made introduction");
   await textbox.press("ControlOrMeta+a");
   await page.getByRole("button", { name: "Bold", exact: true }).click();
@@ -50,6 +50,23 @@ test("TXT-001 EDT-002 formatting edits update preview without HTML", async ({
       .getByRole("region", { name: "Live website preview" })
       .locator("strong"),
   ).toContainText("A thoughtfully made introduction");
+});
+
+test("EDT-002 new sections visibly label the rich-text writing area", async ({
+  page,
+}) => {
+  await page.goto("/editor/");
+  await page.getByLabel("New section type").selectOption("about");
+  await page.getByRole("button", { name: "Add a section" }).click();
+
+  const editor = page.getByRole("group", { name: "Editing: About" });
+  await expect(editor.getByText("Section text", { exact: true })).toBeVisible();
+  await editor.getByRole("textbox", { name: "Section text" }).fill("About me");
+  await expect(
+    page
+      .getByRole("region", { name: "Live website preview" })
+      .getByText("About me"),
+  ).toBeVisible();
 });
 
 test("EDT-007 warns about edits even when browser storage is unavailable", async ({

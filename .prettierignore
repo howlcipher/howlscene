@@ -4,6 +4,7 @@ coverage
 .artifacts
 test-results
 playwright-report
+docs/reviews/artifacts
 package-lock.json
 
 packages/export/generated

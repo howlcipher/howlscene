@@ -72,7 +72,7 @@ test("A11Y-007 A11Y-008 A11Y-009 exported themes reflow with large text and reta
   await page.getByRole("button", { name: "Add a section" }).click();
   await page.getByLabel("Edit heading").last().fill("More about this work");
   await page
-    .getByRole("textbox", { name: "Rich text introduction" })
+    .getByRole("textbox", { name: "Section text" })
     .fill(
       "A thoughtful portfolio makes its work easy to explore on every screen. ".repeat(
         5,
