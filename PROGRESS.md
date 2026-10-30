@@ -8,15 +8,14 @@ Phase 0 proved the shared editor-to-static-export approach. Core/schema, rich te
 
 ## Latest executed milestone
 
-The latest merged increment is PR #25, merged as `6ba4e7f` (source commit
-`18e4f69`). It adds `A11Y-SCENE-002`: standard section introductions, timelines,
-and call-to-action links use opaque resolved theme surfaces over native scenery;
-existing project, skill, and gallery cards retain their surfaces and layout.
-Hosted `verify` passed in run
-[`40980058221`](https://github.com/howlcipher/howlscene/actions/runs/40980058221),
-and the Pages artifact/path check passed in run
-[`40980058139`](https://github.com/howlcipher/howlscene/actions/runs/40980058139).
-All three themes are measured in preview and nested JavaScript-disabled ZIPs.
+The latest merged increment is PR #27, merged as `b21f26c` (source commit
+`4ab38ec`). It adds `A11Y-007` coverage for 200% root text sizing at 320 CSS px
+in the actual no-JavaScript exports for all three themes, with long copy and a
+project card. Hosted `verify` passed in run
+[`40982131106`](https://github.com/howlcipher/howlscene/actions/runs/40982131106).
+The previous product behavior increment, PR #25, adds `A11Y-SCENE-002` for
+native scenery readability; it passed hosted `verify` and Pages artifact/path
+checks in runs `40980058221` and `40980058139`.
 
 The local Node 22.22.1 gate passed 152 unit tests and 53 of 54 browser scenarios;
 the single unavailable local WebKit run passed in pinned hosted CI. The final
@@ -206,7 +205,7 @@ device evidence and is not directly comparable to the earlier Node 24 sample.
 Raw output: [`production_mobile_performance_scene_surface.json`](docs/evidence/production_mobile_performance_scene_surface.json).
 Human testing on older hardware remains open.
 
-## Current increment: exported text reflow coverage
+## Merged increment: exported text reflow coverage
 
 `A11Y-007` now exercises the actual static ZIPs for Modern Professional, Ink
 Wash, and Cyberpunk at a 320 CSS-pixel viewport with 200% root text sizing and
@@ -224,7 +223,27 @@ the zero-vulnerability audit passed separately. See
 [`export_text_reflow_focused.txt`](docs/evidence/export_text_reflow_focused.txt),
 and [`export_text_reflow_local_extras.txt`](docs/evidence/export_text_reflow_local_extras.txt).
 Browser zoom, human screen reader, and nontechnical usability reviews remain
-open. Hosted checks are pending.
+open. PR #27 merged as `b21f26c` after hosted `verify` passed in run
+`40982131106`.
+
+## Current increment: theme-aware keyboard focus
+
+`A11Y-009` adds a measured focus-indicator check for creator-selected site
+colors. The new test reproduced the fixed orange outline at 1.1133:1 against a
+custom `#767676` background. Website focus outlines now use the resolved accent,
+which follows the existing contrast fallback in preview and export. Focused
+Chromium verification passes for the three bundled themes in both preview and
+the actual ZIPs. The full local check passed formatting, lint, strict types,
+production build/prerender, and all 152 unit tests (94.88% statements, 89.68%
+branches); 53 of 54 browser scenarios passed. WebKit could not launch locally
+because GTK/WebKit/media libraries are missing. Separate SDK checks, all 267
+license checks, and the zero-vulnerability audit passed. See
+[`theme_focus_indicator_red.txt`](docs/evidence/theme_focus_indicator_red.txt),
+[`theme_focus_indicator_focused.txt`](docs/evidence/theme_focus_indicator_focused.txt),
+[`theme_focus_indicator_host_local_attempt.txt`](docs/evidence/theme_focus_indicator_host_local_attempt.txt),
+and [`theme_focus_indicator_local_extras.txt`](docs/evidence/theme_focus_indicator_local_extras.txt).
+Hosted verification is pending. This does not cover custom-renderer surfaces
+or replace human review.
 
 ## Published development checkpoint
 

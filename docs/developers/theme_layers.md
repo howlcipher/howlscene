@@ -177,3 +177,11 @@ returns a warning while preserving the selected colors. Accent contrast uses the
 selected background too. Standard section copy is placed on the resolved opaque
 surface, so scenery and media beneath it do not affect the foreground contrast.
 Trusted custom rendering remains the developer's responsibility.
+
+The shared website stylesheet uses the resolved accent for its 3px `:focus-visible`
+outline. This keeps keyboard focus visible when a creator changes the site
+background, in both preview and static export. A browser contract verifies the
+outline reaches at least 3:1 against the flat site background for all bundled
+themes with a low-contrast saved color choice. Custom developer-rendered
+controls on different surfaces remain the developer's responsibility. See
+[ADR 016](../architecture/adr_016_theme_aware_focus_indicators.md).

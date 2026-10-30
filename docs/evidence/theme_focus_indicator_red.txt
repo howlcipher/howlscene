@@ -1,0 +1,16 @@
+RED phase for A11Y-009
+
+Command:
+`npx playwright test tests/e2e/export_accessibility.spec.ts --grep 'A11Y-009'`
+
+Before changing the site focus style, the test failed on the first bundled theme
+with the user-selected `#767676` background. The computed keyboard-focus outline
+was `rgb(185, 78, 0)`, with 1.1133:1 contrast against the site background; the
+acceptance threshold is 3:1. This was an implementation failure, not a missing
+selector or fixture setup: the navigation link was keyboard-focused, had a
+visible 3px solid outline, and the resolved foreground/accent content colors
+were correct.
+
+The shared site stylesheet now colors website focus outlines with the resolved
+theme accent. The existing resolver chooses a fallback accent when necessary.
+The same test passes for all three themes in preview and in their generated ZIPs.

@@ -1,0 +1,22 @@
+Theme-aware focus indicator supplemental local checks
+
+Environment: Node v22.22.1, npm 12.0.2, Linux x64. npm emitted its runtime
+compatibility warning because npm 12 expects Node 22.22.2 or newer.
+
+`npm run format:check`, lint, strict TypeScript, production build/prerender and
+all 152 unit tests passed. Coverage was 94.88% statements and 89.68% branches.
+The browser suite passed 53 of 54 scenarios. A11Y-007/008/009, including the
+new custom-color focus test, passed. The sole failure was the WebKit browser
+launch because the host lacks GTK/WebKit/media libraries. Full output is in
+`theme_focus_indicator_host_local_attempt.txt`; pinned hosted verification is
+required for WebKit.
+
+`npm run sdk:check` passed with independent package installation and browser
+exports. `npm run licenses` checked 267 packages and passed. `npm audit
+--audit-level=moderate` found zero vulnerabilities.
+
+Focused RED showed that the old fixed orange ring reached only 1.1133:1 against
+a valid custom gray background. After website focus outlines use the resolved
+theme accent, the focused browser scenario passed across all three themes in
+preview and in generated ZIPs. No claim of WCAG conformance follows; the check
+covers flat backgrounds and standard shared renderer controls.

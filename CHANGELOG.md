@@ -24,6 +24,7 @@
 - Added an opaque theme-colored copy surface for sections with uploaded background images, with preview and nested no-script export contrast coverage.
 - Added a five-step beginner guide with back/next controls, skip and reopen actions, and clear local-save, backup, and publishing explanations.
 - Placed all standard section copy on resolved theme-colored surfaces so layered scenery and uploaded backgrounds cannot reduce measured text contrast in preview or static export.
+- Use the resolved theme accent for website focus outlines so creator-selected colors retain a visible keyboard indicator in preview and exported sites.
 
 ### Fixed
 
