@@ -9,7 +9,8 @@
 - Feature commit: `8f8fde351581e94bd45729adedc7b3edfb252143` (`feat(cinematic): add shared configurable story mode`)
 - Current implementation checkpoint: `7b08c0750a8221d738ac1249af9dd4262ea23bbe`
 - Current code commit: `05c8dc4d50ad0b2b50b88e128f775a7621f09983`
-- Working tree: journal and readiness report need this verification update
+- Latest documentation checkpoint: `5cdd633` (`docs(cinematic): record hosted verification`)
+- Working tree: clean at handoff
 - Pull request: [#34](https://github.com/howlcipher/howlscene/pull/34), draft
 - Active milestone: shared cinematic configuration, rendering, and editor integration
 
