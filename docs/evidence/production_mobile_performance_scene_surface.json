@@ -1,0 +1,101 @@
+{
+  "recordedAt": "2026-10-30T00:35:45.089Z",
+  "environment": {
+    "node": "v22.22.1",
+    "platform": "linux",
+    "architecture": "x64",
+    "cpuModel": "AMD Ryzen 5 1600 Six-Core Processor",
+    "browser": "156.0.8078.4",
+    "browserName": "chromium",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 1,
+    "cpuThrottleRate": 4,
+    "networkEmulation": {
+      "roundTripLatencyMs": 150,
+      "downloadBytesPerSecond": 204800,
+      "uploadBytesPerSecond": 96256
+    },
+    "server": "static HTTP server serving the browser-generated ZIP",
+    "mount": "/howlscene/performance/"
+  },
+  "export": {
+    "fileCount": 9,
+    "siteRuntimeBytes": 68879,
+    "siteRuntimeGzipBytes": 21349,
+    "runtimeBudgetGzipBytes": 256000,
+    "assetFiles": [
+      {
+        "name": "assets/asset-1476898f-3fe9-4c94-8f8f-79879ab7736b/original.webp",
+        "bytes": 10178
+      },
+      {
+        "name": "assets/asset-1476898f-3fe9-4c94-8f8f-79879ab7736b/w480.webp",
+        "bytes": 3450
+      },
+      {
+        "name": "assets/asset-1476898f-3fe9-4c94-8f8f-79879ab7736b/w960.webp",
+        "bytes": 7750
+      }
+    ]
+  },
+  "observation": {
+    "navigation": {
+      "durationMs": 777.3000000119209,
+      "responseStartMs": 8.200000002980232,
+      "domContentLoadedMs": 775.7000000029802,
+      "loadEventEndMs": 777.3000000119209
+    },
+    "lcpMs": 544,
+    "cls": 0,
+    "longTasksMs": [],
+    "frameIntervalsMs": {
+      "samples": 60,
+      "p50": 16.699999999999818,
+      "p95": 16.700000000000273,
+      "maximum": 16.800000000000182
+    },
+    "image": {
+      "currentSrc": "http://127.0.0.1:43871/howlscene/performance/assets/asset-1476898f-3fe9-4c94-8f8f-79879ab7736b/w480.webp",
+      "naturalWidth": 389,
+      "naturalHeight": 219,
+      "alt": "Layered hills"
+    },
+    "resources": [
+      {
+        "name": "/howlscene/performance/assets/asset-1476898f-3fe9-4c94-8f8f-79879ab7736b/w480.webp",
+        "kind": "link",
+        "transferBytes": 3750,
+        "encodedBytes": 3450,
+        "durationMs": 187.6000000089407
+      },
+      {
+        "name": "/howlscene/performance/site.css",
+        "kind": "link",
+        "transferBytes": 10840,
+        "encodedBytes": 10540,
+        "durationMs": 281.79999999701977
+      },
+      {
+        "name": "/howlscene/performance/site.js",
+        "kind": "script",
+        "transferBytes": 69179,
+        "encodedBytes": 68879,
+        "durationMs": 574.4000000059605
+      }
+    ]
+  },
+  "anchorNavigationMs": 50.29999999701977,
+  "accessibility": {
+    "imageAltPresent": true,
+    "contentVisibleWithMotionOff": true
+  },
+  "limitations": [
+    "A single local lab observation under Playwright CDP CPU/network emulation, not a physical mobile-device or field Core Web Vitals result.",
+    "The image is a generated fixture and the tested copy is representative, not a user workload distribution.",
+    "Animation frame intervals come from one Chromium session and do not guarantee 60 FPS on other hardware.",
+    "The export runtime gzip figure excludes HTML, CSS, fonts and image resources."
+  ]
+}

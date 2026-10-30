@@ -120,6 +120,24 @@ and [audit log](../evidence/production_mobile_audit.txt). Hosted run
 [`40966448827`](https://github.com/howlcipher/howlscene/actions/runs/40966448827)
 passed for this increment.
 
+## Post-scene-surface production export sample
+
+After native-scene readable surfaces merged in PR #25 (`6ba4e7f`), the same
+`PERF-LAB-001` scenario passed locally on Node 22.22.1, Chromium 156.0.8078.4,
+and the AMD Ryzen 5 1600. It served the generated image-rich ZIP at the same
+nested path and repeated the 390×844 DPR 1 viewport, 4× CDP CPU throttle, 150 ms
+latency, and 200 KiB/s down / 94 KiB/s up settings. The run observed 544 ms LCP,
+CLS 0, no long tasks, 16.7 ms p95 over 60 frame intervals, 10,540 encoded CSS
+bytes, and 68,879 runtime bytes / 21,349 gzip. The image selected the 480-pixel
+responsive variant at 3,450 encoded bytes. The record also confirms alt text,
+successful local requests and visible content with motion disabled.
+
+This is one local lab sample. Its Node and Playwright execution environment
+differs from the previous Node 24 sample, so timing values should not be
+interpreted as a before/after comparison. The runtime and CSS byte counts are
+artifact measurements; emulated timing is not a physical-device or field Core
+Web Vitals result. See the [raw observation](../evidence/production_mobile_performance_scene_surface.json).
+
 ## Exported-theme accessibility increment
 
 `A11Y-008` adds a real ZIP export scenario with an uploaded image and all three
