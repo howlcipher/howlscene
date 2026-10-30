@@ -23,8 +23,11 @@ the onboarding flow and Chromium/Firefox exports; local WebKit launch is blocked
 by missing host GTK/media libraries. Docker is installed but this account cannot
 access its socket, so the pinned Playwright container could not run locally.
 Separate SDK tarball checks, the 267-package license audit, and the zero-
-vulnerability audit pass. Hosted verification for this change is pending. Logs
-are in
+vulnerability audit pass. Hosted `verify` passed in run
+[`40976488810`](https://github.com/howlcipher/howlscene/actions/runs/40976488810);
+the Pages artifact/path check passed in run
+[`40976488802`](https://github.com/howlcipher/howlscene/actions/runs/40976488802),
+including the WebKit scenario unavailable on this host. Logs are in
 [`editor_onboarding_host_local_attempt.txt`](docs/evidence/editor_onboarding_host_local_attempt.txt)
 and [`editor_onboarding_local_extras.txt`](docs/evidence/editor_onboarding_local_extras.txt).
 Human zoom, assistive-technology, text-over-scenery, and nontechnical usability
@@ -147,8 +150,9 @@ published website ZIP. The preimplementation browser failure is in
 [`editor_onboarding_red.txt`](docs/evidence/editor_onboarding_red.txt). The
 focused workflow passes in
 [`editor_onboarding_focused.txt`](docs/evidence/editor_onboarding_focused.txt),
-and the accessibility scan passes with the guide visible. Hosted verification
-remains pending.
+and the accessibility scan passes with the guide visible. Hosted `verify` passed
+in run `40976488810`; the Pages artifact/path check passed in run
+`40976488802`.
 
 ## Published development checkpoint
 
