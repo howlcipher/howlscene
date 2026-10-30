@@ -245,8 +245,8 @@ html:has(.story-demo) {
   inset: 0;
   overflow: hidden;
   opacity: 0;
-  transition: opacity 90ms linear;
-  will-change: opacity;
+  mask-image: none;
+  will-change: clip-path;
 }
 
 .story-demo .story-backdrop:first-child {
@@ -263,10 +263,32 @@ html:has(.story-demo) {
   object-fit: cover;
   object-position: center;
   opacity: 1;
-  transform: scale(1.08);
+  transform: translate3d(0, 0, 0) scale(1.08);
   transition: filter 500ms ease;
   filter: saturate(0.83) contrast(0.96);
   will-change: transform;
+}
+
+.story-transition-mist {
+  position: absolute;
+  z-index: 4;
+  inset: -12%;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at 52% 68%,
+      rgb(248 246 234 / 88%),
+      transparent 30%
+    ),
+    radial-gradient(
+      ellipse at 78% 78%,
+      rgb(242 239 226 / 72%),
+      transparent 35%
+    ),
+    linear-gradient(180deg, transparent 38%, rgb(247 244 232 / 62%) 100%);
+  filter: blur(24px);
+  opacity: 0;
+  will-change: opacity, transform;
 }
 
 .story-demo .scene-content {

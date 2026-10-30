@@ -31,6 +31,7 @@ function StoryCanvas() {
           </div>
         );
       })}
+      <div className="story-transition-mist" />
     </div>
   );
 }
@@ -81,6 +82,7 @@ export function StoryExample() {
     const copyLayers = Array.from(
       copyStage.querySelectorAll<HTMLElement>(".story-copy-panel"),
     );
+    const mist = canvas.querySelector<HTMLElement>(".story-transition-mist");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
 
@@ -114,23 +116,48 @@ export function StoryExample() {
           root.dataset.motionEnabled === "false" || reducedMotion.matches;
         const blend = motionDisabled ? (progress < 0.5 ? 0 : 1) : progress;
         layers.forEach((layer, index) => {
-          const opacity =
-            index === segmentIndex
-              ? 1 - blend
-              : index === segmentIndex + 1
-                ? blend
-                : segmentIndex === scenes.length - 1 && index === segmentIndex
-                  ? 1
-                  : 0;
+          const isOutgoing = index === segmentIndex;
+          const isIncoming = index === segmentIndex + 1;
+          const isSettled = segmentIndex === scenes.length - 1 && isOutgoing;
+          const opacity = motionDisabled
+            ? index === segmentIndex + (progress < 0.5 ? 0 : 1) || isSettled
+              ? 1
+              : 0
+            : isOutgoing || isIncoming || isSettled
+              ? 1
+              : 0;
           layer.style.opacity = String(opacity);
+          const revealEdge = (1 - progress) * 100;
+          const revealMask =
+            !motionDisabled && isIncoming
+              ? `linear-gradient(to bottom, transparent ${Math.max(0, revealEdge - 9)}%, black ${Math.min(100, revealEdge + 9)}%)`
+              : "none";
+          layer.style.maskImage = revealMask;
+          layer.style.setProperty("-webkit-mask-image", revealMask);
           const image = images[index];
           if (!image) return;
-          const imageProgress =
-            index < segmentIndex ? 1 : index === segmentIndex ? progress : 0;
-          image.style.transform = motionDisabled
-            ? "none"
-            : `translate3d(0, ${-2.4 * imageProgress}vh, 0) scale(${1.08 - 0.06 * imageProgress})`;
+          if (motionDisabled) {
+            image.style.transform = "none";
+            image.style.filter = "none";
+          } else if (isOutgoing) {
+            image.style.transform = `translate3d(0, ${-8 * progress}vh, 0) scale(${1.08 + 0.04 * progress})`;
+            image.style.filter = `blur(${progress * 1.5}px)`;
+          } else if (isIncoming) {
+            image.style.transform = `translate3d(0, ${(1 - progress) * 12}vh, 0) scale(${1.14 - 0.06 * progress})`;
+            image.style.filter = `blur(${(1 - progress) * 1.5}px)`;
+          } else {
+            image.style.transform = "translate3d(0, 0, 0) scale(1.08)";
+            image.style.filter = "none";
+          }
         });
+        if (mist) {
+          mist.style.opacity = motionDisabled
+            ? "0"
+            : String(Math.sin(Math.PI * progress) * 0.68);
+          mist.style.transform = motionDisabled
+            ? "none"
+            : `translate3d(0, ${(1 - progress) * 9}vh, 0)`;
+        }
         copyLayers.forEach((panel, index) => {
           const opacity =
             index === segmentIndex

@@ -91,7 +91,9 @@ test("the story stays readable at a phone width", async ({ page }) => {
   ).toBe(true);
 });
 
-test("scrolling blends between pinned landscape scenes", async ({ page }) => {
+test("scrolling reveals the next pinned landscape scene with camera travel", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/examples/ink-wash-story/");
   await page.evaluate(() =>
@@ -118,39 +120,37 @@ test("scrolling blends between pinned landscape scenes", async ({ page }) => {
   expect(geometry.top).toBe(0);
   expect(geometry.height).toBe(geometry.viewport);
 
-  await expect
-    .poll(() =>
-      page
-        .locator(".story-canvas .story-art")
-        .first()
-        .evaluate((image) =>
-          Number(getComputedStyle(image.parentElement!).opacity),
-        ),
-    )
-    .toBeLessThan(0.9);
-  const [firstOpacity, secondOpacity] = await page
+  const transition = await page
     .locator(".story-canvas .story-art")
-    .evaluateAll((images) =>
-      images
-        .slice(0, 2)
-        .map((image) => Number(getComputedStyle(image.parentElement!).opacity)),
-    );
-  expect(firstOpacity).toBeGreaterThan(0.1);
-  expect(firstOpacity).toBeLessThan(0.9);
-  expect(secondOpacity).toBeGreaterThan(0.1);
-  expect(secondOpacity).toBeLessThan(0.9);
+    .evaluateAll((images) => {
+      const outgoing = getComputedStyle(images[0]!);
+      const incomingLayer = getComputedStyle(images[1]!.parentElement!);
+      const incoming = getComputedStyle(images[1]!);
+      return {
+        outgoingOpacity: Number(
+          getComputedStyle(images[0]!.parentElement!).opacity,
+        ),
+        incomingOpacity: Number(incomingLayer.opacity),
+        incomingMask: incomingLayer.maskImage,
+        outgoingTransform: outgoing.transform,
+        incomingTransform: incoming.transform,
+      };
+    });
+  expect(transition.outgoingOpacity).toBe(1);
+  expect(transition.incomingOpacity).toBe(1);
+  expect(transition.incomingMask).toMatch(/linear-gradient\(/);
+  const featherStops = Array.from(
+    transition.incomingMask.matchAll(/([\d.]+)%/g),
+    (match) => Number(match[1]),
+  );
+  expect(featherStops).toHaveLength(2);
+  expect(featherStops[1]! - featherStops[0]!).toBeGreaterThan(10);
+  expect(transition.outgoingTransform).not.toBe("none");
+  expect(transition.incomingTransform).not.toBe("none");
 
   const copyPanels = page.locator(".story-copy-panel");
-  const [firstCopyOpacity, secondCopyOpacity] = await copyPanels.evaluateAll(
-    (panels) =>
-      panels
-        .slice(0, 2)
-        .map((panel) => Number(getComputedStyle(panel).opacity)),
-  );
-  expect(firstCopyOpacity).toBeGreaterThan(0.1);
-  expect(firstCopyOpacity).toBeLessThan(0.9);
-  expect(secondCopyOpacity).toBeGreaterThan(0.1);
-  expect(secondCopyOpacity).toBeLessThan(0.9);
+  await expect(copyPanels.first()).toBeVisible();
+  await expect(copyPanels.nth(1)).toBeVisible();
   const copyGeometry = await copyPanels.first().evaluate((panel) => {
     const rect = panel.getBoundingClientRect();
     return { top: rect.top, bottom: rect.bottom, viewport: innerHeight };
@@ -177,4 +177,12 @@ test("reduced motion keeps the scene static and content navigable", async ({
   await expect(
     page.getByRole("heading", { name: "Consectetur adipiscing elit" }),
   ).toBeVisible();
+  await expect
+    .poll(() =>
+      page
+        .locator(".story-canvas .story-backdrop")
+        .nth(1)
+        .evaluate((layer) => getComputedStyle(layer).maskImage),
+    )
+    .toBe("none");
 });
