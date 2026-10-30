@@ -6,7 +6,8 @@
 - Branch: `work/cinematic-v1`
 - Starting commit: `efb9e160d9156e43716ec182908514d4af84131b`
 - Current committed test-first checkpoint: `e19f0b6cf24d41d9edd101c7b383efbc303e19e6`
-- Current implementation checkpoint: `8f8fde351581e94bd45729adedc7b3edfb252143` (`feat(cinematic): add shared configurable story mode`)
+- Feature commit: `8f8fde351581e94bd45729adedc7b3edfb252143` (`feat(cinematic): add shared configurable story mode`)
+- Current implementation checkpoint: `7b08c0750a8221d738ac1249af9dd4262ea23bbe`
 - Working tree: only journal/readiness report updates remain before documentation commit
 - Active milestone: shared cinematic configuration, rendering, and editor integration
 
@@ -101,6 +102,12 @@ See [ADR 0001](../architecture/adr/0001-cinematic-config-contract.md).
 - The implementation commit is local and unpushed. It has not been compiled,
   tested, or run in a browser. No RED/GREEN or package artifact evidence is
   claimed.
+
+### Rendering follow-up `7b08c07`
+
+- Camera transitions target the background image element when present so its
+  containing scene continues to define full-viewport bounds.
+- Added lifecycle source coverage for artwork targeting. It remains unexecuted.
 
 Historical evidence in `PROGRESS.md` and existing review documents predates
 this mission and is not evidence for new changes.

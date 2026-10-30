@@ -25,8 +25,10 @@ and transition logic.
 
 - Starting commit: `efb9e160d9156e43716ec182908514d4af84131b`
 - Test-first commit: `e19f0b6cf24d41d9edd101c7b383efbc303e19e6`
-- Ending code commit: `8f8fde351581e94bd45729adedc7b3edfb252143`
+- Feature commit: `8f8fde351581e94bd45729adedc7b3edfb252143`
   (`feat(cinematic): add shared configurable story mode`).
+- Ending code commit: `7b08c0750a8221d738ac1249af9dd4262ea23bbe`
+  (`fix(cinematic): animate full scene artwork bounds`).
 - The journal and readiness report are being committed in a documentation
   follow-up; this does not add verification evidence.
 - Pull request: none; remote write access is blocked.
