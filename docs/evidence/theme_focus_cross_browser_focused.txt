@@ -1,0 +1,29 @@
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 npx
+npm notice run 'playwright' test tests/e2e/cross_browser_export.spec.ts --project=chromium-export --project=firefox-export
+[WebServer] (node:1141517) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:1141997) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium-export] › tests/e2e/cross_browser_export.spec.ts:10:1 › EXP-PLATFORM-001 A11Y-009 image exports retain layout and keyboard focus without JavaScript (3.0s)
+(node:1143508) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [firefox-export] › tests/e2e/cross_browser_export.spec.ts:10:1 › EXP-PLATFORM-001 A11Y-009 image exports retain layout and keyboard focus without JavaScript (8.4s)
+
+  2 passed (16.6s)
+npm warn cli npm v12.0.2 does not support Node.js v22.22.1. This version of npm supports the following node versions: `^22.22.2 || ^24.15.0 || >=26.0.0`. You can find the latest version at https://nodejs.org/.
+npm notice run howlscene@0.1.0 npx
+npm notice run 'playwright' test tests/e2e/export_accessibility.spec.ts --grep A11Y-009
+[WebServer] (node:1147215) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:1147384) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/export_accessibility.spec.ts:19:1 › A11Y-007 A11Y-008 A11Y-009 exported themes reflow with large text and retain accessible focus under reduced motion (6.5s)
+
+  1 passed (9.3s)
