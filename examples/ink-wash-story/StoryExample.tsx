@@ -12,6 +12,11 @@ const artworkUrls: Record<StorySceneId, string> = {
 };
 const creditsUrl = "./assets/CREDITS.txt";
 
+function smoothstep(start: number, end: number, value: number): number {
+  const progress = Math.min(1, Math.max(0, (value - start) / (end - start)));
+  return progress * progress * (3 - 2 * progress);
+}
+
 function StoryCanvas() {
   return (
     <div className="story-canvas" aria-hidden="true">
@@ -115,6 +120,7 @@ export function StoryExample() {
         const motionDisabled =
           root.dataset.motionEnabled === "false" || reducedMotion.matches;
         const blend = motionDisabled ? (progress < 0.5 ? 0 : 1) : progress;
+        const cameraDirection = segmentIndex % 2 === 0 ? 1 : -1;
         layers.forEach((layer, index) => {
           const isOutgoing = index === segmentIndex;
           const isIncoming = index === segmentIndex + 1;
@@ -123,53 +129,72 @@ export function StoryExample() {
             ? index === segmentIndex + (progress < 0.5 ? 0 : 1) || isSettled
               ? 1
               : 0
-            : isOutgoing || isIncoming || isSettled
+            : isSettled
               ? 1
-              : 0;
+              : isOutgoing
+                ? 1 - smoothstep(0.43, 0.61, progress)
+                : isIncoming
+                  ? smoothstep(0.49, 0.68, progress)
+                  : 0;
           layer.style.opacity = String(opacity);
-          const revealEdge = (1 - progress) * 100;
-          const revealMask =
-            !motionDisabled && isIncoming
-              ? `linear-gradient(to bottom, transparent ${Math.max(0, revealEdge - 9)}%, black ${Math.min(100, revealEdge + 9)}%)`
-              : "none";
-          layer.style.maskImage = revealMask;
-          layer.style.setProperty("-webkit-mask-image", revealMask);
+          layer.style.maskImage = "none";
+          layer.style.setProperty("-webkit-mask-image", "none");
           const image = images[index];
           if (!image) return;
           if (motionDisabled) {
             image.style.transform = "none";
             image.style.filter = "none";
           } else if (isOutgoing) {
-            image.style.transform = `translate3d(0, ${-8 * progress}vh, 0) scale(${1.08 + 0.04 * progress})`;
-            image.style.filter = `blur(${progress * 1.5}px)`;
+            const push = smoothstep(0, 0.68, progress);
+            image.style.transform = `translate3d(${-cameraDirection * 16 * push}vw, ${-9 * push}vh, 0) scale(${1.08 + 0.36 * push})`;
+            image.style.filter = "none";
           } else if (isIncoming) {
-            image.style.transform = `translate3d(0, ${(1 - progress) * 12}vh, 0) scale(${1.14 - 0.06 * progress})`;
-            image.style.filter = `blur(${(1 - progress) * 1.5}px)`;
+            const arrival = smoothstep(0.45, 1, progress);
+            image.style.transform = `translate3d(${cameraDirection * 20 * (1 - arrival)}vw, ${9 * (1 - arrival)}vh, 0) scale(${1.44 - 0.36 * arrival})`;
+            image.style.filter = "none";
           } else {
             image.style.transform = "translate3d(0, 0, 0) scale(1.08)";
             image.style.filter = "none";
           }
         });
         if (mist) {
+          const transitionAtmosphere = Math.sin(Math.PI * progress);
           mist.style.opacity = motionDisabled
             ? "0"
-            : String(Math.sin(Math.PI * progress) * 0.68);
+            : String(transitionAtmosphere * 0.52);
           mist.style.transform = motionDisabled
             ? "none"
-            : `translate3d(0, ${(1 - progress) * 9}vh, 0)`;
+            : `translate3d(${cameraDirection * 5 * (0.5 - progress)}vw, ${(0.55 - progress) * 10}vh, 0)`;
+          canvas.style.setProperty(
+            "--story-transition-wash",
+            motionDisabled ? "0" : String(transitionAtmosphere * 0.45),
+          );
+          canvas.style.setProperty(
+            "--story-atmosphere-x",
+            motionDisabled ? "0px" : `${cameraDirection * 2.5 * progress}vw`,
+          );
+          canvas.style.setProperty(
+            "--story-atmosphere-y",
+            motionDisabled ? "0px" : `${-2 * progress}vh`,
+          );
         }
         copyLayers.forEach((panel, index) => {
-          const opacity =
-            index === segmentIndex
-              ? 1 - blend
-              : index === segmentIndex + 1
-                ? blend
-                : segmentIndex === scenes.length - 1 && index === segmentIndex
-                  ? 1
+          const opacity = motionDisabled
+            ? index === segmentIndex + (progress < 0.5 ? 0 : 1)
+              ? 1
+              : 0
+            : segmentIndex === scenes.length - 1 && index === segmentIndex
+              ? 1
+              : index === segmentIndex
+                ? 1 - smoothstep(0.12, 0.38, progress)
+                : index === segmentIndex + 1
+                  ? smoothstep(0.68, 0.9, progress)
                   : 0;
           panel.style.opacity = String(opacity);
           const panelProgress =
-            index === segmentIndex ? progress : 1 - progress;
+            index === segmentIndex
+              ? smoothstep(0.12, 0.48, progress)
+              : 1 - smoothstep(0.64, 0.9, progress);
           const direction = index === segmentIndex ? -1 : 1;
           panel.style.setProperty(
             "--story-panel-offset",
@@ -179,7 +204,7 @@ export function StoryExample() {
 
         const nextIndex = Math.min(
           scenes.length - 1,
-          segmentIndex + (blend >= 0.5 ? 1 : 0),
+          segmentIndex + (blend >= (motionDisabled ? 0.5 : 0.68) ? 1 : 0),
         );
         setActiveIndex((current) =>
           current === nextIndex ? current : nextIndex,

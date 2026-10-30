@@ -54,6 +54,7 @@ html:has(.story-demo) {
       transparent 76%,
       rgb(36 39 34 / 23%)
     );
+  opacity: calc(1 - var(--story-transition-wash, 0));
   content: "";
 }
 
@@ -71,7 +72,12 @@ html:has(.story-demo) {
   content: "";
   opacity: 0.42;
   filter: blur(18px);
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(
+      var(--story-atmosphere-x, 0px),
+      var(--story-atmosphere-y, 0px),
+      0
+    )
+    scale(1.08);
   transition: opacity 700ms ease;
 }
 
@@ -112,7 +118,7 @@ html:has(.story-demo) {
   opacity: 0;
   text-align: left;
   transform: translate3d(0, calc(-50% + var(--story-panel-offset, 0px)), 0);
-  transition: opacity 90ms linear;
+  transition: none;
 }
 
 .story-copy-panel:first-child {
@@ -245,8 +251,7 @@ html:has(.story-demo) {
   inset: 0;
   overflow: hidden;
   opacity: 0;
-  mask-image: none;
-  will-change: clip-path;
+  will-change: opacity;
 }
 
 .story-demo .story-backdrop:first-child {

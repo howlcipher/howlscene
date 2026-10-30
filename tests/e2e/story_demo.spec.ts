@@ -91,7 +91,7 @@ test("the story stays readable at a phone width", async ({ page }) => {
   ).toBe(true);
 });
 
-test("scrolling reveals the next pinned landscape scene with camera travel", async ({
+test("scene handoffs push through a text-free mist passage before resolving", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -126,37 +126,113 @@ test("scrolling reveals the next pinned landscape scene with camera travel", asy
       const outgoing = getComputedStyle(images[0]!);
       const incomingLayer = getComputedStyle(images[1]!.parentElement!);
       const incoming = getComputedStyle(images[1]!);
+      const outgoingMatrix = new DOMMatrix(outgoing.transform);
+      const incomingMatrix = new DOMMatrix(incoming.transform);
+      const textPanels = Array.from(
+        document.querySelectorAll<HTMLElement>(".story-copy-panel"),
+      );
       return {
         outgoingOpacity: Number(
           getComputedStyle(images[0]!.parentElement!).opacity,
         ),
         incomingOpacity: Number(incomingLayer.opacity),
-        incomingMask: incomingLayer.maskImage,
         outgoingTransform: outgoing.transform,
         incomingTransform: incoming.transform,
+        outgoingScale: outgoingMatrix.a,
+        outgoingTravel: Math.abs(outgoingMatrix.m41),
+        incomingScale: incomingMatrix.a,
+        incomingTravel: Math.abs(incomingMatrix.m41),
+        copyOpacity: textPanels.map((panel) =>
+          Number(getComputedStyle(panel).opacity),
+        ),
+        mistOpacity: Number(
+          getComputedStyle(
+            document.querySelector<HTMLElement>(".story-transition-mist")!,
+          ).opacity,
+        ),
       };
     });
-  expect(transition.outgoingOpacity).toBe(1);
-  expect(transition.incomingOpacity).toBe(1);
-  expect(transition.incomingMask).toMatch(/linear-gradient\(/);
-  const featherStops = Array.from(
-    transition.incomingMask.matchAll(/([\d.]+)%/g),
-    (match) => Number(match[1]),
-  );
-  expect(featherStops).toHaveLength(2);
-  expect(featherStops[1]! - featherStops[0]!).toBeGreaterThan(10);
+  expect(transition.outgoingOpacity).toBeGreaterThan(0.8);
+  expect(transition.incomingOpacity).toBeLessThan(0.1);
+  expect(transition.copyOpacity[0]).toBeLessThan(0.1);
+  expect(transition.copyOpacity[1]).toBeLessThan(0.1);
+  expect(transition.mistOpacity).toBeGreaterThan(0.45);
   expect(transition.outgoingTransform).not.toBe("none");
   expect(transition.incomingTransform).not.toBe("none");
+  expect(transition.outgoingScale).toBeGreaterThan(1.3);
+  expect(transition.outgoingTravel).toBeGreaterThan(100);
+  expect(transition.incomingScale).toBeGreaterThan(1.1);
+  expect(transition.incomingTravel).toBeGreaterThan(50);
+  await expect(
+    page.getByRole("link", {
+      name: "01, Scene 1: Lorem ipsum dolor sit amet",
+    }),
+  ).toHaveAttribute("aria-current", "location");
 
   const copyPanels = page.locator(".story-copy-panel");
-  await expect(copyPanels.first()).toBeVisible();
-  await expect(copyPanels.nth(1)).toBeVisible();
   const copyGeometry = await copyPanels.first().evaluate((panel) => {
     const rect = panel.getBoundingClientRect();
     return { top: rect.top, bottom: rect.bottom, viewport: innerHeight };
   });
   expect(copyGeometry.top).toBeGreaterThan(0);
   expect(copyGeometry.bottom).toBeLessThan(copyGeometry.viewport);
+
+  await page.evaluate(() =>
+    window.scrollTo({ top: window.innerHeight * 0.65, behavior: "instant" }),
+  );
+  await expect
+    .poll(() =>
+      page
+        .locator(".story-canvas .story-backdrop")
+        .nth(1)
+        .evaluate((layer) => Number(getComputedStyle(layer).opacity)),
+    )
+    .toBeGreaterThan(0.8);
+  await expect(
+    page.getByRole("link", {
+      name: "01, Scene 1: Lorem ipsum dolor sit amet",
+    }),
+  ).toHaveAttribute("aria-current", "location");
+  await expect
+    .poll(() =>
+      copyPanels.evaluateAll((panels) =>
+        panels
+          .slice(0, 2)
+          .map((panel) => Number(getComputedStyle(panel).opacity)),
+      ),
+    )
+    .toEqual([0, 0]);
+
+  await page.evaluate(() =>
+    window.scrollTo({ top: window.innerHeight * 0.8, behavior: "instant" }),
+  );
+  await expect
+    .poll(() =>
+      page
+        .locator(".story-canvas .story-backdrop")
+        .nth(1)
+        .evaluate((layer) => Number(getComputedStyle(layer).opacity)),
+    )
+    .toBe(1);
+  await expect(
+    page.getByRole("link", {
+      name: "02, Scene 2: Consectetur adipiscing elit",
+    }),
+  ).toHaveAttribute("aria-current", "location");
+  await expect
+    .poll(() =>
+      copyPanels
+        .nth(1)
+        .evaluate((panel) => Number(getComputedStyle(panel).opacity)),
+    )
+    .toBeGreaterThan(0.5);
+  await expect
+    .poll(() =>
+      copyPanels
+        .first()
+        .evaluate((panel) => Number(getComputedStyle(panel).opacity)),
+    )
+    .toBeLessThan(0.1);
 });
 
 test("reduced motion keeps the scene static and content navigable", async ({
@@ -185,4 +261,26 @@ test("reduced motion keeps the scene static and content navigable", async ({
         .evaluate((layer) => getComputedStyle(layer).maskImage),
     )
     .toBe("none");
+  await page.locator("#scene-5").evaluate((scene) => {
+    scene.style.minHeight = "150vh";
+  });
+  await page
+    .getByRole("link", { name: "05, Scene 5: Quis nostrud exercitation" })
+    .click();
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect(page).toHaveURL(/#scene-5$/);
+  await expect(
+    page.getByRole("link", {
+      name: "05, Scene 5: Quis nostrud exercitation",
+    }),
+  ).toHaveAttribute("aria-current", "location");
+  await expect
+    .poll(() =>
+      page
+        .locator(".story-copy-panel")
+        .evaluateAll((panels) =>
+          panels.map((panel) => Number(getComputedStyle(panel).opacity)),
+        ),
+    )
+    .toEqual([0, 0, 0, 0, 1]);
 });
