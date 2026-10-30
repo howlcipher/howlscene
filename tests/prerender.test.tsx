@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   renderLanding,
   renderExample,
+  renderStory,
   injectRoot,
 } from "../scripts/prerender.tsx";
 describe("production prerendering", () => {
@@ -10,6 +11,7 @@ describe("production prerendering", () => {
     expect(html).toContain("Your story.");
     expect(html).toContain('href="./editor/"');
     expect(html).toContain('href="./examples/william-elias/"');
+    expect(html).toContain('href="./examples/ink-wash-story/"');
     expect(html).toContain("<main>");
   });
   it("renders the shared William example in Ink with working public links and an inactive theme selector", () => {
@@ -20,6 +22,14 @@ describe("production prerendering", () => {
     expect(html).toContain("not employer production systems");
     expect(html).toMatch(/<select[^>]*disabled=""/);
     expect(html).toContain("<noscript>");
+  });
+  it("prerenders all scenes and accessible navigation for the cinematic sample", () => {
+    const html = renderStory();
+    expect(html).toContain("Lorem ipsum dolor sit amet");
+    expect(html).toContain('id="scene-5"');
+    expect(html).toContain('aria-label="Story scenes"');
+    expect(html).toContain("stone-bridge");
+    expect(html).toContain("Artwork notes");
   });
   it("replaces exactly the application root while preserving production CSS and script links", () => {
     const shell =

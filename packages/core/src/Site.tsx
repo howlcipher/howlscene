@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { AssetImage } from "./media.js";
 import { Scenery } from "./scenery.js";
 import { defaultArtworkRegistry, type ArtworkRegistry } from "./artwork.js";
@@ -8,7 +8,7 @@ import {
   createSectionRegistry,
   type SectionRendererRegistry,
 } from "./sections.js";
-import type { SiteConfig } from "./config.js";
+import type { SectionConfig, SiteConfig } from "./config.js";
 import {
   collectLayoutStyles,
   defaultLayoutRegistry,
@@ -26,6 +26,8 @@ export function Site({
   layoutRegistry = defaultLayoutRegistry,
   includeLayoutStyles = true,
   artworkRegistry = defaultArtworkRegistry,
+  sceneBackdrop,
+  showScenery = true,
 }: {
   site: SiteConfig;
   assetUrl?: (id: string, width?: number) => string;
@@ -34,6 +36,10 @@ export function Site({
   sectionRegistry?: SectionRendererRegistry;
   layoutRegistry?: LayoutRegistry;
   includeLayoutStyles?: boolean;
+  /** Trusted consumer artwork rendered behind one scene, such as an external local image. */
+  sceneBackdrop?: (section: SectionConfig, index: number) => ReactNode;
+  /** Hides theme SVG scenery when the consumer supplies its own scene artwork. */
+  showScenery?: boolean;
 }) {
   const manifest = themeRegistry[site.theme];
   if (!manifest) throw Error("Unsupported theme");
@@ -178,11 +184,14 @@ export function Site({
               data-scene-motion={s.animation}
               className={`scene layout-${s.layout} spacing-${s.spacing} align-${s.alignment} width-${s.contentWidth}`}
             >
-              <Scenery
-                theme={site.theme}
-                themeRegistry={themeRegistry}
-                artworkRegistry={artworkRegistry}
-              />
+              {sceneBackdrop?.(s, index)}
+              {showScenery && (
+                <Scenery
+                  theme={site.theme}
+                  themeRegistry={themeRegistry}
+                  artworkRegistry={artworkRegistry}
+                />
+              )}
               <Layout
                 section={s}
                 intro={intro}

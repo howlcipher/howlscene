@@ -24,7 +24,7 @@ assistive-technology review, hosted CI and deployment remain release gates.
 | GitHub Pages workflow                                                | Hosted artifact check passed; Pages and reviewer environments not configured |
 | Public deployment and v1 release                                     | Not completed; no live deployment claimed                                    |
 
-Read [the progress journal](PROGRESS.md) for current work, [acceptance traceability](docs/experiment/acceptance.md), and [measurement scope](docs/experiment/metrics.md). The [experiment baseline](docs/experiment/baseline.md) covers this conventional implementation only; the reference video is missing.
+Read [the progress journal](PROGRESS.md) for current work, [acceptance traceability](docs/experiment/acceptance.md), and [measurement scope](docs/experiment/metrics.md). The [experiment baseline](docs/experiment/baseline.md) covers this conventional implementation only.
 
 ## Run locally
 
@@ -50,11 +50,13 @@ Change the title, heading, and introduction. Select a theme, then choose **Downl
 
 The editor offers a five-step beginner guide that can be skipped or reopened from **Getting started**. Drafts are saved in this browser and the editor reports save status. Storage can fail or be cleared. Use **Save project backup** to keep an editable copy. **Download my website** creates a separate published artifact.
 
+See the [cinematic Lorem Ipsum sample](./examples/ink-wash-story/) for a five-scene ink-wash story with original artwork, scene navigation, scroll-driven landscape crossfades and camera movement, and reduced-motion support. The user-supplied reference clip informed this sample's composition; the clip itself is not included in the repository. See the [video reference review](docs/reviews/video-reference-match.md) for the observed traits and verification notes.
+
 ## Architecture
 
 `packages/core` owns validated configuration and semantic rendering. Theme manifests select safe shared treatments for cards, navigation, and section headings. Copy in sections with uploaded background images sits on an opaque theme-colored surface for predictable contrast in preview and export. `packages/export` validates input and creates static output using the same renderer. `apps/editor` owns browser controls. The exporter does not depend on editor state or components.
 
-Read [the static export decision](docs/architecture/adr_001_static_export.md) for alternatives and limitations. The original portfolio remains outside this project and read-only. A verified HowlScene demonstration is still an open release gate.
+Read [the static export decision](docs/architecture/adr_001_static_export.md) for alternatives and limitations. The original portfolio remains outside this project and read-only. The William Elias example remains a separate developer integration; the Lorem Ipsum page is the cinematic visual sample.
 
 The repository includes a pull-request artifact build and a manually dispatched
 GitHub Pages workflow. Public deployment is disabled until an administrator
