@@ -149,6 +149,13 @@ test("production files work at root and GitHub Pages paths with and without Java
             }),
           ).toBeVisible();
           await expect(page.locator(".story-demo .scene")).toHaveCount(5);
+          await expect
+            .poll(() =>
+              page
+                .locator(".story-transition-cover")
+                .evaluate((image: HTMLImageElement) => image.naturalWidth),
+            )
+            .toBeGreaterThan(0);
           const creditsUrl = await page
             .getByRole("link", { name: "Artwork notes" })
             .getAttribute("href");
@@ -158,7 +165,7 @@ test("production files work at root and GitHub Pages paths with and without Java
           );
           expect(creditsResponse.status()).toBe(200);
           expect(await creditsResponse.text()).toContain(
-            "five original landscape illustrations",
+            "six original landscape illustrations",
           );
           for (const sceneId of [
             "scene-1",

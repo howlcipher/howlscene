@@ -36,7 +36,13 @@ function StoryCanvas() {
           </div>
         );
       })}
-      <div className="story-transition-mist" />
+      <img
+        className="story-transition-cover"
+        src="./assets/mist-cover.webp"
+        alt=""
+        aria-hidden="true"
+        decoding="async"
+      />
     </div>
   );
 }
@@ -87,7 +93,9 @@ export function StoryExample() {
     const copyLayers = Array.from(
       copyStage.querySelectorAll<HTMLElement>(".story-copy-panel"),
     );
-    const mist = canvas.querySelector<HTMLElement>(".story-transition-mist");
+    const cover = host.current?.querySelector<HTMLImageElement>(
+      ".story-transition-cover",
+    );
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
 
@@ -132,9 +140,13 @@ export function StoryExample() {
             : isSettled
               ? 1
               : isOutgoing
-                ? 1 - smoothstep(0.43, 0.61, progress)
+                ? progress < 0.5
+                  ? 1
+                  : 0
                 : isIncoming
-                  ? smoothstep(0.49, 0.68, progress)
+                  ? progress < 0.5
+                    ? 0
+                    : 1
                   : 0;
           layer.style.opacity = String(opacity);
           layer.style.maskImage = "none";
@@ -157,17 +169,28 @@ export function StoryExample() {
             image.style.filter = "none";
           }
         });
-        if (mist) {
+        if (cover) {
           const transitionAtmosphere = Math.sin(Math.PI * progress);
-          mist.style.opacity = motionDisabled
-            ? "0"
-            : String(transitionAtmosphere * 0.52);
-          mist.style.transform = motionDisabled
+          const coverEntering = smoothstep(0.27, 0.5, progress);
+          const coverLeaving = smoothstep(0.5, 0.76, progress);
+          const coverOpacity = progress > 0.27 && progress < 0.76 ? 1 : 0;
+          const coverTravel =
+            cameraDirection *
+            (progress < 0.5 ? -120 * (1 - coverEntering) : 120 * coverLeaving);
+          cover.style.opacity = motionDisabled ? "0" : String(coverOpacity);
+          const maskDirection = cameraDirection * (progress < 0.5 ? -1 : 1);
+          const coverMask =
+            motionDisabled || Math.abs(progress - 0.5) < 0.02
+              ? "none"
+              : `linear-gradient(to ${maskDirection > 0 ? "right" : "left"}, transparent 0%, black 18%)`;
+          cover.style.maskImage = coverMask;
+          cover.style.setProperty("-webkit-mask-image", coverMask);
+          cover.style.transform = motionDisabled
             ? "none"
-            : `translate3d(${cameraDirection * 5 * (0.5 - progress)}vw, ${(0.55 - progress) * 10}vh, 0)`;
+            : `translate3d(${coverTravel}vw, ${(0.55 - progress) * 10}vh, 0) scale(${1 + transitionAtmosphere * 0.06})`;
           canvas.style.setProperty(
             "--story-transition-wash",
-            motionDisabled ? "0" : String(transitionAtmosphere * 0.45),
+            motionDisabled ? "0" : String(coverOpacity * 0.45),
           );
           canvas.style.setProperty(
             "--story-atmosphere-x",

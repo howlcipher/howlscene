@@ -119,6 +119,34 @@ test("scene handoffs push through a text-free mist passage before resolving", as
   expect(geometry.position).toBe("fixed");
   expect(geometry.top).toBe(0);
   expect(geometry.height).toBe(geometry.viewport);
+  await expect
+    .poll(() =>
+      page
+        .locator(".story-demo .howlscene")
+        .evaluate((site) => getComputedStyle(site).zIndex),
+    )
+    .toBe("auto");
+  await expect
+    .poll(() =>
+      page
+        .locator(".story-canvas")
+        .evaluate((canvas) => getComputedStyle(canvas).zIndex),
+    )
+    .toBe("19");
+  await expect
+    .poll(() =>
+      page
+        .locator(".story-transition-cover")
+        .evaluate((cover) => getComputedStyle(cover).zIndex),
+    )
+    .toBe("4");
+  await expect
+    .poll(() =>
+      page
+        .locator(".story-copy-stage")
+        .evaluate((stage) => getComputedStyle(stage).zIndex),
+    )
+    .toBe("21");
 
   const transition = await page
     .locator(".story-canvas .story-art")
@@ -145,18 +173,28 @@ test("scene handoffs push through a text-free mist passage before resolving", as
         copyOpacity: textPanels.map((panel) =>
           Number(getComputedStyle(panel).opacity),
         ),
-        mistOpacity: Number(
+        coverOpacity: Number(
           getComputedStyle(
-            document.querySelector<HTMLElement>(".story-transition-mist")!,
+            document.querySelector<HTMLElement>(".story-transition-cover")!,
           ).opacity,
         ),
+        coverTravel: new DOMMatrix(
+          getComputedStyle(
+            document.querySelector<HTMLElement>(".story-transition-cover")!,
+          ).transform,
+        ).m41,
+        coverMask: getComputedStyle(
+          document.querySelector<HTMLElement>(".story-transition-cover")!,
+        ).maskImage,
       };
     });
   expect(transition.outgoingOpacity).toBeGreaterThan(0.8);
   expect(transition.incomingOpacity).toBeLessThan(0.1);
   expect(transition.copyOpacity[0]).toBeLessThan(0.1);
   expect(transition.copyOpacity[1]).toBeLessThan(0.1);
-  expect(transition.mistOpacity).toBeGreaterThan(0.45);
+  expect(transition.coverOpacity).toBeGreaterThan(0.45);
+  expect(transition.coverTravel).toBeLessThan(-100);
+  expect(transition.coverMask).toContain("linear-gradient");
   expect(transition.outgoingTransform).not.toBe("none");
   expect(transition.incomingTransform).not.toBe("none");
   expect(transition.outgoingScale).toBeGreaterThan(1.3);
@@ -178,6 +216,35 @@ test("scene handoffs push through a text-free mist passage before resolving", as
   expect(copyGeometry.bottom).toBeLessThan(copyGeometry.viewport);
 
   await page.evaluate(() =>
+    window.scrollTo({ top: window.innerHeight * 0.5, behavior: "instant" }),
+  );
+  const cover = page.locator(".story-transition-cover");
+  await expect
+    .poll(() => cover.evaluate((image: HTMLImageElement) => image.naturalWidth))
+    .toBeGreaterThan(0);
+  await expect
+    .poll(() =>
+      cover.evaluate((image: HTMLImageElement) =>
+        Number(getComputedStyle(image).opacity),
+      ),
+    )
+    .toBeGreaterThan(0.98);
+  await expect
+    .poll(() => cover.evaluate((image) => getComputedStyle(image).maskImage))
+    .toBe("none");
+  await expect
+    .poll(() =>
+      page
+        .locator(".story-canvas .story-backdrop")
+        .evaluateAll((layers) =>
+          layers
+            .slice(0, 2)
+            .map((layer) => Number(getComputedStyle(layer).opacity)),
+        ),
+    )
+    .toEqual([0, 1]);
+
+  await page.evaluate(() =>
     window.scrollTo({ top: window.innerHeight * 0.65, behavior: "instant" }),
   );
   await expect
@@ -188,6 +255,14 @@ test("scene handoffs push through a text-free mist passage before resolving", as
         .evaluate((layer) => Number(getComputedStyle(layer).opacity)),
     )
     .toBeGreaterThan(0.8);
+  await expect
+    .poll(() =>
+      cover.evaluate(
+        (image: HTMLImageElement) =>
+          new DOMMatrix(getComputedStyle(image).transform).m41,
+      ),
+    )
+    .toBeGreaterThan(100);
   await expect(
     page.getByRole("link", {
       name: "01, Scene 1: Lorem ipsum dolor sit amet",

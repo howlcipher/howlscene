@@ -18,7 +18,7 @@ html:has(.story-demo) {
 
 .story-demo .howlscene {
   position: relative;
-  z-index: 1;
+  z-index: auto;
   min-height: 100vh;
   min-height: 100svh;
   background: transparent;
@@ -28,7 +28,7 @@ html:has(.story-demo) {
 
 .story-canvas {
   position: fixed;
-  z-index: 0;
+  z-index: 19;
   inset: 0;
   overflow: hidden;
   background: #d9d6ca;
@@ -83,7 +83,7 @@ html:has(.story-demo) {
 
 .story-copy-stage {
   position: fixed;
-  z-index: 2;
+  z-index: 21;
   inset: 0;
   visibility: hidden;
   pointer-events: none;
@@ -274,25 +274,17 @@ html:has(.story-demo) {
   will-change: transform;
 }
 
-.story-transition-mist {
+.story-transition-cover {
+  display: block;
   position: absolute;
   z-index: 4;
-  inset: -12%;
+  inset: -4%;
+  width: 108%;
+  height: 108%;
+  object-fit: cover;
   pointer-events: none;
-  background:
-    radial-gradient(
-      ellipse at 52% 68%,
-      rgb(248 246 234 / 88%),
-      transparent 30%
-    ),
-    radial-gradient(
-      ellipse at 78% 78%,
-      rgb(242 239 226 / 72%),
-      transparent 35%
-    ),
-    linear-gradient(180deg, transparent 38%, rgb(247 244 232 / 62%) 100%);
-  filter: blur(24px);
   opacity: 0;
+  transform: translate3d(0, 0, 0);
   will-change: opacity, transform;
 }
 
