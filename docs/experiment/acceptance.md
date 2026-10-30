@@ -37,7 +37,9 @@ SDK consumer checks typed package installation and nested serving with
 JavaScript on and off. See
 [`layout_registry_red.txt`](../evidence/layout_registry_red.txt),
 [ADR 017](../architecture/adr_017_trusted_layout_renderers.md), and the
-[custom layout guide](../developers/custom_layouts.md).
+[custom layout guide](../developers/custom_layouts.md). Hosted verification,
+including the WebKit export scenario, passed in run
+[`40988283799`](https://github.com/howlcipher/howlscene/actions/runs/40988283799).
 
 The `A11Y-007` export scenario also serves each theme ZIP with JavaScript
 disabled at 320 CSS px and 200% root text sizing. Its long-copy and project-card
