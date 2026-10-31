@@ -135,9 +135,15 @@ createRoot(document.getElementById('root')!).render(createElement(Site,{site,the
 const button=document.createElement('button');
 button.textContent='Export consumer website';
 button.onclick=async()=>{
- const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry,sectionRegistry,layoutRegistry});
- (window as Window & {exportBytes?:number[]}).exportBytes=Array.from(bytes);
- button.textContent='Exported '+bytes.byteLength+' bytes';
+ button.textContent='Exporting consumer website';
+ try {
+  const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry,sectionRegistry,layoutRegistry});
+  (window as Window & {exportBytes?:number[]}).exportBytes=Array.from(bytes);
+  button.textContent='Exported '+bytes.byteLength+' bytes';
+ } catch(error) {
+  button.textContent='Export failed: '+String(error);
+  throw error;
+ }
 };
 document.body.append(button);`,
   );
@@ -230,7 +236,21 @@ document.body.append(button);`,
     )
       throw Error("Independent browser consumer omitted custom layout CSS");
     await page.getByRole("button", { name: "Export consumer website" }).click();
-    await page.getByRole("button", { name: /Exported [0-9]+ bytes/ }).waitFor();
+    await page.waitForFunction(
+      () =>
+        document
+          .querySelector("body > button")
+          ?.textContent?.match(/^Exported [0-9]+ bytes$|^Export failed:/),
+      { timeout: 5000 },
+    );
+    const exportStatus = await page
+      .getByRole("button", { name: /Exported|Export failed/ })
+      .textContent();
+    if (!exportStatus?.startsWith("Exported "))
+      throw Error(
+        "Independent browser export failed: " +
+          JSON.stringify({ exportStatus, errors }),
+      );
     const artwork = await page
       .locator('circle[data-original-art="forest-canopy"]')
       .count();
