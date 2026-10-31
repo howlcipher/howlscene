@@ -20,7 +20,7 @@ describe("scroll-scrubbed camera journey", () => {
       })),
     });
 
-    expect(site.cameraJourney.enabled).toBe(true);
+    expect(site).toMatchObject({ cameraJourney: { enabled: true } });
     expect(site.sections[0]?.transition).toBe("mist-reveal");
   });
 
@@ -38,6 +38,8 @@ describe("scroll-scrubbed camera journey", () => {
   });
 
   it("preserves existing projects as scene-entry experiences by default", () => {
-    expect(parseSite(starterSite).cameraJourney.enabled).toBe(false);
+    expect(parseSite(starterSite)).toMatchObject({
+      cameraJourney: { enabled: false },
+    });
   });
 });
