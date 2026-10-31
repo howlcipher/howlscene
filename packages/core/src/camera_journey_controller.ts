@@ -261,7 +261,7 @@ export function createCameraJourneyController(
     enabled = true;
     stage.hidden = false;
     for (const scene of scenes)
-      scene.style.minHeight = `calc(${settings.distance} * 100svh)`;
+      scene.style.minHeight = `${settings.distance * 100}svh`;
     root.dataset.cameraJourneyActive = "true";
     (scrollContainer ?? window).addEventListener("scroll", schedule, {
       passive: true,
