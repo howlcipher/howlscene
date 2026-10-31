@@ -83,6 +83,40 @@ describe("cinematic configuration contract", () => {
     expect(html).toContain(">Opening scene</a>");
   });
 
+  it("CIN-022 renders decorative transition artwork and includes it in the ZIP", async () => {
+    const cover = {
+      id: "asset-mist-cover",
+      mime: "image/png",
+      data: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=",
+      alt: "",
+    };
+    const site = parseSite({
+      ...cinematicInput,
+      assets: [cover],
+      sections: [{ ...cinematicInput.sections[0]!, transitionCover: cover.id }],
+    });
+    const html = renderToStaticMarkup(<Site site={site} />);
+    expect(html).toContain('class="scene-transition-cover"');
+    expect(html).toContain('aria-hidden="true"');
+    const archive = await JSZip.loadAsync(await exportWebsite(site));
+    const exportedHtml = await archive.file("index.html")!.async("string");
+    expect(exportedHtml).toContain(
+      'src="./assets/asset-mist-cover/original.png"',
+    );
+    expect(archive.file("assets/asset-mist-cover/original.png")).not.toBeNull();
+  });
+
+  it("CIN-017 rejects a missing transition-cover asset", () => {
+    expect(() =>
+      parseSite({
+        ...cinematicInput,
+        sections: [
+          { ...cinematicInput.sections[0]!, transitionCover: "asset-missing" },
+        ],
+      }),
+    ).toThrow(/referenced image is missing/i);
+  });
+
   it("CIN-012 CIN-014 exports cinematic semantics and transition styles", async () => {
     const site = parseSite(cinematicInput);
     const archive = await JSZip.loadAsync(await exportWebsite(site));
