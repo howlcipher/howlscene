@@ -47,7 +47,8 @@ verification.
 - Cinematic ZIP and SDK acceptance: `0e81fbe` with follow-up test fixes.
 - Latest verified source commit: `85225bd94f0bac97454a026aa8b57081a5cfae36`.
 - Follow-up draft PR: [#35](https://github.com/howlcipher/howlscene/pull/35).
-- Ending implementation commit: `85225bd94f0bac97454a026aa8b57081a5cfae36`.
+- Final tested PR head: `472de5bd2f98258f63c811858e24868f7177e262`.
+- Ending merge commit: `3700a1d149b9e7a4880131799f6e5b4f1d476143`.
 
 ## 3. Architectural audit
 
@@ -308,8 +309,9 @@ cover Cinematic Story.
 - Unexpected background process started: **No**.
 - Safety rule violated: **No**.
 - Further host-side testing requested: **No**.
-- No deployment occurred; the Pages workflow's approval and publish jobs were
-  skipped. PR #35 remains draft and open.
+- PR #35 merged to `main` as `3700a1d149b9e7a4880131799f6e5b4f1d476143`.
+  No deployment occurred; the Pages workflow's approval and publish jobs were
+  skipped.
 - Local work was limited to source/document inspection and edits, Git status and
   small diff review, and bounded Prettier formatting. No package installation,
   compilation, test, browser, container, or background workload was run.
@@ -341,9 +343,11 @@ review, and remaining acceptance gates are unverified.
 
 ## Follow-up pull request
 
-Draft [PR #35](https://github.com/howlcipher/howlscene/pull/35) contains the
+[PR #35](https://github.com/howlcipher/howlscene/pull/35) contains the
 shared cinematic configuration, transition-cover support, Ink Wash sample
 migration, extracted ZIP and SDK acceptance, and minimatch audit fix. It is
-open and not merged. Quality run `41162883019` and Pages artifact run
-`41162883058` passed on `85225bd94f0bac97454a026aa8b57081a5cfae36`. No public
-deployment occurred.
+merged. Quality run [41163428593](https://github.com/howlcipher/howlscene/actions/runs/41163428593)
+and Pages artifact run [41163428704](https://github.com/howlcipher/howlscene/actions/runs/41163428704)
+passed on PR head `472de5bd2f98258f63c811858e24868f7177e262`, which contains
+the implementation verified in run `41162883019`. The merge commit is
+`3700a1d149b9e7a4880131799f6e5b4f1d476143`. No public deployment occurred.
