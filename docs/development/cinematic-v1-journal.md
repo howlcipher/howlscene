@@ -178,8 +178,9 @@ this mission and is not evidence for new changes.
 - Test-only commit: `df222d0a567fa0593a31c3e2a11eddeb1de45fde`.
 - Implementation commit: `4a9063574fd1178bd282d172c002afddc1a4b751`.
 - Browser-fixture follow-up: `4e0fd67cca7183fc675711872195268072f70b67`.
-- Current working tree includes an uncommitted, registry-metadata-based override
-  for the transitive `minimatch` security advisory discovered by hosted audit.
+- Security override commit: `4b4583c626a5215219597b857cc3501117d85377`.
+- Last verified source commit: `4b4583c`; this journal/readiness update is a
+  documentation-only checkpoint after that verification.
 - Draft PR: [#35](https://github.com/howlcipher/howlscene/pull/35).
 - Active milestone: declarative per-scene transition-cover asset support.
 
@@ -229,14 +230,23 @@ this mission and is not evidence for new changes.
   license checks. `npm audit` failed on a new moderate minimatch advisory
   published October 30, 2026. The locked `minimatch@10.2.6` is affected; the
   advisory identifies `11.0.1` as patched. The package-lock update is in
-  progress and still requires hosted `npm ci` and audit verification.
+  commit `4b4583c` and was verified remotely.
+- Final quality run
+  [41157467153](https://github.com/howlcipher/howlscene/actions/runs/41157467153)
+  passed on `4b4583c`: `npm ci`, formatting, lint, strict TypeScript, 37 Vitest
+  files / 171 tests, production build, 60 Playwright tests using one worker,
+  SDK packaging/consumer checks, licensing, and `npm audit --audit-level=moderate`.
+  Coverage: 94.74% lines, 89.91% branches, 95.65% functions, and 96.58%
+  statements across configured coverage files.
 - Pages artifact runs
   [41155831606](https://github.com/howlcipher/howlscene/actions/runs/41155831606),
   [41156472815](https://github.com/howlcipher/howlscene/actions/runs/41156472815),
   and
   [41156866632](https://github.com/howlcipher/howlscene/actions/runs/41156866632)
   passed production build, root/project path browser checks, and artifact
-  packaging. Approval and deployment jobs were skipped.
+  packaging. Latest run
+  [41157467158](https://github.com/howlcipher/howlscene/actions/runs/41157467158)
+  is for the same head commit. Approval and deployment jobs were skipped.
 
 ### Safety and verification
 
@@ -250,14 +260,12 @@ this mission and is not evidence for new changes.
   artifact; production deployment is gated to manual dispatch on `main`.
 - No unexpected background process was started. No local agents or browsers
   were started. No safety rule has been violated.
-- Remote workflow availability was confirmed. A final run is pending for the
-  `minimatch@11.0.1` override and lockfile.
+- Remote workflow availability was confirmed. Quality and Pages verification
+  are green on `4b4583c`.
 - No further host-side testing was requested.
 
 ### Next exact task
 
-- Validate and commit the minimatch override and lockfile, push to PR #35, and
-  inspect hosted `npm ci`, audit, and regression results.
-- If the current changes pass, migrate the Ink Wash demo's reusable behavior,
-  add remote exported-ZIP and SDK consumer evidence, then continue the
-  remaining v1 acceptance matrix. PR #35 remains draft; do not merge or deploy.
+- Migrate the Ink Wash demo's reusable behavior, then add remote exported-ZIP
+  and SDK consumer evidence and continue the remaining v1 acceptance matrix.
+  PR #35 remains draft; do not merge or deploy.
