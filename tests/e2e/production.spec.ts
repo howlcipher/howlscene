@@ -164,7 +164,7 @@ test("production files work at root and GitHub Pages paths with and without Java
           ).toBeVisible();
           await expect(page.locator(".story-demo .scene")).toHaveCount(5);
           await expect(page.locator(".story-art")).toHaveCount(5);
-          await expect(page.locator(".story-transition-cover")).toHaveAttribute(
+          await expect(page.locator(".scene-transition-cover")).toHaveAttribute(
             "src",
             "./assets/mist-cover.webp",
           );
