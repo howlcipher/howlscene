@@ -93,6 +93,20 @@ test("production files work at root and GitHub Pages paths with and without Java
     const origin = `http://127.0.0.1:${address.port}`;
     for (const base of ["/", "/howlscene/"]) {
       mount = base;
+      for (const artwork of [
+        "stone-bridge.webp",
+        "clocktower-river.webp",
+        "moon-gate.webp",
+        "river-city.webp",
+        "dusk-skyline.webp",
+        "mist-cover.webp",
+      ]) {
+        const response = await fetch(
+          `${origin}${base}examples/ink-wash-story/assets/${artwork}`,
+          { signal: AbortSignal.timeout(5000) },
+        );
+        expect(response.status).toBe(200);
+      }
       for (const javaScriptEnabled of [true, false]) {
         const context = await browser.newContext({
           javaScriptEnabled,
@@ -149,14 +163,11 @@ test("production files work at root and GitHub Pages paths with and without Java
             }),
           ).toBeVisible();
           await expect(page.locator(".story-demo .scene")).toHaveCount(5);
-          const coverSource = await page
-            .locator(".story-transition-cover")
-            .getAttribute("src");
-          expect(coverSource).toBeTruthy();
-          const coverResponse = await page.request.get(
-            new URL(coverSource!, page.url()).href,
+          await expect(page.locator(".story-art")).toHaveCount(5);
+          await expect(page.locator(".story-transition-cover")).toHaveAttribute(
+            "src",
+            "./assets/mist-cover.webp",
           );
-          expect(coverResponse.status()).toBe(200);
           const creditsUrl = await page
             .getByRole("link", { name: "Artwork notes" })
             .getAttribute("href");
@@ -176,12 +187,10 @@ test("production files work at root and GitHub Pages paths with and without Java
             "scene-5",
           ]) {
             const artwork = page.locator(`#${sceneId} .story-art`);
-            const source = await artwork.getAttribute("src");
-            expect(source).toBeTruthy();
-            const response = await page.request.get(
-              new URL(source!, page.url()).href,
+            await expect(artwork).toHaveAttribute(
+              "src",
+              /\.\/assets\/.+\.webp$/,
             );
-            expect(response.status()).toBe(200);
           }
           await page
             .getByRole("link", {
