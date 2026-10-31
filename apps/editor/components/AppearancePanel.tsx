@@ -127,7 +127,7 @@ export function AppearancePanel({
         </p>
       ))}
       {site.experience === "cinematic" && (
-        <details open={site.cameraJourney.enabled}>
+        <details open>
           <summary>Cinematic movement</summary>
           <label className="checkbox">
             <input

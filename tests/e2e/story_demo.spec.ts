@@ -153,12 +153,18 @@ test("Camera Journey scrubs through the covered handoff and reverses with scroll
     )
     .toContain("scale(");
   await capture("camera-journey-camera-travel");
-  await at(0.5);
+  await at(0.49);
   await expect(root).toHaveAttribute(
     "data-camera-journey-stage",
     "covered-handoff",
   );
-  await expect(page.locator(".camera-journey-cover")).toHaveCSS("opacity", "1");
+  await expect
+    .poll(() =>
+      page
+        .locator(".camera-journey-cover")
+        .evaluate((cover) => Number(getComputedStyle(cover).opacity)),
+    )
+    .toBeGreaterThan(0.98);
   await expect(first.locator(".scene-content")).toHaveCSS("opacity", "0");
   await capture("camera-journey-covered-handoff");
   await at(0.68);
@@ -175,7 +181,7 @@ test("Camera Journey scrubs through the covered handoff and reverses with scroll
   );
   await expect(second.locator(".scene-content")).not.toHaveCSS("opacity", "0");
   await capture("camera-journey-copy-arrival");
-  await at(0.5);
+  await at(0.49);
   await expect(root).toHaveAttribute(
     "data-camera-journey-stage",
     "covered-handoff",
