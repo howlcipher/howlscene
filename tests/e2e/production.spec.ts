@@ -174,9 +174,7 @@ test("production files work at root and GitHub Pages paths with and without Java
             "scene-4",
             "scene-5",
           ]) {
-            const artwork = page.locator(
-              `.story-backdrop[data-story-scene="${sceneId}"] .story-art`,
-            );
+            const artwork = page.locator(`#${sceneId} .story-art`);
             await page.locator(`#${sceneId}`).scrollIntoViewIfNeeded();
             await expect
               .poll(() =>
