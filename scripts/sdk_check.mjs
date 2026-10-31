@@ -7,6 +7,7 @@ import { mkdtemp, readFile, writeFile, rm, access } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { execFileSync } from "node:child_process";
+import { deflateSync } from "node:zlib";
 const root = resolve(import.meta.dirname, "..");
 const temporary = await mkdtemp(join(tmpdir(), "howlscene-consumer-"));
 const run = (command, args, cwd = temporary) =>
@@ -62,6 +63,34 @@ try {
     }),
   );
   run("npm", ["install", "--ignore-scripts", "--no-audit", "--no-fund"]);
+  const pngCrc32 = (bytes) => {
+    let crc = 0xffffffff;
+    for (const byte of bytes) {
+      crc ^= byte;
+      for (let bit = 0; bit < 8; bit++)
+        crc = (crc >>> 1) ^ (crc & 1 ? 0xedb88320 : 0);
+    }
+    return (crc ^ 0xffffffff) >>> 0;
+  };
+  const pngChunk = (type, data) => {
+    const typeBytes = Buffer.from(type);
+    const content = Buffer.concat([typeBytes, data]);
+    const length = Buffer.alloc(4);
+    const checksum = Buffer.alloc(4);
+    length.writeUInt32BE(data.length);
+    checksum.writeUInt32BE(pngCrc32(content));
+    return Buffer.concat([length, content, checksum]);
+  };
+  const header = Buffer.alloc(13);
+  header.writeUInt32BE(1, 0);
+  header.writeUInt32BE(1, 4);
+  header.set([8, 6, 0, 0, 0], 8);
+  const validPng = Buffer.concat([
+    Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+    pngChunk("IHDR", header),
+    pngChunk("IDAT", deflateSync(Buffer.from([0, 32, 80, 128, 255]))),
+    pngChunk("IEND", Buffer.alloc(0)),
+  ]).toString("base64");
   const extensionFixture = `
 const artworkRegistry=createArtworkRegistry({
   'forest-canopy':{render:()=>createElement('circle',{'data-original-art':'forest-canopy',cx:720,cy:200,r:160})}
@@ -69,7 +98,7 @@ const artworkRegistry=createArtworkRegistry({
 const themeRegistry=createThemeRegistry({forest:{...themes.ink,name:'Forest',background:'#e8efdf',presentation:{bodyLineHeight:2,navigationGapRem:2},layers:[{id:'canopy',artwork:'forest-canopy',depth:.3,opacity:.2}]}},artworkRegistry);
 const sectionRegistry=createSectionRegistry({},[{id:'notice',renderer:({section})=>createElement('aside',{'data-custom-section':'notice'},section.body)}]);
 const layoutRegistry=createLayoutRegistry([{id:'feature-frame',sectionTypes:['custom'],styles:'.layout-feature-frame [data-custom-layout] { display:grid; grid-template-columns:1fr 1fr; }',renderer:({section,intro,image,body,entries,cta})=>createElement('article',{'data-custom-layout':section.id},intro,image,body,entries,cta)}]);
-const transitionCover={id:'asset-sdk-mist',mime:'image/png',data:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=',alt:''};
+const transitionCover={id:'asset-sdk-mist',mime:'image/png',data:'data:image/png;base64,${validPng}',alt:''};
 const site:SiteConfig=parseSite({...starterSite,theme:'forest',experience:'cinematic',motion:'cinematic',assets:[transitionCover],sections:[{id:'notice',type:'custom' as const,customType:'notice',layout:'feature-frame',heading:'Developer section',body:'Portable custom content.',transition:'mist-reveal',transitionCover:transitionCover.id}]},themeRegistry,sectionRegistry,layoutRegistry);
 `;
   await writeFile(
