@@ -133,9 +133,11 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
         await expect(
           exported.getByRole("heading", { name: "A story for every path" }),
         ).toBeVisible();
-        await expect(
-          exported.locator('.scene[data-transition="mist-reveal"]'),
-        ).toHaveCount(5);
+        await expect(exported.locator(".scene")).toHaveCount(5);
+        await expect(exported.locator(".scene").first()).toHaveAttribute(
+          "data-transition",
+          "mist-reveal",
+        );
         await expect(
           exported.locator(".scene-transition-cover").first(),
         ).toHaveAttribute("src", coverSource!);
