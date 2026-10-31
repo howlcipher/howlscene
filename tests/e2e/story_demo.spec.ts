@@ -1,6 +1,18 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
+test("the ink-wash sample renders artwork through shared cinematic scenes", async ({
+  page,
+}) => {
+  await page.goto("/examples/ink-wash-story/");
+
+  const scenes = page.locator(".story-demo .scene");
+  await expect(scenes).toHaveCount(5);
+  await expect(scenes.first().locator(".scene-background-image")).toBeVisible();
+  await expect(page.locator(".story-copy-stage")).toHaveCount(0);
+  await expect(page.locator(".story-canvas")).toHaveCount(0);
+});
+
 test("the ink-wash sample is a complete navigable Lorem Ipsum story", async ({
   page,
 }) => {
