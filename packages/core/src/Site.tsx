@@ -75,6 +75,10 @@ export function Site({
       style={style}
       data-theme={site.theme}
       data-experience={site.experience}
+      data-camera-journey={site.cameraJourney.enabled}
+      data-camera-journey-movement={site.cameraJourney.movement}
+      data-camera-journey-intensity={site.cameraJourney.intensity}
+      data-camera-journey-distance={site.cameraJourney.distance}
       data-theme-card-style={theme.presentation.cardStyle}
       data-theme-heading-treatment={theme.presentation.headingTreatment}
       data-theme-mobile-navigation={theme.presentation.mobileNavigationLayout}

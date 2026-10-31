@@ -13,6 +13,14 @@ test("CIN-001 CIN-006 CIN-007 editor creates a cinematic story and changes a sce
     "data-experience",
     "cinematic",
   );
+  await page.getByLabel("Use Camera Journey").check();
+  await expect(page.locator(".howlscene")).toHaveAttribute(
+    "data-camera-journey",
+    "true",
+  );
+  await expect(page.getByLabel("Camera movement")).toBeVisible();
+  await expect(page.getByLabel("Camera intensity")).toBeVisible();
+  await expect(page.getByLabel("Scroll distance")).toBeVisible();
   await page.getByLabel("Edit heading").fill("A story that belongs to me");
   await page.getByLabel("Transition style").selectOption("mist-reveal");
   const firstScene = page
@@ -50,6 +58,7 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
   await page.goto("/editor/");
   page.once("dialog", (dialog) => void dialog.accept());
   await page.getByLabel("Start from a template").selectOption("cinematic");
+  await page.getByLabel("Use Camera Journey").check();
   await page.getByLabel("Edit heading").fill("A story for every path");
   await page.getByLabel("Transition style").selectOption("mist-reveal");
   const coverImage = await page.evaluate(() => {
@@ -74,6 +83,7 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
   const archive = await JSZip.loadAsync(await readFile(downloadPath));
   const html = await archive.file("index.html")!.async("string");
   expect(html).toContain('data-experience="cinematic"');
+  expect(html).toContain('data-camera-journey="true"');
   expect(html).toContain('data-transition="mist-reveal"');
   expect(html).toContain("A story for every path");
   const coverSource = html.match(
@@ -113,11 +123,13 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
     for (const target of [
       { base: "/", javaScriptEnabled: true },
       { base: "/howlscene/project/", javaScriptEnabled: false },
+      { base: "/howlscene/animated/", javaScriptEnabled: true },
     ]) {
       mount = target.base;
       const context = await browser.newContext({
         javaScriptEnabled: target.javaScriptEnabled,
-        reducedMotion: "reduce",
+        reducedMotion:
+          target.base === "/howlscene/animated/" ? "no-preference" : "reduce",
       });
       try {
         const exported = await context.newPage();
@@ -146,10 +158,16 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
             document.querySelector<HTMLImageElement>(".scene-transition-cover")
               ?.naturalWidth === 32,
         );
-        if (target.javaScriptEnabled)
+        if (target.javaScriptEnabled && target.base !== "/howlscene/animated/")
           await expect(
             exported.getByRole("button", { name: "Enable animation" }),
           ).toBeDisabled();
+        if (target.base === "/howlscene/animated/") {
+          await expect(
+            exported.getByRole("button", { name: "Disable animation" }),
+          ).toBeVisible();
+          await expect(exported.locator(".camera-journey-stage")).toBeVisible();
+        }
         await exported
           .getByRole("link", { name: "A story for every path", exact: true })
           .click();

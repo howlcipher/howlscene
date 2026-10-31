@@ -16,6 +16,7 @@ import { richTextSchema, safeUrl } from "./rich_text.js";
 import { themes, themeOverridesSchema, type ThemeRegistry } from "./themes.js";
 import { entriesSchema, type SectionRendererRegistry } from "./sections.js";
 import { defaultLayoutRegistry, type LayoutRegistry } from "./layouts.js";
+import { cameraJourneySettingsSchema } from "./camera_journey.js";
 const imageFields = {
   mime: z.enum(["image/png", "image/jpeg", "image/webp"]),
   data: z.string().max(7000000),
@@ -137,6 +138,12 @@ export const siteSchema = z
         speed: z.number().min(0.5).max(2).default(1),
       })
       .default({ intensity: 1, speed: 1 }),
+    cameraJourney: cameraJourneySettingsSchema.default({
+      enabled: false,
+      movement: "diagonal",
+      intensity: 0.8,
+      distance: 1,
+    }),
     motion: z.enum(["none", "calm", "cinematic", "dynamic"]).default("none"),
     sections: z.array(sectionSchema).min(1).max(100),
   })

@@ -21,12 +21,25 @@ Replaced effects cannot complete a stale transition. No recipe runs an
 infinite loop or controls ordinary navigation. Applications may apply other
 recipes using their own ownership and cleanup.
 
-The root accepts `data-experience`, `data-motion`, `data-motion-intensity`, and
+An opt-in `cameraJourney` site setting selects a separate continuous mode. Its
+bounded `movement`, `intensity`, and `distance` values configure a reversible
+scroll-scrubbed handoff. `resolveScrollProgress` and
+`resolveCameraJourneyFrame` are pure exported helpers for deterministic timeline
+state. `enhanceSite` owns a pinned scenery stage with only outgoing and incoming
+artwork, and uses the incoming scene's existing `transitionCover` when present.
+Outgoing copy departs before the mist-covered image handoff; incoming copy
+arrives after scenery reveal. Section `transition` values remain unchanged and
+continue to run when Camera Journey is off. Journey mode owns its camera, cover,
+and copy presentation so the two controllers do not animate those properties
+at the same time.
+
+The root accepts `data-experience`, `data-camera-journey`, `data-motion`, `data-motion-intensity`, and
 `data-motion-speed`. The shared renderer derives these attributes from the
 validated site config; cinematic sections expose their transition ID as
-`data-transition`. The editor exposes intensity and speed sliders and a
-transition selector for cinematic sites. Speed changes finite entry duration;
-scroll depth tracks position and does not run on a timer.
+`data-transition`. The editor exposes finite transition selection, Camera
+Journey movement, intensity, and scroll-distance controls for cinematic sites.
+Motion speed changes finite entry duration and journey scroll distance; scroll
+progress does not run on a timer.
 Missing or invalid settings default safely. Each `.scenery-layer[data-depth]`
 inside a `.scene` receives a bounded scroll-driven vertical offset. Depth is
 clamped to -1 through 1; invalid depth becomes zero. Set a baseline transform on
@@ -36,7 +49,10 @@ inline transform. Decorative scenery should use `aria-hidden="true"`.
 Scroll and resize listeners are passive. Repeated events schedule at most one
 animation frame; geometry reads precede style writes. Offscreen scenery resets
 its offset. There is no continuous animation loop, scroll capture, fixed section
-height requirement, or keyboard/touch interception.
+height requirement, or keyboard/touch interception. Camera Journey uses native
+document or preview-container scrolling and schedules at most one pending frame.
+State is recalculated from current geometry, including reverse scrolls and large
+jumps.
 
 Reduced motion, preset `none`, intensity zero, or the saved manual disable choice
 prevents decorative effects. Changing the preference cancels entry animations,

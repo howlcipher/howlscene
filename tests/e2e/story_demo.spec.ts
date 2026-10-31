@@ -6,10 +6,11 @@ test("the ink-wash sample renders its five scenes through the shared engine", as
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/examples/ink-wash-story/");
+  await page.addStyleTag({ content: "html { scroll-behavior: auto !important }" });
 
   const scenes = page.locator(".story-demo .scene");
   await expect(scenes).toHaveCount(5);
-  await expect(scenes.first().locator(".scene-background-image")).toBeVisible();
+  await expect(page.locator(".camera-journey-art").first()).toBeVisible();
   await expect(scenes.locator(".scene-background-image")).toHaveCount(5);
   await expect(page.locator(".story-copy-stage, .story-canvas")).toHaveCount(0);
   await expect(
@@ -18,6 +19,10 @@ test("the ink-wash sample renders its five scenes through the shared engine", as
   await expect(page.locator(".story-demo .howlscene")).toHaveAttribute(
     "data-experience",
     "cinematic",
+  );
+  await expect(page.locator(".story-demo .howlscene")).toHaveAttribute(
+    "data-camera-journey",
+    "true",
   );
   await expect(
     page.getByRole("navigation", { name: "Story scenes" }),
@@ -38,13 +43,16 @@ test("shared cinematic navigation and manual motion controls work", async ({
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/examples/ink-wash-story/");
 
+  const sceneTwoSourceArt = page.locator(
+    "#scene-2 .scene-background-image",
+  );
   await page
     .getByRole("link", { name: "02, Scene 2: Consectetur adipiscing elit" })
     .click();
   await expect(page).toHaveURL(/#scene-2$/);
-  await expect(page.locator("#scene-2")).toHaveAttribute(
-    "data-scene-state",
-    "active",
+  await expect(page.locator(".story-demo .howlscene")).toHaveAttribute(
+    "data-camera-journey-stage",
+    "established",
   );
   await expect(
     page.getByRole("link", {
@@ -52,7 +60,7 @@ test("shared cinematic navigation and manual motion controls work", async ({
     }),
   ).toHaveAttribute("aria-current", "location");
 
-  const sceneTwoArt = page.locator("#scene-2 .scene-background-image");
+  const sceneTwoArt = page.locator(".camera-journey-art").nth(0);
   await expect
     .poll(() =>
       sceneTwoArt.evaluate((image: HTMLImageElement) => image.naturalWidth),
@@ -66,9 +74,10 @@ test("shared cinematic navigation and manual motion controls work", async ({
     "data-motion-enabled",
     "false",
   );
+  await expect(page.locator(".camera-journey-art")).toHaveCount(0);
   await expect
     .poll(() =>
-      sceneTwoArt.evaluate(
+      sceneTwoSourceArt.evaluate(
         (image: HTMLImageElement) => getComputedStyle(image).transform,
       ),
     )
@@ -85,9 +94,72 @@ test("shared cinematic navigation and manual motion controls work", async ({
   ).toEqual([]);
 });
 
+test("Camera Journey scrubs through the covered handoff and reverses with scroll", async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/examples/ink-wash-story/");
+  await page.addStyleTag({ content: "html { scroll-behavior: auto !important }" });
+  const root = page.locator(".story-demo .howlscene");
+  const first = page.locator("#scene-1");
+  const second = page.locator("#scene-2");
+  const geometry = await page.evaluate(() => {
+    const scenes = Array.from(document.querySelectorAll<HTMLElement>(".scene"));
+    return scenes.slice(0, 2).map((scene) => {
+      const rect = scene.getBoundingClientRect();
+      return rect.top + scrollY;
+    });
+  });
+  const at = async (progress: number) => {
+    await page.evaluate(
+      ({ start, end, progress }) =>
+        window.scrollTo(0, start + (end - start) * progress),
+      { start: geometry[0]!, end: geometry[1]!, progress },
+    );
+  };
+  const capture = (name: string) =>
+    page.screenshot({
+      path: testInfo.outputPath(`${name}.png`),
+      animations: "disabled",
+    });
+
+  await capture("camera-journey-established");
+  await at(0.1);
+  await expect(root).toHaveAttribute("data-camera-journey-stage", "text-departure");
+  await expect(first.locator(".scene-content")).toHaveCSS("opacity", "0.5");
+  await capture("camera-journey-copy-departure");
+  await at(0.3);
+  await expect(root).toHaveAttribute("data-camera-journey-stage", "camera-travel");
+  await expect
+    .poll(() =>
+      page
+        .locator(".camera-journey-art")
+        .first()
+        .evaluate((image: HTMLImageElement) => image.style.transform),
+    )
+    .toContain("scale(");
+  await capture("camera-journey-camera-travel");
+  await at(0.5);
+  await expect(root).toHaveAttribute("data-camera-journey-stage", "covered-handoff");
+  await expect(page.locator(".camera-journey-cover")).toHaveCSS("opacity", "1");
+  await expect(first.locator(".scene-content")).toHaveCSS("opacity", "0");
+  await capture("camera-journey-covered-handoff");
+  await at(0.68);
+  await expect(root).toHaveAttribute("data-camera-journey-stage", "landscape-reveal");
+  await expect(second.locator(".scene-content")).toHaveCSS("opacity", "0");
+  await capture("camera-journey-landscape-reveal");
+  await at(0.9);
+  await expect(root).toHaveAttribute("data-camera-journey-stage", "text-arrival");
+  await expect(second.locator(".scene-content")).not.toHaveCSS("opacity", "0");
+  await capture("camera-journey-copy-arrival");
+  await at(0.5);
+  await expect(root).toHaveAttribute("data-camera-journey-stage", "covered-handoff");
+  await capture("camera-journey-reverse");
+});
+
 test("the ink-wash story remains readable at a phone width", async ({
   page,
-}) => {
+}, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/examples/ink-wash-story/");
   await expect(page.locator(".story-demo .scene")).toHaveCount(5);
@@ -97,6 +169,10 @@ test("the ink-wash story remains readable at a phone width", async ({
   await expect(
     page.getByRole("navigation", { name: "Story scenes" }),
   ).toBeVisible();
+  await page.screenshot({
+    path: testInfo.outputPath("camera-journey-mobile.png"),
+    animations: "disabled",
+  });
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
