@@ -5,8 +5,8 @@
 - Repository: `howlcipher/howlscene`
 - Branch: `work/camera-journey`
 - Starting commit: `95cc4b9cc942f80c61a6e5cd514488644ecc6c3c`
-- Latest behaviorally verified commit: `7bda077` editor toggle discoverability and stabilized handoff browser assertion
-- Working tree: includes the readiness report, reference review update, and hosted-runner performance evidence wording; these are not yet committed or verified.
+- Latest behaviorally verified commit: `afa59d1` readiness/reference reports and hosted-runner performance labels
+- Working tree was clean at `afa59d1` before this final run-metadata update; this is a documentation-only handoff checkpoint.
 - Active phase: G, final evidence review and remaining acceptance gaps
 
 ## Audit and architecture
@@ -37,7 +37,8 @@
 - Commit `7bda077` passed full Quality run [41169005027](https://github.com/howlcipher/howlscene/actions/runs/41169005027): format, lint, strict type-check, 38 Vitest files/181 tests, coverage (core branch 89.71% against 85%), production build, 62 Playwright tests on one worker, SDK check, license audit, and `npm audit --audit-level=moderate`. Pages artifact run [41169005224](https://github.com/howlcipher/howlscene/actions/runs/41169005224) passed build and root/project path checks; publish and approval stages were skipped.
 - Reviewed the hosted screenshot artifact: established scene, copy departure, camera travel, mist-covered handoff, landscape reveal, copy arrival, reverse, and mobile. They demonstrate the intended choreography; no pixel baseline comparison was performed.
 - Performance artifact for the hosted runner reports desktop Chromium 1440×1000: 27,237 gzip runtime bytes, observed LCP 304 ms, CLS 0.000089, 60 frame samples/p95 16.8 ms, one 22.7 MB heap observation. Mobile static export at 390×844 used 4× CPU slowdown, 150 ms RTT, 200 KiB/s down: observed LCP 548 ms, CLS 0, no long tasks, frame sample p95 16.7 ms, 3.45 KiB responsive image transfer. These are single runner observations, not Journey stress/leak measurements or physical-device results.
-- Performance JSON currently labels CI samples as local. The source test strings are being corrected to identify GitHub-hosted runners; a follow-up hosted run is required before treating the regenerated artifact wording as current.
+- Commit `afa59d1` passed full Quality run [41169436370](https://github.com/howlcipher/howlscene/actions/runs/41169436370), including 181 Vitest tests, 62 Playwright tests, coverage, build, SDK, license, and dependency gates. Pages artifact run [41169436138](https://github.com/howlcipher/howlscene/actions/runs/41169436138) passed root/project path checks; publish and approval stages were skipped.
+- Final performance artifacts identify GitHub-hosted runner execution. Desktop Chromium 156 on AMD EPYC 9V45, 1440×1000: 27,237 gzip runtime, 276 ms observed LCP, 0.000089 CLS, 60 frame intervals at p95 16.8 ms, one 22.67 MB heap reading. Mobile export at 390×844 with 4× CPU slowdown, 150 ms RTT and 200 KiB/s downlink: 524 ms LCP, CLS 0, zero observed long tasks, 60 frame intervals at p95 16.7 ms, 3.45 KiB responsive image. Single synthetic measurements do not establish physical-device behavior or leak safety.
 - Workflow inspected: `.github/workflows/ci.yml` uses `ubuntu-latest`, timeout 20 minutes, no deployment, and sequential steps. `playwright.config.ts` sets one worker. Vitest is explicitly capped to one maximum worker.
 - Hosted CI must be used for all tests/builds; local execution is prohibited.
 
@@ -46,13 +47,12 @@
 - No local heavy workload executed. No local package installation, compilation, build, test, browser, container, or performance command was run. One bounded Prettier formatting command was run against changed text files only.
 - No local subagents or background processes started.
 - No safety rule violated.
-- Hosted CI availability: full Quality and Pages artifact workflows passed for `7bda077`. Evidence wording/report edits are pending another hosted run. No self-hosted runner or deployment was used.
+- Hosted CI availability: full Quality and Pages artifact workflows passed for `afa59d1`. No self-hosted runner or deployment was used.
 
 ## Next actions
 
-1. Commit and push the readiness/reference report and corrected hosted-runner evidence wording.
-2. Verify the report/test metadata update on the next GitHub-hosted full workflow.
-3. Add journey-specific lifecycle, rapid navigation, seven-scene, large-artwork, and memory-growth evidence.
-4. Arrange manual screen-reader, zoom, keyboard, touch, physical-device, and real-user acceptance; no such review has been performed.
-5. Request an independent code review if available.
-6. Keep PR draft; do not merge or deploy.
+1. Commit and push the final run IDs and measurements into the journal.
+2. Add journey-specific lifecycle, rapid navigation, seven-scene, large-artwork, and memory-growth evidence.
+3. Arrange manual screen-reader, zoom, keyboard, touch, physical-device, and real-user acceptance; no such review has been performed.
+4. Request an independent code review if available.
+5. Keep PR draft; do not merge or deploy.

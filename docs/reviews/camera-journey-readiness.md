@@ -3,7 +3,7 @@
 **Verdict: NOT READY**
 
 The shared Camera Journey implementation is present on draft PR #37 and passes
-the current GitHub-hosted automated gates at commit `7bda077`. A native scroll
+the current GitHub-hosted automated gates at commit `afa59d1`. A native scroll
 position determines a reversible camera and mist handoff; the original finite
 scene-entry transitions remain separate. This milestone is not release-ready:
 journey-specific stress and leak measurements, physical-device and assistive
@@ -14,7 +14,7 @@ several acceptance cases remain incomplete.
 
 - Repository: `howlcipher/howlscene`
 - Starting commit: `95cc4b9cc942f80c61a6e5cd514488644ecc6c3c`
-- Latest behaviorally verified commit: `7bda07722f8c7e5c56c108a02495ea84b8f37e7e`
+- Ending commit: `afa59d147959bb25947541a0272aa4990ba9b0e4`
 - Branch: `work/camera-journey`
 - Pull request: [#37, draft](https://github.com/howlcipher/howlscene/pull/37)
 - No merge, publish, or deployment occurred.
@@ -52,8 +52,8 @@ Test-first evidence:
   existing projects lacked its disabled default. The earlier type-checking
   failure at `9e780ca` is not counted as behavioral RED.
 - Hosted run
-  [41169005027](https://github.com/howlcipher/howlscene/actions/runs/41169005027)
-  passed at `7bda077`: formatting, lint, strict TypeScript, 38 Vitest files
+  [41169436370](https://github.com/howlcipher/howlscene/actions/runs/41169436370)
+  passed at `afa59d1`: formatting, lint, strict TypeScript, 38 Vitest files
   (181 tests), coverage thresholds, production build, 62 Playwright tests on
   one worker, SDK packaging/consumer check, license audit, and dependency
   audit.
@@ -61,16 +61,15 @@ Test-first evidence:
   browser-only DOM controller is covered in Playwright and excluded from the
   Node-only Vitest coverage denominator; no coverage threshold was lowered.
 - Hosted Pages artifact run
-  [41169005224](https://github.com/howlcipher/howlscene/actions/runs/41169005224)
+  [41169436138](https://github.com/howlcipher/howlscene/actions/runs/41169436138)
   passed production build, root/project path checks, and artifact packaging.
   Independent approvals and publication jobs were skipped. This was not a
   deployment.
 
 Earlier failed runs and corrections are preserved in the
-[engineering journal](../development/camera-journey-journal.md). The latest
-performance test-source edit changes evidence wording to identify the
-GitHub-hosted runner; its next run is pending and is not included in the
-`7bda077` verification above.
+[engineering journal](../development/camera-journey-journal.md). The final
+run regenerated performance observations with the GitHub-hosted runner
+identified in the evidence.
 
 ## 4. Acceptance matrix
 
@@ -109,7 +108,7 @@ GitHub-hosted runner; its next run is pending and is not included in the
 
 ## 5. Visual evidence and reference fidelity
 
-The hosted Playwright artifact for run `41169005027` includes the established
+The hosted Playwright artifact for run `41169436370` includes the established
 scene, copy departure, camera travel, covered handoff, landscape reveal, copy
 arrival, reverse scroll, and mobile screenshots. The screenshots were reviewed
 from the artifact. They show a pinned illustrated stage, diagonal camera drift,
@@ -138,15 +137,16 @@ security or licensing review was performed for this milestone.
 
 ## 7. Performance observations
 
-The hosted artifacts for run `41169005027` report these single-run synthetic
+The hosted artifacts for run `41169436370` report these single-run synthetic
 observations:
 
-- Desktop Chromium on `ubuntu-latest`, 1440×1000, unthrottled: runtime 89,467
-  bytes (27,237 gzip), observed LCP 304 ms, CLS 0.000089, 60 frame-interval
-  samples with p95 16.8 ms, and one 22.7 MB JS heap observation.
+- Desktop Chromium 156 on a GitHub-hosted `ubuntu-latest` AMD EPYC 9V45 runner,
+  1440×1000, unthrottled: runtime 89,467 bytes (27,237 gzip), observed LCP
+  276 ms, CLS 0.000089, 60 frame-interval samples with p95 16.8 ms, and one
+  22.7 MB JS heap observation.
 - Exported site on Chromium, 390×844, 4× CPU slowdown, 150 ms RTT and 200
-  KiB/s downlink, nested static path: runtime 89,467 bytes (27,237 gzip),
-  observed LCP 548 ms, CLS 0, no observed long tasks, 60 frame-interval
+  KiB/s downlink, nested static path on the same runner: runtime 89,467 bytes
+  (27,237 gzip), observed LCP 524 ms, CLS 0, no observed long tasks, 60 frame-interval
   samples with p95 16.7 ms, and a 3.45 KiB selected responsive image.
 
 These are GitHub-hosted runner measurements, not physical-device or field
@@ -194,6 +194,6 @@ journey-specific performance/resource data. Human review must include screen
 reader, zoom, keyboard, touch, and physical mobile checks. An independent code
 review and real nontechnical user feedback are also outstanding.
 
-**NOT READY.** Automated gates pass at `7bda077`, but required implementation-
+**NOT READY.** Automated gates pass at `afa59d1`, but required implementation-
 critical performance and lifecycle cases and human acceptance have not been
 verified. Keep PR #37 in draft. Do not merge or deploy from this report.
