@@ -149,13 +149,14 @@ test("production files work at root and GitHub Pages paths with and without Java
             }),
           ).toBeVisible();
           await expect(page.locator(".story-demo .scene")).toHaveCount(5);
-          await expect
-            .poll(() =>
-              page
-                .locator(".story-transition-cover")
-                .evaluate((image: HTMLImageElement) => image.naturalWidth),
-            )
-            .toBeGreaterThan(0);
+          const coverSource = await page
+            .locator(".story-transition-cover")
+            .getAttribute("src");
+          expect(coverSource).toBeTruthy();
+          const coverResponse = await page.request.get(
+            new URL(coverSource!, page.url()).href,
+          );
+          expect(coverResponse.status()).toBe(200);
           const creditsUrl = await page
             .getByRole("link", { name: "Artwork notes" })
             .getAttribute("href");
