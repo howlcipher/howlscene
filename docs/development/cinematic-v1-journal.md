@@ -269,3 +269,78 @@ this mission and is not evidence for new changes.
 - Migrate the Ink Wash demo's reusable behavior, then add remote exported-ZIP
   and SDK consumer evidence and continue the remaining v1 acceptance matrix.
   PR #35 remains draft; do not merge or deploy.
+
+## Follow-up checkpoint — shared demo migration and exported ZIP acceptance
+
+### Repository state
+
+- Branch: `work/cinematic-v1-followup`.
+- Starting checkpoint for this increment: `4b4583c626a5215219597b857cc3501117d85377`.
+- Latest source commit: `85225bd94f0bac97454a026aa8b57081a5cfae36`.
+- Working tree was clean before this documentation update.
+- PR [#35](https://github.com/howlcipher/howlscene/pull/35) remains open and draft.
+- Active milestone: reusable renderer migration, cinematic ZIP acceptance, and SDK consumer checks.
+
+### Implementation and TDD
+
+- Test-first migration commit `72bf70e` added a browser contract requiring the
+  Ink Wash demo to use shared scene markup and configured scene artwork. Hosted
+  Quality run [41158575129](https://github.com/howlcipher/howlscene/actions/runs/41158575129)
+  produced behavioral RED: the expected shared scene artwork was absent. Setup,
+  formatting, lint, type checks, unit tests, and build passed before that browser
+  assertion failed.
+- Implementation commit `788ed72` migrated the sample to the shared `Site`
+  renderer, configured `mist-reveal` for all five scenes, and removed the bespoke
+  camera/copy transition layers and scroll-progress choreography. Original
+  artwork, alternating copy, semantic scene content, navigation, and reduced
+  motion are retained. The hosted browser test required several selector and
+  timing corrections; these were driven by actual hosted failures rather than
+  weakening production behavior.
+- Added editor-generated cinematic ZIP coverage for scene transition and cover
+  artwork, including browser serving at root and nested paths, JavaScript-on and
+  JavaScript-off checks, and reduced-motion behavior.
+- Expanded `scripts/sdk_check.mjs` to package/install an independent public SDK
+  consumer, create a valid one-pixel PNG fixture, export a cinematic ZIP, and
+  serve it at two mounts with JavaScript enabled and disabled.
+- An intermediate SDK run [41162490713](https://github.com/howlcipher/howlscene/actions/runs/41162490713)
+  showed the browser could not decode the old tiny PNG fixture. The fixture was
+  replaced with a correctly encoded PNG produced from bounded Node built-ins;
+  this corrected test data, not application image handling.
+- Final hosted Quality run [41162883019](https://github.com/howlcipher/howlscene/actions/runs/41162883019)
+  passed on `85225bd`: formatting, lint, strict TypeScript, 171 Vitest tests,
+  production build, 61 Playwright tests on one worker, independent SDK package
+  and browser consumer checks, license review, and dependency audit. Aggregate
+  coverage remained 94.74% lines, 89.91% branches, 95.65% functions, and 96.58%
+  statements.
+- Pages artifact run [41162883058](https://github.com/howlcipher/howlscene/actions/runs/41162883058)
+  passed production build, root/project-path browser checks, and artifact
+  packaging on GitHub-hosted Ubuntu. Approval and publishing jobs were skipped.
+  No deployment occurred.
+
+### Known visual deviation and remaining work
+
+- The shared demo uses scene-entry mist reveals, not the former continuous
+  scroll-scrubbed camera passage between landscapes. It preserves the major
+  artwork, scene order, copy placement alternation, navigation, and reduced-motion
+  behavior; visual equivalence to the reference clip has not been claimed.
+- Preview/export content and covers, root/nested ZIP serving, JavaScript-off,
+  reduced motion, and independent SDK export now have hosted automated coverage.
+- Visual baseline review for the migrated demo, real screen-reader and browser
+  zoom review, physical-device performance, independent review, and real-user
+  acceptance remain open. The readiness verdict remains **NOT READY**.
+
+### Safety and handoff
+
+- No local heavy workload ran. Local work was limited to source/document reads
+  and edits, Git inspection, `git diff --check`, and bounded formatting of a
+  changed JavaScript file.
+- No local compilation, build, package installation, test, browser, container,
+  performance workload, or subagent ran. No unexpected background process was
+  started. No safety rule was violated. Further host-side testing was not
+  requested.
+- The Quality and Pages workflows use GitHub-hosted `ubuntu-latest`; no
+  self-hosted runner or callback to the user's PC was found. No production
+  deployment step ran.
+- Next: refresh the PR body and readiness evidence, continue unresolved CIN
+  acceptance and human review gates, and keep PR #35 draft. Do not merge or
+  deploy without explicit authorization.

@@ -114,11 +114,11 @@ loading. Focused journey and complete gate both passed afterward.
 
 ## Open release gates
 
-Continue the cinematic follow-up by migrating the Ink Wash demo to the shared
-capability, then add extracted cinematic ZIP browser and specific public SDK
-consumer coverage. Visual, performance, accessibility, security/licensing,
-independent review, human user, screen-reader and browser-zoom gates remain.
-Use the cinematic journal, readiness report, and
+The Ink Wash demo now uses the shared cinematic renderer. Hosted browser checks
+cover extracted cinematic ZIPs at root and nested paths, JavaScript on/off,
+reduced motion, and the independent SDK consumer. Visual, performance,
+accessibility, security/licensing, independent review, human user, screen-reader
+and browser-zoom gates remain. Use the cinematic journal, readiness report, and
 [acceptance traceability](docs/experiment/acceptance.md) as the current source
 of status. Do not call v1 ready or deploy without the required evidence and
 approvals.
