@@ -20,6 +20,7 @@ test("CIN-001 CIN-006 CIN-007 editor creates a cinematic story and changes a sce
   );
   await expect(page.getByLabel("Camera movement")).toBeVisible();
   await expect(page.getByLabel("Camera intensity")).toBeVisible();
+  await expect(page.getByLabel("Parallax depth")).toBeVisible();
   await expect(page.getByLabel("Scroll distance")).toBeVisible();
   await page.getByLabel("Edit heading").fill("A story that belongs to me");
   await page.getByLabel("Transition style").selectOption("mist-reveal");

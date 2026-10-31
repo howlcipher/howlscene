@@ -6,7 +6,9 @@ test("the ink-wash sample renders its five scenes through the shared engine", as
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/examples/ink-wash-story/");
-  await page.addStyleTag({ content: "html { scroll-behavior: auto !important }" });
+  await page.addStyleTag({
+    content: "html { scroll-behavior: auto !important }",
+  });
 
   const scenes = page.locator(".story-demo .scene");
   await expect(scenes).toHaveCount(5);
@@ -43,9 +45,7 @@ test("shared cinematic navigation and manual motion controls work", async ({
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/examples/ink-wash-story/");
 
-  const sceneTwoSourceArt = page.locator(
-    "#scene-2 .scene-background-image",
-  );
+  const sceneTwoSourceArt = page.locator("#scene-2 .scene-background-image");
   await page
     .getByRole("link", { name: "02, Scene 2: Consectetur adipiscing elit" })
     .click();
@@ -99,7 +99,9 @@ test("Camera Journey scrubs through the covered handoff and reverses with scroll
 }, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/examples/ink-wash-story/");
-  await page.addStyleTag({ content: "html { scroll-behavior: auto !important }" });
+  await page.addStyleTag({
+    content: "html { scroll-behavior: auto !important }",
+  });
   const root = page.locator(".story-demo .howlscene");
   const first = page.locator("#scene-1");
   const second = page.locator("#scene-2");
@@ -125,11 +127,17 @@ test("Camera Journey scrubs through the covered handoff and reverses with scroll
 
   await capture("camera-journey-established");
   await at(0.1);
-  await expect(root).toHaveAttribute("data-camera-journey-stage", "text-departure");
+  await expect(root).toHaveAttribute(
+    "data-camera-journey-stage",
+    "text-departure",
+  );
   await expect(first.locator(".scene-content")).toHaveCSS("opacity", "0.5");
   await capture("camera-journey-copy-departure");
   await at(0.3);
-  await expect(root).toHaveAttribute("data-camera-journey-stage", "camera-travel");
+  await expect(root).toHaveAttribute(
+    "data-camera-journey-stage",
+    "camera-travel",
+  );
   await expect
     .poll(() =>
       page
@@ -140,20 +148,32 @@ test("Camera Journey scrubs through the covered handoff and reverses with scroll
     .toContain("scale(");
   await capture("camera-journey-camera-travel");
   await at(0.5);
-  await expect(root).toHaveAttribute("data-camera-journey-stage", "covered-handoff");
+  await expect(root).toHaveAttribute(
+    "data-camera-journey-stage",
+    "covered-handoff",
+  );
   await expect(page.locator(".camera-journey-cover")).toHaveCSS("opacity", "1");
   await expect(first.locator(".scene-content")).toHaveCSS("opacity", "0");
   await capture("camera-journey-covered-handoff");
   await at(0.68);
-  await expect(root).toHaveAttribute("data-camera-journey-stage", "landscape-reveal");
+  await expect(root).toHaveAttribute(
+    "data-camera-journey-stage",
+    "landscape-reveal",
+  );
   await expect(second.locator(".scene-content")).toHaveCSS("opacity", "0");
   await capture("camera-journey-landscape-reveal");
   await at(0.9);
-  await expect(root).toHaveAttribute("data-camera-journey-stage", "text-arrival");
+  await expect(root).toHaveAttribute(
+    "data-camera-journey-stage",
+    "text-arrival",
+  );
   await expect(second.locator(".scene-content")).not.toHaveCSS("opacity", "0");
   await capture("camera-journey-copy-arrival");
   await at(0.5);
-  await expect(root).toHaveAttribute("data-camera-journey-stage", "covered-handoff");
+  await expect(root).toHaveAttribute(
+    "data-camera-journey-stage",
+    "covered-handoff",
+  );
   await capture("camera-journey-reverse");
 });
 

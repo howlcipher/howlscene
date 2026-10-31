@@ -142,6 +142,7 @@ export const siteSchema = z
       enabled: false,
       movement: "diagonal",
       intensity: 0.8,
+      parallaxDepth: 0.35,
       distance: 1,
     }),
     motion: z.enum(["none", "calm", "cinematic", "dynamic"]).default("none"),

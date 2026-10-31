@@ -187,6 +187,25 @@ export function AppearancePanel({
                 />
               </label>
               <label>
+                Parallax depth
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value={site.cameraJourney.parallaxDepth}
+                  onChange={(event) =>
+                    commit({
+                      ...site,
+                      cameraJourney: {
+                        ...site.cameraJourney,
+                        parallaxDepth: Number(event.target.value),
+                      },
+                    })
+                  }
+                />
+              </label>
+              <label>
                 Scroll distance
                 <input
                   type="range"

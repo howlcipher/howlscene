@@ -9,6 +9,14 @@ interface JourneyPair {
   incoming: HTMLImageElement;
   cover: HTMLImageElement;
   atmosphere: HTMLDivElement;
+  outgoingDepth: DepthLayer[];
+  incomingDepth: DepthLayer[];
+}
+
+interface DepthLayer {
+  element: SVGElement;
+  depth: number;
+  opacity: number;
 }
 
 /** Owns the scroll listener, temporary visual stage, and its single pending frame. */
@@ -24,7 +32,9 @@ export function createCameraJourneyController(
   while (scrollContainer && scrollContainer !== document.body) {
     const overflow = getComputedStyle(scrollContainer).overflowY;
     if (
-      (overflow === "auto" || overflow === "scroll" || overflow === "overlay") &&
+      (overflow === "auto" ||
+        overflow === "scroll" ||
+        overflow === "overlay") &&
       scrollContainer.scrollHeight > scrollContainer.clientHeight
     )
       break;
@@ -41,8 +51,8 @@ export function createCameraJourneyController(
   let frame: number | undefined;
   let enabled = false;
   let disposed = false;
-  const originalMinHeights = new Map(
-    scenes.map((scene) => [scene, scene.style.minHeight]),
+  const originalMinHeights = new Map<HTMLElement, string>(
+    scenes.map((scene) => [scene, scene.style.minHeight] as const),
   );
   const resizeObserver =
     typeof ResizeObserver === "undefined"
@@ -70,6 +80,24 @@ export function createCameraJourneyController(
     return image;
   }
 
+  function copyDepthLayers(scene: HTMLElement): DepthLayer[] {
+    return Array.from(
+      scene.querySelectorAll<SVGElement>(".scenery-layer[data-depth]"),
+    ).map((source) => {
+      const element = source.cloneNode(true) as SVGElement;
+      const rawDepth = Number(source.dataset.depth);
+      const depth = Number.isFinite(rawDepth)
+        ? Math.max(0, Math.min(1, rawDepth))
+        : 0;
+      const rawOpacity = Number(getComputedStyle(source).opacity);
+      const opacity = Number.isFinite(rawOpacity) ? rawOpacity : 1;
+      element.classList.add("camera-journey-depth-layer");
+      element.style.opacity = String(opacity);
+      element.style.transform = "";
+      return { element, depth, opacity };
+    });
+  }
+
   function buildPair(index: number) {
     clearPair();
     const outgoingScene = scenes[index];
@@ -87,8 +115,24 @@ export function createCameraJourneyController(
     cover.className = "camera-journey-cover";
     const atmosphere = document.createElement("div");
     atmosphere.className = "camera-journey-atmosphere";
-    stage.append(outgoing, incoming, atmosphere, cover);
-    pair = { outgoing, incoming, cover, atmosphere };
+    const outgoingDepth = copyDepthLayers(outgoingScene);
+    const incomingDepth = copyDepthLayers(incomingScene);
+    stage.append(
+      outgoing,
+      incoming,
+      ...outgoingDepth.map((layer) => layer.element),
+      ...incomingDepth.map((layer) => layer.element),
+      atmosphere,
+      cover,
+    );
+    pair = {
+      outgoing,
+      incoming,
+      cover,
+      atmosphere,
+      outgoingDepth,
+      incomingDepth,
+    };
     pairIndex = index;
   }
 
@@ -159,18 +203,32 @@ export function createCameraJourneyController(
     const outgoingScene = scenes[index]!;
     const incomingScene = scenes[index + 1];
     const outgoingTall =
-      (outgoingScene.querySelector<HTMLElement>(".scene-content")?.scrollHeight ??
-        0) >
+      (outgoingScene.querySelector<HTMLElement>(".scene-content")
+        ?.scrollHeight ?? 0) >
       window.innerHeight * 0.75;
     const incomingTall =
-      (incomingScene?.querySelector<HTMLElement>(".scene-content")?.scrollHeight ??
-        0) >
+      (incomingScene?.querySelector<HTMLElement>(".scene-content")
+        ?.scrollHeight ?? 0) >
       window.innerHeight * 0.75;
     pair.outgoing.style.opacity = String(visual.outgoingLandscapeOpacity);
     pair.incoming.style.opacity = String(visual.incomingLandscapeOpacity);
     pair.outgoing.style.transform = `translate3d(${visual.cameraTranslateX}px, ${visual.cameraTranslateY}px, 0) scale(${visual.cameraScale})`;
     const incomingScale = 1 + (visual.cameraScale - 1) * (1 - progress);
     pair.incoming.style.transform = `translate3d(${-visual.cameraTranslateX}px, ${-visual.cameraTranslateY}px, 0) scale(${incomingScale})`;
+    for (const layer of pair.outgoingDepth) {
+      const amount = settings.parallaxDepth * layer.depth;
+      layer.element.style.opacity = String(
+        layer.opacity * visual.outgoingLandscapeOpacity,
+      );
+      layer.element.style.transform = `translate3d(${visual.cameraTranslateX * amount}px, ${visual.cameraTranslateY * amount}px, 0) scale(${1 + (visual.cameraScale - 1) * amount})`;
+    }
+    for (const layer of pair.incomingDepth) {
+      const amount = settings.parallaxDepth * layer.depth;
+      layer.element.style.opacity = String(
+        layer.opacity * visual.incomingLandscapeOpacity,
+      );
+      layer.element.style.transform = `translate3d(${-visual.cameraTranslateX * amount}px, ${-visual.cameraTranslateY * amount}px, 0) scale(${1 + (incomingScale - 1) * amount})`;
+    }
     pair.cover.style.opacity = String(visual.coverOpacity);
     pair.atmosphere.style.opacity = String(visual.coverOpacity);
 
@@ -189,8 +247,7 @@ export function createCameraJourneyController(
       );
     }
     for (const [sceneIndex, scene] of scenes.entries())
-      if (sceneIndex !== index && sceneIndex !== index + 1)
-        resetCopy(scene);
+      if (sceneIndex !== index && sceneIndex !== index + 1) resetCopy(scene);
     root.dataset.cameraJourneyStage = visual.stage;
   }
 

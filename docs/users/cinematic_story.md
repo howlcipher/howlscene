@@ -14,8 +14,8 @@
    that briefly clears as a scene enters. It is hidden from assistive
    technology and does not replace the scene's scenery or text.
 6. In **Cinematic movement**, turn on **Use Camera Journey** for a pinned,
-   scroll-controlled scenery passage. Choose camera movement, intensity, and
-   scroll distance. This is separate from each scene's finite **Transition
+   scroll-controlled scenery passage. Choose camera movement, intensity,
+   parallax depth, and scroll distance. This is separate from each scene's finite **Transition
    style**. Upload scenery and optional transition covers in the section
    controls; the live preview updates as you scroll it.
 7. Adjust appearance motion intensity and speed. The website respects the

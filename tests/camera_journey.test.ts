@@ -130,7 +130,9 @@ describe("scroll-scrubbed camera journey", () => {
         (progress, intensity) => {
           const configured = { ...settings, intensity };
           const first = resolveCameraJourneyFrame(progress, configured);
-          expect(resolveCameraJourneyFrame(progress, configured)).toEqual(first);
+          expect(resolveCameraJourneyFrame(progress, configured)).toEqual(
+            first,
+          );
           expect(first.coverOpacity).toBeGreaterThanOrEqual(0);
           expect(first.coverOpacity).toBeLessThanOrEqual(1);
           expect(first.cameraScale).toBeGreaterThanOrEqual(1);

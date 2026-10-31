@@ -31,6 +31,7 @@ export function enhanceSite(root: HTMLElement): () => void {
     enabled: root.dataset.cameraJourney === "true",
     movement: root.dataset.cameraJourneyMovement ?? "diagonal",
     intensity: Number(root.dataset.cameraJourneyIntensity ?? 0.8),
+    parallaxDepth: Number(root.dataset.cameraJourneyParallaxDepth ?? 0.35),
     distance: Number(root.dataset.cameraJourneyDistance ?? 1),
   });
   const journeyDistance = Math.max(
@@ -48,11 +49,12 @@ export function enhanceSite(root: HTMLElement): () => void {
         media,
       )
     : undefined;
-  const layers = !journey && readThemeParallax(root.dataset.themeParallax)
-    ? Array.from(
-        root.querySelectorAll<HTMLElement>(".scenery-layer[data-depth]"),
-      )
-    : [];
+  const layers =
+    !journey && readThemeParallax(root.dataset.themeParallax)
+      ? Array.from(
+          root.querySelectorAll<HTMLElement>(".scenery-layer[data-depth]"),
+        )
+      : [];
   let frame: number | undefined;
   const controls = new Map<
     Element,

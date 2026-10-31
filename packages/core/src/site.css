@@ -348,7 +348,11 @@ a {
   z-index: 1;
   opacity: 0;
   background:
-    radial-gradient(ellipse at 52% 46%, rgb(245 244 235 / 78%), transparent 68%),
+    radial-gradient(
+      ellipse at 52% 46%,
+      rgb(245 244 235 / 78%),
+      transparent 68%
+    ),
     linear-gradient(115deg, rgb(245 244 235 / 52%), rgb(245 244 235 / 8%) 72%);
 }
 .howlscene[data-camera-journey-active="true"] .scene {

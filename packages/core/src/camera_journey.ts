@@ -5,6 +5,7 @@ export const cameraJourneySettingsSchema = z.strictObject({
   enabled: z.boolean().default(false),
   movement: z.enum(["diagonal", "pan", "push"]).default("diagonal"),
   intensity: z.number().min(0).max(1).default(0.8),
+  parallaxDepth: z.number().min(0).max(1).default(0.35),
   distance: z.number().min(0.5).max(2).default(1),
 });
 

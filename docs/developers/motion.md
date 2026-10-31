@@ -22,7 +22,7 @@ infinite loop or controls ordinary navigation. Applications may apply other
 recipes using their own ownership and cleanup.
 
 An opt-in `cameraJourney` site setting selects a separate continuous mode. Its
-bounded `movement`, `intensity`, and `distance` values configure a reversible
+bounded `movement`, `intensity`, `parallaxDepth`, and `distance` values configure a reversible
 scroll-scrubbed handoff. `resolveScrollProgress` and
 `resolveCameraJourneyFrame` are pure exported helpers for deterministic timeline
 state. `enhanceSite` owns a pinned scenery stage with only outgoing and incoming

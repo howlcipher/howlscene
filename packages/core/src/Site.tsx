@@ -78,6 +78,7 @@ export function Site({
       data-camera-journey={site.cameraJourney.enabled}
       data-camera-journey-movement={site.cameraJourney.movement}
       data-camera-journey-intensity={site.cameraJourney.intensity}
+      data-camera-journey-parallax-depth={site.cameraJourney.parallaxDepth}
       data-camera-journey-distance={site.cameraJourney.distance}
       data-theme-card-style={theme.presentation.cardStyle}
       data-theme-heading-treatment={theme.presentation.headingTreatment}
