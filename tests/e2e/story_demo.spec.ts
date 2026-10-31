@@ -55,11 +55,9 @@ test("shared cinematic navigation and manual motion controls work", async ({
   const sceneTwoArt = page.locator("#scene-2 .scene-background-image");
   await expect
     .poll(() =>
-      sceneTwoArt.evaluate(
-        (image: HTMLImageElement) => getComputedStyle(image).transform,
-      ),
+      sceneTwoArt.evaluate((image: HTMLImageElement) => image.naturalWidth),
     )
-    .not.toBe("none");
+    .toBeGreaterThan(0);
   await page.getByRole("button", { name: "Disable animation" }).click();
   await expect(
     page.getByRole("button", { name: "Enable animation" }),

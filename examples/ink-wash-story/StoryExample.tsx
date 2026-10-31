@@ -73,7 +73,7 @@ export function StoryExample() {
                 src={transitionCoverUrl}
                 alt=""
                 aria-hidden="true"
-                loading="lazy"
+                loading={index === 0 ? "eager" : "lazy"}
                 decoding="async"
               />
             </>
