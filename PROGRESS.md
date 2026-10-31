@@ -2,11 +2,31 @@
 
 ## Current state
 
-Track A is the conventional TypeScript/React implementation in this repository. Work is local and not released. Do not read or modify another experiment track, the original portfolio, or unrelated repositories. No public deployment is established. The reference video has not been supplied.
+Track A is the conventional TypeScript/React implementation in this repository. Work is not released. Do not read or modify another experiment track, the original portfolio, or unrelated repositories. No public deployment is established. The user supplied reference clip has been reviewed.
+
+**Current checkpoint, 2026-10-31:** PR #34 merged to `main` at
+`741c8277e754aa8a71d6af8be8cdacc6020de927`. Draft PR #35 is open from branch
+`work/cinematic-v1-followup`; its last source commit is
+`4b4583c626a5215219597b857cc3501117d85377`. Its reusable transition-cover
+increment passed hosted quality run
+[`41157467153`](https://github.com/howlcipher/howlscene/actions/runs/41157467153)
+and Pages artifact run
+[`41157467158`](https://github.com/howlcipher/howlscene/actions/runs/41157467158).
+PR #35 is not merged; no deployment occurred. See the
+[cinematic journal](docs/development/cinematic-v1-journal.md) for TDD, workflow,
+and host-safety evidence and the [readiness report](docs/reviews/cinematic-v1-readiness.md)
+for remaining acceptance gates. The user supplied a reference clip, reviewed in
+the [reference match report](docs/reviews/video-reference-match.md).
+
+For this follow-up, no local build, compilation, package install, unit test,
+browser test, container, or performance workload ran. All substantial
+verification was on GitHub-hosted runners. No unexpected background process
+was started and no safety rule was violated. This is a source-development
+checkpoint; it does not claim v1 readiness.
 
 Phase 0 proved the shared editor-to-static-export approach. Core/schema, rich text, assets, storage, history, guided editor controls, backups, SDK packaging, and motion work have since been added. Integration and regression fixes are active. These source features do not establish complete v1 acceptance.
 
-## Current milestone: trusted custom layout registration
+## Historical milestone snapshot: trusted custom layout registration
 
 PR #30 merged as `ccb9f49`. It adds an immutable public layout registry with
 safe identifiers, section compatibility, developer-trusted React renderers,
@@ -34,7 +54,10 @@ and [`docs/evidence/layout_registry_red.txt`](docs/evidence/layout_registry_red.
 See [ADR 017](docs/architecture/adr_017_trusted_layout_renderers.md) and the
 [developer guide](docs/developers/custom_layouts.md).
 
-## Latest executed milestone
+## Previous milestone history
+
+The following entries preserve earlier snapshots; the checkpoint at the top is
+the current repository status.
 
 The latest merged increment is PR #30, merged as `ccb9f49`; its hosted `verify`
 run `40988283799` passed, including WebKit. The deployable-site build passed in
@@ -89,13 +112,16 @@ The final run first exposed a stale journey assertion expecting the former
 responsive filename. The assertion now verifies the new path and actual image
 loading. Focused journey and complete gate both passed afterward.
 
-## Next work and open release gates
+## Open release gates
 
-Complete manual browser-zoom/assistive-technology and nontechnical usability
-review, production performance review, hosted verification of subsequent changes,
-and public deployment. Finish release review before calling v1 ready. Keep open
-requirements visible in [acceptance](docs/experiment/acceptance.md) and
-[limitations](docs/experiment/limitations.md).
+The Ink Wash demo now uses the shared cinematic renderer. Hosted browser checks
+cover extracted cinematic ZIPs at root and nested paths, JavaScript on/off,
+reduced motion, and the independent SDK consumer. Visual, performance,
+accessibility, security/licensing, independent review, human user, screen-reader
+and browser-zoom gates remain. Use the cinematic journal, readiness report, and
+[acceptance traceability](docs/experiment/acceptance.md) as the current source
+of status. Do not call v1 ready or deploy without the required evidence and
+approvals.
 
 The standalone remote is https://github.com/howlcipher/howlscene. No deployment
 or release is established. Repository isolation remains intact. No comparison
@@ -587,7 +613,7 @@ run `40950249941` passed.
 Repository isolation and independent comparison records remain intact; release
 readiness is not claimed.
 
-## Current milestone: creator theme presentation controls
+## Historical milestone: creator theme presentation controls
 
 Creators can now override the theme's shared card appearance, navigation link
 style, and phone navigation layout using closed, validated options. Unset
@@ -606,7 +632,7 @@ after hosted run `40952321979` passed; its first formatter check caught and
 prompted formatting of the generated performance JSON. No deployment,
 comparison result, or release readiness is claimed.
 
-## Current milestone: image-rich exported visual acceptance
+## Historical milestone: image-rich exported visual acceptance
 
 `EXP-VISUAL-001` now captures the actual exported ZIP with an original generated
 landscape uploaded as background scenery and shown on three project cards, plus
@@ -631,7 +657,7 @@ referenced `documentation/TESTING.md` are unavailable in this repository or
 environment, so test-impact pathways are mapped manually in
 [`acceptance.md`](docs/experiment/acceptance.md).
 
-## Current milestone: maximum theme presentation reflow
+## Historical milestone: maximum theme presentation reflow
 
 THM-PRES-005 covers maximum valid presentation tokens in
 all three themes with long copy at 200% root text sizing and a 320 CSS-pixel
@@ -644,7 +670,7 @@ The integrated gate passes 150 unit tests and 44 browser tests with 89.54%
 overall branch coverage. The 200% root-size test is a deterministic text-resize
 stress case, not real browser zoom or human review.
 
-## Current milestone: compatible section layout presets
+## Historical milestone: compatible section layout presets
 
 EDT-012 exercises the editor's registry-derived layout choices with a real
 uploaded image. The wide preview floats the image beside text for the split
@@ -671,7 +697,7 @@ test-only addition; the prior layout behavior was already implemented. Hosted
 verification is pending. The local npm bootstrap warns that its host runtime is
 Node 22.22.1; the command explicitly runs the project under Node 24.22.2.
 
-## Current milestone: target-engine static export compatibility
+## Historical milestone: target-engine static export compatibility
 
 Added `EXP-PLATFORM-001` and a focused Playwright project for Chromium, Firefox
 and WebKit rather than tripling the editor and screenshot suites. Each engine
@@ -688,7 +714,7 @@ export, license and zero-vulnerability checks. Architecture trade-offs are in
 Evidence is in [`cross_browser_final_gate.txt`](docs/evidence/cross_browser_final_gate.txt)
 and [`cross_browser_audit.txt`](docs/evidence/cross_browser_audit.txt).
 
-## Current milestone: production export mobile lab observation
+## Historical milestone: production export mobile lab observation
 
 `PERF-LAB-001` edits a site through the browser editor, downloads the actual
 static ZIP, and serves it at a nested path under a fresh 390×844 Chromium mobile
@@ -710,7 +736,7 @@ passed. See
 [`dependency audit`](docs/evidence/production_mobile_audit.txt), and the
 [measurement method and limitations](docs/experiment/metrics.md).
 
-## Current milestone: accessibility coverage of exported themes
+## Historical milestone: accessibility coverage of exported themes
 
 `A11Y-008` builds the Modern, Ink Wash and Cyberpunk exports through the editor,
 then serves each image-bearing ZIP under a nested mount. All six phone/desktop

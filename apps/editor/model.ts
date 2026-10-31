@@ -113,19 +113,37 @@ export function replaceSectionImage(
   sectionId: string,
   asset: SiteConfig["assets"][number],
 ): SiteConfig {
+  return replaceSectionArtwork(site, sectionId, "image", asset);
+}
+
+export function replaceTransitionCover(
+  site: SiteConfig,
+  sectionId: string,
+  asset: SiteConfig["assets"][number],
+): SiteConfig {
+  return replaceSectionArtwork(site, sectionId, "transitionCover", asset);
+}
+
+function replaceSectionArtwork(
+  site: SiteConfig,
+  sectionId: string,
+  field: "image" | "transitionCover",
+  asset: SiteConfig["assets"][number],
+): SiteConfig {
   const section = site.sections.find((s) => s.id === sectionId);
   if (!section) return site;
+  const previousId = section[field];
   const sections = site.sections.map((s) =>
-    s.id === sectionId ? { ...s, image: asset.id } : s,
+    s.id === sectionId ? { ...s, [field]: asset.id } : s,
   );
-  const previousStillUsed = sections.some(
-    (s) =>
-      s.image === section.image ||
-      s.entries.some((e) => e.image === section.image),
+  const previousStillUsed = sections.some((s) =>
+    [s.image, s.transitionCover, ...s.entries.map((entry) => entry.image)].some(
+      (id) => id === previousId,
+    ),
   );
   const assets = [
     ...site.assets.filter(
-      (a) => a.id !== asset.id && (a.id !== section.image || previousStillUsed),
+      (a) => a.id !== asset.id && (a.id !== previousId || previousStillUsed),
     ),
     asset,
   ];

@@ -141,8 +141,8 @@ export async function exportWebsite(
   const visible = site.sections.filter((s) => s.visible);
   const used = new Set(
     visible.flatMap((s) =>
-      [s.image, ...s.entries.map((e) => e.image)].filter((id): id is string =>
-        Boolean(id),
+      [s.image, s.transitionCover, ...s.entries.map((e) => e.image)].filter(
+        (id): id is string => Boolean(id),
       ),
     ),
   );

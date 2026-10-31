@@ -9,7 +9,10 @@
    **Background scenery**, then adjust **Image position** when needed. Add an
    image description if it conveys information.
 5. Choose a **Scene layout** and **Transition style**. The transition controls
-   are preset choices; they do not accept scripts or custom code.
+   are preset choices; they do not accept scripts or custom code. In a
+   Cinematic Story, **Change transition cover** adds a decorative image layer
+   that briefly clears as a scene enters. It is hidden from assistive
+   technology and does not replace the scene's scenery or text.
 6. Adjust motion intensity and speed in the appearance controls. The website
    respects the device's reduced-motion preference and offers a manual motion
    control in the enhanced exported site.

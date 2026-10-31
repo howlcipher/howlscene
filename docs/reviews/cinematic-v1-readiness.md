@@ -2,11 +2,12 @@
 
 **Verdict: NOT READY**
 
-This branch contains an initial shared cinematic configuration, renderer,
-editor, and test increment. Quality gates and Pages artifact verification pass
-on GitHub-hosted Actions. The original Ink Wash demonstration has not yet been
-migrated, and dedicated cinematic export, human, accessibility, and visual
-acceptance remain. The ultimate v1 acceptance criterion is not met.
+The shared cinematic mode now includes a reusable transition-cover asset path,
+editor controls, static ZIP support, an independent SDK consumer, and the
+migrated Ink Wash sample. The latest source commit passes the full GitHub-hosted
+Quality workflow and Pages artifact verification. Overall v1 remains
+**NOT READY** because visual review, performance, human accessibility review,
+independent review, and real-user acceptance are incomplete.
 
 ## 1. Executive summary
 
@@ -17,11 +18,13 @@ editor starter, a scene transition control, and focused source tests. Existing
 section editing, image handling, themes, history, storage, backups, previews,
 and ZIP export remain the shared paths.
 
-The shared implementation increment has passing hosted checks. The planned
-test-only RED phase was not observed. Visual review, SDK consumer use of the
-new contract, and cinematic ZIP browser verification remain outstanding. The
-five-scene demo still contains its separate hardcoded rendering and transition
-logic.
+The follow-up adds a validated optional per-scene `transitionCover` asset ID,
+editor upload/removal controls, decorative entry animation, cleanup coverage,
+asset retention, backup round trips, and ZIP inclusion. The Ink Wash demo now
+uses the shared renderer and configured mist-reveal transitions. Final hosted
+checks pass: 171 unit tests, 61 Playwright tests on one worker, independent SDK
+package/browser export checks, dependency and license checks, and Pages artifact
+verification.
 
 ## 2. Commits
 
@@ -32,9 +35,19 @@ logic.
 - Rendering follow-up: `7b08c0750a8221d738ac1249af9dd4262ea23bbe`
   (`fix(cinematic): animate full scene artwork bounds`).
 - Type correction: `73e4dcb1e7aefaa3855e25a92b3b4b11214617b0`.
-- Current code commit: `05c8dc4d50ad0b2b50b88e128f775a7621f09983`
-  (`test(cinematic): assert background transition replay`).
-- Draft PR: [#34](https://github.com/howlcipher/howlscene/pull/34).
+- PR #34 final commit: `05c8dc4d50ad0b2b50b88e128f775a7621f09983`
+  (`test(cinematic): assert background transition replay`), merged into
+  `main` as `741c8277e754aa8a71d6af8be8cdacc6020de927`.
+- Follow-up starting commit: `741c8277e754aa8a71d6af8be8cdacc6020de927`.
+- Follow-up test-only commit: `df222d0a567fa0593a31c3e2a11eddeb1de45fde`.
+- Follow-up implementation commit: `4a9063574fd1178bd282d172c002afddc1a4b751`.
+- Follow-up source commit verified by CI:
+  `4b4583c626a5215219597b857cc3501117d85377`.
+- Shared demo migration and browser acceptance: `788ed72`.
+- Cinematic ZIP and SDK acceptance: `0e81fbe` with follow-up test fixes.
+- Latest verified source commit: `85225bd94f0bac97454a026aa8b57081a5cfae36`.
+- Follow-up draft PR: [#35](https://github.com/howlcipher/howlscene/pull/35).
+- Ending implementation commit: `85225bd94f0bac97454a026aa8b57081a5cfae36`.
 
 ## 3. Architectural audit
 
@@ -44,12 +57,13 @@ editing, section lifecycle controls, image upload/positioning, local IndexedDB
 drafts, history, project backups, static ZIP export, and SDK package checks.
 The standard editor already covers much of the requested scene editing surface.
 
-The main confirmed gap was that cinematic composition lived in
+The starting gap was that cinematic composition lived in
 `examples/ink-wash-story/StoryExample.tsx` and its stylesheet rather than in the
-shared config and renderer. The demo hardcodes five scene IDs and asset paths,
-duplicates semantic copy for animation, and owns a scroll-scrubbed camera/mist
-sequence. The project configuration had no experience mode or per-section
-transition selection.
+shared config and renderer. The sample has now been moved onto the shared
+`Site` renderer: bespoke copy layers and camera/mist scroll choreography were
+removed, while example-specific artwork selection remains in the example as
+content data. Scene headings and copy are emitted once by the shared semantic
+renderer.
 
 The implementation decision is recorded in
 [`ADR 0001`](../architecture/adr/0001-cinematic-config-contract.md). The new
@@ -74,16 +88,31 @@ project model.
 - Shared renderer attributes and exported CSS/HTML use. Existing backup,
   autosave/history, theme switching, and ZIP packaging serialize the fields
   through the existing validated project.
+- Optional scene transition-cover asset references are strictly validated,
+  rendered with empty alternative text as a decorative animated overlay,
+  editable through the cinematic editor, kept when other artwork changes, and
+  included in ZIPs when referenced by visible scenes.
+- Vitest runs with one worker. A transitive `minimatch` override to patched
+  `11.0.1` resolves the new moderate advisory found by hosted npm audit.
+- The five-scene Ink Wash sample uses the shared renderer, registered scene
+  transitions, and shared lifecycle enhancement. Its own artwork and labels
+  remain example content rather than shared-engine assumptions.
+- Editor ZIP browser coverage checks cinematic transition covers at root and
+  nested static paths, with JavaScript enabled/disabled and reduced motion.
+- The standalone SDK check installs the packed public packages into an
+  independent consumer and exercises browser ZIP export and static hosting.
 - User/developer docs, acceptance traceability, engineering journal, readiness
   report, and ADR.
 
 ## 5. Refactoring, DRY, and hardcoding
 
-No second engine, project format, exporter, or editor was added. The new
-transition resolver is in the shared core motion module. User content remains
-in section configuration, and the template is only a starting composition.
-The example's hardcoded image selection and scroll-driven transition have not
-yet been removed; therefore example generalization is incomplete.
+No second engine, project format, exporter, or editor was added. The transition
+resolver is in the shared core motion module. User content remains in section
+configuration, and the template is only a starting composition. The sample's
+per-scene art mapping is appropriately example-owned; its separate rendering,
+duplicate copy, and scroll-scrubbed transition implementation were removed.
+The former continuous camera passage has been replaced by configured scene
+entry mist reveals; this is a documented visual deviation from the reference.
 
 ## 6. TDD evidence
 
@@ -93,39 +122,49 @@ implementation commit. Additional source tests cover transition recipes,
 reduced motion, themes, backup round trips, deterministic normalization, editor
 journey, and interrupted/reentered scene lifecycle.
 
-No RED result was observed at the test-only checkpoint. Run `41128843188`
-reported one lifecycle assertion failure after the implementation changed the
-target to the full-size background image; the assertion was corrected. Quality
-run `41129125151` passed all 166 unit tests. This is subsequent GREEN evidence,
-not the planned test-only RED phase; that RED evidence remains unavailable.
+For the original PR #34 test-only checkpoint, no RED result was observed. In the
+follow-up, test-only commit `df222d0` produced valid hosted RED evidence in
+[run 41155355988](https://github.com/howlcipher/howlscene/actions/runs/41155355988):
+the new renderer/export contract failed because strict schema rejected
+`transitionCover`; the missing-reference assertion failed at the same schema
+boundary. The implementation then made the reference assertion specifically
+check missing-asset validation. A browser test fixture was corrected twice
+after hosted evidence showed that one PNG payload was invalid and that normalized
+uploads use WebP. The demo migration test was added first in commit `72bf70e`
+and produced expected hosted RED in [run 41158575129](https://github.com/howlcipher/howlscene/actions/runs/41158575129):
+the sample did not yet contain shared scene artwork. After migration and
+selector corrections, the shared sample passed in run `41161202518`. An
+independent SDK browser export then exposed an undecodable PNG test fixture in
+run `41162490713`; the fixture was replaced with a valid PNG generated from
+Node built-ins. Current GREEN is [run 41162883019](https://github.com/howlcipher/howlscene/actions/runs/41162883019).
 
 ## 7. Acceptance matrix
 
-| ID          | Source coverage / state                                                            | Verification                                           |
-| ----------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| CIN-001     | Starter and editor test added                                                      | CI passed; focused journey incomplete                  |
-| CIN-002     | Reuses rich-text editor; not specifically extended                                 | CI passed; focused edit coverage partial               |
-| CIN-003     | Reuses image upload control                                                        | CI passed; focused artwork journey incomplete          |
-| CIN-004–005 | Reuses add/duplicate/remove/reorder operations                                     | CI passed; focused scene lifecycle coverage incomplete |
-| CIN-006     | Reuses existing layout controls                                                    | CI passed; dedicated cinematic tests absent            |
-| CIN-007     | Bounded transition schema, resolver, distinction and lifecycle tests               | Unit and lifecycle tests passed                        |
-| CIN-008     | Config backup and theme round-trip test added                                      | Unit tests passed                                      |
-| CIN-009     | Three-theme content preservation test added                                        | Unit tests passed                                      |
-| CIN-010–011 | Existing storage and backup paths consume `parseSite`; backup roundtrip test added | CI passed; dedicated cinematic local-save test absent  |
-| CIN-012     | Shared renderer/export contract test added                                         | Unit/build passed; ZIP browser test absent             |
-| CIN-013     | No new cinematic nested-hosting test                                               | Pending                                                |
-| CIN-014     | Shared semantic HTML path and static markup test                                   | Unit tests passed; no-JS browser test absent           |
-| CIN-015     | Existing reduced-motion gate reused; resolver test added                           | Unit tests passed; export browser test absent          |
-| CIN-016     | Lifecycle interruption/reentry test added                                          | Lifecycle tests passed                                 |
-| CIN-017     | Invalid transition test added                                                      | Unit tests passed                                      |
-| CIN-018     | Original demo not migrated or reverified                                           | Not complete                                           |
-| CIN-019     | Public package surfaces re-export core config/motion; new SDK consumer not tested  | Pending                                                |
-| CIN-020     | Existing 1–100 section limit; generic add/remove reused                            | Partially covered; pending hosted CI                   |
-| CIN-021     | No preview/export equivalence browser test                                         | Pending                                                |
-| CIN-022     | No transition-cover asset contract exists in the new mode                          | Not implemented                                        |
-| CIN-023     | Existing cleanup reused; new reentry lifecycle test added                          | Lifecycle tests passed                                 |
-| CIN-024     | Theme switching preservation test added                                            | Unit tests passed                                      |
-| CIN-025     | Shared components consume config, but full unrelated-site test not added           | Pending                                                |
+| ID          | Source coverage / state                                                            | Verification                                                        |
+| ----------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| CIN-001     | Starter and editor test added                                                      | CI passed; focused journey incomplete                               |
+| CIN-002     | Reuses rich-text editor; not specifically extended                                 | CI passed; focused edit coverage partial                            |
+| CIN-003     | Reuses scenery upload and adds independent cover upload                            | Editor artwork journey passed in run 41157467153                    |
+| CIN-004–005 | Reuses add/duplicate/remove/reorder operations                                     | CI passed; focused scene lifecycle coverage incomplete              |
+| CIN-006     | Reuses existing layout controls                                                    | CI passed; dedicated cinematic tests absent                         |
+| CIN-007     | Bounded transition schema, resolver, distinction and lifecycle tests               | Unit and lifecycle tests passed                                     |
+| CIN-008     | Config backup/theme round trip includes cover assets                               | Unit tests passed in run 41157467153                                |
+| CIN-009     | Three-theme content preservation test added                                        | Unit tests passed                                                   |
+| CIN-010–011 | Existing storage and backup paths consume `parseSite`; backup roundtrip test added | CI passed; dedicated cinematic local-save test absent               |
+| CIN-012     | Shared renderer and transition-cover ZIP asset contract                            | Extracted ZIP browser test and SDK ZIP passed in run 41162883019    |
+| CIN-013     | Editor ZIP and SDK ZIP served at root and nested paths                             | Passed in run 41162883019                                           |
+| CIN-014     | Shared semantic HTML tested with JavaScript disabled                               | Editor and SDK ZIP browser checks passed in run 41162883019         |
+| CIN-015     | Reduced-motion export behavior checked in extracted editor ZIP                     | Passed in run 41162883019                                           |
+| CIN-016     | Lifecycle interruption/reentry test added                                          | Lifecycle tests passed                                              |
+| CIN-017     | Invalid transition, malformed cover ID, and missing asset rejected                 | Unit tests passed in run 41157467153                                |
+| CIN-018     | Original five-scene demo consumes shared `Site`; configured transitions/navigation | Passed in run 41161202518                                           |
+| CIN-019     | Independent packaged SDK consumer exports and serves cinematic cover ZIP           | Passed in run 41162883019                                           |
+| CIN-020     | Existing 1–100 section limit; generic add/remove reused                            | Partially covered; pending hosted CI                                |
+| CIN-021     | No preview/export equivalence browser test                                         | Pending                                                             |
+| CIN-022     | Decorative transition-cover asset is included in editor and SDK ZIPs               | Browser checks passed in run 41162883019                            |
+| CIN-023     | Transition-cover animation is scene-owned and cancellation tested                  | Lifecycle unit test passed                                          |
+| CIN-024     | Theme switching preservation test added                                            | Unit tests passed                                                   |
+| CIN-025     | Shared rendering has no example-specific scene/asset assumptions                   | Shared demo and unrelated SDK fixture pass; broader persona remains |
 
 ## 8. GitHub Actions and verification
 
@@ -140,7 +179,8 @@ It does not deploy. No focused test workflow exists. The Pages workflow builds
 PR artifacts on `ubuntu-latest`; deployment is manual on `main` with a publish
 input, repository safeguard, and two approval environments.
 
-Draft PR #34 was opened and triggered the inspected workflows.
+PR #34 was opened and triggered the inspected workflows, then merged into
+`main` at `741c8277e754aa8a71d6af8be8cdacc6020de927`.
 The first Git push failed because the repository-local URL-specific helper
 pointed to missing `/home/linuxbrew/.linuxbrew/bin/gh`, while the authenticated
 system CLI was `/usr/bin/gh`. The local helper was corrected and the branch was
@@ -165,6 +205,41 @@ passed the production build, root/project Pages browser checks, and artifact
 packaging on commit `73e4dcb1e7aefaa3855e25a92b3b4b11214617b0`. The approval
 and publish jobs were skipped as expected for a pull request.
 
+After PR #34 merged, follow-up PR #35 started from `741c827`. Its test-only
+commit `df222d0` was observed failing in the intended schema behavior on hosted
+run [41155355988](https://github.com/howlcipher/howlscene/actions/runs/41155355988).
+Final commit `4b4583c626a5215219597b857cc3501117d85377` passed quality run
+[41157467153](https://github.com/howlcipher/howlscene/actions/runs/41157467153):
+locked install, format, lint, strict TypeScript, 171 unit tests across 37 files,
+build, all 60 Playwright tests with one worker, SDK checks, license audit, and
+`npm audit --audit-level=moderate`. Reported aggregate coverage was 94.74% lines,
+89.91% branches, 95.65% functions, and 96.58% statements.
+
+Pages run
+[41157467158](https://github.com/howlcipher/howlscene/actions/runs/41157467158)
+passed production build, root and project-path browser checks, and artifact
+packaging on the follow-up. Approval and production deployment jobs were
+skipped. The audit initially found minimatch 10.2.6 below the newly published
+patched version; the lock now overrides it to 11.0.1, and the final hosted audit
+passed. See the [GitHub security advisory](https://github.com/advisories/GHSA-g3hv-75wg-m249).
+
+The Ink Wash migration test was added first. Hosted run
+[41158575129](https://github.com/howlcipher/howlscene/actions/runs/41158575129)
+showed the expected behavioral RED because the demo lacked shared scene
+artwork. After migration, hosted run
+[41161202518](https://github.com/howlcipher/howlscene/actions/runs/41161202518)
+passed the 60-test suite. Subsequent exported-ZIP and SDK consumer work was
+verified on final implementation commit `85225bd94f0bac97454a026aa8b57081a5cfae36`:
+[Quality run 41162883019](https://github.com/howlcipher/howlscene/actions/runs/41162883019)
+passed 171 unit tests and 61 Playwright tests, including independent packaged
+SDK export and extracted editor ZIP checks. Coverage was 94.74% lines, 89.91%
+branches, 95.65% functions, and 96.58% statements. The independent SDK fixture
+failure in run `41162490713` was caused by an invalid one-pixel PNG payload; the
+fixture was replaced with a valid PNG and the browser export then passed.
+[Pages run 41162883058](https://github.com/howlcipher/howlscene/actions/runs/41162883058)
+passed production build, root/project-path checks, and artifact packaging.
+Approval and publish jobs were skipped.
+
 On the corrected commit `05c8dc4d50ad0b2b50b88e128f775a7621f09983`, hosted
 quality run
 [41129125151](https://github.com/howlcipher/howlscene/actions/runs/41129125151)
@@ -177,21 +252,28 @@ artifact packaging. Approval and publishing steps were skipped.
 
 ## 9. Unit and integration results
 
-Tests added: `tests/cinematic.test.tsx`,
-`tests/e2e/cinematic-editor.spec.ts`, and a lifecycle case in
-`tests/scene_lifecycle.test.ts`. On run `41128843188`, 165 of 166 unit tests
-passed; one assertion used the text target instead of the background image
-target. The correction passed in quality run `41129125151`; all 166 unit tests
-passed. No test command, TypeScript compilation, or build ran locally.
+Follow-up coverage extends `tests/cinematic.test.tsx`,
+`tests/e2e/cinematic-editor.spec.ts`, `tests/e2e/story_demo.spec.ts`,
+`tests/image_replacement.test.ts`, and `tests/scene_lifecycle.test.ts`. On
+hosted run `41162883019`, all 171 unit tests and 61 Playwright tests passed.
+The final run includes the shared-demo and extracted-ZIP browser checks. No test
+command, TypeScript compilation, or build ran locally.
 
 ## 10. Browser, export, SDK, visual, accessibility, and performance results
 
-- Browser tests: the repository's full Playwright E2E suite passed in run
-  `41129125151`; the Pages production root/project path checks passed in run
-  `41129125122`. Dedicated cinematic export/browser coverage remains absent.
-- ZIP extraction and root/nested static hosting: not run for cinematic output.
-- SDK consumer verification: not run for cinematic configuration.
-- Visual regression/screenshots: not captured or reviewed.
+- Browser tests: all 61 Playwright tests passed on one worker in run
+  `41162883019`; Pages production root/project-path checks and packaging passed
+  in run `41162883058`.
+- The editor-generated cinematic ZIP was extracted and served at root and a
+  nested path, with JavaScript on and off and reduced motion enabled. The
+  contract verifies scene order/content, transition cover URL and decoded image,
+  navigation, and resource responses.
+- An independent installed SDK consumer generated a ZIP containing its
+  configured cinematic cover, then served it at two nested mounts with
+  JavaScript enabled and disabled. This passed inside run `41162883019`.
+- Visual regression/screenshots: no migrated-demo screenshots were captured or
+  reviewed. Existing project visual baselines passed in CI but are not a review
+  of the Ink Wash transition deviation.
 - Automated accessibility scanning: not run for cinematic mode.
 - Human screen-reader, browser zoom, physical device, and nontechnical user
   acceptance: not performed.
@@ -202,11 +284,12 @@ These are unverified items, not successful results.
 
 ## 11. Security and licensing
 
-The new transition input is a closed enum; no user-provided scripts, HTML,
-stylesheets, or URL references are introduced. Existing safe rich text and
-asset validation remain in force. The hosted security test suite, dependency
-audit, and license workflow passed in run `41129125151`. No separate manual
-third-party licensing assessment was performed.
+The transition input remains a closed enum and `transitionCover` accepts only a
+bounded `asset-` ID whose asset exists in the validated project. No scripts,
+HTML, stylesheets, or arbitrary URLs are introduced. The hosted security tests,
+dependency audit, and license workflow passed in run `41162883019`. The new
+moderate minimatch advisory against 10.2.6 was fixed with the 11.0.1 override.
+No separate manual third-party licensing assessment was performed.
 
 ## 12. Simulated-user outcomes
 
@@ -217,13 +300,16 @@ cover Cinematic Story.
 ## 13. Host-safety compliance
 
 - Local heavy workload executed: **No**.
-- Verification on GitHub-hosted infrastructure for this change: **Quality gates run 41129125151 and Pages run 41129125122 passed on commit `05c8dc4d50ad0b2b50b88e128f775a7621f09983`**.
-- Tests not executed: dedicated cinematic ZIP round-trip/browser scenarios,
-  visual regression, accessibility scans, physical performance, and persona
-  acceptance checks.
+- Verification on GitHub-hosted infrastructure for this change: [Quality run 41162883019](https://github.com/howlcipher/howlscene/actions/runs/41162883019) and [Pages artifact run 41162883058](https://github.com/howlcipher/howlscene/actions/runs/41162883058), both passed on `85225bd94f0bac97454a026aa8b57081a5cfae36`.
+- Tests not executed: visual regression review specific to the migrated demo,
+  manual accessibility/assistive-technology review, performance throttling and
+  physical-device measurements, independent review, and the five requested
+  persona journeys.
 - Unexpected background process started: **No**.
 - Safety rule violated: **No**.
 - Further host-side testing requested: **No**.
+- No deployment occurred; the Pages workflow's approval and publish jobs were
+  skipped. PR #35 remains draft and open.
 - Local work was limited to source/document inspection and edits, Git status and
   small diff review, and bounded Prettier formatting. No package installation,
   compilation, test, browser, container, or background workload was run.
@@ -240,12 +326,24 @@ approval controls were not changed.
 
 ## 15. Known limitations and final verdict
 
-The Ink Wash example still uses example-specific code and has not been
-migrated. Transition-cover artwork, exact scene-to-scene camera passage,
-dedicated cinematic nested export and visual tests, new SDK consumer tests, and
-full acceptance coverage remain. Existing new unit and E2E tests pass remotely,
-but they do not cover all listed acceptance requirements.
+The Ink Wash example now uses the shared `Site` renderer and configured
+mist-reveal scene entries. Its original continuous scroll-scrubbed camera
+passage was removed, so exact transition choreography differs from the
+reference; no pixel-perfect match is claimed. Hosted nested ZIP and independent
+SDK consumer checks now pass. Full CIN-001–025 coverage, visual review of the
+migrated example, real user and assistive-technology acceptance, performance
+measurements, human browser-zoom review, and independent review remain. Existing
+unit and E2E tests pass remotely but do not establish all requested release
+requirements.
 
-**NOT READY** — demo migration, dedicated cinematic export and SDK consumer
-coverage, full automated acceptance, and human review remain. Reevaluate after
-those gates have actual evidence.
+**NOT READY** — human accessibility, performance, visual, persona, independent
+review, and remaining acceptance gates are unverified.
+
+## Follow-up pull request
+
+Draft [PR #35](https://github.com/howlcipher/howlscene/pull/35) contains the
+shared cinematic configuration, transition-cover support, Ink Wash sample
+migration, extracted ZIP and SDK acceptance, and minimatch audit fix. It is
+open and not merged. Quality run `41162883019` and Pages artifact run
+`41162883058` passed on `85225bd94f0bac97454a026aa8b57081a5cfae36`. No public
+deployment occurred.

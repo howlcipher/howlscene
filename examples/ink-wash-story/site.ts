@@ -5,6 +5,7 @@ export const storySite = parseSite({
   title: "LOREM — A JOURNEY THROUGH THE CITY",
   description:
     "A cinematic ink-wash story sample with five original landscapes and placeholder copy.",
+  experience: "cinematic",
   theme: "ink",
   motion: "cinematic",
   motionSettings: { intensity: 0.82, speed: 0.82 },
@@ -19,6 +20,7 @@ export const storySite = parseSite({
       alignment: "start",
       contentWidth: "wide",
       animation: "cinematic",
+      transition: "mist-reveal",
     },
     {
       id: "scene-2",
@@ -30,6 +32,7 @@ export const storySite = parseSite({
       alignment: "end",
       contentWidth: "wide",
       animation: "cinematic",
+      transition: "mist-reveal",
     },
     {
       id: "scene-3",
@@ -41,6 +44,7 @@ export const storySite = parseSite({
       alignment: "start",
       contentWidth: "wide",
       animation: "cinematic",
+      transition: "mist-reveal",
     },
     {
       id: "scene-4",
@@ -52,6 +56,7 @@ export const storySite = parseSite({
       alignment: "end",
       contentWidth: "wide",
       animation: "cinematic",
+      transition: "mist-reveal",
     },
     {
       id: "scene-5",
@@ -63,6 +68,7 @@ export const storySite = parseSite({
       alignment: "start",
       contentWidth: "wide",
       animation: "cinematic",
+      transition: "mist-reveal",
     },
   ],
 });

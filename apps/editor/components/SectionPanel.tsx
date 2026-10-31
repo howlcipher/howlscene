@@ -33,7 +33,11 @@ export function SectionPanel({
     setNewType: (type: BuiltinSectionType) => void;
     setSelected: (id: string) => void;
   };
-  onImage: (file: File, sectionId: string) => void;
+  onImage: (
+    file: File,
+    sectionId: string,
+    target?: "image" | "transitionCover",
+  ) => void;
 }) {
   const { commit, perform, setError } = actions;
   const { newType, setNewType, setSelected } = selection;
@@ -195,28 +199,48 @@ export function SectionPanel({
           </select>
         </label>
         {site.experience === "cinematic" && (
-          <label>
-            Transition style
-            <select
-              value={section.transition}
-              onChange={(e) =>
-                update({
-                  transition: e.target.value as SectionConfig["transition"],
-                })
-              }
-            >
-              {cinematicTransitions.map((transition) => (
-                <option key={transition} value={transition}>
-                  {transition === "none"
-                    ? "None"
-                    : transition
-                        .split("-")
-                        .map((word) => word[0]!.toUpperCase() + word.slice(1))
-                        .join(" ")}
-                </option>
-              ))}
-            </select>
-          </label>
+          <>
+            <label>
+              Transition style
+              <select
+                value={section.transition}
+                onChange={(e) =>
+                  update({
+                    transition: e.target.value as SectionConfig["transition"],
+                  })
+                }
+              >
+                {cinematicTransitions.map((transition) => (
+                  <option key={transition} value={transition}>
+                    {transition === "none"
+                      ? "None"
+                      : transition
+                          .split("-")
+                          .map((word) => word[0]!.toUpperCase() + word.slice(1))
+                          .join(" ")}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Change transition cover
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  onImage(file, section.id, "transitionCover");
+                  e.target.value = "";
+                }}
+              />
+            </label>
+            {section.transitionCover && (
+              <button onClick={() => update({ transitionCover: undefined })}>
+                Remove transition cover
+              </button>
+            )}
+          </>
         )}
         <label>
           Section spacing

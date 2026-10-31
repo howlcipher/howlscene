@@ -186,6 +186,16 @@ export function Site({
               data-transition={s.transition}
               className={`scene layout-${s.layout} spacing-${s.spacing} align-${s.alignment} width-${s.contentWidth}`}
             >
+              {s.transitionCover && (
+                <AssetImage
+                  asset={lookup(s.transitionCover)!}
+                  source={resolveAsset}
+                  className="scene-transition-cover"
+                  loading={index === 0 ? "eager" : "lazy"}
+                  aria-hidden="true"
+                  alt=""
+                />
+              )}
               {sceneBackdrop?.(s, index)}
               {showScenery && (
                 <Scenery

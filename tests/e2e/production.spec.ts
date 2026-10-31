@@ -93,6 +93,20 @@ test("production files work at root and GitHub Pages paths with and without Java
     const origin = `http://127.0.0.1:${address.port}`;
     for (const base of ["/", "/howlscene/"]) {
       mount = base;
+      for (const artwork of [
+        "stone-bridge.webp",
+        "clocktower-river.webp",
+        "moon-gate.webp",
+        "river-city.webp",
+        "dusk-skyline.webp",
+        "mist-cover.webp",
+      ]) {
+        const response = await fetch(
+          `${origin}${base}examples/ink-wash-story/assets/${artwork}`,
+          { signal: AbortSignal.timeout(5000) },
+        );
+        expect(response.status).toBe(200);
+      }
       for (const javaScriptEnabled of [true, false]) {
         const context = await browser.newContext({
           javaScriptEnabled,
@@ -149,13 +163,10 @@ test("production files work at root and GitHub Pages paths with and without Java
             }),
           ).toBeVisible();
           await expect(page.locator(".story-demo .scene")).toHaveCount(5);
-          await expect
-            .poll(() =>
-              page
-                .locator(".story-transition-cover")
-                .evaluate((image: HTMLImageElement) => image.naturalWidth),
-            )
-            .toBeGreaterThan(0);
+          await expect(page.locator(".story-art")).toHaveCount(5);
+          await expect(
+            page.locator(".scene-transition-cover").first(),
+          ).toHaveAttribute("src", "./assets/mist-cover.webp");
           const creditsUrl = await page
             .getByRole("link", { name: "Artwork notes" })
             .getAttribute("href");
@@ -174,17 +185,11 @@ test("production files work at root and GitHub Pages paths with and without Java
             "scene-4",
             "scene-5",
           ]) {
-            const artwork = page.locator(
-              `.story-backdrop[data-story-scene="${sceneId}"] .story-art`,
+            const artwork = page.locator(`#${sceneId} .story-art`);
+            await expect(artwork).toHaveAttribute(
+              "src",
+              /\.\/assets\/.+\.webp$/,
             );
-            await page.locator(`#${sceneId}`).scrollIntoViewIfNeeded();
-            await expect
-              .poll(() =>
-                artwork.evaluate(
-                  (image: HTMLImageElement) => image.naturalWidth,
-                ),
-              )
-              .toBeGreaterThan(0);
           }
           await page
             .getByRole("link", {

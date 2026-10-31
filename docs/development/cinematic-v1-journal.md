@@ -168,3 +168,179 @@ this mission and is not evidence for new changes.
   capability, then add focused remote acceptance for export and SDK scenarios.
 - Pull requests: draft [#34](https://github.com/howlcipher/howlscene/pull/34).
 - Decisions needed: none identified.
+
+## Follow-up after PR #34 merge — transition-cover contract
+
+### Repository state
+
+- Starting point: merged `main` at `741c8277e754aa8a71d6af8be8cdacc6020de927`.
+- Branch: `work/cinematic-v1-followup`.
+- Test-only commit: `df222d0a567fa0593a31c3e2a11eddeb1de45fde`.
+- Implementation commit: `4a9063574fd1178bd282d172c002afddc1a4b751`.
+- Browser-fixture follow-up: `4e0fd67cca7183fc675711872195268072f70b67`.
+- Security override commit: `4b4583c626a5215219597b857cc3501117d85377`.
+- Last verified source commit: `4b4583c`; this journal/readiness update is a
+  documentation-only checkpoint after that verification.
+- Draft PR: [#35](https://github.com/howlcipher/howlscene/pull/35).
+- Active milestone: declarative per-scene transition-cover asset support.
+
+### TDD and implementation
+
+- Added tests first for a decorative transition cover rendered by the shared
+  `Site`, packaged by static ZIP export, and rejected when its asset reference
+  is missing.
+- Hosted quality run
+  [41155355988](https://github.com/howlcipher/howlscene/actions/runs/41155355988)
+  executed on GitHub-hosted Ubuntu at test-only SHA `df222d0`. Formatting,
+  lint, and strict TypeScript passed. Vitest reported 166 existing tests
+  passing and the two new tests failing. The render/export test failed because
+  strict Zod schema rejected the unsupported `transitionCover` key. The
+  missing-reference assertion also failed at that same schema boundary, so it
+  did not independently demonstrate reference validation until the schema
+  supports the field. This is behavioral RED evidence, not an infrastructure
+  failure.
+- The first attempt, run
+  [41155139369](https://github.com/howlcipher/howlscene/actions/runs/41155139369),
+  stopped at `format:check`; no tests ran on that attempt. The test was formatted
+  and the test-only commit was amended before the successful RED run.
+- Implementation adds bounded `asset-` IDs, reference validation,
+  a decorative `aria-hidden` image layer, finite scene-entry fade-out using the
+  existing owned animation lifecycle, editor upload/remove controls, project
+  asset retention/replacement behavior, and static ZIP inclusion.
+- Added test coverage for backup/theme preservation, artwork replacement,
+  transition cleanup, and the editor upload/remove journey.
+- `vitest.config.ts` now requests one worker, matching the host-safe CI
+  preference for cinematic work.
+- The browser journey initially used a tiny PNG payload that the browser image
+  decoder rejected, then assumed the uploaded `src` stayed PNG. HowlScene
+  normalizes uploads to WebP. Replaced the fixture with a canvas-generated
+  image and asserted the normalized WebP result.
+- Hosted quality run
+  [41155831697](https://github.com/howlcipher/howlscene/actions/runs/41155831697)
+  passed format, lint, strict TypeScript, unit tests, build, Playwright, SDK,
+  and license checks. Its first Playwright failure was the invalid PNG test
+  fixture; no production defect was indicated by that assertion.
+- Run
+  [41156472865](https://github.com/howlcipher/howlscene/actions/runs/41156472865)
+  passed format, lint, type, unit, and build, but the E2E fixture expected PNG
+  after the uploader normalized it to WebP. The browser fixture was corrected.
+- On `4e0fd67`, run
+  [41156866695](https://github.com/howlcipher/howlscene/actions/runs/41156866695)
+  passed format, lint, strict TypeScript, unit tests, build, E2E, SDK, and
+  license checks. `npm audit` failed on a new moderate minimatch advisory
+  published October 30, 2026. The locked `minimatch@10.2.6` is affected; the
+  advisory identifies `11.0.1` as patched. The package-lock update is in
+  commit `4b4583c` and was verified remotely.
+- Final quality run
+  [41157467153](https://github.com/howlcipher/howlscene/actions/runs/41157467153)
+  passed on `4b4583c`: `npm ci`, formatting, lint, strict TypeScript, 37 Vitest
+  files / 171 tests, production build, 60 Playwright tests using one worker,
+  SDK packaging/consumer checks, licensing, and `npm audit --audit-level=moderate`.
+  Coverage: 94.74% lines, 89.91% branches, 95.65% functions, and 96.58%
+  statements across configured coverage files.
+- Pages artifact runs
+  [41155831606](https://github.com/howlcipher/howlscene/actions/runs/41155831606),
+  [41156472815](https://github.com/howlcipher/howlscene/actions/runs/41156472815),
+  and
+  [41156866632](https://github.com/howlcipher/howlscene/actions/runs/41156866632)
+  passed production build, root/project path browser checks, and artifact
+  packaging. Latest run
+  [41157467158](https://github.com/howlcipher/howlscene/actions/runs/41157467158)
+  is for the same head commit. Approval and deployment jobs were skipped.
+
+### Safety and verification
+
+- No local compile, build, package installation, unit test, Playwright run,
+  browser preview, container workload, load test, or performance test ran.
+- Local formatting used the already-present Prettier executable on only the
+  changed files; `git diff --check` passed.
+- The reviewed quality workflow selects `ubuntu-latest`, timeout 20 minutes,
+  sequential verification steps, and no deployment. The Pages PR workflow
+  selects `ubuntu-latest`, timeout 15 minutes, and only creates a build
+  artifact; production deployment is gated to manual dispatch on `main`.
+- No unexpected background process was started. No local agents or browsers
+  were started. No safety rule has been violated.
+- Remote workflow availability was confirmed. Quality and Pages verification
+  are green on `4b4583c`.
+- No further host-side testing was requested.
+
+### Next exact task
+
+- Migrate the Ink Wash demo's reusable behavior, then add remote exported-ZIP
+  and SDK consumer evidence and continue the remaining v1 acceptance matrix.
+  PR #35 remains draft; do not merge or deploy.
+
+## Follow-up checkpoint — shared demo migration and exported ZIP acceptance
+
+### Repository state
+
+- Branch: `work/cinematic-v1-followup`.
+- Starting checkpoint for this increment: `4b4583c626a5215219597b857cc3501117d85377`.
+- Latest source commit: `85225bd94f0bac97454a026aa8b57081a5cfae36`.
+- Working tree was clean before this documentation update.
+- PR [#35](https://github.com/howlcipher/howlscene/pull/35) remains open and draft.
+- Active milestone: reusable renderer migration, cinematic ZIP acceptance, and SDK consumer checks.
+
+### Implementation and TDD
+
+- Test-first migration commit `72bf70e` added a browser contract requiring the
+  Ink Wash demo to use shared scene markup and configured scene artwork. Hosted
+  Quality run [41158575129](https://github.com/howlcipher/howlscene/actions/runs/41158575129)
+  produced behavioral RED: the expected shared scene artwork was absent. Setup,
+  formatting, lint, type checks, unit tests, and build passed before that browser
+  assertion failed.
+- Implementation commit `788ed72` migrated the sample to the shared `Site`
+  renderer, configured `mist-reveal` for all five scenes, and removed the bespoke
+  camera/copy transition layers and scroll-progress choreography. Original
+  artwork, alternating copy, semantic scene content, navigation, and reduced
+  motion are retained. The hosted browser test required several selector and
+  timing corrections; these were driven by actual hosted failures rather than
+  weakening production behavior.
+- Added editor-generated cinematic ZIP coverage for scene transition and cover
+  artwork, including browser serving at root and nested paths, JavaScript-on and
+  JavaScript-off checks, and reduced-motion behavior.
+- Expanded `scripts/sdk_check.mjs` to package/install an independent public SDK
+  consumer, create a valid one-pixel PNG fixture, export a cinematic ZIP, and
+  serve it at two mounts with JavaScript enabled and disabled.
+- An intermediate SDK run [41162490713](https://github.com/howlcipher/howlscene/actions/runs/41162490713)
+  showed the browser could not decode the old tiny PNG fixture. The fixture was
+  replaced with a correctly encoded PNG produced from bounded Node built-ins;
+  this corrected test data, not application image handling.
+- Final hosted Quality run [41162883019](https://github.com/howlcipher/howlscene/actions/runs/41162883019)
+  passed on `85225bd`: formatting, lint, strict TypeScript, 171 Vitest tests,
+  production build, 61 Playwright tests on one worker, independent SDK package
+  and browser consumer checks, license review, and dependency audit. Aggregate
+  coverage remained 94.74% lines, 89.91% branches, 95.65% functions, and 96.58%
+  statements.
+- Pages artifact run [41162883058](https://github.com/howlcipher/howlscene/actions/runs/41162883058)
+  passed production build, root/project-path browser checks, and artifact
+  packaging on GitHub-hosted Ubuntu. Approval and publishing jobs were skipped.
+  No deployment occurred.
+
+### Known visual deviation and remaining work
+
+- The shared demo uses scene-entry mist reveals, not the former continuous
+  scroll-scrubbed camera passage between landscapes. It preserves the major
+  artwork, scene order, copy placement alternation, navigation, and reduced-motion
+  behavior; visual equivalence to the reference clip has not been claimed.
+- Preview/export content and covers, root/nested ZIP serving, JavaScript-off,
+  reduced motion, and independent SDK export now have hosted automated coverage.
+- Visual baseline review for the migrated demo, real screen-reader and browser
+  zoom review, physical-device performance, independent review, and real-user
+  acceptance remain open. The readiness verdict remains **NOT READY**.
+
+### Safety and handoff
+
+- No local heavy workload ran. Local work was limited to source/document reads
+  and edits, Git inspection, `git diff --check`, and bounded formatting of a
+  changed JavaScript file.
+- No local compilation, build, package installation, test, browser, container,
+  performance workload, or subagent ran. No unexpected background process was
+  started. No safety rule was violated. Further host-side testing was not
+  requested.
+- The Quality and Pages workflows use GitHub-hosted `ubuntu-latest`; no
+  self-hosted runner or callback to the user's PC was found. No production
+  deployment step ran.
+- Next: refresh the PR body and readiness evidence, continue unresolved CIN
+  acceptance and human review gates, and keep PR #35 draft. Do not merge or
+  deploy without explicit authorization.

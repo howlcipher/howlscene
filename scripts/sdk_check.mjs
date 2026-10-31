@@ -7,6 +7,7 @@ import { mkdtemp, readFile, writeFile, rm, access } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { execFileSync } from "node:child_process";
+import { deflateSync } from "node:zlib";
 const root = resolve(import.meta.dirname, "..");
 const temporary = await mkdtemp(join(tmpdir(), "howlscene-consumer-"));
 const run = (command, args, cwd = temporary) =>
@@ -62,6 +63,34 @@ try {
     }),
   );
   run("npm", ["install", "--ignore-scripts", "--no-audit", "--no-fund"]);
+  const pngCrc32 = (bytes) => {
+    let crc = 0xffffffff;
+    for (const byte of bytes) {
+      crc ^= byte;
+      for (let bit = 0; bit < 8; bit++)
+        crc = (crc >>> 1) ^ (crc & 1 ? 0xedb88320 : 0);
+    }
+    return (crc ^ 0xffffffff) >>> 0;
+  };
+  const pngChunk = (type, data) => {
+    const typeBytes = Buffer.from(type);
+    const content = Buffer.concat([typeBytes, data]);
+    const length = Buffer.alloc(4);
+    const checksum = Buffer.alloc(4);
+    length.writeUInt32BE(data.length);
+    checksum.writeUInt32BE(pngCrc32(content));
+    return Buffer.concat([length, content, checksum]);
+  };
+  const header = Buffer.alloc(13);
+  header.writeUInt32BE(1, 0);
+  header.writeUInt32BE(1, 4);
+  header.set([8, 6, 0, 0, 0], 8);
+  const validPng = Buffer.concat([
+    Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+    pngChunk("IHDR", header),
+    pngChunk("IDAT", deflateSync(Buffer.from([0, 32, 80, 128, 255]))),
+    pngChunk("IEND", Buffer.alloc(0)),
+  ]).toString("base64");
   const extensionFixture = `
 const artworkRegistry=createArtworkRegistry({
   'forest-canopy':{render:()=>createElement('circle',{'data-original-art':'forest-canopy',cx:720,cy:200,r:160})}
@@ -69,7 +98,8 @@ const artworkRegistry=createArtworkRegistry({
 const themeRegistry=createThemeRegistry({forest:{...themes.ink,name:'Forest',background:'#e8efdf',presentation:{bodyLineHeight:2,navigationGapRem:2},layers:[{id:'canopy',artwork:'forest-canopy',depth:.3,opacity:.2}]}},artworkRegistry);
 const sectionRegistry=createSectionRegistry({},[{id:'notice',renderer:({section})=>createElement('aside',{'data-custom-section':'notice'},section.body)}]);
 const layoutRegistry=createLayoutRegistry([{id:'feature-frame',sectionTypes:['custom'],styles:'.layout-feature-frame [data-custom-layout] { display:grid; grid-template-columns:1fr 1fr; }',renderer:({section,intro,image,body,entries,cta})=>createElement('article',{'data-custom-layout':section.id},intro,image,body,entries,cta)}]);
-const site:SiteConfig=parseSite({...starterSite,theme:'forest',sections:[{id:'notice',type:'custom' as const,customType:'notice',layout:'feature-frame',heading:'Developer section',body:'Portable custom content.'}]},themeRegistry,sectionRegistry,layoutRegistry);
+const transitionCover={id:'asset-sdk-mist',mime:'image/png',data:'data:image/png;base64,${validPng}',alt:''};
+const site:SiteConfig=parseSite({...starterSite,theme:'forest',experience:'cinematic',motion:'cinematic',assets:[transitionCover],sections:[{id:'notice',type:'custom' as const,customType:'notice',layout:'feature-frame',heading:'Developer section',body:'Portable custom content.',transition:'mist-reveal',transitionCover:transitionCover.id}]},themeRegistry,sectionRegistry,layoutRegistry);
 `;
   await writeFile(
     join(temporary, "consumer.ts"),
@@ -79,10 +109,10 @@ import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 ${extensionFixture}
 const restored=importBackup(serializeBackup(site,themeRegistry,sectionRegistry,layoutRegistry),themeRegistry,sectionRegistry,layoutRegistry);
-if(restored.theme!=='forest'||restored.sections[0]!.heading!==site.sections[0]!.heading)throw new Error('Custom project backup contract failed');
+if(restored.theme!=='forest'||restored.sections[0]!.heading!==site.sections[0]!.heading||restored.sections[0]!.transitionCover!==transitionCover.id||restored.assets[0]!.id!==transitionCover.id)throw new Error('Custom project backup contract failed');
 if(!createSectionRegistry().hero||!resolvePrimitive('fade','calm'))throw new Error('Missing public extension API');
 const html=renderToStaticMarkup(createElement(Site,{site,themeRegistry,artworkRegistry,sectionRegistry,layoutRegistry}));
-if(!html.includes('data-theme="forest"')||!html.includes('data-original-art="forest-canopy"')||!html.includes('data-custom-section="notice"')||!html.includes('data-custom-layout="notice"')||!html.includes('grid-template-columns:1fr 1fr')||!html.includes('Portable custom content.'))throw new Error('SDK did not render configured artwork, section and layout');
+if(!html.includes('data-theme="forest"')||!html.includes('data-experience="cinematic"')||!html.includes('data-transition="mist-reveal"')||!html.includes('class="scene-transition-cover"')||!html.includes('data-original-art="forest-canopy"')||!html.includes('data-custom-section="notice"')||!html.includes('data-custom-layout="notice"')||!html.includes('grid-template-columns:1fr 1fr')||!html.includes('Portable custom content.'))throw new Error('SDK did not render configured cinematic scene, cover, artwork, section and layout');
 const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry,sectionRegistry,layoutRegistry});
 if(!bytes.byteLength)throw new Error('Custom theme static export failed');
 console.log('SDK-001 through SDK-006: independent install, declarations, custom artwork, section and layout render, backup and export passed');
@@ -134,9 +164,15 @@ createRoot(document.getElementById('root')!).render(createElement(Site,{site,the
 const button=document.createElement('button');
 button.textContent='Export consumer website';
 button.onclick=async()=>{
- const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry,sectionRegistry,layoutRegistry});
- (window as Window & {exportBytes?:number[]}).exportBytes=Array.from(bytes);
- button.textContent='Exported '+bytes.byteLength+' bytes';
+ button.textContent='Exporting consumer website';
+ try {
+  const bytes=await exportWebsite(site,{themeRegistry,artworkRegistry,sectionRegistry,layoutRegistry});
+  (window as Window & {exportBytes?:number[]}).exportBytes=Array.from(bytes);
+  button.textContent='Exported '+bytes.byteLength+' bytes';
+ } catch(error) {
+  button.textContent='Export failed: '+String(error);
+  throw error;
+ }
 };
 document.body.append(button);`,
   );
@@ -173,6 +209,7 @@ document.body.append(button);`,
               ".html": "text/html",
               ".css": "text/css",
               ".js": "text/javascript",
+              ".png": "image/png",
               ".svg": "image/svg+xml",
             }[extname(relative)] ?? "application/octet-stream",
         });
@@ -228,7 +265,21 @@ document.body.append(button);`,
     )
       throw Error("Independent browser consumer omitted custom layout CSS");
     await page.getByRole("button", { name: "Export consumer website" }).click();
-    await page.getByRole("button", { name: /Exported [0-9]+ bytes/ }).waitFor();
+    await page.waitForFunction(
+      () =>
+        document
+          .querySelector("body > button")
+          ?.textContent?.match(/^Exported [0-9]+ bytes$|^Export failed:/),
+      { timeout: 5000 },
+    );
+    const exportStatus = await page
+      .getByRole("button", { name: /Exported|Export failed/ })
+      .textContent();
+    if (!exportStatus?.startsWith("Exported "))
+      throw Error(
+        "Independent browser export failed: " +
+          JSON.stringify({ exportStatus, errors }),
+      );
     const artwork = await page
       .locator('circle[data-original-art="forest-canopy"]')
       .count();
@@ -241,13 +292,20 @@ document.body.append(button);`,
     const exportedHTML = await archive.file("index.html")?.async("string");
     if (
       !exportedHTML?.includes('data-theme="forest"') ||
+      !exportedHTML.includes('data-experience="cinematic"') ||
+      !exportedHTML.includes('data-transition="mist-reveal"') ||
+      !exportedHTML.includes('class="scene-transition-cover"') ||
+      !exportedHTML.includes('src="./assets/asset-sdk-mist/original.png"') ||
       !exportedHTML.includes('data-original-art="forest-canopy"') ||
       !exportedHTML.includes('data-custom-section="notice"') ||
       !exportedHTML.includes('data-custom-layout="notice"') ||
       !exportedHTML.includes("grid-template-columns:1fr 1fr") ||
-      !exportedHTML.includes("Portable custom content.")
+      !exportedHTML.includes("Portable custom content.") ||
+      !archive.file("assets/asset-sdk-mist/original.png")
     )
-      throw Error("Browser ZIP omitted custom theme, artwork or content");
+      throw Error(
+        "Browser ZIP omitted cinematic cover, custom theme, artwork or content",
+      );
     for (const [name, entry] of Object.entries(archive.files)) {
       if (entry.dir) continue;
       if (
@@ -259,7 +317,10 @@ document.body.append(button);`,
       publishedFiles.set(name, await entry.async("nodebuffer"));
     }
     for (const javaScriptEnabled of [false, true]) {
-      const context = await browser.newContext({ javaScriptEnabled });
+      const context = await browser.newContext({
+        javaScriptEnabled,
+        reducedMotion: "reduce",
+      });
       try {
         const published = await context.newPage();
         for (const prefix of mountPrefixes) {
@@ -285,6 +346,21 @@ document.body.append(button);`,
               .waitFor();
             await published.locator('[data-custom-section="notice"]').waitFor();
             await published.locator('[data-custom-layout="notice"]').waitFor();
+            const transitionCover = published.locator(
+              ".scene-transition-cover",
+            );
+            if ((await transitionCover.count()) !== 1)
+              throw Error("Nested SDK export omitted the transition cover");
+            if (
+              (await transitionCover.getAttribute("src")) !==
+              "./assets/asset-sdk-mist/original.png"
+            )
+              throw Error("Nested SDK export used an invalid cover path");
+            await published.waitForFunction(
+              () =>
+                document.querySelector(".scene-transition-cover")
+                  ?.naturalWidth === 1,
+            );
             if (
               (await published
                 .locator('circle[data-original-art="forest-canopy"]')

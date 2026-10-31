@@ -83,6 +83,54 @@ describe("cinematic configuration contract", () => {
     expect(html).toContain(">Opening scene</a>");
   });
 
+  it("CIN-022 renders decorative transition artwork and includes it in the ZIP", async () => {
+    const cover = {
+      id: "asset-mist-cover",
+      mime: "image/png",
+      data: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=",
+      alt: "",
+    };
+    const site = parseSite({
+      ...cinematicInput,
+      assets: [cover],
+      sections: [{ ...cinematicInput.sections[0]!, transitionCover: cover.id }],
+    });
+    const html = renderToStaticMarkup(<Site site={site} />);
+    expect(html).toContain('class="scene-transition-cover"');
+    expect(html).toContain('aria-hidden="true"');
+    const archive = await JSZip.loadAsync(await exportWebsite(site));
+    const exportedHtml = await archive.file("index.html")!.async("string");
+    expect(exportedHtml).toContain(
+      'src="./assets/asset-mist-cover/original.png"',
+    );
+    expect(archive.file("assets/asset-mist-cover/original.png")).not.toBeNull();
+  });
+
+  it("CIN-017 rejects a missing transition-cover asset", () => {
+    expect(() =>
+      parseSite({
+        ...cinematicInput,
+        sections: [
+          { ...cinematicInput.sections[0]!, transitionCover: "asset-missing" },
+        ],
+      }),
+    ).toThrow(/referenced image is missing/i);
+  });
+
+  it("CIN-017 rejects malformed transition-cover identifiers", () => {
+    expect(() =>
+      parseSite({
+        ...cinematicInput,
+        sections: [
+          {
+            ...cinematicInput.sections[0]!,
+            transitionCover: "javascript:alert(1)",
+          },
+        ],
+      }),
+    ).toThrow();
+  });
+
   it("CIN-012 CIN-014 exports cinematic semantics and transition styles", async () => {
     const site = parseSite(cinematicInput);
     const archive = await JSZip.loadAsync(await exportWebsite(site));
@@ -105,7 +153,20 @@ describe("cinematic configuration contract", () => {
   });
 
   it("CIN-008 CIN-009 preserves settings through backups and theme changes", () => {
-    const source = parseSite(cinematicInput);
+    const cover = {
+      id: "asset-backup-cover",
+      mime: "image/png",
+      data: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=",
+      alt: "",
+    };
+    const source = parseSite({
+      ...cinematicInput,
+      assets: [cover],
+      sections: [
+        { ...cinematicInput.sections[0]!, transitionCover: cover.id },
+        cinematicInput.sections[1]!,
+      ],
+    });
     for (const theme of Object.keys(themes)) {
       const themed = parseSite({ ...source, theme });
       const restored = importBackup(serializeBackup(themed));
@@ -116,6 +177,8 @@ describe("cinematic configuration contract", () => {
       expect(restored.sections.map((scene) => scene.heading)).toEqual(
         source.sections.map((scene) => scene.heading),
       );
+      expect(restored.sections[0]?.transitionCover).toBe(cover.id);
+      expect(restored.assets.map((asset) => asset.id)).toContain(cover.id);
     }
   });
 

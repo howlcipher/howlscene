@@ -30,5 +30,8 @@ operations, image controls, history, backup, and ZIP exporter.
 - This does not by itself migrate the specialized demo's art files or
   scroll-scrubbed transition into a reusable engine component; that migration
   must be implemented and verified as a separate increment.
+- Optional scene transition-cover artwork uses an asset ID in the same section
+  model. The editor, shared renderer, and static exporter consume that field;
+  the cover remains decorative and motion-gated.
 - A richer scene model is deferred unless actual editor requirements cannot be
   represented with the existing sections and assets.

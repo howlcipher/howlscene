@@ -16,6 +16,7 @@ import {
   undoHistory,
   redoHistory,
   replaceSectionImage,
+  replaceTransitionCover,
 } from "./model";
 import { IndexedDbDraftStore } from "./storage";
 import { enhanceSite } from "../../packages/core/src/enhance";
@@ -204,14 +205,23 @@ function Editor() {
       );
     }
   }
-  function uploadImage(file: File, sectionId: string) {
+  function uploadImage(
+    file: File,
+    sectionId: string,
+    target: "image" | "transitionCover" = "image",
+  ) {
+    const requestKey = `${sectionId}:${target}`;
     const request = Symbol();
-    uploadRequests.current.set(sectionId, request);
+    uploadRequests.current.set(requestKey, request);
     void normalizeImage(file)
       .then((asset) => {
-        if (uploadRequests.current.get(sectionId) !== request) return;
-        uploadRequests.current.delete(sectionId);
-        commit((current) => replaceSectionImage(current, sectionId, asset));
+        if (uploadRequests.current.get(requestKey) !== request) return;
+        uploadRequests.current.delete(requestKey);
+        commit((current) =>
+          target === "transitionCover"
+            ? replaceTransitionCover(current, sectionId, asset)
+            : replaceSectionImage(current, sectionId, asset),
+        );
       })
       .catch((e) =>
         setError(e instanceof Error ? e.message : "Could not open this image."),
