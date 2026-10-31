@@ -308,6 +308,76 @@ a {
   opacity: 0;
   pointer-events: none;
 }
+.howlscene[data-camera-journey-active="true"] {
+  isolation: isolate;
+  background: transparent;
+}
+.camera-journey-stage {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+  height: 100svh;
+  margin-bottom: -100svh;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--scene-bg);
+}
+.camera-journey-art,
+.camera-journey-cover,
+.camera-journey-atmosphere {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.camera-journey-art,
+.camera-journey-cover {
+  object-fit: cover;
+  will-change: transform, opacity;
+}
+.camera-journey-art {
+  opacity: 0;
+  filter: saturate(0.88);
+}
+.camera-journey-cover {
+  z-index: 2;
+  object-position: center;
+  opacity: 0;
+}
+.camera-journey-atmosphere {
+  z-index: 1;
+  opacity: 0;
+  background:
+    radial-gradient(
+      ellipse at 52% 46%,
+      rgb(245 244 235 / 78%),
+      transparent 68%
+    ),
+    linear-gradient(115deg, rgb(245 244 235 / 52%), rgb(245 244 235 / 8%) 72%);
+}
+.howlscene[data-camera-journey-active="true"] .scene {
+  z-index: 2;
+  min-height: 100svh;
+}
+.howlscene[data-camera-journey-active="true"] .site-header,
+.howlscene[data-camera-journey-active="true"] > footer {
+  position: relative;
+  z-index: 4;
+}
+.howlscene[data-camera-journey-active="true"] .scene > .scenery {
+  visibility: hidden;
+}
+.howlscene[data-camera-journey-active="true"] .scene-background-image,
+.howlscene[data-camera-journey-active="true"] .scene-transition-cover {
+  visibility: hidden;
+}
+.howlscene[data-camera-journey-active="true"] .scene-content {
+  pointer-events: none;
+}
+.howlscene[data-camera-journey-active="true"] .scene-content a,
+.howlscene[data-camera-journey-active="true"] .scene-content button {
+  pointer-events: auto;
+}
 .scene-copy > .eyebrow {
   margin-top: 0;
 }

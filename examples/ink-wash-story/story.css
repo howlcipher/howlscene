@@ -83,6 +83,12 @@ html:has(.story-demo) {
   opacity: 1;
   filter: saturate(0.83) contrast(0.96);
 }
+.story-demo .camera-journey-art {
+  filter: saturate(0.83) contrast(0.96);
+}
+.story-demo .camera-journey-cover {
+  mix-blend-mode: screen;
+}
 
 .story-demo .scene-transition-cover {
   z-index: 0;

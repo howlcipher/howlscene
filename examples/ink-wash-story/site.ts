@@ -9,6 +9,12 @@ export const storySite = parseSite({
   theme: "ink",
   motion: "cinematic",
   motionSettings: { intensity: 0.82, speed: 0.82 },
+  cameraJourney: {
+    enabled: true,
+    movement: "diagonal",
+    intensity: 0.82,
+    distance: 1,
+  },
   sections: [
     {
       id: "scene-1",
