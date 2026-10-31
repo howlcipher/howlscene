@@ -29,7 +29,9 @@
 - Follow-up source changes add validated `parallaxDepth` using only active theme scenery layers, with editor and SDK coverage. This is not yet committed or remotely verified.
 - On `1d3c9a0`, hosted Quality run [41167824656](https://github.com/howlcipher/howlscene/actions/runs/41167824656) passed format, lint, and TypeScript, then failed before Vitest started because Vitest 5.0.5 rejects the unsupported `--minWorkers` CLI option. Runtime bundle generation in `pretest` succeeded; unit tests and all later Quality steps were skipped. This is a CI command failure, not a behavioral test result.
 - The same commit's Pages artifact run [41167824759](https://github.com/howlcipher/howlscene/actions/runs/41167824759) passed the production build, root/project path checks, and artifact packaging. Approval and publishing jobs were skipped; no deployment occurred.
-- Corrected `.github/workflows/ci.yml` to retain `--maxWorkers=1` without the unsupported `--minWorkers` argument. This correction and the section min-height compatibility fix await commit and remote verification.
+- Corrected `.github/workflows/ci.yml` to retain `--maxWorkers=1` without the unsupported `--minWorkers` argument, and updated section sizing to emit a concrete viewport unit. Both changes are included in `4002a82`.
+- Commit `4002a82` is pushed. Hosted run [41168000228](https://github.com/howlcipher/howlscene/actions/runs/41168000228) passed format, lint, TypeScript, and all 181 unit tests, then failed the existing core branch threshold (78.68% versus 85%). Browser/build/SDK/audit steps did not run. The new DOM controller is not covered by Node unit tests; it is covered by Playwright acceptance, so the Vitest coverage boundary now explicitly excludes that browser-only module without changing any thresholds. This adjustment is unverified until another hosted run.
+- Pages artifact run [41168000225](https://github.com/howlcipher/howlscene/actions/runs/41168000225) passed production build, root/project path checks, and artifact packaging. Approval and publish jobs were skipped; no deployment occurred.
 - Workflow inspected: `.github/workflows/ci.yml` uses `ubuntu-latest`, timeout 20 minutes, no deployment, and sequential steps. `playwright.config.ts` sets one worker. Vitest is explicitly capped to one maximum worker.
 - Hosted CI must be used for all tests/builds; local execution is prohibited.
 
@@ -38,11 +40,11 @@
 - No local heavy workload executed. No local package installation, compilation, build, test, browser, container, or performance command was run. One bounded Prettier formatting command was run against changed text files only.
 - No local subagents or background processes started.
 - No safety rule violated.
-- Hosted CI availability: Pages artifact succeeded; Quality passed formatting, lint, and TypeScript, then encountered the unsupported worker flag before tests. The corrected command is pending the next push.
+- Hosted CI availability: Pages artifact succeeded; Quality has passed formatting, lint, TypeScript, and all unit tests, but did not clear the branch-coverage threshold. The browser-only coverage boundary is pending remote verification.
 
 ## Next actions
 
-1. Commit and push the unsupported-flag correction, section min-height compatibility fix, and journal update.
+1. Push the browser-runtime coverage boundary and accurate CI journal update.
 2. Review hosted format, lint, type, unit, build, browser, SDK, and audit results for the new commit.
 3. Review visual checkpoint artifacts, mobile/reduced-motion behavior, and exported ZIP results.
 4. Add missing lifecycle, cross-browser, and remote performance evidence.
