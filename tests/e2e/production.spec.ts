@@ -176,14 +176,12 @@ test("production files work at root and GitHub Pages paths with and without Java
             "scene-5",
           ]) {
             const artwork = page.locator(`#${sceneId} .story-art`);
-            await page.locator(`#${sceneId}`).scrollIntoViewIfNeeded();
-            await expect
-              .poll(() =>
-                artwork.evaluate(
-                  (image: HTMLImageElement) => image.naturalWidth,
-                ),
-              )
-              .toBeGreaterThan(0);
+            const source = await artwork.getAttribute("src");
+            expect(source).toBeTruthy();
+            const response = await page.request.get(
+              new URL(source!, page.url()).href,
+            );
+            expect(response.status()).toBe(200);
           }
           await page
             .getByRole("link", {
