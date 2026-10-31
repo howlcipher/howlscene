@@ -92,6 +92,10 @@ const sectionSchema = z.strictObject({
   link: safeUrl.optional(),
   linkLabel: z.string().max(100).default("Learn more"),
   image: z.string().optional(),
+  transitionCover: z
+    .string()
+    .regex(/^asset-[a-zA-Z0-9-]{1,80}$/)
+    .optional(),
   navigationLabel: z.string().max(100).optional(),
   imageTreatment: z.enum(["inline", "background"]).default("inline"),
   inNavigation: z.boolean().default(true),
@@ -141,9 +145,11 @@ export const siteSchema = z
       ctx.addIssue({ code: "custom", message: "Asset IDs must be unique" });
     for (const section of site.sections)
       if (
-        [section.image, ...section.entries.map((e) => e.image)].some(
-          (id) => id && !site.assets.some((a) => a.id === id),
-        )
+        [
+          section.image,
+          section.transitionCover,
+          ...section.entries.map((e) => e.image),
+        ].some((id) => id && !site.assets.some((a) => a.id === id))
       )
         ctx.addIssue({
           code: "custom",

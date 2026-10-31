@@ -168,3 +168,68 @@ this mission and is not evidence for new changes.
   capability, then add focused remote acceptance for export and SDK scenarios.
 - Pull requests: draft [#34](https://github.com/howlcipher/howlscene/pull/34).
 - Decisions needed: none identified.
+
+## Follow-up after PR #34 merge — transition-cover contract
+
+### Repository state
+
+- Starting point: merged `main` at `741c8277e754aa8a71d6af8be8cdacc6020de927`.
+- Branch: `work/cinematic-v1-followup`.
+- Test-only commit: `df222d0a567fa0593a31c3e2a11eddeb1de45fde`.
+- Implementation working tree is in progress; commit SHA pending.
+- Draft PR: [#35](https://github.com/howlcipher/howlscene/pull/35).
+- Active milestone: declarative per-scene transition-cover asset support.
+
+### TDD and implementation
+
+- Added tests first for a decorative transition cover rendered by the shared
+  `Site`, packaged by static ZIP export, and rejected when its asset reference
+  is missing.
+- Hosted quality run
+  [41155355988](https://github.com/howlcipher/howlscene/actions/runs/41155355988)
+  executed on GitHub-hosted Ubuntu at test-only SHA `df222d0`. Formatting,
+  lint, and strict TypeScript passed. Vitest reported 166 existing tests
+  passing and the two new tests failing. The render/export test failed because
+  strict Zod schema rejected the unsupported `transitionCover` key. The
+  missing-reference assertion also failed at that same schema boundary, so it
+  did not independently demonstrate reference validation until the schema
+  supports the field. This is behavioral RED evidence, not an infrastructure
+  failure.
+- The first attempt, run
+  [41155139369](https://github.com/howlcipher/howlscene/actions/runs/41155139369),
+  stopped at `format:check`; no tests ran on that attempt. The test was formatted
+  and the test-only commit was amended before the successful RED run.
+- Implementation in progress adds bounded `asset-` IDs, reference validation,
+  a decorative `aria-hidden` image layer, finite scene-entry fade-out using the
+  existing owned animation lifecycle, editor upload/remove controls, project
+  asset retention/replacement behavior, and static ZIP inclusion.
+- Added test coverage for backup/theme preservation, artwork replacement,
+  transition cleanup, and the editor upload/remove journey. Hosted GREEN is
+  pending; no test result is inferred from source inspection.
+- `vitest.config.ts` now requests one worker, matching the host-safe CI
+  preference for cinematic work.
+
+### Safety and verification
+
+- No local compile, build, package installation, unit test, Playwright run,
+  browser preview, container workload, load test, or performance test ran.
+- Local formatting used the already-present Prettier executable on only the
+  changed files; `git diff --check` passed.
+- The reviewed quality workflow selects `ubuntu-latest`, timeout 20 minutes,
+  sequential verification steps, and no deployment. The Pages PR workflow
+  selects `ubuntu-latest`, timeout 15 minutes, and only creates a build
+  artifact; production deployment is gated to manual dispatch on `main`.
+- No unexpected background process was started. No local agents or browsers
+  were started. No safety rule has been violated.
+- Remote workflow availability was confirmed. The implementation run and Pages
+  artifact run are pending after pushing the coherent source change.
+- No further host-side testing was requested.
+
+### Next exact task
+
+- Run targeted diff review, commit the implementation and documentation, push
+  to PR #35, and inspect hosted format/lint/type/unit/build/E2E/SDK/security
+  results and Pages artifact verification.
+- If the current changes pass, migrate the Ink Wash demo's reusable behavior,
+  add remote exported-ZIP and SDK consumer evidence, then continue the
+  remaining v1 acceptance matrix. PR #35 remains draft; do not merge or deploy.

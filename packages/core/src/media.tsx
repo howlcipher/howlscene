@@ -2,7 +2,7 @@ import type { ImgHTMLAttributes } from "react";
 import type { ImageAsset } from "./assets.js";
 export interface AssetImageProps extends Omit<
   ImgHTMLAttributes<HTMLImageElement>,
-  "src" | "srcSet" | "alt" | "width" | "height"
+  "src" | "srcSet" | "width" | "height"
 > {
   asset: ImageAsset;
   source?: (id: string, width?: number) => string;
@@ -12,6 +12,7 @@ export function AssetImage({
   asset,
   source,
   sizes = "(max-width: 600px) 100vw, 80vw",
+  alt,
   ...props
 }: AssetImageProps) {
   const base = source ? source(asset.id) : asset.data;
@@ -28,7 +29,7 @@ export function AssetImage({
       sizes={candidates.length ? sizes : undefined}
       width={asset.width}
       height={asset.height}
-      alt={asset.alt}
+      alt={alt ?? asset.alt}
     />
   );
 }

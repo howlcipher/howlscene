@@ -1,7 +1,7 @@
 import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
-    maxWorkers: 4,
+    maxWorkers: 1,
     css: { include: /.*/ },
     include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
     coverage: {

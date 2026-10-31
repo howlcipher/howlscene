@@ -191,6 +191,16 @@ export function enhanceSite(root: HTMLElement): () => void {
                       entryParams.keyframes,
                       entryParams.duration,
                     );
+                  const cover = scene.querySelector<HTMLElement>(
+                    ".scene-transition-cover",
+                  );
+                  if (cover && entryParams.duration)
+                    play(
+                      scene,
+                      cover,
+                      { opacity: [1, 0] },
+                      entryParams.duration,
+                    );
                 } else {
                   const entryParams = resolvePrimitive(
                     "slide",

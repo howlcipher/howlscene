@@ -38,6 +38,7 @@ class Node extends EventTarget {
   content: Node | undefined;
   scenery: Node | undefined;
   background: Node | undefined;
+  cover: Node | undefined;
   scene: Node | undefined;
   setAttribute(name: string, value: string) {
     this.attributes.set(name, value);
@@ -47,9 +48,11 @@ class Node extends EventTarget {
       ? this.scenery
       : selector === ".scene-background-image"
         ? this.background
-        : selector === ".scene-content"
-          ? this.content
-          : undefined;
+        : selector === ".scene-transition-cover"
+          ? this.cover
+          : selector === ".scene-content"
+            ? this.content
+            : undefined;
   }
   closest() {
     return this.scene;
@@ -64,6 +67,7 @@ function fixture(
   experience = "standard",
   transition = "fade",
   hasBackground = false,
+  hasCover = false,
 ) {
   const scene = new Node();
   if (override !== undefined) scene.dataset.sceneMotion = override;
@@ -75,6 +79,7 @@ function fixture(
   scene.content = content;
   scene.scenery = scenery;
   if (hasBackground) scene.background = new Node();
+  if (hasCover) scene.cover = new Node();
   layer.scene = scene;
   layer.dataset.depth = ".5";
   const root = new Node();
@@ -209,6 +214,25 @@ it("CIN-007 CIN-016 CIN-023 replays the selected cinematic entrance after interr
     animation.effects.filter((effect) => effect.target === f.background),
   ).toHaveLength(2);
   expect(firstEntrance.cancel).toHaveBeenCalledOnce();
+  f.dispose();
+});
+
+it("CIN-023 cancels a scene-owned transition-cover animation on disposal", () => {
+  const f = fixture(
+    "cinematic",
+    undefined,
+    "cinematic",
+    "mist-reveal",
+    false,
+    true,
+  );
+  f.intersect(0.8);
+  const coverEntry = animation.effects.find(
+    (effect) => effect.target === f.scene.cover,
+  );
+  expect(coverEntry?.keyframes).toEqual({ opacity: [1, 0] });
+  f.intersect(0);
+  expect(coverEntry?.cancel).toHaveBeenCalledOnce();
   f.dispose();
 });
 
