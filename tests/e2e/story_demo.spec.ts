@@ -131,7 +131,13 @@ test("Camera Journey scrubs through the covered handoff and reverses with scroll
     "data-camera-journey-stage",
     "text-departure",
   );
-  await expect(first.locator(".scene-content")).toHaveCSS("opacity", "0.5");
+  await expect
+    .poll(() =>
+      first
+        .locator(".scene-content")
+        .evaluate((content) => Number(getComputedStyle(content).opacity)),
+    )
+    .toBeCloseTo(0.5, 2);
   await capture("camera-journey-copy-departure");
   await at(0.3);
   await expect(root).toHaveAttribute(

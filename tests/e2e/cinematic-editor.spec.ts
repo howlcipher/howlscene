@@ -7,7 +7,7 @@ test("CIN-001 CIN-006 CIN-007 editor creates a cinematic story and changes a sce
   page,
 }) => {
   await page.goto("/editor/");
-  page.once("dialog", (dialog) => void dialog.accept());
+  page.on("dialog", (dialog) => void dialog.accept());
   await page.getByLabel("Start from a template").selectOption("cinematic");
   await expect(page.locator(".howlscene")).toHaveAttribute(
     "data-experience",
@@ -57,7 +57,7 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
   browser,
 }) => {
   await page.goto("/editor/");
-  page.once("dialog", (dialog) => void dialog.accept());
+  page.on("dialog", (dialog) => void dialog.accept());
   await page.getByLabel("Start from a template").selectOption("cinematic");
   await page.getByLabel("Use Camera Journey").check();
   await page.getByLabel("Edit heading").fill("A story for every path");
