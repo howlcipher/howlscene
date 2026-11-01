@@ -159,8 +159,8 @@ async function scrubPreviewToHandoff(
     const end = scenes[1]!.getBoundingClientRect().top - viewportTop;
     const currentScroll = container?.scrollTop ?? window.scrollY;
     const target = currentScroll + start + (end - start) * 0.49;
-    if (container) container.scrollTo({ top: target });
-    else window.scrollTo(0, target);
+    if (container) container.scrollTo({ top: target, behavior: "instant" });
+    else window.scrollTo({ top: target, behavior: "instant" });
   });
 }
 
@@ -169,6 +169,9 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
   browser,
 }) => {
   await page.goto("/editor/");
+  await page.addStyleTag({
+    content: "html, body, * { scroll-behavior: auto !important }",
+  });
   page.on("dialog", (dialog) => void dialog.accept());
   await page.getByLabel("Start from a template").selectOption("cinematic");
   await page.getByLabel("Use Camera Journey").check();
@@ -314,7 +317,10 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
             );
             const start = scenes[0]!.getBoundingClientRect().top + scrollY;
             const end = scenes[1]!.getBoundingClientRect().top + scrollY;
-            window.scrollTo(0, start + (end - start) * 0.49);
+            window.scrollTo({
+              top: start + (end - start) * 0.49,
+              behavior: "instant",
+            });
           });
           await expect(exported.locator(".howlscene")).toHaveAttribute(
             "data-camera-journey-stage",

@@ -55,6 +55,37 @@ export function createCameraJourneyController(
     scenes.map((scene) => [scene, scene.style.minHeight] as const),
   );
   const originalTabIndex = new WeakMap<HTMLElement, string | null>();
+  const journeyAssetSelector =
+    ".scene-background-image, .scene-transition-cover, .scenery-layer[data-depth]";
+  const artworkObserver =
+    typeof MutationObserver === "undefined"
+      ? undefined
+      : new MutationObserver((records) => {
+          const changed = records.some((record) => {
+            if (record.type === "attributes") {
+              const target = record.target;
+              return (
+                target instanceof Element &&
+                (target.matches(journeyAssetSelector) ||
+                  ((record.attributeName === "src" ||
+                    record.attributeName === "class" ||
+                    record.attributeName === "style") &&
+                    (target instanceof HTMLImageElement ||
+                      target instanceof SVGElement)))
+              );
+            }
+            return [...record.addedNodes, ...record.removedNodes].some(
+              (node) =>
+                node instanceof Element &&
+                (node.matches(journeyAssetSelector) ||
+                  node.querySelector(journeyAssetSelector) !== null),
+            );
+          });
+          if (changed) {
+            clearPair();
+            schedule();
+          }
+        });
   const resizeObserver =
     typeof ResizeObserver === "undefined"
       ? undefined
@@ -291,6 +322,14 @@ export function createCameraJourneyController(
     window.addEventListener("resize", schedule, { passive: true });
     document.addEventListener("visibilitychange", schedule);
     scenes.forEach((scene) => resizeObserver?.observe(scene));
+    scenes.forEach((scene) =>
+      artworkObserver?.observe(scene, {
+        attributes: true,
+        attributeFilter: ["class", "data-depth", "src", "style"],
+        childList: true,
+        subtree: true,
+      }),
+    );
     update();
   }
 
@@ -301,6 +340,7 @@ export function createCameraJourneyController(
     window.removeEventListener("resize", schedule);
     document.removeEventListener("visibilitychange", schedule);
     resizeObserver?.disconnect();
+    artworkObserver?.disconnect();
     if (frame !== undefined) cancelAnimationFrame(frame);
     frame = undefined;
     for (const scene of scenes) resetCopy(scene);
