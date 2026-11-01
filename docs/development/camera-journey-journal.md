@@ -153,3 +153,13 @@
 - Readiness remains NOT READY FOR RELEASE. Outstanding automated follow-up: detached-node/unmount audit, longer memory retention, hidden-tab behavior, exhaustive scene-boundary geometry. Outstanding human acceptance: keyboard-only, screen reader, zoom, physical mobile, real nontechnical users, and independent code review.
 - Safety: no local heavy workload, browser, test, build, package installation, container, or background process ran. Verification occurred on GitHub-hosted `ubuntu-latest`; no rule was violated.
 - Next exact action: repository owner configures GitHub Pages for workflow deployment and sets up two distinct protected approval environments/reviewers. Then complete remaining release acceptance and obtain approval before dispatching `pages.yml` with `publish=true`. Do not publish without those approvals.
+
+## Pages workflow setup — 2026-11-01
+
+- Enabled the repository's Pages source as GitHub Actions (`build_type=workflow`) at the user's direction. This configures hosting; it does not publish a site.
+- Set repository variable `HOWLSCENE_PAGES_ENABLED=false` so a manual dispatch cannot enter the publish jobs while approval identities are missing.
+- Hosted Pages workflow [41319434003](https://github.com/howlcipher/howlscene/actions/runs/41319434003) passed on `main` at `203f0caf200159e96ed45436e21259a28e110083` with `publish=false`: production build, root/project path browser checks, and artifact packaging passed; approval and deployment jobs were skipped.
+- Current settings observed: Pages source is workflow; the standard `github-pages` environment exists with its branch policy; `github-pages-approval-one` and `github-pages-approval-two` do not yet have protection rules. Only the `howlcipher` account is listed as a repository collaborator, and no organization teams were available through the connected account. Two independent approvers cannot be configured without additional eligible identities.
+- No deployment occurred and no public site content was verified. The Pages URL is a configured target only, not evidence of a published site.
+- Asked the owner to identify two distinct GitHub accounts for the protected approval environments. Keep the publish variable false until both environments have distinct eligible approvers and the remaining release gates are reviewed.
+- Safety: all builds and browser checks ran on GitHub-hosted runners. No local heavy workload or background process ran; no safety rule was violated.
