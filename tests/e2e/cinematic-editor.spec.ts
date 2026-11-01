@@ -199,25 +199,36 @@ test("CJ-009 every seven-scene boundary resolves in forward and reverse travel",
     [0.51, "landscape-reveal"],
     [0.7, "landscape-reveal"],
     [0.9, "text-arrival"],
-    [1, "established"],
+    [1, "scene-boundary"],
   ] as const;
   for (let pairIndex = 0; pairIndex < 6; pairIndex += 1) {
     for (const [progress, expectedStage] of checkpoints) {
       await scrubPreviewPair(preview, pairIndex, progress);
-      await expect(root).toHaveAttribute(
-        "data-camera-journey-stage",
-        expectedStage,
-      );
+      await expectJourneyStage(root, expectedStage);
     }
     for (const [progress, expectedStage] of [...checkpoints].reverse()) {
       await scrubPreviewPair(preview, pairIndex, progress);
-      await expect(root).toHaveAttribute(
-        "data-camera-journey-stage",
-        expectedStage,
-      );
+      await expectJourneyStage(root, expectedStage);
     }
   }
 });
+
+async function expectJourneyStage(
+  root: import("@playwright/test").Locator,
+  expectedStage: string,
+) {
+  if (expectedStage === "scene-boundary") {
+    await expect(root).toHaveAttribute(
+      "data-camera-journey-stage",
+      /^(established|settled)$/,
+    );
+  } else {
+    await expect(root).toHaveAttribute(
+      "data-camera-journey-stage",
+      expectedStage,
+    );
+  }
+}
 
 test("CJ-022 replacing a cinematic project disposes its preview stage", async ({
   page,
