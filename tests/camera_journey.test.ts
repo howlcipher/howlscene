@@ -84,11 +84,14 @@ describe("scroll-scrubbed camera journey", () => {
   });
 
   it("CJ-009 clamps malformed scroll geometry safely", () => {
+    expect(resolveScrollProgress(100, 100, 200)).toBe(0);
     expect(resolveScrollProgress(150, 100, 200)).toBe(0.5);
+    expect(resolveScrollProgress(200, 100, 200)).toBe(1);
     expect(resolveScrollProgress(-10, 100, 200)).toBe(0);
     expect(resolveScrollProgress(210, 100, 200)).toBe(1);
     expect(resolveScrollProgress(150, 200, 100)).toBe(0);
     expect(resolveScrollProgress(Number.NaN, 100, 200)).toBe(0);
+    expect(resolveScrollProgress(Number.POSITIVE_INFINITY, 100, 200)).toBe(0);
   });
 
   it("CJ-011 supports one, two, five, and seven scenes without fixed IDs", () => {

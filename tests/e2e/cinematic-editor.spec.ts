@@ -192,30 +192,43 @@ test("CJ-009 every seven-scene boundary resolves in forward and reverse travel",
   }
 
   const checkpoints = [
+    [0, "scene-boundary"],
     [0.1, "text-departure"],
     [0.3, "camera-travel"],
     [0.49, "covered-handoff"],
     [0.51, "landscape-reveal"],
     [0.7, "landscape-reveal"],
     [0.9, "text-arrival"],
+    [1, "scene-boundary"],
   ] as const;
   for (let pairIndex = 0; pairIndex < 6; pairIndex += 1) {
     for (const [progress, expectedStage] of checkpoints) {
       await scrubPreviewPair(preview, pairIndex, progress);
-      await expect(root).toHaveAttribute(
-        "data-camera-journey-stage",
-        expectedStage,
-      );
+      await expectJourneyStage(root, expectedStage);
     }
     for (const [progress, expectedStage] of [...checkpoints].reverse()) {
       await scrubPreviewPair(preview, pairIndex, progress);
-      await expect(root).toHaveAttribute(
-        "data-camera-journey-stage",
-        expectedStage,
-      );
+      await expectJourneyStage(root, expectedStage);
     }
   }
 });
+
+async function expectJourneyStage(
+  root: import("@playwright/test").Locator,
+  expectedStage: string,
+) {
+  if (expectedStage === "scene-boundary") {
+    await expect(root).toHaveAttribute(
+      "data-camera-journey-stage",
+      /^(established|settled)$/,
+    );
+  } else {
+    await expect(root).toHaveAttribute(
+      "data-camera-journey-stage",
+      expectedStage,
+    );
+  }
+}
 
 test("CJ-022 replacing a cinematic project disposes its preview stage", async ({
   page,
@@ -224,25 +237,55 @@ test("CJ-022 replacing a cinematic project disposes its preview stage", async ({
   page.on("dialog", (dialog) => void dialog.accept());
   const template = page.getByLabel("Start from a template");
   const preview = page.getByRole("region", { name: "Live website preview" });
+  const session = await page.context().newCDPSession(page);
+  await session.send("HeapProfiler.enable");
 
-  await template.selectOption("cinematic");
-  await page.getByLabel("Use Camera Journey").check();
-  await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
-  await scrubPreviewPair(preview, 0, 0.49);
+  try {
+    await template.selectOption("cinematic");
+    await page.getByLabel("Use Camera Journey").check();
+    await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
+    await scrubPreviewPair(preview, 0, 0.49);
+    await page.evaluate(() => {
+      const stage = document.querySelector(".camera-journey-stage");
+      if (!stage) throw new Error("Camera Journey stage was not created");
+      Object.defineProperty(window, "__cameraJourneyStageReference", {
+        configurable: true,
+        value: new WeakRef(stage),
+      });
+    });
 
-  await template.selectOption("portfolio");
-  await expect(preview.locator(".howlscene")).toHaveAttribute(
-    "data-experience",
-    "standard",
-  );
-  await expect(preview.locator(".camera-journey-stage")).toHaveCount(0);
-  await expect(
-    preview.locator(".camera-journey-art, .camera-journey-cover"),
-  ).toHaveCount(0);
+    await template.selectOption("portfolio");
+    await expect(preview.locator(".howlscene")).toHaveAttribute(
+      "data-experience",
+      "standard",
+    );
+    await expect(preview.locator(".camera-journey-stage")).toHaveCount(0);
+    await expect(
+      preview.locator(".camera-journey-art, .camera-journey-cover"),
+    ).toHaveCount(0);
 
-  await template.selectOption("cinematic");
-  await page.getByLabel("Use Camera Journey").check();
-  await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      await session.send("HeapProfiler.collectGarbage");
+      await page.evaluate(
+        () => new Promise((resolve) => setTimeout(resolve, 0)),
+      );
+    }
+    const stageRetained = await page.evaluate(() => {
+      const reference = (
+        window as typeof window & {
+          __cameraJourneyStageReference?: WeakRef<Element>;
+        }
+      ).__cameraJourneyStageReference;
+      return reference?.deref() !== undefined;
+    });
+    expect(stageRetained).toBe(false);
+
+    await template.selectOption("cinematic");
+    await page.getByLabel("Use Camera Journey").check();
+    await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
+  } finally {
+    await session.detach();
+  }
 });
 
 test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork for root and nested hosting", async ({

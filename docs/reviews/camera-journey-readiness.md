@@ -95,6 +95,13 @@ Test-first evidence:
   passed at `66b6fe7`: 38 Vitest files / 181 tests, all 68 Playwright tests,
   format, lint, strict TypeScript, build, SDK, licensing, and dependency audit.
   Exact/extreme scene geometry and detached-node retention remain open.
+- Follow-up [#42](https://github.com/howlcipher/howlscene/pull/42) adds exact
+  normalized endpoints and a Chromium `WeakRef`/forced-GC assertion after
+  preview project disposal. Hosted run
+  [41332210964](https://github.com/howlcipher/howlscene/actions/runs/41332210964)
+  passed at `6314e6b`: 38 Vitest files / 181 tests, all 68 Playwright tests,
+  format, lint, strict TypeScript, build, SDK, licensing, and dependency audit.
+  This is a bounded stage-collection observation, not general leak proof.
 - On the way to this passing run, [41274285564](https://github.com/howlcipher/howlscene/actions/runs/41274285564)
   ran 64/66 browser tests successfully but exposed stale cloned scenery after
   image replacement and smooth-scroll timing in the parity test. The controller
@@ -119,7 +126,7 @@ identified in the evidence.
 | CJ-006 | Pass    | Browser test observes camera transform during travel.                                                                                                                      |
 | CJ-007 | Pass    | Mist cover opacity is asserted at the handoff checkpoint.                                                                                                                  |
 | CJ-008 | Pass    | Incoming landscape is present before incoming copy.                                                                                                                        |
-| CJ-009 | Partial | All six seven-scene intervals are sampled at six states in both directions; extreme geometry remains open.                                                                 |
+| CJ-009 | Partial | Seven-scene intervals cover six forward/reverse states including endpoints; extreme geometry remains open.                                                                 |
 | CJ-010 | Pass    | Five bounded forward/reverse jumps between distant scene pairs, motion toggles, and stage ownership checks pass.                                                           |
 | CJ-011 | Pass    | Real editor preview exercises two and seven scenes, theme switches, and replacement scenery.                                                                               |
 | CJ-012 | Pass    | Configuration round-trip through saved backup is covered.                                                                                                                  |
@@ -142,10 +149,12 @@ identified in the evidence.
 | CJ-029 | Pass    | Preview and extracted root/nested ZIP compare stage, cover opacity, and camera transform with bounded geometry tolerances.                                                 |
 | CJ-030 | Pass    | Uploaded replacement scenery refreshes the active preview pair and the actual ZIP references and includes both custom scenery and transition-cover assets.                 |
 
-Supplemental PR [#41](https://github.com/howlcipher/howlscene/pull/41) adds
-seven-scene forward/reverse checkpoints across all six scene intervals and
-verifies project replacement disposes the temporary journey stage before
-reinitialization. The hosted run and remaining limits are recorded above.
+PR [#41](https://github.com/howlcipher/howlscene/pull/41) added seven-scene
+forward/reverse checkpoints. PR [#42](https://github.com/howlcipher/howlscene/pull/42)
+adds exact interval endpoints and a Chromium WeakRef check showing the detached
+preview stage is collectable after project replacement. This bounded signal
+does not prove universal leak freedom; other detached resources and longer
+retention remain open.
 
 ## 5. Visual evidence and reference fidelity
 
