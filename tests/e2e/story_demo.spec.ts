@@ -310,34 +310,39 @@ test("CJ-010 CJ-022 CJ-023 bounded navigation cycles retain one stage and stable
       documentNodes: read("Nodes"),
     };
   };
+  const cycle = async () => {
+    await at(3);
+    await at(0);
+    await page.evaluate(() =>
+      document
+        .querySelector<HTMLButtonElement>("button[data-motion-toggle]")
+        ?.click(),
+    );
+    await expect(root).toHaveAttribute("data-motion-enabled", "false");
+    await page.evaluate(() =>
+      document
+        .querySelector<HTMLButtonElement>("button[data-motion-toggle]")
+        ?.click(),
+    );
+    await expect(root).toHaveAttribute("data-motion-enabled", "true");
+    await at(0);
+    await expect(stages).toHaveCount(1);
+  };
 
   try {
     await at(0);
+    for (let warmupCycle = 0; warmupCycle < 2; warmupCycle += 1) await cycle();
     const warmup = await sample();
     const cycles = [];
     for (let cycle = 0; cycle < 5; cycle += 1) {
-      await at(3);
-      await at(0);
-      await page.evaluate(() =>
-        document
-          .querySelector<HTMLButtonElement>("button[data-motion-toggle]")
-          ?.click(),
-      );
-      await expect(root).toHaveAttribute("data-motion-enabled", "false");
-      await page.evaluate(() =>
-        document
-          .querySelector<HTMLButtonElement>("button[data-motion-toggle]")
-          ?.click(),
-      );
-      await expect(root).toHaveAttribute("data-motion-enabled", "true");
-      await at(0);
-      await expect(stages).toHaveCount(1);
+      await cycle();
       cycles.push(await sample());
     }
 
     const report = {
       browser: "GitHub-hosted Chromium via Playwright/CDP",
       viewport: { width: 1440, height: 900 },
+      warmupCycles: 2,
       warmup,
       cycles,
       limitations: [

@@ -88,6 +88,49 @@ test("CJ-011 editor preview renders two and seven scene Camera Journeys", async 
     "covered-handoff",
   );
   await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
+
+  for (const theme of ["cyber", "modern", "ink"]) {
+    await page.getByLabel("Visual theme").selectOption(theme);
+    await expect(scenes).toHaveCount(7);
+    await expect(root).toHaveAttribute("data-camera-journey", "true");
+    await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
+  }
+
+  const sceneryImage = await page.evaluate(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 32;
+    canvas.height = 32;
+    const context = canvas.getContext("2d")!;
+    context.fillStyle = "#536f79";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL("image/png").split(",")[1]!;
+  });
+  await page.getByLabel("Change scenery").setInputFiles({
+    name: "new-scene-art.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(sceneryImage, "base64"),
+  });
+  await page.getByLabel("Image treatment").selectOption("background");
+  const replacement = scenes.first().locator(".scene-background-image");
+  await expect(replacement).toHaveAttribute("src", /^data:image\/webp;base64,/);
+  await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
+  await scrubPreviewToHandoff(preview);
+  await expect(root).toHaveAttribute(
+    "data-camera-journey-stage",
+    "covered-handoff",
+  );
+  await expect(preview.locator(".camera-journey-art").first()).toHaveAttribute(
+    "src",
+    /^data:image\/webp;base64,/,
+  );
+  await expect
+    .poll(() =>
+      preview
+        .locator(".camera-journey-art")
+        .first()
+        .evaluate((image: HTMLImageElement) => image.naturalWidth),
+    )
+    .toBe(32);
 });
 
 async function scrubPreviewToHandoff(
