@@ -255,7 +255,9 @@ test("CJ-022 replacing a cinematic project disposes its preview stage", async ({
 
     for (let attempt = 0; attempt < 3; attempt += 1) {
       await session.send("HeapProfiler.collectGarbage");
-      await page.evaluate(() => new Promise((resolve) => setTimeout(resolve, 0)));
+      await page.evaluate(
+        () => new Promise((resolve) => setTimeout(resolve, 0)),
+      );
     }
     const stageRetained = await page.evaluate(() => {
       const reference = (
