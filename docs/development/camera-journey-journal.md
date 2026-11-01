@@ -136,3 +136,10 @@
 - Lifecycle artifact values: max pending frames 1, idle pending 0; event listeners 186 in every sample; document nodes 184 except one sample at 188 then returned to 184. Post-GC JS heap rose 129,852 bytes (about 1.28%) across five measured cycles after two warmups. This short sequence remains inconclusive for retained-memory growth.
 - CJ-023 is now Pass for the bounded automated scenario. CJ-022 remains Partial because browser-wide counters and stage ownership are not an explicit detached-DOM or repeated true unmount/remount audit. Longer memory, hidden-tab, browser-zoom, physical-device, screen-reader, and human persona reviews remain incomplete.
 - Next exact action: update PR/readiness/journal evidence to record the new CJ-023 result, run the updated documentation through GitHub-hosted CI, then inspect final PR checks. Keep draft; do not merge or deploy.
+
+## Documentation CI completion — 2026-11-01
+
+- Acceptance/readiness/journal updates were committed at `9b8f7a8` and passed the full hosted Quality workflow [41277098699](https://github.com/howlcipher/howlscene/actions/runs/41277098699): format, lint, strict TypeScript, 181 Vitest tests, coverage, build, 66 Playwright tests, SDK consumer, license, and dependency audit.
+- Pages artifact workflow [41277098681](https://github.com/howlcipher/howlscene/actions/runs/41277098681) passed; approval and publishing jobs were skipped.
+- PR #37 is open and draft at this checkpoint. The feature/test implementation remains at verified commit `33aaeaf`; the later `9b8f7a8` documentation-only commit passed the same full gates. No merge, publish, or deployment occurred.
+- Remaining exact work requires human input/acceptance: independent code review, real keyboard-only/screen-reader/zoom checks, physical touch/mobile review, and nontechnical-user acceptance. Automated follow-up still advisable for repeated true unmount/detached-node inspection, hidden-tab behavior, longer memory retention, and all scene-boundary geometry combinations. Keep the PR draft; do not merge or deploy.
