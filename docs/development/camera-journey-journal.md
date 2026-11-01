@@ -114,3 +114,12 @@
 - Current acceptance/readiness docs now report the final CI evidence and retain partial status for exhaustive scene-boundary geometry, comprehensive keyboard-only review, physical touch, direct pending-rAF instrumentation, detached-node auditing, and long-duration memory profiling. The post-GC heap rose 132,552 bytes (~1.31%) across five measured cycles after two warmups while listener/node counts stayed constant; no leak conclusion is inferred from this short sample.
 - PR #37 is still open/draft. Its description has been updated to replace the early implementation checkpoint. No merge or deployment occurred.
 - Next exact actions: commit and push this documentation checkpoint, inspect its documentation-triggered remote results and final PR check state, then leave the draft for independent and human acceptance. Do not merge or deploy.
+
+## Documentation verification follow-up — 2026-11-01
+
+- Documentation commit `b18cb8d` triggered Quality run [41275482638](https://github.com/howlcipher/howlscene/actions/runs/41275482638). It stopped at the formatting gate, which identified only `docs/experiment/acceptance.md` and `docs/reviews/camera-journey-readiness.md`; later gates did not execute. The paired Pages artifact run [41275482632](https://github.com/howlcipher/howlscene/actions/runs/41275482632) passed.
+- Applied bounded Prettier formatting to those two documentation files and committed `a264a17`.
+- Full Quality run [41275598852](https://github.com/howlcipher/howlscene/actions/runs/41275598852) passed at `a264a17`, including format, lint, strict TypeScript, 181 Vitest tests, coverage, build, 66 Playwright tests, SDK, license, and dependency audit. Pages artifact run [41275598752](https://github.com/howlcipher/howlscene/actions/runs/41275598752) passed; approval and publishing remained skipped.
+- Latest implementation/test commit remains `d5f05c9`; the later `b18cb8d` and `a264a17` commits update and format documentation only. No source behavior changed after the full source/test pass.
+- Branch: `work/camera-journey`. The PR remains open and draft; the final description has been updated. No merge or deployment occurred. The report verdict remains NOT READY for merge/release while the documented lifecycle, extended performance, independent-review, and human acceptance gates remain incomplete.
+- Safety remains compliant: no prohibited local workload, background process, local subagent, or self-hosted runner was used.
