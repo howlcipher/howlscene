@@ -255,10 +255,12 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
             "covered-handoff",
           );
           const exportedFrame = await exported.evaluate(() => ({
-            stage: document.querySelector<HTMLElement>(".howlscene")?.dataset
-              .cameraJourneyStage,
-            transform: document.querySelector<HTMLElement>(".camera-journey-art")
-              ?.style.transform,
+            stage:
+              document.querySelector<HTMLElement>(".howlscene")?.dataset
+                .cameraJourneyStage,
+            transform: document.querySelector<HTMLElement>(
+              ".camera-journey-art",
+            )?.style.transform,
             coverOpacity: document.querySelector<HTMLElement>(
               ".camera-journey-cover",
             )?.style.opacity,
