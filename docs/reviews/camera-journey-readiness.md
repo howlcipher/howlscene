@@ -119,7 +119,7 @@ identified in the evidence.
 | CJ-006 | Pass    | Browser test observes camera transform during travel.                                                                                                                      |
 | CJ-007 | Pass    | Mist cover opacity is asserted at the handoff checkpoint.                                                                                                                  |
 | CJ-008 | Pass    | Incoming landscape is present before incoming copy.                                                                                                                        |
-| CJ-009 | Partial | Hosted browser characterization now samples six normalized states forward and backward across all six intervals of a seven-scene preview; exact/extreme geometry combinations remain open. |
+| CJ-009 | Partial | All six seven-scene intervals are sampled at six states in both directions; extreme geometry remains open.                                                                 |
 | CJ-010 | Pass    | Five bounded forward/reverse jumps between distant scene pairs, motion toggles, and stage ownership checks pass.                                                           |
 | CJ-011 | Pass    | Real editor preview exercises two and seven scenes, theme switches, and replacement scenery.                                                                               |
 | CJ-012 | Pass    | Configuration round-trip through saved backup is covered.                                                                                                                  |
@@ -132,7 +132,7 @@ identified in the evidence.
 | CJ-019 | Pass    | Manual motion disable removes temporary journey artwork.                                                                                                                   |
 | CJ-020 | Partial | Native anchors and hidden-link tab removal/restoration pass; full keyboard-only focus-order review remains.                                                                |
 | CJ-021 | Partial | Phone-sized browser layout and screenshot pass; touch hardware is not tested.                                                                                              |
-| CJ-022 | Partial | Five bounded navigation/toggle cycles plus editor project replacement, stage disposal, and reinitialization are covered; explicit detached-node snapshots and longer retention sampling remain absent. |
+| CJ-022 | Partial | Five repeated navigation/toggle cycles, theme reinitialization, stage count, browser node and listener counts are covered; explicit detached-node snapshots remain absent. |
 | CJ-023 | Pass    | Instrumented browser lifecycle run observed a maximum of one pending rAF and zero pending after idle.                                                                      |
 | CJ-024 | Pass    | Runtime schema rejects invalid movement and numeric settings.                                                                                                              |
 | CJ-025 | Pass    | Remote SDK package check builds and consumes the public contract.                                                                                                          |
@@ -141,6 +141,11 @@ identified in the evidence.
 | CJ-028 | Partial | Current hosted stage captures were reviewed qualitatively; direct historical pixel-baseline comparison is not available.                                                   |
 | CJ-029 | Pass    | Preview and extracted root/nested ZIP compare stage, cover opacity, and camera transform with bounded geometry tolerances.                                                 |
 | CJ-030 | Pass    | Uploaded replacement scenery refreshes the active preview pair and the actual ZIP references and includes both custom scenery and transition-cover assets.                 |
+
+Supplemental PR [#41](https://github.com/howlcipher/howlscene/pull/41) adds
+seven-scene forward/reverse checkpoints across all six scene intervals and
+verifies project replacement disposes the temporary journey stage before
+reinitialization. The hosted run and remaining limits are recorded above.
 
 ## 5. Visual evidence and reference fidelity
 
