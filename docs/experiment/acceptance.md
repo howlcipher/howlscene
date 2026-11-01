@@ -257,3 +257,12 @@ stage. The full hosted quality gate passed in
 at commit `66b6fe7`, including 181 Vitest and 68 Playwright tests. These checks
 do not replace detached-node/long-duration retention analysis or human
 keyboard, screen-reader, zoom, touch-device, and nontechnical-user review.
+
+PR [#42](https://github.com/howlcipher/howlscene/pull/42) adds exact normalized
+progress endpoints in pure tests and at every seven-scene browser interval.
+After replacing the cinematic preview, a Chromium `WeakRef` to its removed
+stage became unreachable after explicit garbage collection. Hosted run
+[41332210964](https://github.com/howlcipher/howlscene/actions/runs/41332210964)
+passed all 181 unit and 68 browser tests plus the complete quality gates. This
+single bounded stage sample is not proof that all controller resources are
+leak-free; longer retention and human acceptance remain open.
