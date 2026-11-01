@@ -319,8 +319,10 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
   expect(archive.file(scenerySource!.slice(2))).not.toBeNull();
   expect(archive.file("site.js")).not.toBeNull();
 
-  await scrubPreviewToHandoff(
+  await scrubPreviewPair(
     page.getByRole("region", { name: "Live website preview" }),
+    0,
+    0.49,
   );
   await expect(
     page
