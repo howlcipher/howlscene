@@ -116,38 +116,38 @@ identified in the evidence.
 
 ## 4. Acceptance matrix
 
-| ID     | Result  | Evidence / limit                                                                                                                                           |
-| ------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| CJ-001 | Pass    | Editor exposes and enables Camera Journey.                                                                                                                 |
-| CJ-002 | Pass    | Pure progress/frame tests and browser scroll checkpoints.                                                                                                  |
-| CJ-003 | Pass    | Browser test waits 100 ms at an unchanged scroll position and asserts the camera transform remains unchanged.                                              |
-| CJ-004 | Pass    | Pure reverse-state test and reverse scroll checkpoint.                                                                                                     |
-| CJ-005 | Pass    | Outgoing copy is gone before the covered handoff.                                                                                                          |
-| CJ-006 | Pass    | Browser test observes camera transform during travel.                                                                                                      |
-| CJ-007 | Pass    | Mist cover opacity is asserted at the handoff checkpoint.                                                                                                  |
-| CJ-008 | Pass    | Incoming landscape is present before incoming copy.                                                                                                        |
-| CJ-009 | Partial | Seven-scene intervals cover six forward/reverse states including endpoints; extreme geometry remains open.                                                 |
-| CJ-010 | Pass    | Five bounded forward/reverse jumps between distant scene pairs, motion toggles, and stage ownership checks pass.                                           |
-| CJ-011 | Pass    | Real editor preview exercises two and seven scenes, theme switches, and replacement scenery.                                                               |
-| CJ-012 | Pass    | Configuration round-trip through saved backup is covered.                                                                                                  |
-| CJ-013 | Pass    | Backup round-trip preserves settings.                                                                                                                      |
-| CJ-014 | Pass    | Theme changes preserve Camera Journey settings in configuration tests.                                                                                     |
-| CJ-015 | Pass    | Actual extracted ZIP preserves a resolved Camera Journey frame at root and nested paths; JS-off and reduced-motion paths are also covered.                 |
-| CJ-016 | Pass    | Root and nested export paths are browser-tested.                                                                                                           |
-| CJ-017 | Pass    | Exported essential headings are checked with JavaScript disabled.                                                                                          |
-| CJ-018 | Pass    | Reduced-motion browser checks preserve content and remove camera movement.                                                                                 |
-| CJ-019 | Pass    | Manual motion disable removes temporary journey artwork.                                                                                                   |
-| CJ-020 | Partial | Native anchors and hidden-link tab removal/restoration pass; full keyboard-only focus-order review remains.                                                |
-| CJ-021 | Partial | Phone-sized browser layout and screenshot pass; touch hardware is not tested.                                                                              |
+| ID     | Result  | Evidence / limit                                                                                                                                                           |
+| ------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CJ-001 | Pass    | Editor exposes and enables Camera Journey.                                                                                                                                 |
+| CJ-002 | Pass    | Pure progress/frame tests and browser scroll checkpoints.                                                                                                                  |
+| CJ-003 | Pass    | Browser test waits 100 ms at an unchanged scroll position and asserts the camera transform remains unchanged.                                                              |
+| CJ-004 | Pass    | Pure reverse-state test and reverse scroll checkpoint.                                                                                                                     |
+| CJ-005 | Pass    | Outgoing copy is gone before the covered handoff.                                                                                                                          |
+| CJ-006 | Pass    | Browser test observes camera transform during travel.                                                                                                                      |
+| CJ-007 | Pass    | Mist cover opacity is asserted at the handoff checkpoint.                                                                                                                  |
+| CJ-008 | Pass    | Incoming landscape is present before incoming copy.                                                                                                                        |
+| CJ-009 | Partial | Seven-scene intervals cover six forward/reverse states including endpoints; extreme geometry remains open.                                                                 |
+| CJ-010 | Pass    | Five bounded forward/reverse jumps between distant scene pairs, motion toggles, and stage ownership checks pass.                                                           |
+| CJ-011 | Pass    | Real editor preview exercises two and seven scenes, theme switches, and replacement scenery.                                                                               |
+| CJ-012 | Pass    | Configuration round-trip through saved backup is covered.                                                                                                                  |
+| CJ-013 | Pass    | Backup round-trip preserves settings.                                                                                                                                      |
+| CJ-014 | Pass    | Theme changes preserve Camera Journey settings in configuration tests.                                                                                                     |
+| CJ-015 | Pass    | Actual extracted ZIP preserves a resolved Camera Journey frame at root and nested paths; JS-off and reduced-motion paths are also covered.                                 |
+| CJ-016 | Pass    | Root and nested export paths are browser-tested.                                                                                                                           |
+| CJ-017 | Pass    | Exported essential headings are checked with JavaScript disabled.                                                                                                          |
+| CJ-018 | Pass    | Reduced-motion browser checks preserve content and remove camera movement.                                                                                                 |
+| CJ-019 | Pass    | Manual motion disable removes temporary journey artwork.                                                                                                                   |
+| CJ-020 | Partial | Native anchors and hidden-link tab removal/restoration pass; full keyboard-only focus-order review remains.                                                                |
+| CJ-021 | Partial | Phone-sized browser layout and screenshot pass; touch hardware is not tested.                                                                                              |
 | CJ-022 | Partial | Five repeated navigation/toggle cycles, theme reinitialization, stage count, browser node and listener counts are covered; explicit detached-node snapshots remain absent. |
-| CJ-023 | Pass    | Instrumented browser lifecycle run observed a maximum of one pending rAF and zero pending after idle.                                                      |
-| CJ-024 | Pass    | Runtime schema rejects invalid movement and numeric settings.                                                                                              |
-| CJ-025 | Pass    | Remote SDK package check builds and consumes the public contract.                                                                                          |
-| CJ-026 | Pass    | Existing finite transition coverage remains and the sample retains its finite preset values.                                                               |
-| CJ-027 | Pass    | Full existing editor/export/browser suite passed in the hosted run.                                                                                        |
-| CJ-028 | Partial | Current hosted stage captures were reviewed qualitatively; direct historical pixel-baseline comparison is not available.                                   |
-| CJ-029 | Pass    | Preview and extracted root/nested ZIP compare stage, cover opacity, and camera transform with bounded geometry tolerances.                                 |
-| CJ-030 | Pass    | Uploaded replacement scenery refreshes the active preview pair and the actual ZIP references and includes both custom scenery and transition-cover assets. |
+| CJ-023 | Pass    | Instrumented browser lifecycle run observed a maximum of one pending rAF and zero pending after idle.                                                                      |
+| CJ-024 | Pass    | Runtime schema rejects invalid movement and numeric settings.                                                                                                              |
+| CJ-025 | Pass    | Remote SDK package check builds and consumes the public contract.                                                                                                          |
+| CJ-026 | Pass    | Existing finite transition coverage remains and the sample retains its finite preset values.                                                                               |
+| CJ-027 | Pass    | Full existing editor/export/browser suite passed in the hosted run.                                                                                                        |
+| CJ-028 | Partial | Current hosted stage captures were reviewed qualitatively; direct historical pixel-baseline comparison is not available.                                                   |
+| CJ-029 | Pass    | Preview and extracted root/nested ZIP compare stage, cover opacity, and camera transform with bounded geometry tolerances.                                                 |
+| CJ-030 | Pass    | Uploaded replacement scenery refreshes the active preview pair and the actual ZIP references and includes both custom scenery and transition-cover assets.                 |
 
 PR [#41](https://github.com/howlcipher/howlscene/pull/41) added seven-scene
 forward/reverse checkpoints. PR [#42](https://github.com/howlcipher/howlscene/pull/42)
