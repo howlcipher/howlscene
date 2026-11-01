@@ -54,6 +54,7 @@ export function createCameraJourneyController(
   const originalMinHeights = new Map<HTMLElement, string>(
     scenes.map((scene) => [scene, scene.style.minHeight] as const),
   );
+  const originalTabIndex = new WeakMap<HTMLElement, string | null>();
   const resizeObserver =
     typeof ResizeObserver === "undefined"
       ? undefined
@@ -150,11 +151,32 @@ export function createCameraJourneyController(
     content.style.opacity = String(opacity);
     content.style.transform = `translateY(${y}px)`;
     content.style.pointerEvents = opacity > 0.85 ? "auto" : "none";
+    setCopyFocusability(content, opacity > 0.85);
+  }
+
+  function setCopyFocusability(content: HTMLElement, visible: boolean) {
+    const focusable = content.querySelectorAll<HTMLElement>(
+      'a[href], area[href], button, input, select, textarea, iframe, object, embed, [contenteditable="true"], [tabindex]',
+    );
+    for (const element of focusable) {
+      if (visible) {
+        if (!originalTabIndex.has(element)) continue;
+        const previous = originalTabIndex.get(element);
+        if (previous === null) element.removeAttribute("tabindex");
+        else if (previous !== undefined)
+          element.setAttribute("tabindex", previous);
+        originalTabIndex.delete(element);
+      } else if (!originalTabIndex.has(element)) {
+        originalTabIndex.set(element, element.getAttribute("tabindex"));
+        element.setAttribute("tabindex", "-1");
+      }
+    }
   }
 
   function resetCopy(scene: HTMLElement | undefined) {
     const content = scene?.querySelector<HTMLElement>(".scene-content");
     if (!content) return;
+    setCopyFocusability(content, true);
     for (const property of [
       "position",
       "top",
