@@ -87,6 +87,14 @@ Test-first evidence:
   formatting, lint, strict TypeScript, coverage, build, SDK consumer, license,
   and dependency checks. Pages artifact run [41276708530](https://github.com/howlcipher/howlscene/actions/runs/41276708530)
   also passed; publication and approvals were skipped.
+- Supplemental hardening PR [#41](https://github.com/howlcipher/howlscene/pull/41)
+  adds six normalized checkpoints in both scroll directions across all six
+  intervals of a seven-scene preview, plus editor preview-stage disposal and
+  reinitialization coverage. Hosted run
+  [41326754359](https://github.com/howlcipher/howlscene/actions/runs/41326754359)
+  passed at `66b6fe7`: 38 Vitest files / 181 tests, all 68 Playwright tests,
+  format, lint, strict TypeScript, build, SDK, licensing, and dependency audit.
+  Exact/extreme scene geometry and detached-node retention remain open.
 - On the way to this passing run, [41274285564](https://github.com/howlcipher/howlscene/actions/runs/41274285564)
   ran 64/66 browser tests successfully but exposed stale cloned scenery after
   image replacement and smooth-scroll timing in the parity test. The controller
@@ -111,7 +119,7 @@ identified in the evidence.
 | CJ-006 | Pass    | Browser test observes camera transform during travel.                                                                                                                      |
 | CJ-007 | Pass    | Mist cover opacity is asserted at the handoff checkpoint.                                                                                                                  |
 | CJ-008 | Pass    | Incoming landscape is present before incoming copy.                                                                                                                        |
-| CJ-009 | Partial | Pure progress boundaries and real two-/seven-scene geometry are tested; all scene-boundary geometry combinations remain untested.                                          |
+| CJ-009 | Partial | All six seven-scene intervals are sampled at six states in both directions; extreme geometry remains open.                                                                 |
 | CJ-010 | Pass    | Five bounded forward/reverse jumps between distant scene pairs, motion toggles, and stage ownership checks pass.                                                           |
 | CJ-011 | Pass    | Real editor preview exercises two and seven scenes, theme switches, and replacement scenery.                                                                               |
 | CJ-012 | Pass    | Configuration round-trip through saved backup is covered.                                                                                                                  |
@@ -133,6 +141,11 @@ identified in the evidence.
 | CJ-028 | Partial | Current hosted stage captures were reviewed qualitatively; direct historical pixel-baseline comparison is not available.                                                   |
 | CJ-029 | Pass    | Preview and extracted root/nested ZIP compare stage, cover opacity, and camera transform with bounded geometry tolerances.                                                 |
 | CJ-030 | Pass    | Uploaded replacement scenery refreshes the active preview pair and the actual ZIP references and includes both custom scenery and transition-cover assets.                 |
+
+Supplemental PR [#41](https://github.com/howlcipher/howlscene/pull/41) adds
+seven-scene forward/reverse checkpoints across all six scene intervals and
+verifies project replacement disposes the temporary journey stage before
+reinitialization. The hosted run and remaining limits are recorded above.
 
 ## 5. Visual evidence and reference fidelity
 
@@ -233,9 +246,9 @@ acceptance remain outstanding.
 
 ## 10. Remaining blockers and verdict
 
-Before calling the feature release-ready, add direct detached-node/unmount
-assertions or document an accepted manual review, and extend/interpret the
-short heap-growth sample. Remaining human review includes
+Before calling the feature release-ready, add direct detached-node assertions
+or document an accepted manual review, and extend/interpret the short
+heap-growth sample. Remaining human review includes
 screen reader, browser zoom, keyboard-only use, physical touch/mobile, and real
 nontechnical user acceptance. No independent code review has been requested or
 received; no review requests are currently attached to the PR.
