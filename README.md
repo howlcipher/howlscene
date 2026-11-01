@@ -4,8 +4,9 @@ HowlScene is an early implementation of an open-source website builder and reusa
 
 **Status: development preview. Not ready for public production use.** The guided
 editor, shared renderer, three themes, local drafts, portable backups and static
-ZIP export work together in automated browser journeys. Human usability and
-assistive-technology review, hosted CI and deployment remain release gates.
+ZIP export work together in automated browser journeys. The hosted editor is
+available as a development preview; human usability and assistive-technology
+review remain release gates.
 
 ## Current scope
 
@@ -21,8 +22,8 @@ assistive-technology review, hosted CI and deployment remain release gates.
 | Motion presets, entry/exit, parallax and reduced motion              | Implemented with lifecycle and browser regression coverage                   |
 | Independent core and export packages                                 | Built tarballs installed in a separate typed browser consumer                |
 | William Elias example                                                | Shared-engine consumer with theme switching and public-source provenance     |
-| GitHub Pages workflow                                                | Hosted artifact check passed; Pages and reviewer environments not configured |
-| Public deployment and v1 release                                     | Not completed; no live deployment claimed                                    |
+| GitHub Pages workflow                                                | Workflow source enabled; artifact and path checks pass                       |
+| Public deployment and v1 release                                     | [Preview deployed](https://howlcipher.github.io/howlscene/); v1 not release-ready |
 
 Read [the progress journal](PROGRESS.md) for current work, [acceptance traceability](docs/experiment/acceptance.md), and [measurement scope](docs/experiment/metrics.md). The [experiment baseline](docs/experiment/baseline.md) covers this conventional implementation only.
 
@@ -36,7 +37,7 @@ npx playwright install chromium
 npm run dev
 ```
 
-Open the local address printed by Vite. This setup requires development tools; the user-facing hosted editor is not deployed yet.
+Open the local address printed by Vite. This setup requires development tools. The hosted development preview is available at [howlcipher.github.io/howlscene](https://howlcipher.github.io/howlscene/).
 
 ```sh
 npm run check
@@ -59,9 +60,11 @@ See the [cinematic Lorem Ipsum sample](./examples/ink-wash-story/) for a five-sc
 Read [the static export decision](docs/architecture/adr_001_static_export.md) for alternatives and limitations. The original portfolio remains outside this project and read-only. The William Elias example remains a separate developer integration; the Lorem Ipsum page is the cinematic visual sample.
 
 The repository includes a pull-request artifact build and a manually dispatched
-GitHub Pages workflow. Public deployment is disabled until an administrator
-sets up the two protected reviewer environments, the `github-pages` deployment
-environment, and enables the documented repository variable. See the [Pages deployment guide](docs/developers/github_pages_deployment.md)
+GitHub Pages workflow. A preview was deployed by manual dispatch. The publish
+flag is now false. The named approval environments currently lack reviewer
+protection, so do not treat the workflow's approval jobs as human approval or
+the site as release-ready. Configure distinct reviewers before future publishes.
+See the [Pages deployment guide](docs/developers/github_pages_deployment.md)
 and [deployment decision](docs/architecture/adr_012_github_pages_release_gate.md).
 
 ## Contributing and licensing
