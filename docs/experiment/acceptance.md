@@ -244,3 +244,16 @@ checked on the phone layout. This automated evidence does not substitute for
 screen-reader, zoom, color-over-artwork, or nontechnical-user review.
 
 The 2026-10-29 simulated-user acceptance pass adds UX-001 (publishing guidance discoverable from onboarding and included in website ZIP) and UX-002 (visible label on new rich-text fields). Both were regression-tested and closed at P2. The five persona journeys, Harborlight Books, and extracted-site matrix are reported in [`../reviews/simulated-user-acceptance.md`](../reviews/simulated-user-acceptance.md). This is automated simulation only; human acceptance and assistive-technology review remain open.
+
+## Camera Journey hardening follow-up
+
+PR [#41](https://github.com/howlcipher/howlscene/pull/41) adds browser
+characterization for six normalized transition states across each of the six
+adjacent intervals in a seven-scene editor preview, visited forward and in
+reverse order. It also verifies the temporary journey stage is removed when
+the editor replaces a cinematic project and that reinitialization creates one
+stage. The full hosted quality gate passed in
+[run 41326754359](https://github.com/howlcipher/howlscene/actions/runs/41326754359)
+at commit `66b6fe7`, including 181 Vitest and 68 Playwright tests. These checks
+do not replace detached-node/long-duration retention analysis or human
+keyboard, screen-reader, zoom, touch-device, and nontechnical-user review.

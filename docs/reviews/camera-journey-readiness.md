@@ -87,6 +87,14 @@ Test-first evidence:
   formatting, lint, strict TypeScript, coverage, build, SDK consumer, license,
   and dependency checks. Pages artifact run [41276708530](https://github.com/howlcipher/howlscene/actions/runs/41276708530)
   also passed; publication and approvals were skipped.
+- Supplemental hardening PR [#41](https://github.com/howlcipher/howlscene/pull/41)
+  adds six normalized checkpoints in both scroll directions across all six
+  intervals of a seven-scene preview, plus editor preview-stage disposal and
+  reinitialization coverage. Hosted run
+  [41326754359](https://github.com/howlcipher/howlscene/actions/runs/41326754359)
+  passed at `66b6fe7`: 38 Vitest files / 181 tests, all 68 Playwright tests,
+  format, lint, strict TypeScript, build, SDK, licensing, and dependency audit.
+  Exact/extreme scene geometry and detached-node retention remain open.
 - On the way to this passing run, [41274285564](https://github.com/howlcipher/howlscene/actions/runs/41274285564)
   ran 64/66 browser tests successfully but exposed stale cloned scenery after
   image replacement and smooth-scroll timing in the parity test. The controller
@@ -111,7 +119,7 @@ identified in the evidence.
 | CJ-006 | Pass    | Browser test observes camera transform during travel.                                                                                                                      |
 | CJ-007 | Pass    | Mist cover opacity is asserted at the handoff checkpoint.                                                                                                                  |
 | CJ-008 | Pass    | Incoming landscape is present before incoming copy.                                                                                                                        |
-| CJ-009 | Partial | Pure progress boundaries and real two-/seven-scene geometry are tested; all scene-boundary geometry combinations remain untested.                                          |
+| CJ-009 | Partial | Hosted browser characterization now samples six normalized states forward and backward across all six intervals of a seven-scene preview; exact/extreme geometry combinations remain open. |
 | CJ-010 | Pass    | Five bounded forward/reverse jumps between distant scene pairs, motion toggles, and stage ownership checks pass.                                                           |
 | CJ-011 | Pass    | Real editor preview exercises two and seven scenes, theme switches, and replacement scenery.                                                                               |
 | CJ-012 | Pass    | Configuration round-trip through saved backup is covered.                                                                                                                  |
@@ -124,7 +132,7 @@ identified in the evidence.
 | CJ-019 | Pass    | Manual motion disable removes temporary journey artwork.                                                                                                                   |
 | CJ-020 | Partial | Native anchors and hidden-link tab removal/restoration pass; full keyboard-only focus-order review remains.                                                                |
 | CJ-021 | Partial | Phone-sized browser layout and screenshot pass; touch hardware is not tested.                                                                                              |
-| CJ-022 | Partial | Five repeated navigation/toggle cycles, theme reinitialization, stage count, browser node and listener counts are covered; explicit detached-node snapshots remain absent. |
+| CJ-022 | Partial | Five bounded navigation/toggle cycles plus editor project replacement, stage disposal, and reinitialization are covered; explicit detached-node snapshots and longer retention sampling remain absent. |
 | CJ-023 | Pass    | Instrumented browser lifecycle run observed a maximum of one pending rAF and zero pending after idle.                                                                      |
 | CJ-024 | Pass    | Runtime schema rejects invalid movement and numeric settings.                                                                                                              |
 | CJ-025 | Pass    | Remote SDK package check builds and consumes the public contract.                                                                                                          |
@@ -233,9 +241,9 @@ acceptance remain outstanding.
 
 ## 10. Remaining blockers and verdict
 
-Before calling the feature release-ready, add direct detached-node/unmount
-assertions or document an accepted manual review, and extend/interpret the
-short heap-growth sample. Remaining human review includes
+Before calling the feature release-ready, add direct detached-node assertions
+or document an accepted manual review, and extend/interpret the short
+heap-growth sample. Remaining human review includes
 screen reader, browser zoom, keyboard-only use, physical touch/mobile, and real
 nontechnical user acceptance. No independent code review has been requested or
 received; no review requests are currently attached to the PR.
