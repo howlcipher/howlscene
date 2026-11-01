@@ -236,6 +236,8 @@ received; no review requests are currently attached to the PR.
 and post-merge Pages artifact run [41318348721](https://github.com/howlcipher/howlscene/actions/runs/41318348721)
 passed. Direct detached-node tests, longer retained-memory profiling, human
 acceptance, and independent review remain incomplete. PR #37 was merged at the
-user's direction; that merge does not establish release readiness. Do not
-deploy until the missing repository Pages configuration and independent
-approval safeguards are in place and the remaining release gates are reviewed.
+user's direction; that merge does not establish release readiness. Pages is
+configured for workflow deployment, but the publish flag remains false and the
+two independent approval environments are not configured. Do not deploy until
+eligible distinct approvers are configured and the remaining release gates
+are reviewed.
