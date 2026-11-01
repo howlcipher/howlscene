@@ -272,6 +272,30 @@ test("CJ-010 CJ-022 CJ-023 bounded navigation cycles retain one stage and stable
 }, testInfo) => {
   test.setTimeout(30000);
   await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() => {
+    const request = window.requestAnimationFrame.bind(window);
+    const cancel = window.cancelAnimationFrame.bind(window);
+    const pending = new Set<number>();
+    let maximumPending = 0;
+    window.requestAnimationFrame = (callback) => {
+      let frame = 0;
+      frame = request((time) => {
+        pending.delete(frame);
+        callback(time);
+      });
+      pending.add(frame);
+      maximumPending = Math.max(maximumPending, pending.size);
+      return frame;
+    };
+    window.cancelAnimationFrame = (frame) => {
+      pending.delete(frame);
+      cancel(frame);
+    };
+    Object.defineProperty(window, "__journeyFrameMetrics", {
+      configurable: true,
+      value: () => ({ maximumPending, pending: pending.size }),
+    });
+  });
   const pageErrors: string[] = [];
   page.on("pageerror", (error) => pageErrors.push(error.message));
   await page.goto("/examples/ink-wash-story/");
@@ -340,12 +364,27 @@ test("CJ-010 CJ-022 CJ-023 bounded navigation cycles retain one stage and stable
       cycles.push(await sample());
     }
 
+    await page.waitForTimeout(50);
+    const animationFrames = await page.evaluate(() =>
+      (
+        window as unknown as {
+          __journeyFrameMetrics: () => {
+            maximumPending: number;
+            pending: number;
+          };
+        }
+      ).__journeyFrameMetrics(),
+    );
+    expect(animationFrames.maximumPending).toBeLessThanOrEqual(2);
+    expect(animationFrames.pending).toBe(0);
+
     const report = {
       browser: "GitHub-hosted Chromium via Playwright/CDP",
       viewport: { width: 1440, height: 900 },
       warmupCycles: 2,
       warmup,
       cycles,
+      animationFrames,
       limitations: [
         "Heap samples follow explicit V8 garbage collection and do not include all GPU/image memory.",
         "Document node and event-listener counters are browser-wide snapshots, not a complete detached-node audit.",
