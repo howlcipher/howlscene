@@ -266,6 +266,105 @@ test("repeated motion toggles keep one temporary stage and restore semantic cont
   }
 });
 
+test("CJ-010 CJ-022 CJ-023 bounded navigation cycles retain one stage and stable listener counts", async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(30000);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const pageErrors: string[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  await page.goto("/examples/ink-wash-story/");
+  const root = page.locator(".story-demo .howlscene");
+  const stages = page.locator(".camera-journey-stage");
+  await expect(root).toHaveAttribute("data-camera-journey-active", "true");
+  const positions = await page.evaluate(() =>
+    Array.from(document.querySelectorAll<HTMLElement>(".scene")).map(
+      (scene) => scene.getBoundingClientRect().top + scrollY,
+    ),
+  );
+  const at = async (index: number) => {
+    const start = positions[index]!;
+    const end = positions[index + 1]!;
+    await page.evaluate(
+      (top) => window.scrollTo(0, top),
+      start + (end - start) * 0.49,
+    );
+    await expect(root).toHaveAttribute(
+      "data-camera-journey-stage",
+      "covered-handoff",
+    );
+  };
+  const session = await page.context().newCDPSession(page);
+  await session.send("Performance.enable");
+  await session.send("HeapProfiler.enable");
+  const sample = async () => {
+    await session.send("HeapProfiler.collectGarbage");
+    const { metrics } = await session.send("Performance.getMetrics");
+    const read = (name: string) =>
+      metrics.find((metric: { name: string }) => metric.name === name)?.value ??
+      null;
+    return {
+      jsHeapUsedBytes: read("JSHeapUsedSize"),
+      eventListeners: read("JSEventListeners"),
+      documentNodes: read("Nodes"),
+    };
+  };
+
+  try {
+    await at(0);
+    const warmup = await sample();
+    const cycles = [];
+    for (let cycle = 0; cycle < 5; cycle += 1) {
+      await at(3);
+      await at(0);
+      await page.evaluate(() =>
+        document
+          .querySelector<HTMLButtonElement>("button[data-motion-toggle]")
+          ?.click(),
+      );
+      await expect(root).toHaveAttribute("data-motion-enabled", "false");
+      await page.evaluate(() =>
+        document
+          .querySelector<HTMLButtonElement>("button[data-motion-toggle]")
+          ?.click(),
+      );
+      await expect(root).toHaveAttribute("data-motion-enabled", "true");
+      await at(0);
+      await expect(stages).toHaveCount(1);
+      cycles.push(await sample());
+    }
+
+    const report = {
+      browser: "GitHub-hosted Chromium via Playwright/CDP",
+      viewport: { width: 1440, height: 900 },
+      warmup,
+      cycles,
+      limitations: [
+        "Heap samples follow explicit V8 garbage collection and do not include all GPU/image memory.",
+        "Document node and event-listener counters are browser-wide snapshots, not a complete detached-node audit.",
+        "Five bounded cycles provide a regression signal, not proof of leak freedom or physical-device behavior.",
+      ],
+    };
+    await testInfo.attach("camera-journey-lifecycle.json", {
+      body: JSON.stringify(report, null, 2),
+      contentType: "application/json",
+    });
+    for (const key of ["eventListeners", "documentNodes"] as const) {
+      const values = [warmup, ...cycles]
+        .map((entry) => entry[key])
+        .filter((value): value is number => value !== null);
+      if (values.length === cycles.length + 1) {
+        const tolerance = key === "eventListeners" ? 2 : 8;
+        expect(Math.max(...values)).toBeLessThanOrEqual(values[0]! + tolerance);
+      }
+    }
+    expect(pageErrors).toEqual([]);
+    await expect(stages).toHaveCount(1);
+  } finally {
+    await session.detach();
+  }
+});
+
 test("the ink-wash story remains readable at a phone width", async ({
   page,
 }, testInfo) => {

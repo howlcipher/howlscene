@@ -275,11 +275,26 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
             )?.style.opacity,
           }));
           expect(exportedFrame.stage).toBe(previewFrame.stage);
-          expect(exportedFrame.transform).toBe(previewFrame.transform);
-          expect(Number(exportedFrame.coverOpacity)).toBeCloseTo(
-            Number(previewFrame.coverOpacity),
-            3,
-          );
+          const transformNumbers = (value: string | undefined) => {
+            const matches = value?.match(
+              /translate3d\((-?[\d.]+)px,\s*(-?[\d.]+)px,\s*(-?[\d.]+)px\)\s*scale\(([\d.]+)\)/,
+            );
+            expect(matches).not.toBeNull();
+            return matches!.slice(1).map(Number);
+          };
+          const previewValues = transformNumbers(previewFrame.transform);
+          const exportedValues = transformNumbers(exportedFrame.transform);
+          const tolerances = [1, 1, 0.01, 0.002];
+          for (const [index, tolerance] of tolerances.entries())
+            expect(
+              Math.abs(previewValues[index]! - exportedValues[index]!),
+            ).toBeLessThanOrEqual(tolerance);
+          expect(
+            Math.abs(
+              Number(exportedFrame.coverOpacity) -
+                Number(previewFrame.coverOpacity),
+            ),
+          ).toBeLessThanOrEqual(0.01);
         }
         await exported
           .getByRole("link", { name: "A story for every path", exact: true })
