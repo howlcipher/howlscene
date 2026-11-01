@@ -177,6 +177,30 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
   await page.getByLabel("Use Camera Journey").check();
   await page.getByLabel("Edit heading").fill("A story for every path");
   await page.getByLabel("Transition style").selectOption("mist-reveal");
+  const sceneryImage = await page.evaluate(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 32;
+    canvas.height = 32;
+    const context = canvas.getContext("2d")!;
+    context.fillStyle = "#536f79";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL("image/png").split(",")[1]!;
+  });
+  await page
+    .getByLabel("Change scenery")
+    .last()
+    .setInputFiles({
+      name: "custom-journey-art.png",
+      mimeType: "image/png",
+      buffer: Buffer.from(sceneryImage, "base64"),
+    });
+  await page.getByLabel("Image treatment").selectOption("background");
+  await expect(
+    page
+      .getByRole("region", { name: "Live website preview" })
+      .locator(".scene-background-image")
+      .first(),
+  ).toHaveAttribute("src", /^data:image\/webp;base64,/);
   const coverImage = await page.evaluate(() => {
     const canvas = document.createElement("canvas");
     canvas.width = 32;
@@ -207,6 +231,11 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
   )?.[1];
   expect(coverSource).toMatch(/^\.\/assets\/asset-[^/]+\/original\.webp$/);
   expect(archive.file(coverSource!.slice(2))).not.toBeNull();
+  const scenerySource = html.match(
+    /<img[^>]*class="scene-background-image"[^>]*src="([^"]+)"/,
+  )?.[1];
+  expect(scenerySource).toMatch(/^\.\/assets\/asset-[^/]+\/original\.webp$/);
+  expect(archive.file(scenerySource!.slice(2))).not.toBeNull();
   expect(archive.file("site.js")).not.toBeNull();
 
   await scrubPreviewToHandoff(
