@@ -143,3 +143,13 @@
 - Pages artifact workflow [41277098681](https://github.com/howlcipher/howlscene/actions/runs/41277098681) passed; approval and publishing jobs were skipped.
 - PR #37 is open and draft at this checkpoint. The feature/test implementation remains at verified commit `33aaeaf`; the later `9b8f7a8` documentation-only commit passed the same full gates. No merge, publish, or deployment occurred.
 - Remaining exact work requires human input/acceptance: independent code review, real keyboard-only/screen-reader/zoom checks, physical touch/mobile review, and nontechnical-user acceptance. Automated follow-up still advisable for repeated true unmount/detached-node inspection, hidden-tab behavior, longer memory retention, and all scene-boundary geometry combinations. Keep the PR draft; do not merge or deploy.
+
+## Merge and post-merge deployment check — 2026-11-01
+
+- PR #37 was marked ready and merged by squash at `25ad8f9e5db7b4872002226ded1955750eab0b9d`, following the user's explicit instruction. No deployment occurred.
+- Merge-triggered hosted Quality run [41318025128](https://github.com/howlcipher/howlscene/actions/runs/41318025128) passed format, lint, strict TypeScript, unit and browser tests, production build, SDK, licensing, and dependency audit.
+- Post-merge Pages workflow [41318348721](https://github.com/howlcipher/howlscene/actions/runs/41318348721) ran on GitHub-hosted infrastructure with `publish=false`; production build, root/project path tests, and artifact packaging passed. Both approval jobs and deploy were skipped.
+- Deployment is currently unconfigured: repository `has_pages` is false, `HOWLSCENE_PAGES_ENABLED` is absent, and the three named approval environments are absent. The repository exposes only one admin collaborator, so two independent approvers cannot be established from the current collaborator set. Do not bypass these safeguards. No public URL exists.
+- Readiness remains NOT READY FOR RELEASE. Outstanding automated follow-up: detached-node/unmount audit, longer memory retention, hidden-tab behavior, exhaustive scene-boundary geometry. Outstanding human acceptance: keyboard-only, screen reader, zoom, physical mobile, real nontechnical users, and independent code review.
+- Safety: no local heavy workload, browser, test, build, package installation, container, or background process ran. Verification occurred on GitHub-hosted `ubuntu-latest`; no rule was violated.
+- Next exact action: repository owner configures GitHub Pages for workflow deployment and sets up two distinct protected approval environments/reviewers. Then complete remaining release acceptance and obtain approval before dispatching `pages.yml` with `publish=true`. Do not publish without those approvals.

@@ -1,15 +1,15 @@
 # Camera Journey Readiness Report
 
-**Verdict: NOT READY**
+**Verdict: NOT READY FOR RELEASE**
 
-The shared Camera Journey implementation is present on draft PR #37. Its latest
-full GitHub-hosted Quality run passed at `33aaeaf`; the Pages artifact run also
-passed without publishing. A native scroll position determines a reversible
-camera and mist handoff; finite scene-entry transitions remain separate. The
-camera-art replacement lifecycle defect was reproduced and fixed, and actual
-ZIP replacement scenery/cover assets and preview/export states are covered.
-The milestone remains **NOT READY** for merge/release: memory sampling is
-short, some lifecycle and keyboard cases remain partial, and physical-device,
+PR #37 has been merged to `main` at `25ad8f9`. Its merge-triggered GitHub-hosted
+Quality run passed, and a post-merge Pages artifact build passed without
+publishing. A native scroll position determines a reversible camera and mist
+handoff; finite scene-entry transitions remain separate. The camera-art
+replacement lifecycle defect was reproduced and fixed, and actual ZIP
+replacement scenery/cover assets and preview/export states are covered.
+The feature remains **NOT READY FOR RELEASE**: memory sampling is short, some
+lifecycle and keyboard cases remain partial, and physical-device,
 assistive-technology, simulated human acceptance, and independent review are
 outstanding.
 
@@ -17,10 +17,10 @@ outstanding.
 
 - Repository: `howlcipher/howlscene`
 - Starting commit: `95cc4b9cc942f80c61a6e5cd514488644ecc6c3c`
-- Ending fully verified commit: `33aaeaf7b19e45b0649bf9c66db1f43e66056cc9`
-- Branch: `work/camera-journey`
-- Pull request: [#37, draft](https://github.com/howlcipher/howlscene/pull/37)
-- No merge, publish, or deployment occurred.
+- Ending implementation/test commit: `33aaeaf7b19e45b0649bf9c66db1f43e66056cc9`
+- Merge commit: `25ad8f9e5db7b4872002226ded1955750eab0b9d`
+- Branch: `work/camera-journey` (merged)
+- Pull request: [#37, merged](https://github.com/howlcipher/howlscene/pull/37)
 
 ## 2. Baseline and architecture
 
@@ -216,21 +216,26 @@ acceptance remain outstanding.
 - All substantial verification cited here ran on GitHub-hosted `ubuntu-latest`
   runners with a 20-minute job timeout; Playwright and Vitest were capped at one
   worker. No self-hosted runner or local delegation was used.
-- The Pages workflow prepared and verified an artifact only. Approval and
-  publication were skipped. There is no deployed URL to report.
+- Post-merge Pages run [41318348721](https://github.com/howlcipher/howlscene/actions/runs/41318348721)
+  prepared and verified the artifact only. Approval and publication were
+  skipped. There is no deployed URL to report.
 - No host-side testing was requested; the mission’s host-safety rules prohibit
   it.
 
 ## 10. Remaining blockers and verdict
 
-Before calling PR #37 merge-ready, add direct detached-node/unmount assertions
-or document an accepted manual review, and extend/interpret the short
-heap-growth sample. Remaining human review includes
+Before calling the feature release-ready, add direct detached-node/unmount
+assertions or document an accepted manual review, and extend/interpret the
+short heap-growth sample. Remaining human review includes
 screen reader, browser zoom, keyboard-only use, physical touch/mobile, and real
 nontechnical user acceptance. No independent code review has been requested or
 received; no review requests are currently attached to the PR.
 
-**NOT READY.** All current automated quality gates pass at `33aaeaf`, including
-the replacement-scenery ZIP check and pending-rAF instrumentation, but direct detached-node tests,
-longer retained-memory profiling, human acceptance, and independent review are
-incomplete. Keep PR #37 in draft. Do not merge or deploy from this report.
+**NOT READY FOR RELEASE.** The merge-triggered Quality run
+[41318025128](https://github.com/howlcipher/howlscene/actions/runs/41318025128)
+and post-merge Pages artifact run [41318348721](https://github.com/howlcipher/howlscene/actions/runs/41318348721)
+passed. Direct detached-node tests, longer retained-memory profiling, human
+acceptance, and independent review remain incomplete. PR #37 was merged at the
+user's direction; that merge does not establish release readiness. Do not
+deploy until the missing repository Pages configuration and independent
+approval safeguards are in place and the remaining release gates are reviewed.
