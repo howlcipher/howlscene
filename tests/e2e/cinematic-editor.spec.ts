@@ -94,18 +94,27 @@ async function scrubPreviewToHandoff(
   preview: import("@playwright/test").Locator,
 ) {
   await preview.evaluate((element) => {
-    const container = element.parentElement!;
+    let container: HTMLElement | null = element.parentElement;
+    while (container && container !== document.body) {
+      const overflow = getComputedStyle(container).overflowY;
+      if (
+        (overflow === "auto" ||
+          overflow === "scroll" ||
+          overflow === "overlay") &&
+        container.scrollHeight > container.clientHeight
+      )
+        break;
+      container = container.parentElement;
+    }
+    if (container === document.body) container = null;
     const scenes = Array.from(element.querySelectorAll<HTMLElement>(".scene"));
-    const containerTop = container.getBoundingClientRect().top;
-    const start =
-      scenes[0]!.getBoundingClientRect().top -
-      containerTop +
-      container.scrollTop;
-    const end =
-      scenes[1]!.getBoundingClientRect().top -
-      containerTop +
-      container.scrollTop;
-    container.scrollTo({ top: start + (end - start) * 0.49 });
+    const viewportTop = container?.getBoundingClientRect().top ?? 0;
+    const start = scenes[0]!.getBoundingClientRect().top - viewportTop;
+    const end = scenes[1]!.getBoundingClientRect().top - viewportTop;
+    const currentScroll = container?.scrollTop ?? window.scrollY;
+    const target = currentScroll + start + (end - start) * 0.49;
+    if (container) container.scrollTo({ top: target });
+    else window.scrollTo(0, target);
   });
 }
 
