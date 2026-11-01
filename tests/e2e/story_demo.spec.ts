@@ -209,7 +209,9 @@ test("hidden scene copy stays in the reading order without hidden keyboard targe
 
   const positions = await page.evaluate(() => {
     const scenes = Array.from(document.querySelectorAll<HTMLElement>(".scene"));
-    return scenes.slice(0, 2).map((scene) => scene.getBoundingClientRect().top + scrollY);
+    return scenes
+      .slice(0, 2)
+      .map((scene) => scene.getBoundingClientRect().top + scrollY);
   });
   await page.evaluate(
     ({ start, end }) => window.scrollTo(0, start + (end - start) * 0.49),
@@ -221,7 +223,9 @@ test("hidden scene copy stays in the reading order without hidden keyboard targe
   );
 
   await expect(link).toHaveAttribute("tabindex", "-1");
-  await expect(page.getByRole("heading", { name: "Lorem ipsum dolor sit amet" })).toHaveCount(1);
+  await expect(
+    page.getByRole("heading", { name: "Lorem ipsum dolor sit amet" }),
+  ).toHaveCount(1);
   await expect(first).not.toHaveAttribute("aria-hidden", "true");
 });
 
