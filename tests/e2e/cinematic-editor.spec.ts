@@ -106,8 +106,8 @@ test("CJ-011 editor preview renders two and seven scene Camera Journeys", async 
     return canvas.toDataURL("image/png").split(",")[1]!;
   });
   await page
-    .getByRole("button", { name: "Change scenery" })
-    .locator('input[type="file"]')
+    .getByLabel("Change scenery")
+    .last()
     .setInputFiles({
       name: "new-scene-art.png",
       mimeType: "image/png",
