@@ -189,6 +189,66 @@ test("Camera Journey scrubs through the covered handoff and reverses with scroll
   await capture("camera-journey-reverse");
 });
 
+test("hidden scene copy stays in the reading order without hidden keyboard targets", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/examples/ink-wash-story/");
+  await page.addStyleTag({
+    content: "html { scroll-behavior: auto !important }",
+  });
+  const first = page.locator("#scene-1 .scene-content");
+  await first.evaluate((content) => {
+    const link = document.createElement("a");
+    link.href = "#scene-2";
+    link.textContent = "A link in the outgoing scene";
+    link.dataset.journeyFocusFixture = "true";
+    content.append(link);
+  });
+  const link = page.locator('[data-journey-focus-fixture="true"]');
+
+  const positions = await page.evaluate(() => {
+    const scenes = Array.from(document.querySelectorAll<HTMLElement>(".scene"));
+    return scenes.slice(0, 2).map((scene) => scene.getBoundingClientRect().top + scrollY);
+  });
+  await page.evaluate(
+    ({ start, end }) => window.scrollTo(0, start + (end - start) * 0.49),
+    { start: positions[0]!, end: positions[1]! },
+  );
+  await expect(page.locator(".howlscene")).toHaveAttribute(
+    "data-camera-journey-stage",
+    "covered-handoff",
+  );
+
+  await expect(link).toHaveAttribute("tabindex", "-1");
+  await expect(page.getByRole("heading", { name: "Lorem ipsum dolor sit amet" })).toHaveCount(1);
+  await expect(first).not.toHaveAttribute("aria-hidden", "true");
+});
+
+test("repeated motion toggles keep one temporary stage and restore semantic content", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/examples/ink-wash-story/");
+  const root = page.locator(".story-demo .howlscene");
+  const stageCount = page.locator(".camera-journey-stage");
+  const firstCopy = page.locator("#scene-1 .scene-content");
+
+  for (let cycle = 0; cycle < 4; cycle += 1) {
+    await expect(stageCount).toHaveCount(1);
+    await page.getByRole("button", { name: "Disable animation" }).click();
+    await expect(root).toHaveAttribute("data-motion-enabled", "false");
+    await expect(stageCount).toHaveCount(1);
+    await expect(firstCopy).not.toHaveAttribute("style", /opacity/);
+    await page.getByRole("button", { name: "Enable animation" }).click();
+    await expect(root).toHaveAttribute("data-motion-enabled", "true");
+    await expect(stageCount).toHaveCount(1);
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await expect(page.locator(".camera-journey-stage")).toHaveCount(1);
+  }
+});
+
 test("the ink-wash story remains readable at a phone width", async ({
   page,
 }, testInfo) => {
