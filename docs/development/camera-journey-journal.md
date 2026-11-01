@@ -163,3 +163,14 @@
 - No deployment occurred and no public site content was verified. The Pages URL is a configured target only, not evidence of a published site.
 - Asked the owner to identify two distinct GitHub accounts for the protected approval environments. Keep the publish variable false until both environments have distinct eligible approvers and the remaining release gates are reviewed.
 - Safety: all builds and browser checks ran on GitHub-hosted runners. No local heavy workload or background process ran; no safety rule was violated.
+
+## User-directed Pages deployment — 2026-11-01
+
+- At the user's explicit instruction to bypass the unconfigured approval gates for a one-time publish, set `HOWLSCENE_PAGES_ENABLED=true` and dispatched `pages.yml` with `publish=true`.
+- Hosted deployment run [41320649182](https://github.com/howlcipher/howlscene/actions/runs/41320649182) passed on `main` SHA `f7633f9f351b62991e14f5faf4484b9650f6a0f5`: production build, root/project path checks, artifact packaging, both named approval jobs, and the Pages deployment job succeeded.
+- The two approval jobs completed automatically in seconds. Inspection confirmed `github-pages-approval-one` and `github-pages-approval-two` have empty protection-rule lists. No human approval occurred; the workflow labels did not enforce independent review.
+- Verified [https://howlcipher.github.io/howlscene/](https://howlcipher.github.io/howlscene/) with a bounded live GET: HTTP 200 and title `HowlScene — Give your story a setting`. This establishes basic availability only, not accessibility or real-user acceptance.
+- Reset `HOWLSCENE_PAGES_ENABLED=false` immediately after the successful one-time deployment. Pages remains enabled with workflow source. The current site remains publicly available; the false variable prevents future dispatches from entering the publish jobs until deliberately changed.
+- Readiness remains NOT READY FOR RELEASE: detached-DOM/unmount audit, longer retained-memory profiling, hidden-tab behavior, exhaustive scene geometry, human keyboard/screen-reader/zoom/device/user review, and independent code review remain incomplete. The deployment was made at the user's direction and is not a release certification.
+- Safety: all builds and browser checks ran on GitHub-hosted `ubuntu-latest`; no local heavy workload, browser, package install, container, background process, or agent ran. No host-safety rule was violated.
+- Next exact action: configure real, distinct protected reviewers for both approval environments before any future publish; complete the outstanding release acceptance tasks. Keep the publish flag false until then.

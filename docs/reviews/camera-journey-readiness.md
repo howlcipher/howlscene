@@ -219,6 +219,15 @@ acceptance remain outstanding.
 - Post-merge Pages run [41318348721](https://github.com/howlcipher/howlscene/actions/runs/41318348721)
   prepared and verified the artifact only. Approval and publication were
   skipped. There is no deployed URL to report.
+- At the user's later direction, workflow run [41320649182](https://github.com/howlcipher/howlscene/actions/runs/41320649182)
+  deployed `main` SHA `f7633f9f351b62991e14f5faf4484b9650f6a0f5` to
+  [GitHub Pages](https://howlcipher.github.io/howlscene/). The build, root and
+  project path checks, artifact upload, and deploy job passed. The two named
+  approval jobs ran without human review because their environments had no
+  protection rules. A bounded live GET returned HTTP 200 and the expected
+  HowlScene title; this is a basic availability check, not full human
+  acceptance. The publish variable was reset to `false` after this one-time
+  deployment.
 - No host-side testing was requested; the mission’s host-safety rules prohibit
   it.
 
@@ -236,8 +245,9 @@ received; no review requests are currently attached to the PR.
 and post-merge Pages artifact run [41318348721](https://github.com/howlcipher/howlscene/actions/runs/41318348721)
 passed. Direct detached-node tests, longer retained-memory profiling, human
 acceptance, and independent review remain incomplete. PR #37 was merged at the
-user's direction; that merge does not establish release readiness. Pages is
-configured for workflow deployment, but the publish flag remains false and the
-two independent approval environments are not configured. Do not deploy until
-eligible distinct approvers are configured and the remaining release gates
-are reviewed.
+user's direction; that merge does not establish release readiness. The preview
+is deployed, but the named approval environments had no human reviewer
+protection during deployment. The publish flag is now false. Configure distinct
+eligible reviewers before any future publish, and complete the remaining
+release gates. The current deployment does not change this report's NOT READY
+verdict.
