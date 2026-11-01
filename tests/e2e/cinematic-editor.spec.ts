@@ -192,7 +192,7 @@ test("CJ-009 every seven-scene boundary resolves in forward and reverse travel",
   }
 
   const checkpoints = [
-    [0, "established"],
+    [0, "scene-boundary"],
     [0.1, "text-departure"],
     [0.3, "camera-travel"],
     [0.49, "covered-handoff"],
