@@ -5,9 +5,9 @@
 - Repository: `howlcipher/howlscene`
 - Branch: `work/camera-journey`
 - Starting commit: `95cc4b9cc942f80c61a6e5cd514488644ecc6c3c`
-- Latest behaviorally verified commit: `afa59d1` readiness/reference reports and hosted-runner performance labels
-- Working tree was clean at `afa59d1` before this final run-metadata update; this is a documentation-only handoff checkpoint.
-- Active phase: G, final evidence review and remaining acceptance gaps
+- Latest fully verified implementation/test commit: `d5f05c9e05d71e150fcda888c1da3d6793ea7e70`.
+- Current code/test branch head: `d5f05c9e05d71e150fcda888c1da3d6793ea7e70`; this journal and readiness documentation update is being committed separately.
+- Active phase: G, final evidence review and remaining acceptance gaps.
 
 ## Audit and architecture
 
@@ -56,3 +56,61 @@
 3. Arrange manual screen-reader, zoom, keyboard, touch, physical-device, and real-user acceptance; no such review has been performed.
 4. Request an independent code review if available.
 5. Keep PR draft; do not merge or deploy.
+
+## Final hardening checkpoint — 2026-11-01
+
+### Repository state
+
+- Branch: `work/camera-journey`.
+- Current head: `d5f05c9e05d71e150fcda888c1da3d6793ea7e70`.
+- Latest fully verified source commit: `990589cc759f4217baf3a9e72c5896532dd0b9b5`.
+- Working tree contains documentation updates for this checkpoint; no unrelated edits were present.
+- PR #37 remains open and draft: https://github.com/howlcipher/howlscene/pull/37.
+
+### Completed changes and decisions
+
+- Added browser coverage for keyboard focusability of visually hidden scene links; content stays in reading order while hidden links are removed from tab order and restored when visible.
+- Added bounded repeated motion-toggle and navigation lifecycle checks. Five measured navigation/toggle cycles follow two warmups; each asserts one temporary stage, stable browser-wide listener/node counters, and no page errors.
+- Added actual editor preview coverage for two and seven scenes, theme switching, uploaded scenery, and active Camera Journey artwork.
+- Reproduced stale temporary camera artwork after a scenery replacement in hosted E2E. `990589c` adds a focused MutationObserver for scene artwork, cover art, and parallax-layer changes; it invalidates the active pair and disconnects on controller stop. The valid behavioral RED was observed at hosted run `41274285564`, followed by GREEN at `41274716405`.
+- Expanded actual extracted-ZIP parity to active camera frames on root and nested paths, reduced motion, and JavaScript-disabled content. The test uses instant native scroll to avoid sampling a smooth scroll in flight.
+- Added custom scenery upload and ZIP asset-path checks in `d5f05c9`; both hosted workflows passed as recorded below.
+
+### Remote verification evidence
+
+- [Quality run 41274716405](https://github.com/howlcipher/howlscene/actions/runs/41274716405), tested `990589c`: formatting, lint, strict TypeScript, 38 Vitest files / 181 tests, existing coverage thresholds, production build, 66 Playwright tests on one worker, SDK consumer, license audit, and dependency audit all passed.
+- [Pages artifact run 41274716412](https://github.com/howlcipher/howlscene/actions/runs/41274716412), tested `990589c`: production build, root/project path checks, and artifact packaging passed. Approval/publish stages were skipped; no deployment occurred.
+- [Quality run 41275074117](https://github.com/howlcipher/howlscene/actions/runs/41275074117) and [Pages artifact run 41275074147](https://github.com/howlcipher/howlscene/actions/runs/41275074147) passed for `d5f05c9`.
+- Failed historical run [41273963924](https://github.com/howlcipher/howlscene/actions/runs/41273963924) completed 64/66 browser tests; it exposed an ambiguous upload locator and cover-opacity tolerance sensitive to scroll timing. Follow-up [41274285564](https://github.com/howlcipher/howlscene/actions/runs/41274285564) completed 64/66 and exposed the genuine stale scenery clone after artwork replacement plus remaining smooth-scroll timing variance. The mutation-observer fix and instant test scroll passed in `41274716405`; no existing test was skipped or weakened.
+- Root/nested ZIP frame parity passed in the 990589c full run with tolerances of 3 CSS px for translation, 0.01 px for Z, 0.002 for scale, and 0.02 cover opacity. The cover tolerance accounts for native scroll pixel quantization after the test now forces instant scroll.
+
+### Lifecycle and memory observations
+
+- Evidence attachment: hosted artifact `camera-journey-lifecycle.json` from run `41274716405`.
+- GitHub-hosted Chromium, 1440×900. After two warmup cycles, browser-wide event listener count was 186 and document node count 184 in the warmup and all five measured cycles.
+- Post-GC JS heap samples rose from 10,118,080 to 10,250,632 bytes over five cycles (+132,552 bytes, approximately 1.31%). This short sequence is not sufficient to prove or rule out a leak. Browser-wide node/listener counters do not detect every detached object, and these samples exclude some GPU/image memory.
+- A longer retained-memory profile, hidden-tab scenario, and explicit detached-node audit remain unverified. No memory threshold was invented from the small sample.
+
+### Visual and acceptance review
+
+- Reviewed current hosted screenshots at established, copy departure, camera travel, covered handoff, landscape reveal, copy arrival, reverse, and mobile checkpoints. These are stored as CI artifacts, not committed as new baselines.
+- The captures show the intended mist-covered camera-led handoff. No pixel-perfect comparison to the external reference clip is claimed.
+- Acceptance matrix is updated in `docs/reviews/camera-journey-readiness.md` and `docs/experiment/acceptance.md`. CJ-003, CJ-010, CJ-011, CJ-015, CJ-029, and CJ-030 now have direct automated coverage; CJ-009, CJ-020, CJ-021, CJ-022, CJ-023, and CJ-028 retain documented limits and/or human review.
+- No independent review is attached to PR #37; no review requests are currently present.
+
+### Safety and handoff
+
+- No prohibited local workload ran. Only source/docs inspection and edits, bounded Prettier, Git operations, and reading hosted logs/artifacts occurred.
+- No local browser, build, test, package installation, container workload, background process, or local subagent was started. No safety rule was violated.
+- CI workflows use GitHub-hosted `ubuntu-latest`, bounded job timeouts, and one worker; Pages approval/publish remained skipped.
+- This checkpoint's next exact actions were to observe `41275074117` and `41275074147`; the completion section below records their results. The PR description was subsequently updated; preserve the draft and do not merge or deploy.
+
+## Verification completion — 2026-11-01
+
+- The formerly pending [Quality run 41275074117](https://github.com/howlcipher/howlscene/actions/runs/41275074117) completed successfully on `d5f05c9`: 38 Vitest files / 181 tests and 66 Playwright tests passed, along with formatting, lint, strict type-check, coverage, production build, SDK consumer, license, and dependency-audit steps.
+- The formerly pending [Pages artifact run 41275074147](https://github.com/howlcipher/howlscene/actions/runs/41275074147) completed successfully on `d5f05c9`: production artifact, root/project path checks, and packaging passed. Approval and publish jobs were skipped.
+- The actual ZIP fixture now contains uploaded scene scenery and transition-cover artwork; the test asserts both asset references resolve in the archive. Preview and extracted ZIP camera state comparisons pass at root and nested hosting, with JavaScript enabled/disabled and reduced-motion cases retained.
+- CI confirms the artwork mutation observer and associated test fix pass in the full regression suite. No full screenshot diff against a pixel-locked historical baseline was produced.
+- Current acceptance/readiness docs now report the final CI evidence and retain partial status for exhaustive scene-boundary geometry, comprehensive keyboard-only review, physical touch, direct pending-rAF instrumentation, detached-node auditing, and long-duration memory profiling. The post-GC heap rose 132,552 bytes (~1.31%) across five measured cycles after two warmups while listener/node counts stayed constant; no leak conclusion is inferred from this short sample.
+- PR #37 is still open/draft. Its description has been updated to replace the early implementation checkpoint. No merge or deployment occurred.
+- Next exact actions: commit and push this documentation checkpoint, inspect its documentation-triggered remote results and final PR check state, then leave the draft for independent and human acceptance. Do not merge or deploy.

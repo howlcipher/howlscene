@@ -2,19 +2,22 @@
 
 **Verdict: NOT READY**
 
-The shared Camera Journey implementation is present on draft PR #37 and passes
-the current GitHub-hosted automated gates at commit `afa59d1`. A native scroll
-position determines a reversible camera and mist handoff; the original finite
-scene-entry transitions remain separate. This milestone is not release-ready:
-journey-specific stress and leak measurements, physical-device and assistive
-technology review, simulated human acceptance, an independent review, and
-several acceptance cases remain incomplete.
+The shared Camera Journey implementation is present on draft PR #37. Its latest
+full GitHub-hosted Quality run passed at `d5f05c9`; the Pages artifact run also
+passed without publishing. A native scroll position determines a reversible
+camera and mist handoff; finite scene-entry transitions remain separate. The
+camera-art replacement lifecycle defect was reproduced and fixed, and actual
+ZIP replacement scenery/cover assets and preview/export states are covered.
+The milestone remains **NOT READY** for merge/release: memory sampling is
+short, some lifecycle and keyboard cases remain partial, and physical-device,
+assistive-technology, simulated human acceptance, and independent review are
+outstanding.
 
 ## 1. Repository state
 
 - Repository: `howlcipher/howlscene`
 - Starting commit: `95cc4b9cc942f80c61a6e5cd514488644ecc6c3c`
-- Ending commit: `afa59d147959bb25947541a0272aa4990ba9b0e4`
+- Ending fully verified commit: `d5f05c9e05d71e150fcda888c1da3d6793ea7e70`
 - Branch: `work/camera-journey`
 - Pull request: [#37, draft](https://github.com/howlcipher/howlscene/pull/37)
 - No merge, publish, or deployment occurred.
@@ -65,6 +68,26 @@ Test-first evidence:
   passed production build, root/project path checks, and artifact packaging.
   Independent approvals and publication jobs were skipped. This was not a
   deployment.
+- Final hardening run [41274716405](https://github.com/howlcipher/howlscene/actions/runs/41274716405)
+  passed at `990589c`: formatting, lint, strict TypeScript, 181 Vitest tests,
+  coverage thresholds, production build, 66 Playwright tests on one worker,
+  SDK consumer check, license audit, and dependency audit. The hosted Pages
+  artifact run [41274716412](https://github.com/howlcipher/howlscene/actions/runs/41274716412)
+  passed root/project path checks and packaging; publish and approvals were
+  skipped.
+- Follow-up full run [41275074117](https://github.com/howlcipher/howlscene/actions/runs/41275074117)
+  passed at `d5f05c9`: 38 Vitest files / 181 tests, all 66 Playwright tests,
+  formatting, lint, strict TypeScript, coverage, build, SDK consumer, license,
+  and dependency checks. This commit adds the uploaded replacement-scene image
+  to the actual ZIP fixture and asserts that both scene and transition-cover
+  assets exist in the archive. Pages artifact run [41275074147](https://github.com/howlcipher/howlscene/actions/runs/41275074147)
+  also passed; publication and approvals were skipped.
+- On the way to this passing run, [41274285564](https://github.com/howlcipher/howlscene/actions/runs/41274285564)
+  ran 64/66 browser tests successfully but exposed stale cloned scenery after
+  image replacement and smooth-scroll timing in the parity test. The controller
+  now observes relevant source artwork mutations and rebuilds only the active
+  pair; scroll comparison uses instant native scrolling. The follow-up pass is
+  [41274716405](https://github.com/howlcipher/howlscene/actions/runs/41274716405).
 
 Earlier failed runs and corrections are preserved in the
 [engineering journal](../development/camera-journey-journal.md). The final
@@ -77,34 +100,34 @@ identified in the evidence.
 | ------ | ------- | -------------------------------------------------------------------------------------------------------------------------- |
 | CJ-001 | Pass    | Editor exposes and enables Camera Journey.                                                                                 |
 | CJ-002 | Pass    | Pure progress/frame tests and browser scroll checkpoints.                                                                  |
-| CJ-003 | Partial | Deterministic resolver freezes for a position; browser idle-state assertion is indirect.                                   |
+| CJ-003 | Pass    | Browser test waits 100 ms at an unchanged scroll position and asserts the camera transform remains unchanged.                  |
 | CJ-004 | Pass    | Pure reverse-state test and reverse scroll checkpoint.                                                                     |
 | CJ-005 | Pass    | Outgoing copy is gone before the covered handoff.                                                                          |
 | CJ-006 | Pass    | Browser test observes camera transform during travel.                                                                      |
 | CJ-007 | Pass    | Mist cover opacity is asserted at the handoff checkpoint.                                                                  |
 | CJ-008 | Pass    | Incoming landscape is present before incoming copy.                                                                        |
-| CJ-009 | Partial | Scene-count and progress boundaries have unit coverage; all boundary geometries are not browser-tested.                    |
-| CJ-010 | Partial | Anchor navigation and reversing mid-transition are tested; rapid multi-scene stress is not.                                |
-| CJ-011 | Partial | One, two, five, and seven scenes validate in configuration tests; browser rendering is five-scene only.                    |
+| CJ-009 | Partial | Pure progress boundaries and real two-/seven-scene geometry are tested; all scene-boundary geometry combinations remain untested. |
+| CJ-010 | Pass    | Five bounded forward/reverse jumps between distant scene pairs, motion toggles, and stage ownership checks pass.             |
+| CJ-011 | Pass    | Real editor preview exercises two and seven scenes, theme switches, and replacement scenery.                                  |
 | CJ-012 | Pass    | Configuration round-trip through saved backup is covered.                                                                  |
 | CJ-013 | Pass    | Backup round-trip preserves settings.                                                                                      |
 | CJ-014 | Pass    | Theme changes preserve Camera Journey settings in configuration tests.                                                     |
-| CJ-015 | Partial | Exported ZIP retains Camera Journey configuration and runtime; exhaustive scroll equivalence is not asserted.              |
+| CJ-015 | Pass    | Actual extracted ZIP preserves a resolved Camera Journey frame at root and nested paths; JS-off and reduced-motion paths are also covered. |
 | CJ-016 | Pass    | Root and nested export paths are browser-tested.                                                                           |
 | CJ-017 | Pass    | Exported essential headings are checked with JavaScript disabled.                                                          |
 | CJ-018 | Pass    | Reduced-motion browser checks preserve content and remove camera movement.                                                 |
 | CJ-019 | Pass    | Manual motion disable removes temporary journey artwork.                                                                   |
-| CJ-020 | Partial | Native scene-anchor navigation works; full keyboard-only audit remains.                                                    |
+| CJ-020 | Partial | Native anchors and hidden-link tab removal/restoration pass; full keyboard-only focus-order review remains.                 |
 | CJ-021 | Partial | Phone-sized browser layout and screenshot pass; touch hardware is not tested.                                              |
-| CJ-022 | Partial | Manual disable removes the active stage; repeated mount/unmount leak measurement is absent.                                |
-| CJ-023 | Partial | Controller schedules at most one pending frame by implementation; no long-run instrumentation was performed.               |
+| CJ-022 | Partial | Five repeated navigation/toggle cycles, theme reinitialization, stage count, browser node and listener counts are covered; explicit detached-node snapshots remain absent. |
+| CJ-023 | Partial | Coalesced-frame scheduling is implemented and repeated behavior is tested, but pending-rAF count is not directly instrumented. |
 | CJ-024 | Pass    | Runtime schema rejects invalid movement and numeric settings.                                                              |
 | CJ-025 | Pass    | Remote SDK package check builds and consumes the public contract.                                                          |
 | CJ-026 | Pass    | Existing finite transition coverage remains and the sample retains its finite preset values.                               |
 | CJ-027 | Pass    | Full existing editor/export/browser suite passed in the hosted run.                                                        |
-| CJ-028 | Partial | Five-scene sample choreography passed browser checks; image comparison is qualitative, not pixel-baseline equivalence.     |
-| CJ-029 | Partial | Shared configuration drives preview and export; a complete resolved-frame parity assertion is absent.                      |
-| CJ-030 | Partial | ZIP includes configured cover artwork and asset checks pass; arbitrary replacement-artwork journey is not fully exercised. |
+| CJ-028 | Partial | Current hosted stage captures were reviewed qualitatively; direct historical pixel-baseline comparison is not available.   |
+| CJ-029 | Pass    | Preview and extracted root/nested ZIP compare stage, cover opacity, and camera transform with bounded geometry tolerances.  |
+| CJ-030 | Pass    | Uploaded replacement scenery refreshes the active preview pair and the actual ZIP references and includes both custom scenery and transition-cover assets. |
 
 ## 5. Visual evidence and reference fidelity
 
@@ -152,9 +175,17 @@ observations:
 These are GitHub-hosted runner measurements, not physical-device or field
 results. The frame samples are not a frame-rate guarantee and were not a
 long-duration Camera Journey stress test. The desktop heap is one observation,
-not a retained-memory comparison. Seven-scene, large-artwork, repeated-theme,
-hidden-tab, animation-instance, listener, and leak-growth profiling remain
-unverified. The runtime size is under the existing 256 KiB gzip budget.
+not a retained-memory comparison. The bounded lifecycle attachment from run
+`41274716405` measured after two warmup cycles and five navigation/toggle cycles
+at 1440×900 on hosted Chromium. Browser-wide counters remained at 186 event
+listeners and 184 document nodes in every sample. Post-GC JS heap readings
+increased from 10,118,080 bytes to 10,250,632 bytes (+132,552 bytes, about
+1.31%). Five cycles are too short to distinguish a stable cache/measurement
+variation from a slow retained-growth trend; the sample neither proves nor
+rules out a leak and does not count all GPU/image memory. Hidden-tab, browser
+memory retention, explicit detached-DOM inspection, physical-device, and
+longer-duration profiling remain incomplete. The runtime size is under the
+existing 256 KiB gzip budget.
 
 ## 8. Simulated and human acceptance
 
@@ -187,13 +218,14 @@ acceptance remain outstanding.
 
 ## 10. Remaining blockers and verdict
 
-Before human acceptance, add or run the missing journey stress/lifecycle tests,
-verify scroll-frame parity for exported sites, exercise two- and seven-scene
-browser stories, review large artwork and repeated navigation, and capture
-journey-specific performance/resource data. Human review must include screen
-reader, zoom, keyboard, touch, and physical mobile checks. An independent code
-review and real nontechnical user feedback are also outstanding.
+Before calling PR #37 merge-ready, add direct pending-rAF and detached-node/
+unmount assertions or document an accepted manual review, and extend/interpret
+the short heap-growth sample. Remaining human review includes
+screen reader, browser zoom, keyboard-only use, physical touch/mobile, and real
+nontechnical user acceptance. No independent code review has been requested or
+received; no review requests are currently attached to the PR.
 
-**NOT READY.** Automated gates pass at `afa59d1`, but required implementation-
-critical performance and lifecycle cases and human acceptance have not been
-verified. Keep PR #37 in draft. Do not merge or deploy from this report.
+**NOT READY.** All current automated quality gates pass at `d5f05c9`, including
+the replacement-scenery ZIP check, but direct pending-rAF/detached-node tests,
+longer retained-memory profiling, human acceptance, and independent review are
+incomplete. Keep PR #37 in draft. Do not merge or deploy from this report.

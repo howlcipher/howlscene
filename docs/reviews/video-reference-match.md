@@ -19,8 +19,28 @@ At baseline commit `95cc4b9`, source inspection confirmed that `StoryExample.tsx
 
 Draft PR [#37](https://github.com/howlcipher/howlscene/pull/37) introduces an opt-in site-level Camera Journey contract while preserving `SectionConfig.transition` as the finite entry-animation contract. The shared resolver maps normalized progress to camera, copy, landscape, and cover states. The renderer controller uses native scroll, a pinned stage, and only current/incoming landscape layers. The Ink Wash example selects the shared mode; its artwork mapping remains example content. Remote verification at commit `7bda077` passed the full quality workflow and Pages artifact build. Hosted screenshots show the configured camera drift, copy departure/arrival, covered handoff, landscape reveal, reverse scroll, and mobile composition. This is an evidence-backed visual-principle restoration, not pixel-perfect equivalence to generated video imagery. See the [Camera Journey readiness report](camera-journey-readiness.md) for test limits and remaining human gates.
 
+## Final hardening checkpoint — 2026-11-01
+
+The latest fully verified implementation and tests at `d5f05c9` passed the
+hosted Quality workflow [41275074117](https://github.com/howlcipher/howlscene/actions/runs/41275074117)
+with 66 Playwright tests and the Pages artifact workflow
+[41275074147](https://github.com/howlcipher/howlscene/actions/runs/41275074147).
+The hosted screenshots for established scene, copy departure, camera travel,
+covered handoff, landscape reveal, copy arrival, reverse, and mobile were
+reviewed again. The active image handoff remains covered by the mist layer;
+these are reviewed representative stages, not pixel comparisons against the
+external reference clip. The `d5f05c9` tests also verify custom scenery
+inclusion in the extracted ZIP.
+
+The same run exercised two and seven scenes in the editor, repeated forward
+and reverse navigation, motion toggles, theme changes, and replacement scenery.
+The controller fix at `990589c` observes relevant scene artwork mutations and
+rebuilds its active temporary layer pair. Lifecycle artifact limitations and
+the remaining human/performance gates are listed in the
+[Camera Journey readiness report](camera-journey-readiness.md).
+
 ## Verification evidence
 
 - Historical screenshot references remain available in [`artifacts/video-match/`](artifacts/video-match/), including the [desktop opening](artifacts/video-match/desktop.png), [camera push](artifacts/video-match/scroll-transition.png), [covered handoff](artifacts/video-match/scroll-transition-cover.png), [incoming reveal](artifacts/video-match/scroll-transition-emerge.png), [second scene](artifacts/video-match/scene-2.png), and [mobile layout](artifacts/video-match/mobile.png). They document the prior implementation and are not evidence for the current branch.
-- Test-only commit `7feef8c` has valid behavioral RED evidence in [GitHub Actions run 41166873671](https://github.com/howlcipher/howlscene/actions/runs/41166873671). The current implementation passed the hosted Quality workflow in [run 41169005027](https://github.com/howlcipher/howlscene/actions/runs/41169005027); the Pages build/artifact checks passed in [run 41169005224](https://github.com/howlcipher/howlscene/actions/runs/41169005224). The screenshot evidence is attached to the Quality run.
+- Test-only commit `7feef8c` has valid behavioral RED evidence in [GitHub Actions run 41166873671](https://github.com/howlcipher/howlscene/actions/runs/41166873671). The current implementation passed the hosted Quality workflow in [run 41275074117](https://github.com/howlcipher/howlscene/actions/runs/41275074117); the Pages build/artifact checks passed in [run 41275074147](https://github.com/howlcipher/howlscene/actions/runs/41275074147). The screenshot evidence is attached to the Quality run.
 - The landscapes are separate still images, so spatial continuity cannot match generated video imagery frame for frame. The approximation uses a reversible camera transform and separate cover scene. Seven-scene stress, large-artwork preloading behavior, and physical-device performance remain unverified.
