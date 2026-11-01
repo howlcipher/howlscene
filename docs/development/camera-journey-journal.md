@@ -5,8 +5,8 @@
 - Repository: `howlcipher/howlscene`
 - Branch: `work/camera-journey`
 - Starting commit: `95cc4b9cc942f80c61a6e5cd514488644ecc6c3c`
-- Latest fully verified implementation/test commit: `d5f05c9e05d71e150fcda888c1da3d6793ea7e70`.
-- Current code/test branch head: `d5f05c9e05d71e150fcda888c1da3d6793ea7e70`; this journal and readiness documentation update is being committed separately.
+- Latest fully verified implementation/test commit: `33aaeaf7b19e45b0649bf9c66db1f43e66056cc9`.
+- Current code/test branch head: `33aaeaf7b19e45b0649bf9c66db1f43e66056cc9`; the current acceptance-matrix and performance-evidence update is being committed separately.
 - Active phase: G, final evidence review and remaining acceptance gaps.
 
 ## Audit and architecture
@@ -128,3 +128,11 @@
 
 - Journal content was committed at `97841bd618d00fbb88750dbacd757b1373469c52` after recording the `a264a17` verification. Its own hosted Quality run [41275956610](https://github.com/howlcipher/howlscene/actions/runs/41275956610) passed format, lint, strict TypeScript, 181 Vitest tests, coverage, build, 66 Playwright tests, SDK, license, and dependency audit. The paired Pages artifact workflow [41275956627](https://github.com/howlcipher/howlscene/actions/runs/41275956627) passed; approvals and publishing remained skipped.
 - `97841bd` contains only journal evidence beyond the previously verified `a264a17` documentation checkpoint; implementation and acceptance-test source remains at `d5f05c9`.
+
+## Pending-frame instrumentation follow-up — 2026-11-01
+
+- Added a browser `requestAnimationFrame`/`cancelAnimationFrame` wrapper to the bounded lifecycle test in commit `33aaeaf`. It records peak and idle pending callbacks in the lifecycle artifact and asserts no more than two outstanding callbacks during scroll (Camera Journey plus the shared scenery enhancer), then zero after idle.
+- [Quality run 41276708527](https://github.com/howlcipher/howlscene/actions/runs/41276708527) passed at `33aaeaf`: 181 Vitest, 66 Playwright, format/lint/type/coverage/build, SDK consumer, licensing, and dependency gates. [Pages artifact run 41276708530](https://github.com/howlcipher/howlscene/actions/runs/41276708530) passed; approvals and publishing were skipped.
+- Lifecycle artifact values: max pending frames 1, idle pending 0; event listeners 186 in every sample; document nodes 184 except one sample at 188 then returned to 184. Post-GC JS heap rose 129,852 bytes (about 1.28%) across five measured cycles after two warmups. This short sequence remains inconclusive for retained-memory growth.
+- CJ-023 is now Pass for the bounded automated scenario. CJ-022 remains Partial because browser-wide counters and stage ownership are not an explicit detached-DOM or repeated true unmount/remount audit. Longer memory, hidden-tab, browser-zoom, physical-device, screen-reader, and human persona reviews remain incomplete.
+- Next exact action: update PR/readiness/journal evidence to record the new CJ-023 result, run the updated documentation through GitHub-hosted CI, then inspect final PR checks. Keep draft; do not merge or deploy.

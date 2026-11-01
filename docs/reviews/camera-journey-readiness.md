@@ -3,7 +3,7 @@
 **Verdict: NOT READY**
 
 The shared Camera Journey implementation is present on draft PR #37. Its latest
-full GitHub-hosted Quality run passed at `d5f05c9`; the Pages artifact run also
+full GitHub-hosted Quality run passed at `33aaeaf`; the Pages artifact run also
 passed without publishing. A native scroll position determines a reversible
 camera and mist handoff; finite scene-entry transitions remain separate. The
 camera-art replacement lifecycle defect was reproduced and fixed, and actual
@@ -17,7 +17,7 @@ outstanding.
 
 - Repository: `howlcipher/howlscene`
 - Starting commit: `95cc4b9cc942f80c61a6e5cd514488644ecc6c3c`
-- Ending fully verified commit: `d5f05c9e05d71e150fcda888c1da3d6793ea7e70`
+- Ending fully verified commit: `33aaeaf7b19e45b0649bf9c66db1f43e66056cc9`
 - Branch: `work/camera-journey`
 - Pull request: [#37, draft](https://github.com/howlcipher/howlscene/pull/37)
 - No merge, publish, or deployment occurred.
@@ -82,6 +82,11 @@ Test-first evidence:
   to the actual ZIP fixture and asserts that both scene and transition-cover
   assets exist in the archive. Pages artifact run [41275074147](https://github.com/howlcipher/howlscene/actions/runs/41275074147)
   also passed; publication and approvals were skipped.
+- Latest full run [41276708527](https://github.com/howlcipher/howlscene/actions/runs/41276708527)
+  passed at `33aaeaf`: 38 Vitest files / 181 tests, all 66 Playwright tests,
+  formatting, lint, strict TypeScript, coverage, build, SDK consumer, license,
+  and dependency checks. Pages artifact run [41276708530](https://github.com/howlcipher/howlscene/actions/runs/41276708530)
+  also passed; publication and approvals were skipped.
 - On the way to this passing run, [41274285564](https://github.com/howlcipher/howlscene/actions/runs/41274285564)
   ran 64/66 browser tests successfully but exposed stale cloned scenery after
   image replacement and smooth-scroll timing in the parity test. The controller
@@ -120,7 +125,7 @@ identified in the evidence.
 | CJ-020 | Partial | Native anchors and hidden-link tab removal/restoration pass; full keyboard-only focus-order review remains.                                                                |
 | CJ-021 | Partial | Phone-sized browser layout and screenshot pass; touch hardware is not tested.                                                                                              |
 | CJ-022 | Partial | Five repeated navigation/toggle cycles, theme reinitialization, stage count, browser node and listener counts are covered; explicit detached-node snapshots remain absent. |
-| CJ-023 | Partial | Coalesced-frame scheduling is implemented and repeated behavior is tested, but pending-rAF count is not directly instrumented.                                             |
+| CJ-023 | Pass    | Instrumented browser lifecycle run observed a maximum of one pending rAF and zero pending after idle.                                                                      |
 | CJ-024 | Pass    | Runtime schema rejects invalid movement and numeric settings.                                                                                                              |
 | CJ-025 | Pass    | Remote SDK package check builds and consumes the public contract.                                                                                                          |
 | CJ-026 | Pass    | Existing finite transition coverage remains and the sample retains its finite preset values.                                                                               |
@@ -174,16 +179,16 @@ observations:
 
 These are GitHub-hosted runner measurements, not physical-device or field
 results. The frame samples are not a frame-rate guarantee and were not a
-long-duration Camera Journey stress test. The desktop heap is one observation,
-not a retained-memory comparison. The bounded lifecycle attachment from run
-`41274716405` measured after two warmup cycles and five navigation/toggle cycles
-at 1440×900 on hosted Chromium. Browser-wide counters remained at 186 event
-listeners and 184 document nodes in every sample. Post-GC JS heap readings
-increased from 10,118,080 bytes to 10,250,632 bytes (+132,552 bytes, about
-1.31%). Five cycles are too short to distinguish a stable cache/measurement
-variation from a slow retained-growth trend; the sample neither proves nor
-rules out a leak and does not count all GPU/image memory. Hidden-tab, browser
-memory retention, explicit detached-DOM inspection, physical-device, and
+long-duration Camera Journey stress test. The latest lifecycle attachment from
+run `41276708527` measured after two warmup cycles and five navigation/toggle
+cycles at 1440×900 on hosted Chromium. Event listeners remained at 186;
+document nodes were 184 except for one sample at 188, then returned to 184.
+Instrumented rAF peaked at one pending callback and returned to zero after idle.
+Post-GC JS heap readings increased from 10,123,840 to 10,253,692 bytes
+(+129,852 bytes, about 1.28%). Five cycles are too short to distinguish a stable
+cache/measurement variation from a slow retained-growth trend; this neither
+proves nor rules out a leak and does not count all GPU/image memory. Hidden-tab
+browser memory, explicit detached-DOM inspection, physical-device, and
 longer-duration profiling remain incomplete. The runtime size is under the
 existing 256 KiB gzip budget.
 
@@ -218,14 +223,14 @@ acceptance remain outstanding.
 
 ## 10. Remaining blockers and verdict
 
-Before calling PR #37 merge-ready, add direct pending-rAF and detached-node/
-unmount assertions or document an accepted manual review, and extend/interpret
-the short heap-growth sample. Remaining human review includes
+Before calling PR #37 merge-ready, add direct detached-node/unmount assertions
+or document an accepted manual review, and extend/interpret the short
+heap-growth sample. Remaining human review includes
 screen reader, browser zoom, keyboard-only use, physical touch/mobile, and real
 nontechnical user acceptance. No independent code review has been requested or
 received; no review requests are currently attached to the PR.
 
-**NOT READY.** All current automated quality gates pass at `d5f05c9`, including
-the replacement-scenery ZIP check, but direct pending-rAF/detached-node tests,
+**NOT READY.** All current automated quality gates pass at `33aaeaf`, including
+the replacement-scenery ZIP check and pending-rAF instrumentation, but direct detached-node tests,
 longer retained-memory profiling, human acceptance, and independent review are
 incomplete. Keep PR #37 in draft. Do not merge or deploy from this report.

@@ -21,10 +21,10 @@ Draft PR [#37](https://github.com/howlcipher/howlscene/pull/37) introduces an op
 
 ## Final hardening checkpoint — 2026-11-01
 
-The latest fully verified implementation and tests at `d5f05c9` passed the
-hosted Quality workflow [41275074117](https://github.com/howlcipher/howlscene/actions/runs/41275074117)
+The latest fully verified implementation and tests at `33aaeaf` passed the
+hosted Quality workflow [41276708527](https://github.com/howlcipher/howlscene/actions/runs/41276708527)
 with 66 Playwright tests and the Pages artifact workflow
-[41275074147](https://github.com/howlcipher/howlscene/actions/runs/41275074147).
+[41276708530](https://github.com/howlcipher/howlscene/actions/runs/41276708530).
 The hosted screenshots for established scene, copy departure, camera travel,
 covered handoff, landscape reveal, copy arrival, reverse, and mobile were
 reviewed again. The active image handoff remains covered by the mist layer;
@@ -42,5 +42,5 @@ the remaining human/performance gates are listed in the
 ## Verification evidence
 
 - Historical screenshot references remain available in [`artifacts/video-match/`](artifacts/video-match/), including the [desktop opening](artifacts/video-match/desktop.png), [camera push](artifacts/video-match/scroll-transition.png), [covered handoff](artifacts/video-match/scroll-transition-cover.png), [incoming reveal](artifacts/video-match/scroll-transition-emerge.png), [second scene](artifacts/video-match/scene-2.png), and [mobile layout](artifacts/video-match/mobile.png). They document the prior implementation and are not evidence for the current branch.
-- Test-only commit `7feef8c` has valid behavioral RED evidence in [GitHub Actions run 41166873671](https://github.com/howlcipher/howlscene/actions/runs/41166873671). The current implementation passed the hosted Quality workflow in [run 41275074117](https://github.com/howlcipher/howlscene/actions/runs/41275074117); the Pages build/artifact checks passed in [run 41275074147](https://github.com/howlcipher/howlscene/actions/runs/41275074147). The screenshot evidence is attached to the Quality run.
+- Test-only commit `7feef8c` has valid behavioral RED evidence in [GitHub Actions run 41166873671](https://github.com/howlcipher/howlscene/actions/runs/41166873671). The current implementation passed the hosted Quality workflow in [run 41276708527](https://github.com/howlcipher/howlscene/actions/runs/41276708527); the Pages build/artifact checks passed in [run 41276708530](https://github.com/howlcipher/howlscene/actions/runs/41276708530). The screenshot evidence is attached to the Quality run.
 - The landscapes are separate still images, so spatial continuity cannot match generated video imagery frame for frame. The approximation uses a reversible camera transform and separate cover scene. Seven-scene stress, large-artwork preloading behavior, and physical-device performance remain unverified.
