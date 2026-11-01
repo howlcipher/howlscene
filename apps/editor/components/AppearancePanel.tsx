@@ -126,6 +126,108 @@ export function AppearancePanel({
           {warning}
         </p>
       ))}
+      {site.experience === "cinematic" && (
+        <details open>
+          <summary>Cinematic movement</summary>
+          <label className="checkbox">
+            <input
+              type="checkbox"
+              checked={site.cameraJourney.enabled}
+              onChange={(event) =>
+                commit({
+                  ...site,
+                  cameraJourney: {
+                    ...site.cameraJourney,
+                    enabled: event.target.checked,
+                  },
+                })
+              }
+            />
+            Use Camera Journey
+          </label>
+          {site.cameraJourney.enabled && (
+            <>
+              <label>
+                Camera movement
+                <select
+                  value={site.cameraJourney.movement}
+                  onChange={(event) =>
+                    commit({
+                      ...site,
+                      cameraJourney: {
+                        ...site.cameraJourney,
+                        movement: event.target
+                          .value as SiteConfig["cameraJourney"]["movement"],
+                      },
+                    })
+                  }
+                >
+                  <option value="diagonal">Diagonal drift</option>
+                  <option value="pan">Side-to-side pan</option>
+                  <option value="push">Camera push</option>
+                </select>
+              </label>
+              <label>
+                Camera intensity
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value={site.cameraJourney.intensity}
+                  onChange={(event) =>
+                    commit({
+                      ...site,
+                      cameraJourney: {
+                        ...site.cameraJourney,
+                        intensity: Number(event.target.value),
+                      },
+                    })
+                  }
+                />
+              </label>
+              <label>
+                Parallax depth
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value={site.cameraJourney.parallaxDepth}
+                  onChange={(event) =>
+                    commit({
+                      ...site,
+                      cameraJourney: {
+                        ...site.cameraJourney,
+                        parallaxDepth: Number(event.target.value),
+                      },
+                    })
+                  }
+                />
+              </label>
+              <label>
+                Scroll distance
+                <input
+                  type="range"
+                  min="0.5"
+                  max="2"
+                  step="0.1"
+                  value={site.cameraJourney.distance}
+                  onChange={(event) =>
+                    commit({
+                      ...site,
+                      cameraJourney: {
+                        ...site.cameraJourney,
+                        distance: Number(event.target.value),
+                      },
+                    })
+                  }
+                />
+              </label>
+            </>
+          )}
+        </details>
+      )}
       <div className="two-controls">
         <label>
           Background color

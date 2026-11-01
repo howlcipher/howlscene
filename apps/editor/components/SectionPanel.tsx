@@ -222,6 +222,11 @@ export function SectionPanel({
                 ))}
               </select>
             </label>
+            <p className="notice">
+              Scene-entry transition runs when Camera Journey is off. In Camera
+              Journey mode, this scene's cover artwork is used for the
+              scroll-controlled handoff.
+            </p>
             <label>
               Change transition cover
               <input

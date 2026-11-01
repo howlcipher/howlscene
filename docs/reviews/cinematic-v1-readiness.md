@@ -1,5 +1,13 @@
 # Cinematic v1 Readiness Report
 
+> **Camera Journey status update (2026-11-01):** This report is the historical
+> v1 checkpoint and its Camera Journey statements are superseded by the current
+> [Camera Journey readiness report](camera-journey-readiness.md). The shared
+> camera controller, lifecycle artwork refresh, root/nested export parity, and
+> latest hosted regression evidence are tracked there. PR #37 remains draft and
+> not ready for merge while human acceptance, independent review, and extended
+> resource validation remain outstanding.
+
 **Verdict: NOT READY**
 
 The shared cinematic mode now includes a reusable transition-cover asset path,

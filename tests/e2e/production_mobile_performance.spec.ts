@@ -387,7 +387,7 @@ test("PERF-LAB-001 measure an image-rich production export on a constrained mobi
           contentVisibleWithMotionOff: headingVisibleWithMotionOff,
         },
         limitations: [
-          "A single local lab observation under Playwright CDP CPU/network emulation, not a physical mobile-device or field Core Web Vitals result.",
+          "A single GitHub-hosted CI lab observation under Playwright CDP CPU/network emulation, not a physical mobile-device or field Core Web Vitals result.",
           "The image is a generated fixture and the tested copy is representative, not a user workload distribution.",
           "Animation frame intervals come from one Chromium session and do not guarantee 60 FPS on other hardware.",
           "The export runtime gzip figure excludes HTML, CSS, fonts and image resources.",

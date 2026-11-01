@@ -13,12 +13,17 @@
    Cinematic Story, **Change transition cover** adds a decorative image layer
    that briefly clears as a scene enters. It is hidden from assistive
    technology and does not replace the scene's scenery or text.
-6. Adjust motion intensity and speed in the appearance controls. The website
-   respects the device's reduced-motion preference and offers a manual motion
-   control in the enhanced exported site.
-7. Preview at phone, tablet, and desktop widths. The page keeps ordinary
+6. In **Cinematic movement**, turn on **Use Camera Journey** for a pinned,
+   scroll-controlled scenery passage. Choose camera movement, intensity,
+   parallax depth, and scroll distance. This is separate from each scene's finite **Transition
+   style**. Upload scenery and optional transition covers in the section
+   controls; the live preview updates as you scroll it.
+7. Adjust appearance motion intensity and speed. The website respects the
+   device's reduced-motion preference and offers a manual motion control in the
+   enhanced exported site.
+8. Preview at phone, tablet, and desktop widths. The page keeps ordinary
    scrolling and scene links; it does not lock the browser into a carousel.
-8. Your project saves in this browser when local storage is available. Download
+9. Your project saves in this browser when local storage is available. Download
    a project backup to keep an editable copy. Download the separate website ZIP
    to publish the static site; its content and supported transition settings
    come from the shared renderer.

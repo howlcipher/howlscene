@@ -7,12 +7,21 @@ test("CIN-001 CIN-006 CIN-007 editor creates a cinematic story and changes a sce
   page,
 }) => {
   await page.goto("/editor/");
-  page.once("dialog", (dialog) => void dialog.accept());
+  page.on("dialog", (dialog) => void dialog.accept());
   await page.getByLabel("Start from a template").selectOption("cinematic");
   await expect(page.locator(".howlscene")).toHaveAttribute(
     "data-experience",
     "cinematic",
   );
+  await page.getByLabel("Use Camera Journey").check();
+  await expect(page.locator(".howlscene")).toHaveAttribute(
+    "data-camera-journey",
+    "true",
+  );
+  await expect(page.getByLabel("Camera movement")).toBeVisible();
+  await expect(page.getByLabel("Camera intensity")).toBeVisible();
+  await expect(page.getByLabel("Parallax depth")).toBeVisible();
+  await expect(page.getByLabel("Scroll distance")).toBeVisible();
   await page.getByLabel("Edit heading").fill("A story that belongs to me");
   await page.getByLabel("Transition style").selectOption("mist-reveal");
   const firstScene = page
@@ -43,15 +52,155 @@ test("CIN-001 CIN-006 CIN-007 editor creates a cinematic story and changes a sce
   await expect(cover).toHaveCount(0);
 });
 
+test("CJ-011 editor preview renders two and seven scene Camera Journeys", async ({
+  page,
+}) => {
+  await page.goto("/editor/");
+  page.on("dialog", (dialog) => void dialog.accept());
+  await page.getByLabel("Start from a template").selectOption("cinematic");
+  await page.getByLabel("Use Camera Journey").check();
+
+  const preview = page.getByRole("region", { name: "Live website preview" });
+  const scenes = preview.locator(".scene");
+  const root = preview.locator(".howlscene");
+  await expect(scenes).toHaveCount(5);
+
+  for (let count = 5; count > 2; count -= 1) {
+    await page.getByRole("button", { name: "Delete section" }).click();
+    await expect(scenes).toHaveCount(count - 1);
+  }
+  await expect(scenes).toHaveCount(2);
+  await scrubPreviewToHandoff(preview);
+  await expect(root).toHaveAttribute(
+    "data-camera-journey-stage",
+    "covered-handoff",
+  );
+  await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
+
+  for (let count = 2; count < 7; count += 1) {
+    await page.getByRole("button", { name: "Duplicate section" }).click();
+    await expect(scenes).toHaveCount(count + 1);
+  }
+  await expect(scenes).toHaveCount(7);
+  await scrubPreviewToHandoff(preview);
+  await expect(root).toHaveAttribute(
+    "data-camera-journey-stage",
+    "covered-handoff",
+  );
+  await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
+
+  for (const theme of ["cyber", "modern", "ink"]) {
+    await page.getByLabel("Visual theme").selectOption(theme);
+    await expect(scenes).toHaveCount(7);
+    await expect(root).toHaveAttribute("data-camera-journey", "true");
+    await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
+  }
+
+  const sceneryImage = await page.evaluate(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 32;
+    canvas.height = 32;
+    const context = canvas.getContext("2d")!;
+    context.fillStyle = "#536f79";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL("image/png").split(",")[1]!;
+  });
+  await page
+    .getByLabel("Change scenery")
+    .last()
+    .setInputFiles({
+      name: "new-scene-art.png",
+      mimeType: "image/png",
+      buffer: Buffer.from(sceneryImage, "base64"),
+    });
+  await page.getByLabel("Image treatment").selectOption("background");
+  const replacement = scenes.first().locator(".scene-background-image");
+  await expect(replacement).toHaveAttribute("src", /^data:image\/webp;base64,/);
+  await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
+  await scrubPreviewToHandoff(preview);
+  await expect(root).toHaveAttribute(
+    "data-camera-journey-stage",
+    "covered-handoff",
+  );
+  await expect(preview.locator(".camera-journey-art").first()).toHaveAttribute(
+    "src",
+    /^data:image\/webp;base64,/,
+  );
+  await expect
+    .poll(() =>
+      preview
+        .locator(".camera-journey-art")
+        .first()
+        .evaluate((image: HTMLImageElement) => image.naturalWidth),
+    )
+    .toBe(32);
+});
+
+async function scrubPreviewToHandoff(
+  preview: import("@playwright/test").Locator,
+) {
+  await preview.evaluate((element) => {
+    let container: HTMLElement | null = element.parentElement;
+    while (container && container !== document.body) {
+      const overflow = getComputedStyle(container).overflowY;
+      if (
+        (overflow === "auto" ||
+          overflow === "scroll" ||
+          overflow === "overlay") &&
+        container.scrollHeight > container.clientHeight
+      )
+        break;
+      container = container.parentElement;
+    }
+    if (container === document.body) container = null;
+    const scenes = Array.from(element.querySelectorAll<HTMLElement>(".scene"));
+    const viewportTop = container?.getBoundingClientRect().top ?? 0;
+    const start = scenes[0]!.getBoundingClientRect().top - viewportTop;
+    const end = scenes[1]!.getBoundingClientRect().top - viewportTop;
+    const currentScroll = container?.scrollTop ?? window.scrollY;
+    const target = currentScroll + start + (end - start) * 0.49;
+    if (container) container.scrollTo({ top: target, behavior: "instant" });
+    else window.scrollTo({ top: target, behavior: "instant" });
+  });
+}
+
 test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork for root and nested hosting", async ({
   page,
   browser,
 }) => {
   await page.goto("/editor/");
-  page.once("dialog", (dialog) => void dialog.accept());
+  await page.addStyleTag({
+    content: "html, body, * { scroll-behavior: auto !important }",
+  });
+  page.on("dialog", (dialog) => void dialog.accept());
   await page.getByLabel("Start from a template").selectOption("cinematic");
+  await page.getByLabel("Use Camera Journey").check();
   await page.getByLabel("Edit heading").fill("A story for every path");
   await page.getByLabel("Transition style").selectOption("mist-reveal");
+  const sceneryImage = await page.evaluate(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 32;
+    canvas.height = 32;
+    const context = canvas.getContext("2d")!;
+    context.fillStyle = "#536f79";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL("image/png").split(",")[1]!;
+  });
+  await page
+    .getByLabel("Change scenery")
+    .last()
+    .setInputFiles({
+      name: "custom-journey-art.png",
+      mimeType: "image/png",
+      buffer: Buffer.from(sceneryImage, "base64"),
+    });
+  await page.getByLabel("Image treatment").selectOption("background");
+  await expect(
+    page
+      .getByRole("region", { name: "Live website preview" })
+      .locator(".scene-background-image")
+      .first(),
+  ).toHaveAttribute("src", /^data:image\/webp;base64,/);
   const coverImage = await page.evaluate(() => {
     const canvas = document.createElement("canvas");
     canvas.width = 32;
@@ -74,6 +223,7 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
   const archive = await JSZip.loadAsync(await readFile(downloadPath));
   const html = await archive.file("index.html")!.async("string");
   expect(html).toContain('data-experience="cinematic"');
+  expect(html).toContain('data-camera-journey="true"');
   expect(html).toContain('data-transition="mist-reveal"');
   expect(html).toContain("A story for every path");
   const coverSource = html.match(
@@ -81,7 +231,29 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
   )?.[1];
   expect(coverSource).toMatch(/^\.\/assets\/asset-[^/]+\/original\.webp$/);
   expect(archive.file(coverSource!.slice(2))).not.toBeNull();
+  const scenerySource = html.match(
+    /<img[^>]*class="scene-background-image"[^>]*src="([^"]+)"/,
+  )?.[1];
+  expect(scenerySource).toMatch(/^\.\/assets\/asset-[^/]+\/original\.webp$/);
+  expect(archive.file(scenerySource!.slice(2))).not.toBeNull();
   expect(archive.file("site.js")).not.toBeNull();
+
+  await scrubPreviewToHandoff(
+    page.getByRole("region", { name: "Live website preview" }),
+  );
+  await expect(
+    page
+      .getByRole("region", { name: "Live website preview" })
+      .locator(".howlscene"),
+  ).toHaveAttribute("data-camera-journey-stage", "covered-handoff");
+  const previewFrame = await page.evaluate(() => ({
+    stage: document.querySelector<HTMLElement>(".preview .howlscene")?.dataset
+      .cameraJourneyStage,
+    transform: document.querySelector<HTMLElement>(".camera-journey-art")?.style
+      .transform,
+    coverOpacity: document.querySelector<HTMLElement>(".camera-journey-cover")
+      ?.style.opacity,
+  }));
 
   const files = new Map<string, Buffer>();
   for (const [name, entry] of Object.entries(archive.files))
@@ -111,13 +283,26 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
     const address = server.address();
     if (!address || typeof address === "string") throw new Error("No server");
     for (const target of [
-      { base: "/", javaScriptEnabled: true },
-      { base: "/howlscene/project/", javaScriptEnabled: false },
+      {
+        base: "/",
+        javaScriptEnabled: true,
+        reducedMotion: "no-preference" as const,
+      },
+      {
+        base: "/howlscene/project/",
+        javaScriptEnabled: false,
+        reducedMotion: "reduce" as const,
+      },
+      {
+        base: "/howlscene/animated/",
+        javaScriptEnabled: true,
+        reducedMotion: "no-preference" as const,
+      },
     ]) {
       mount = target.base;
       const context = await browser.newContext({
         javaScriptEnabled: target.javaScriptEnabled,
-        reducedMotion: "reduce",
+        reducedMotion: target.reducedMotion,
       });
       try {
         const exported = await context.newPage();
@@ -146,10 +331,65 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
             document.querySelector<HTMLImageElement>(".scene-transition-cover")
               ?.naturalWidth === 32,
         );
-        if (target.javaScriptEnabled)
+        if (target.javaScriptEnabled && target.reducedMotion === "reduce")
           await expect(
             exported.getByRole("button", { name: "Enable animation" }),
           ).toBeDisabled();
+        if (target.javaScriptEnabled) {
+          await expect(
+            exported.getByRole("button", { name: "Disable animation" }),
+          ).toBeVisible();
+          await expect(exported.locator(".camera-journey-stage")).toBeVisible();
+          await exported.evaluate(() => {
+            const scenes = Array.from(
+              document.querySelectorAll<HTMLElement>(".scene"),
+            );
+            const start = scenes[0]!.getBoundingClientRect().top + scrollY;
+            const end = scenes[1]!.getBoundingClientRect().top + scrollY;
+            window.scrollTo({
+              top: start + (end - start) * 0.49,
+              behavior: "instant",
+            });
+          });
+          await expect(exported.locator(".howlscene")).toHaveAttribute(
+            "data-camera-journey-stage",
+            "covered-handoff",
+          );
+          const exportedFrame = await exported.evaluate(() => ({
+            stage:
+              document.querySelector<HTMLElement>(".howlscene")?.dataset
+                .cameraJourneyStage,
+            transform: document.querySelector<HTMLElement>(
+              ".camera-journey-art",
+            )?.style.transform,
+            coverOpacity: document.querySelector<HTMLElement>(
+              ".camera-journey-cover",
+            )?.style.opacity,
+          }));
+          expect(exportedFrame.stage).toBe(previewFrame.stage);
+          const transformNumbers = (value: string | undefined) => {
+            const matches = value?.match(
+              /translate3d\((-?[\d.]+)px,\s*(-?[\d.]+)px,\s*(-?[\d.]+)px\)\s*scale\(([\d.]+)\)/,
+            );
+            expect(matches).not.toBeNull();
+            return matches!.slice(1).map(Number);
+          };
+          const previewValues = transformNumbers(previewFrame.transform);
+          const exportedValues = transformNumbers(exportedFrame.transform);
+          const tolerances = [3, 3, 0.01, 0.002];
+          for (const [index, tolerance] of tolerances.entries())
+            expect(
+              Math.abs(previewValues[index]! - exportedValues[index]!),
+            ).toBeLessThanOrEqual(tolerance);
+          expect(
+            Math.abs(
+              Number(exportedFrame.coverOpacity) -
+                Number(previewFrame.coverOpacity),
+            ),
+            // Native scroll positions are quantized to browser pixels, which
+            // can shift the normalized cover state slightly between hosts.
+          ).toBeLessThanOrEqual(0.02);
+        }
         await exported
           .getByRole("link", { name: "A story for every path", exact: true })
           .click();

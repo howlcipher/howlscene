@@ -1,4 +1,6 @@
 import { animate } from "motion/mini";
+import { createCameraJourneyController } from "./camera_journey_controller.js";
+import { cameraJourneySettingsSchema } from "./camera_journey.js";
 import {
   readMotionSettings,
   readThemeParallax,
@@ -25,11 +27,34 @@ export function enhanceSite(root: HTMLElement): () => void {
   }
   let disposed = false;
   const settings = readMotionSettings(root.dataset);
-  const layers = readThemeParallax(root.dataset.themeParallax)
-    ? Array.from(
-        root.querySelectorAll<HTMLElement>(".scenery-layer[data-depth]"),
+  const journeySettings = cameraJourneySettingsSchema.parse({
+    enabled: root.dataset.cameraJourney === "true",
+    movement: root.dataset.cameraJourneyMovement ?? "diagonal",
+    intensity: Number(root.dataset.cameraJourneyIntensity ?? 0.8),
+    parallaxDepth: Number(root.dataset.cameraJourneyParallaxDepth ?? 0.35),
+    distance: Number(root.dataset.cameraJourneyDistance ?? 1),
+  });
+  const journeyDistance = Math.max(
+    0.5,
+    Math.min(2, journeySettings.distance / settings.speed),
+  );
+  const journey = journeySettings.enabled
+    ? createCameraJourneyController(
+        root,
+        {
+          ...journeySettings,
+          intensity: journeySettings.intensity * settings.intensity,
+          distance: journeyDistance,
+        },
+        media,
       )
-    : [];
+    : undefined;
+  const layers =
+    !journey && readThemeParallax(root.dataset.themeParallax)
+      ? Array.from(
+          root.querySelectorAll<HTMLElement>(".scenery-layer[data-depth]"),
+        )
+      : [];
   let frame: number | undefined;
   const controls = new Map<
     Element,
@@ -238,6 +263,7 @@ export function enhanceSite(root: HTMLElement): () => void {
     for (const layer of layers) layer.style.transform = "";
     for (const { effect } of controls.values()) effect.cancel();
     controls.clear();
+    journey?.stop();
     for (const scene of root.querySelectorAll<HTMLElement>(".scene")) {
       scene.dataset.sceneState = "static";
       const scenery = scene.querySelector<HTMLElement>(".scenery");
@@ -256,10 +282,13 @@ export function enhanceSite(root: HTMLElement): () => void {
       button.disabled =
         media.matches || preset === "none" || settings.intensity === 0;
     }
-    if (enabled())
-      root.querySelectorAll(".scene").forEach((scene) => {
-        observer?.observe(scene);
-      });
+    if (enabled()) {
+      if (journey) journey.start();
+      else
+        root.querySelectorAll(".scene").forEach((scene) => {
+          observer?.observe(scene);
+        });
+    }
     scheduleDepth();
   }
   function toggle() {
@@ -272,8 +301,10 @@ export function enhanceSite(root: HTMLElement): () => void {
     refresh();
   }
   media.addEventListener("change", refresh);
-  window.addEventListener("scroll", scheduleDepth, { passive: true });
-  window.addEventListener("resize", scheduleDepth, { passive: true });
+  if (!journey) {
+    window.addEventListener("scroll", scheduleDepth, { passive: true });
+    window.addEventListener("resize", scheduleDepth, { passive: true });
+  }
   button?.addEventListener("click", toggle);
   refresh();
   return () => {
@@ -281,10 +312,13 @@ export function enhanceSite(root: HTMLElement): () => void {
     disposed = true;
     observer?.disconnect();
     cancel();
+    journey?.dispose();
     delete root.dataset.motionEnabled;
     media.removeEventListener("change", refresh);
-    window.removeEventListener("scroll", scheduleDepth);
-    window.removeEventListener("resize", scheduleDepth);
+    if (!journey) {
+      window.removeEventListener("scroll", scheduleDepth);
+      window.removeEventListener("resize", scheduleDepth);
+    }
     button?.removeEventListener("click", toggle);
   };
 }

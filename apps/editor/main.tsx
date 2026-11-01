@@ -73,16 +73,34 @@ function Editor() {
   const uploadRequests = useRef(new Map<string, symbol>());
   const previewRef = useRef<HTMLDivElement>(null);
   const sceneSignature = site.sections
-    .map((s) => s.id + ":" + s.visible + ":" + s.animation)
+    .map(
+      (s) =>
+        s.id +
+        ":" +
+        s.visible +
+        ":" +
+        s.animation +
+        ":" +
+        s.transition +
+        ":" +
+        s.image +
+        ":" +
+        s.transitionCover,
+    )
     .join(",");
   useEffect(() => {
     const root = previewRef.current?.querySelector<HTMLElement>(".howlscene");
     if (root) return enhanceSite(root);
   }, [
     site.theme,
+    site.experience,
     site.motion,
     site.motionSettings.intensity,
     site.motionSettings.speed,
+    site.cameraJourney.enabled,
+    site.cameraJourney.movement,
+    site.cameraJourney.intensity,
+    site.cameraJourney.distance,
     sceneSignature,
     ready,
   ]);
