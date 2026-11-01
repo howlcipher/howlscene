@@ -310,7 +310,7 @@ test("CJ-010 CJ-022 CJ-023 bounded navigation cycles retain one stage and stable
       documentNodes: read("Nodes"),
     };
   };
-  const cycle = async () => {
+  const runCycle = async () => {
     await at(3);
     await at(0);
     await page.evaluate(() =>
@@ -331,11 +331,12 @@ test("CJ-010 CJ-022 CJ-023 bounded navigation cycles retain one stage and stable
 
   try {
     await at(0);
-    for (let warmupCycle = 0; warmupCycle < 2; warmupCycle += 1) await cycle();
+    for (let warmupCycle = 0; warmupCycle < 2; warmupCycle += 1)
+      await runCycle();
     const warmup = await sample();
     const cycles = [];
-    for (let cycle = 0; cycle < 5; cycle += 1) {
-      await cycle();
+    for (let cycleIndex = 0; cycleIndex < 5; cycleIndex += 1) {
+      await runCycle();
       cycles.push(await sample());
     }
 
