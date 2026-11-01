@@ -70,7 +70,7 @@ test("CJ-011 editor preview renders two and seven scene Camera Journeys", async 
     await expect(scenes).toHaveCount(count - 1);
   }
   await expect(scenes).toHaveCount(2);
-  await scrubPreviewToHandoff(preview);
+  await scrubPreviewPair(preview, 0, 0.49);
   await expect(root).toHaveAttribute(
     "data-camera-journey-stage",
     "covered-handoff",
@@ -82,7 +82,7 @@ test("CJ-011 editor preview renders two and seven scene Camera Journeys", async 
     await expect(scenes).toHaveCount(count + 1);
   }
   await expect(scenes).toHaveCount(7);
-  await scrubPreviewToHandoff(preview);
+  await scrubPreviewPair(preview, 0, 0.49);
   await expect(root).toHaveAttribute(
     "data-camera-journey-stage",
     "covered-handoff",
@@ -117,7 +117,7 @@ test("CJ-011 editor preview renders two and seven scene Camera Journeys", async 
   const replacement = scenes.first().locator(".scene-background-image");
   await expect(replacement).toHaveAttribute("src", /^data:image\/webp;base64,/);
   await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
-  await scrubPreviewToHandoff(preview);
+  await scrubPreviewPair(preview, 0, 0.49);
   await expect(root).toHaveAttribute(
     "data-camera-journey-stage",
     "covered-handoff",
@@ -136,33 +136,114 @@ test("CJ-011 editor preview renders two and seven scene Camera Journeys", async 
     .toBe(32);
 });
 
-async function scrubPreviewToHandoff(
+async function scrubPreviewPair(
   preview: import("@playwright/test").Locator,
+  pairIndex: number,
+  progress: number,
 ) {
-  await preview.evaluate((element) => {
-    let container: HTMLElement | null = element.parentElement;
-    while (container && container !== document.body) {
-      const overflow = getComputedStyle(container).overflowY;
-      if (
-        (overflow === "auto" ||
-          overflow === "scroll" ||
-          overflow === "overlay") &&
-        container.scrollHeight > container.clientHeight
-      )
-        break;
-      container = container.parentElement;
-    }
-    if (container === document.body) container = null;
-    const scenes = Array.from(element.querySelectorAll<HTMLElement>(".scene"));
-    const viewportTop = container?.getBoundingClientRect().top ?? 0;
-    const start = scenes[0]!.getBoundingClientRect().top - viewportTop;
-    const end = scenes[1]!.getBoundingClientRect().top - viewportTop;
-    const currentScroll = container?.scrollTop ?? window.scrollY;
-    const target = currentScroll + start + (end - start) * 0.49;
-    if (container) container.scrollTo({ top: target, behavior: "instant" });
-    else window.scrollTo({ top: target, behavior: "instant" });
-  });
+  await preview.evaluate(
+    (element, target) => {
+      let container: HTMLElement | null = element.parentElement;
+      while (container && container !== document.body) {
+        const overflow = getComputedStyle(container).overflowY;
+        if (
+          (overflow === "auto" ||
+            overflow === "scroll" ||
+            overflow === "overlay") &&
+          container.scrollHeight > container.clientHeight
+        )
+          break;
+        container = container.parentElement;
+      }
+      if (container === document.body) container = null;
+      const scenes = Array.from(
+        element.querySelectorAll<HTMLElement>(".scene"),
+      );
+      const viewportTop = container?.getBoundingClientRect().top ?? 0;
+      const start =
+        scenes[target.pairIndex]!.getBoundingClientRect().top - viewportTop;
+      const end =
+        scenes[target.pairIndex + 1]!.getBoundingClientRect().top - viewportTop;
+      const currentScroll = container?.scrollTop ?? window.scrollY;
+      const scrollTarget =
+        currentScroll + start + (end - start) * target.progress;
+      if (container)
+        container.scrollTo({ top: scrollTarget, behavior: "instant" });
+      else window.scrollTo({ top: scrollTarget, behavior: "instant" });
+    },
+    { pairIndex, progress },
+  );
 }
+
+test("CJ-009 every seven-scene boundary resolves in forward and reverse travel", async ({
+  page,
+}) => {
+  await page.goto("/editor/");
+  page.on("dialog", (dialog) => void dialog.accept());
+  await page.getByLabel("Start from a template").selectOption("cinematic");
+  await page.getByLabel("Use Camera Journey").check();
+
+  const preview = page.getByRole("region", { name: "Live website preview" });
+  const root = preview.locator(".howlscene");
+  const scenes = preview.locator(".scene");
+  for (let count = 5; count < 7; count += 1) {
+    await page.getByRole("button", { name: "Duplicate section" }).click();
+    await expect(scenes).toHaveCount(count + 1);
+  }
+
+  const checkpoints = [
+    [0.1, "text-departure"],
+    [0.3, "camera-travel"],
+    [0.49, "covered-handoff"],
+    [0.51, "landscape-reveal"],
+    [0.7, "landscape-reveal"],
+    [0.9, "text-arrival"],
+  ] as const;
+  for (let pairIndex = 0; pairIndex < 6; pairIndex += 1) {
+    for (const [progress, expectedStage] of checkpoints) {
+      await scrubPreviewPair(preview, pairIndex, progress);
+      await expect(root).toHaveAttribute(
+        "data-camera-journey-stage",
+        expectedStage,
+      );
+    }
+    for (const [progress, expectedStage] of [...checkpoints].reverse()) {
+      await scrubPreviewPair(preview, pairIndex, progress);
+      await expect(root).toHaveAttribute(
+        "data-camera-journey-stage",
+        expectedStage,
+      );
+    }
+  }
+});
+
+test("CJ-022 replacing a cinematic project disposes its preview stage", async ({
+  page,
+}) => {
+  await page.goto("/editor/");
+  page.on("dialog", (dialog) => void dialog.accept());
+  const template = page.getByLabel("Start from a template");
+  const preview = page.getByRole("region", { name: "Live website preview" });
+
+  await template.selectOption("cinematic");
+  await page.getByLabel("Use Camera Journey").check();
+  await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
+  await scrubPreviewPair(preview, 0, 0.49);
+
+  await template.selectOption("portfolio");
+  await expect(preview.locator(".howlscene")).toHaveAttribute(
+    "data-experience",
+    "standard",
+  );
+  await expect(preview.locator(".camera-journey-stage")).toHaveCount(0);
+  await expect(
+    preview.locator(".camera-journey-art, .camera-journey-cover"),
+  ).toHaveCount(0);
+
+  await template.selectOption("cinematic");
+  await page.getByLabel("Use Camera Journey").check();
+  await expect(preview.locator(".camera-journey-stage")).toHaveCount(1);
+});
 
 test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork for root and nested hosting", async ({
   page,
