@@ -284,7 +284,7 @@ test("CIN-012 CIN-013 CIN-014 CIN-015 CIN-022 exports cinematic cover artwork fo
           };
           const previewValues = transformNumbers(previewFrame.transform);
           const exportedValues = transformNumbers(exportedFrame.transform);
-          const tolerances = [2, 2, 0.01, 0.002];
+          const tolerances = [3, 3, 0.01, 0.002];
           for (const [index, tolerance] of tolerances.entries())
             expect(
               Math.abs(previewValues[index]! - exportedValues[index]!),

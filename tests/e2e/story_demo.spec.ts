@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { writeFile } from "node:fs/promises";
 
 test("the ink-wash sample renders its five scenes through the shared engine", async ({
   page,
@@ -345,8 +346,10 @@ test("CJ-010 CJ-022 CJ-023 bounded navigation cycles retain one stage and stable
         "Five bounded cycles provide a regression signal, not proof of leak freedom or physical-device behavior.",
       ],
     };
+    const reportPath = testInfo.outputPath("camera-journey-lifecycle.json");
+    await writeFile(reportPath, JSON.stringify(report, null, 2) + "\n");
     await testInfo.attach("camera-journey-lifecycle.json", {
-      body: JSON.stringify(report, null, 2),
+      path: reportPath,
       contentType: "application/json",
     });
     for (const key of ["eventListeners", "documentNodes"] as const) {
