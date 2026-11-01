@@ -152,6 +152,17 @@ test("Camera Journey scrubs through the covered handoff and reverses with scroll
         .evaluate((image: HTMLImageElement) => image.style.transform),
     )
     .toContain("scale(");
+  const pausedTransform = await page
+    .locator(".camera-journey-art")
+    .first()
+    .evaluate((image: HTMLImageElement) => image.style.transform);
+  await page.waitForTimeout(100);
+  expect(
+    await page
+      .locator(".camera-journey-art")
+      .first()
+      .evaluate((image: HTMLImageElement) => image.style.transform),
+  ).toBe(pausedTransform);
   await capture("camera-journey-camera-travel");
   await at(0.49);
   await expect(root).toHaveAttribute(
@@ -227,6 +238,8 @@ test("hidden scene copy stays in the reading order without hidden keyboard targe
     page.getByRole("heading", { name: "Lorem ipsum dolor sit amet" }),
   ).toHaveCount(1);
   await expect(first).not.toHaveAttribute("aria-hidden", "true");
+  await page.getByRole("button", { name: "Disable animation" }).click();
+  await expect(link).not.toHaveAttribute("tabindex", "-1");
 });
 
 test("repeated motion toggles keep one temporary stage and restore semantic content", async ({
